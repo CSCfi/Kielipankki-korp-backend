@@ -1,0 +1,5 @@
+
+# Patterns for files not to be version-controlled
+
+# Python byte-compiled files
+*.pyc
