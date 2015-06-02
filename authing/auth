@@ -18,8 +18,8 @@ DBNAME = 'korp_auth'
 
 # For testing whether there is a compatible limited_access setting
 # (and no incompatible limited_access settings) in the frontend.
-CONFIG = { '/var/www/html/korp-auth/config.js',
-           '/var/www/html/korp-auth/modes/finnish_national_library_mode.js'
+CONFIG = { '/var/www/html/config.js',
+           '/var/www/html/modes/parallel_mode.js',
 }
 
 def usage_command(cursor, command, args):
@@ -80,7 +80,7 @@ def remove_command(cursor, command, args):
     person, = args
     cursor.execute('''
     delete from auth_academic where person = %s''', [person])
-    cursos.execute('''
+    cursor.execute('''
     delete from auth_secret where person = %s''', [person])
 
 def allow_command(cursor, command, args):
