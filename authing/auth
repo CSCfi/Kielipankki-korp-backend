@@ -29,14 +29,6 @@ Usage: ./auth command [arg [arg]]
 PERSON is the login identifier in HTTP Basic Authentication
 CORPUS is the Corpus Workbench Name of a corpus in Korp
 
-./auth promote PERSON        make person ACA (idempotent)
-./auth demote PERSON         make person NOT ACA (idempotent)
-./auth remove PERSON         remove person (idempotent)
-./auth secret PERSON         update "secret" for person (prompts for it)
-
-./auth allow PERSON CORPUS   give person personal access to corpus
-./auth deny PERSON CORPUS    take away from person personal access to corpus
-
 ./auth PUB CORPUS            make corpus PUB
 ./auth ACA CORPUS            make corpus ACA
 ./auth RES CORPUS            make corpus RES
@@ -44,42 +36,28 @@ Note: ACA and RES corpora need also be configured limited_access=true,
 and PUB corpora, not (that's an attribute specification in config.js
 of Korp front end)
 
-./auth persons               list persons and their "secret" passwords
+./auth lbr_register URN@LBR CORPUS     map LBR-ID to KORP-ID
+./auth lbr_unregister URN@LBR CORPUS   unmap LBR-ID and KORP-ID
+
+./auth persons               list persons
 ./auth corpora               list corpora and their licenses
+
+DEPRECATED, DO NOT USE:
+./auth remove PERSON         remove person (idempotent)
+
+./auth allow PERSON CORPUS   give person personal access to corpus
+./auth deny PERSON CORPUS    take away from person personal access to corpus
+
+
     ''')
-
-def promote_command(cursor, command, args):
-    '''Make person ACA (idempotent)'''
-    person, = args
-    cursor.execute('''
-    insert into auth_academic(person)
-    values (%s)
-    on duplicate key
-    update person = person''', [person])
-
-def demote_command(cursor, command, args):
-    '''Make person NOT ACA (idempotent)'''
-    person, = args
-    cursor.execute('''
-    delete from auth_academic
-    where person = %s''', [person])
-
-def secret_command(cursor, command, args):
-    '''Update HTTP Basic Authentication password of person'''
-    from getpass import getpass
-    person, = args
-    secret = getpass('New password for %s: ' % person)
-    cursor.execute('''
-    insert into auth_secret(person, secret)
-    values (%s, %s)
-    on duplicate key
-    update secret = %s''', [person, secret, secret])
 
 def remove_command(cursor, command, args):
     '''Remove person'''
     person, = args
     cursor.execute('''
     delete from auth_academic where person = %s''', [person])
+    cursor.execute('''
+    delete from auth_allow where person = %s''', [person])
     cursor.execute('''
     delete from auth_secret where person = %s''', [person])
 
@@ -99,6 +77,22 @@ def deny_command(cursor, command, args):
     delete from auth_allow
     where person = %s and corpus = %s''', [person, corpus])
 
+def lbr_register_command(cursor,command,args):
+    '''Map a LBR URN ID to one or more (sub)coropra'''
+    lbr_id, corpus = args
+    cursor.execute('''
+    insert into auth_lbr_map(lbr_id, corpus)
+    values (%s, %s)
+    on duplicate key
+    update corpus = corpus''', [lbr_id, corpus])
+
+def lbr_unregister_command(cursoer,command,args):
+    '''Map a LBR URN ID to one or more (sub)coropra'''
+    lbr_id, corpus = args
+    cursor.execute('''
+    delete from auth_lbr_map
+    where lbr_id = %s and corpus = %s''', [lbr_id, corpus])
+
 def license_command(cursor, command, args):
     '''Make corpus be of given type (PUB, ACA, or RES)'''
     license = command
@@ -111,25 +105,12 @@ def license_command(cursor, command, args):
     check_config(corpus, license)
 
 def persons_command(cursor, command, args):
-    '''List persons, their "secret" passwords if any, their ACA status as
-    recorded in this authentication service (RES if not ACA), and
-    their personally allowed corpora'''
+    '''List persons and their personally allowed corpora'''
     cursor.execute('''
-    (select person from auth_secret)
-    union (select person from auth_allow)
-    union (select person from auth_academic)
-    order by person''')
+    (select distinct person from auth_allow)
+        order by person''')
     for person, in cursor.fetchall():
         print(person, end='')
-        cursor.execute('''
-        select secret from auth_secret
-        where person = %s''', [person])
-        secret = cursor.fetchone()
-        if secret: print(':%s' % secret[0], end='')
-        cursor.execute('''
-        select person from auth_academic
-        where person = %s''', [person])
-        print('', ('-ACA', '+ACA')[bool(cursor.fetchone())], end='')
         cursor.execute('''
         select corpus from auth_allow
         where person = %s
@@ -154,10 +135,15 @@ def corpora_command(cursor, command, args):
         print()
         check_config(corpus, license)
 
-dispatch = dict(promote = promote_command,
-                demote = demote_command,
-                remove = remove_command,
-                secret = secret_command,
+def lbr_map_command(cursor, command, args):
+    '''List URN@LBR-IDs and Korp-ID mappings'''
+    cursor.execute('''
+    select lbr_id, corpus from auth_lbr_map
+    order by lbr_id''')
+    for lbr_id, corpus in cursor.fetchall():
+        print ("%s\t%s" % (lbr_id, corpus))
+
+dispatch = dict(remove = remove_command,
                 allow = allow_command,
                 deny = deny_command,
                 PUB = license_command,
@@ -165,6 +151,9 @@ dispatch = dict(promote = promote_command,
                 RES = license_command,
                 persons = persons_command,
                 corpora = corpora_command,
+                lbr_register = lbr_register_command,
+                lbr_unregister = lbr_unregister_command,
+                lbr_map = lbr_map_command,
                 help = usage_command)
 
 def check_config(corpus, license):
