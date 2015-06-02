@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/local/bin/python
 # -*- mode: Python; -*-
 
 # A simple authentication and authorization database management tool
@@ -12,8 +12,8 @@ from __future__ import print_function
 import MySQLdb
 import sys, codecs, re
 
-DBUSER = 'korp'
-DBPASS = ''
+DBUSER = 'ling'
+DBPASS = 'PASSWORD_PLACEHOLDER'
 DBNAME = 'korp_auth'
 
 # For testing whether there is a compatible limited_access setting
