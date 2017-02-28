@@ -1,0 +1,88 @@
+#! /usr/bin/env python
+
+
+import sys
+import re
+import os
+
+from collections import defaultdict
+from tempfile import NamedTemporaryFile
+import subprocess as sp
+
+
+def process_log(stream):
+    tsv_fields = [
+        'start_date',
+        'start_time',
+        'end_date',
+        'end_time',
+        'elapsed_time',
+        'entry_script',
+        'pid',
+        'script',
+        'referer',
+        'ip',
+        'user-agent',
+        'command',
+        'params',
+        'hits',
+    ]
+    info = defaultdict(dict)
+
+    def print_tsv_line(outfile, pid):
+        outfile.write(
+            '\t'.join(info[pid].get(field, '') for field in tsv_fields) + '\n')
+
+    with NamedTemporaryFile(prefix='korplog2tsv_', delete=False) as outfile:
+        tmp_filename = outfile.name
+        for line in stream:
+            mo = re.match(
+                (r'\[(?P<script>\S+) (?P<pid>\d+) INFO @ (?P<date>[\d-]+)'
+                 r' (?P<time>[\d:,]+)\] (?P<key>.*?): (?P<value>.*)'),
+                line[:-1])
+            if mo:
+                fields = mo.groupdict()
+                pid = fields['pid']
+                key = fields['key']
+                if key == 'IP':
+                    # A previous timed-out request with the same pid that
+                    # has no "Elapsed" entry
+                    if pid in info:
+                        print_tsv_line(outfile, pid)
+                    info[pid] = {}
+                    info[pid]['pid'] = pid
+                    info[pid]['entry_script'] = fields['script']
+                    info[pid]['start_date'] = fields['date']
+                    info[pid]['start_time'] = fields['time']
+                elif key == 'Elapsed':
+                    info[pid]['end_date'] = fields['date']
+                    info[pid]['end_time'] = fields['time']
+                info[pid][key.lower()] = fields['value']
+                key = mo.group('key')
+                pid = mo.group('pid')
+                value = mo.group('value')
+                if key == 'Elapsed':
+                    print_tsv_line(outfile, pid)
+                    del info[pid]
+        # Timed-out requests with no "Elapsed" entries
+        for pid in info:
+            print_tsv_line(outfile, pid)
+    sys.stdout.write('\t'.join(tsv_fields) + '\n')
+    # Without flushing, the heading line would come after sort output.
+    sys.stdout.flush()
+    # Sort the entries by start date and time
+    sp.call(['sort', tmp_filename])
+    os.remove(tmp_filename)
+
+
+def main():
+    if len(sys.argv) > 1:
+        for fname in sys.argv[1:]:
+            with open(fname, 'r') as f:
+                process_log(f)
+    else:
+        process_log(sys.stdin)
+
+
+if __name__ == '__main__':
+    main()
