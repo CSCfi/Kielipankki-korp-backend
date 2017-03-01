@@ -5,8 +5,55 @@ import sys
 import re
 import csv
 
+# Requires Python 2.7
+from collections import OrderedDict
+
 
 class KorpLogCorporaGetter(object):
+
+    _corpus_groups_prefix = [
+        'ceal',
+        'erme',
+        'ethesis_en',
+        'ethesis_sv',
+        'europarl',
+        'fennougrica',
+        'fstc',
+        'ftc',
+        'jrc_acquis',
+        'kfspc',
+        'klk_fi',
+        'klk_sv',
+        'mulcold',
+        'opus',
+        'oracc',
+        'sust',
+        'topling',
+        'vks',
+    ]
+    _corpus_groups_other = [
+        ('dma', r'dma(_.*)?$'),
+        ('ethesis_fi', r'ethesis_((ma|diss)abs|ma_.*|phd_.*)'),
+        ('firulex', r'legal_.*'),
+        ('ftb3', r'ftb3.*'),
+        ('hcs2', r'hcs.*|swahili_sample'),
+        ('kotus_lakidir', r'(kotus_lakidir|ns_saadokset)'),
+        ('kotus_presidentti', r'(kotus_)?ns_presidentti_.*'),
+        ('kotus_sananparret', r'kotus_(sananparret|sp)$'),
+        ('la_murre', r'(lam|la_murre)_.*'),
+        ('las2', r'las2.*'),
+        ('lehdet', r'(tiede)?lehdet_.*'),
+        ('parfin', r'parfin(_.*)?'),
+        ('parrus', r'parrus(_.*)?'),
+        ('reittidemo', r'(reittidemo|metsatalo)$'),
+        ('scotscorr', r'scots_.*'),
+        ('s24', r's24.*'),
+        ('skk', r'skk_.*|kotus_klassikot'),
+        ('vnsk', r'vnsk?_.*'),
+    ]
+    _corpus_groups_re = (
+        [(group, re.compile(group + '_.*')) for group in _corpus_groups_prefix]
+        + [(group, re.compile(regex)) for group, regex in _corpus_groups_other])
 
     def __init__(self):
         # self.test_calc_corpus_hits()
@@ -21,6 +68,11 @@ class KorpLogCorporaGetter(object):
             self._process_log(sys.stdin)
 
     def _process_log(self, stream):
+
+        def format_result_corpora(corpus_hits):
+            return ','.join('{corp}:{hits:d}'.format(corp=corp, hits=hits)
+                            for corp, hits in corpus_hits)
+
         out_fields = [
             'start_date',
             'start_time',
@@ -28,10 +80,13 @@ class KorpLogCorporaGetter(object):
             'query_corpora',
             'result_count',
             'result_corpora',
+            'query_corpora_groups',
+            'result_corpora_groups',
         ]
         csv.field_size_limit(int(1e7))
         log_reader = csv.DictReader(stream, delimiter='\t',
                                     quoting=csv.QUOTE_NONE)
+        sys.stdout.write('\t'.join(out_fields) + '\n')
         out_writer = csv.DictWriter(sys.stdout, out_fields, delimiter='\t',
                                     quoting=csv.QUOTE_NONE,
                                     extrasaction='ignore')
@@ -42,19 +97,32 @@ class KorpLogCorporaGetter(object):
                     hits = eval(fields.get('hits', '{}'))
                 except SyntaxError:
                     continue
+                hits = dict((corp.lower(), hitcnt)
+                            for corp, hitcnt in hits.iteritems())
+                # The value of the parameter "corpus" can be either a
+                # string of corpora (separated by commas) or a list,
+                # which adds some extra work.
                 fields['query_corpora'] = params.get('corpus', '')
                 if not hits or not fields['query_corpora']:
                     continue
                 corpora = fields['query_corpora']
                 if not isinstance(fields['query_corpora'], list):
                     corpora = corpora.split(',')
+                corpora = [corp.lower() for corp in corpora]
                 try:
                     fields['start'] = int(params.get('start', 0))
                     fields['end'] = int(params.get('end', 24))
                 except (ValueError, TypeError):
                     continue
-                fields['result_corpora'] = self._calc_corpus_hits(
+                result_corpora_hits = self._calc_corpus_hits(
                     hits, corpora, fields['start'], fields['end'])
+                fields['query_corpora'] = ','.join(corpora)
+                fields['result_corpora'] = format_result_corpora(
+                    result_corpora_hits)
+                fields['query_corpora_groups'] = ','.join(
+                    self._group_corpora(corpora))
+                fields['result_corpora_groups'] = format_result_corpora(
+                    self._group_result_corpora(result_corpora_hits))
                 out_writer.writerow(fields)
 
     def _calc_corpus_hits(self, corpus_hits, corpora, start, end):
@@ -82,8 +150,7 @@ class KorpLogCorporaGetter(object):
             if cum_hits >= end:
                 break
             cum_hits_prev = cum_hits
-        return ','.join('{corp}:{hits:d}'.format(corp=corp, hits=hits)
-                        for corp, hits in result_hits)
+        return result_hits
 
     def test_calc_corpus_hits(self):
         hits = {'a': 1, 'b': 2, 'c': 0, 'd': 3, 'e': 5}
@@ -105,6 +172,38 @@ class KorpLogCorporaGetter(object):
         for start, end, result in start_end_result:
             assert calc_corpus_hits(hits, corpora, start, end) == result, (
                 repr((start, end, result)))
+
+    def _group_corpora(self, corpora):
+        groups = OrderedDict()
+        for corp in corpora:
+            grouped = False
+            for group, group_re in self._corpus_groups_re:
+                if group_re.match(corp):
+                    groups[group] = True
+                    grouped = True
+                    break
+            if not grouped:
+                groups[corp] = True
+        return groups.keys()
+
+    def _group_result_corpora(self, corpora):
+        groups = OrderedDict()
+
+        def add_to_group(group, corp, hits):
+            if group not in groups:
+                groups[group] = 0
+            groups[group] += hits
+
+        for corp, hits in corpora:
+            grouped = False
+            for group, group_re in self._corpus_groups_re:
+                if group_re.match(corp):
+                    add_to_group(group, corp, hits)
+                    grouped = True
+                    break
+            if not grouped:
+                add_to_group(corp, corp, hits)
+        return groups.items()
 
 
 def main():
