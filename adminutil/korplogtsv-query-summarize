@@ -1,0 +1,232 @@
+#! /usr/bin/env python
+
+
+# Compute monthly and yearly totals by corpus (and corpus group) of
+# - number of queries
+# - number of unique IPs for queries
+# - number of results
+# - number of unique IPs for results
+# - number of result hits.
+#
+# For each number, include total, those from Finnish IPs and those
+# from others.
+
+
+import sys
+import csv
+
+from collections import defaultdict
+
+
+class StatsCell(object):
+
+    def __init__(self, type_=int):
+        self._value = {'fi': type_(), 'other': type_()}
+
+    def add(self, value, country):
+        self._add('fi' if country == 'FI' else 'other', value)
+
+    def _add(self, key, value):
+        self._value[key] += value
+
+    def getvalue(self):
+        values = dict((key, self._getvalue(key))
+                      for key in self._value.iterkeys())
+        values['total'] = sum(val for val in values.itervalues())
+        return values
+
+    def _getvalue(self, key):
+        return self._value[key]
+
+    def __repr__(self):
+        return repr(self._value)
+
+
+class StatsCellUnique(StatsCell):
+
+    def __init__(self):
+        super(StatsCellUnique, self).__init__(set)
+
+    def _add(self, key, value):
+        self._value[key].add(value)
+
+    def _getvalue(self, key):
+        return len(self._value[key])
+
+
+class Table(list):
+
+    def add_row(self, row=None):
+        self.append(row or [])
+        self._format = dict((key, defaultdict(str))
+                            for key in ['row', 'col', 'cell'])
+
+    def add_cell(self, cell):
+        if len(self) == 0:
+            self.add_row()
+        self[-1].append(cell)
+        # print "add_cell", cell, self
+
+    def extend_row(self, new_cells):
+        if len(self) == 0:
+            self.add_row()
+        self[-1].extend(new_cells)
+        # print "extend_row", new_cells, self
+
+    def add_format(self, fmt, type_='cell', index=None):
+        if index is None:
+            if type_ == 'row':
+                index = len(self) - 1
+            elif type_ == 'cell':
+                index = (len(self) - 1, len(self[-1]) - 1)
+            else:
+                index = len(self[-1]) - 1
+        self._format[type_][index] = fmt
+
+    def format_tsv(self):
+        return '\n'.join('\t'.join(cell for cell in row) for row in self) + '\n'
+
+    def format_html(self):
+
+        def elem(name, val):
+            return '<{name}>{val}</{name}>'.format(name=name, val=val)
+
+        def elems(name, vals, joiner=''):
+            return joiner.join(elem(name, val) for val in vals)
+
+        return elem('table',
+                    elem('tr', elems('th', self[0])) + '\n'
+                    + elems('tr', (elem('th', row[0]) + elems('td', row[1:])
+                                   for row in self[1:]),
+                            '\n')
+                ) + '\n'
+
+
+class Stats(object):
+
+    def __init__(self, cell_class=StatsCell, corpus_field=None):
+        self._cells = defaultdict(lambda: defaultdict(cell_class))
+        self._corpus_field = corpus_field or 'query_corpora'
+        self._years = set()
+        self._months = defaultdict(set)
+        self._corpora = set()
+
+    def add(self, fields):
+        year = fields['start_date'][:4]
+        month = fields['start_date'][:7]
+        self._years.add(year)
+        self._months[year].add(month)
+        corpora = (set(self._get_corpora(fields[self._corpus_field]))
+                   | set(self._get_corpora(fields[self._corpus_field
+                                                  + '_groups'])))
+        self._corpora |= corpora
+        for corp in corpora:
+            self._cells[corp][year].add(self._get_addvalue(fields, corp),
+                                        fields['ip_country'])
+            self._cells[corp][month].add(self._get_addvalue(fields, corp),
+                                         fields['ip_country'])
+
+    def _get_corpora(self, corplist):
+        return [corp for corp_hits in corplist.split(',')
+                for corp0 in [corp_hits.split(':')[0]]
+                for corp in corp0.split('|')]
+
+    def _get_addvalue(self, fields, corpus):
+        return 1
+
+    def make_table(self):
+
+        def get_value(corp, date):
+            cell = self._cells[corp].get(date)
+            if cell:
+                values = cell.getvalue()
+                return ' '.join(str(values[key])
+                                for key in ['fi', 'other', 'total'])
+            else:
+                return ''
+
+        table = Table()
+        table.add_cell('')
+        for year in self._years:
+            table.extend_row(month for month in sorted(self._months[year]))
+            table.add_cell(year)
+        for corp in sorted(self._corpora):
+            table.add_row([corp])
+            for year in self._years:
+                for month in sorted(self._months[year]):
+                    table.add_cell(get_value(corp, month))
+                table.add_cell(get_value(corp, year))
+        return table
+
+    def __repr__(self):
+        return repr(self._cells)
+
+
+class StatsIP(Stats):
+
+    def __init__(self, corpus_field=None):
+        super(StatsIP, self).__init__(cell_class=StatsCellUnique,
+                                      corpus_field=corpus_field)
+
+    def _get_addvalue(self, fields, corpus):
+        return fields['ip']
+
+
+class StatsHits(Stats):
+
+    def __init__(self):
+        super(StatsHits, self).__init__(corpus_field='result_corpora')
+
+    def add(self, fields):
+        self._hit_counts = {}
+        super(StatsHits, self).add(fields)
+
+    def _get_corpora(self, corplist):
+        corpora_hits = [(corp, hits) for corp_hits in corplist.split(',')
+                        for corp0, hits in corp_hits.split(':')
+                        for corp in corp0.split('|')]
+        self._hit_counts.update(dict(corpora_hits))
+        return [corp for corp, _ in corpora_hits]
+
+    def _get_addvalue(self, fields, corpus):
+        return self._hit_counts.get(corpus, 0)
+
+
+class KorpLogSummarizer(object):
+
+    def __init__(self):
+        self._stats = {
+            'query': Stats(corpus_field='query_corpora'),
+            'query_ip': StatsIP(corpus_field='query_corpora'),
+            'results': Stats(corpus_field='result_corpora'),
+            'results_ip': StatsIP(corpus_field='result_corpora'),
+#            'result_hits': StatsHits(),
+        }
+
+    def process_log(self, args):
+        if len(args) > 0:
+            for fname in args:
+                with open(fname, 'r') as f:
+                    self._process_log(f)
+        else:
+            self._process_log(sys.stdin)
+
+    def _process_log(self, stream):
+        csv.field_size_limit(int(1e7))
+        log_reader = csv.DictReader(stream, delimiter='\t',
+                                    quoting=csv.QUOTE_NONE)
+        for fields in log_reader:
+            for stat in self._stats.itervalues():
+                stat.add(fields)
+        # print self._stats['query']
+        # print self._stats['query'].make_table().format_html()
+        print self._stats['results_ip'].make_table().format_html()
+            
+
+def main():
+    log_processor = KorpLogSummarizer()
+    log_processor.process_log(sys.argv[1:])
+
+
+if __name__ == '__main__':
+    main()
