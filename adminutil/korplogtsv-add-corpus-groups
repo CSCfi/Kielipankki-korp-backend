@@ -108,11 +108,15 @@ class KorpLogGroupAdder(object):
                 groups[group] = [[], 0]
             groups[group][1] += int(hits)
             if grouped:
-                groups[group][0].append(corp)
+                groups[group][0].append(corp_hits)
 
         def make_group_str(group, group_corpora):
             return group + ('[' + '+'.join(group_corpora) + ']' if group_corpora
                             else '')
+
+        def make_group_str_hits(group, group_corpora):
+            return make_group_str(group, [corp + '/' + str(hits)
+                                          for corp, hits in group_corpora])
 
         add_to_group_fn = (add_to_group_corp_hits if mode == 'hits'
                            else add_to_group_corp)
@@ -130,7 +134,7 @@ class KorpLogGroupAdder(object):
             return [make_group_str(group, group_corpora)
                     for group, group_corpora in groups.iteritems()]
         else:
-            return [(make_group_str(group, group_corpora), hits)
+            return [(make_group_str_hits(group, group_corpora), hits)
                     for group, group_corpora_hits in groups.iteritems()
                     for group_corpora, hits in [group_corpora_hits]]
 
