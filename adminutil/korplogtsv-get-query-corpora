@@ -80,8 +80,6 @@ class KorpLogCorporaGetter(object):
             'query_corpora',
             'result_count',
             'result_corpora',
-            'query_corpora_groups',
-            'result_corpora_groups',
         ]
         csv.field_size_limit(int(1e7))
         log_reader = csv.DictReader(stream, delimiter='\t',
@@ -119,10 +117,6 @@ class KorpLogCorporaGetter(object):
                 fields['query_corpora'] = ','.join(corpora)
                 fields['result_corpora'] = format_result_corpora(
                     result_corpora_hits)
-                fields['query_corpora_groups'] = ','.join(
-                    self._group_corpora(corpora))
-                fields['result_corpora_groups'] = format_result_corpora(
-                    self._group_result_corpora(result_corpora_hits))
                 out_writer.writerow(fields)
 
     def _calc_corpus_hits(self, corpus_hits, corpora, start, end):
@@ -172,38 +166,6 @@ class KorpLogCorporaGetter(object):
         for start, end, result in start_end_result:
             assert calc_corpus_hits(hits, corpora, start, end) == result, (
                 repr((start, end, result)))
-
-    def _group_corpora(self, corpora):
-        groups = OrderedDict()
-        for corp in corpora:
-            grouped = False
-            for group, group_re in self._corpus_groups_re:
-                if group_re.match(corp):
-                    groups[group] = True
-                    grouped = True
-                    break
-            if not grouped:
-                groups[corp] = True
-        return groups.keys()
-
-    def _group_result_corpora(self, corpora):
-        groups = OrderedDict()
-
-        def add_to_group(group, corp, hits):
-            if group not in groups:
-                groups[group] = 0
-            groups[group] += hits
-
-        for corp, hits in corpora:
-            grouped = False
-            for group, group_re in self._corpus_groups_re:
-                if group_re.match(corp):
-                    add_to_group(group, corp, hits)
-                    grouped = True
-                    break
-            if not grouped:
-                add_to_group(corp, corp, hits)
-        return groups.items()
 
 
 def main():

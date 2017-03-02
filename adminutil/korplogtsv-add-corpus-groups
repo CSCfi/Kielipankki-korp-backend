@@ -1,0 +1,144 @@
+#! /usr/bin/env python
+
+
+import sys
+import re
+import csv
+
+# Requires Python 2.7
+from collections import OrderedDict
+
+
+class KorpLogGroupAdder(object):
+
+    _corpus_groups_prefix = [
+        'ceal',
+        'erme',
+        'ethesis_en',
+        'ethesis_sv',
+        'europarl',
+        'fennougrica',
+        'fstc',
+        'ftc',
+        'jrc_acquis',
+        'kfspc',
+        'klk_fi',
+        'klk_sv',
+        'mulcold',
+        'opus',
+        'oracc',
+        'sust',
+        'topling',
+        'vks',
+    ]
+    _corpus_groups_other = [
+        ('dma', r'dma(_.*)?$'),
+        ('ethesis_fi', r'ethesis_((ma|diss)abs|ma_.*|phd_.*)'),
+        ('firulex', r'legal_.*'),
+        ('ftb3', r'ftb3.*'),
+        ('hcs2', r'hcs.*|swahili_sample'),
+        ('kotus_lakidir', r'(kotus_lakidir|ns_saadokset)'),
+        ('kotus_presidentti', r'(kotus_)?ns_presidentti_.*'),
+        ('kotus_sananparret', r'kotus_(sananparret|sp)$'),
+        ('la_murre', r'(lam|la_murre)_.*'),
+        ('las2', r'las2.*'),
+        ('lehdet', r'(tiede)?lehdet_.*'),
+        ('parfin', r'parfin(_.*)?'),
+        ('parrus', r'parrus(_.*)?'),
+        ('reittidemo', r'(reittidemo|metsatalo)$'),
+        ('scotscorr', r'scots_.*'),
+        ('s24', r's24.*'),
+        ('skk', r'skk_.*|kotus_klassikot'),
+        ('vnsk', r'vnsk?_.*'),
+    ]
+    _corpus_groups_re = (
+        [(group, re.compile(group + '_.*')) for group in _corpus_groups_prefix]
+        + [(group, re.compile(regex)) for group, regex in _corpus_groups_other])
+
+    def process_log(self, args):
+        if len(args) > 0:
+            for fname in args:
+                with open(fname, 'r') as f:
+                    self._process_log(f)
+        else:
+            self._process_log(sys.stdin)
+
+    def _process_log(self, stream):
+
+        def format_result_corpora(corpus_hits):
+            return ','.join('{corp}:{hits:d}'.format(corp=corp, hits=hits)
+                            for corp, hits in corpus_hits)
+
+        csv.field_size_limit(int(1e7))
+        log_reader = csv.DictReader(stream, delimiter='\t',
+                                    quoting=csv.QUOTE_NONE)
+        out_fields = log_reader.fieldnames + ['query_corpora_groups',
+                                              'result_corpora_groups']
+        sys.stdout.write('\t'.join(out_fields) + '\n')
+        out_writer = csv.DictWriter(sys.stdout, out_fields, delimiter='\t',
+                                    quoting=csv.QUOTE_NONE,
+                                    extrasaction='ignore')
+        for fields in log_reader:
+            query_corpora = fields['query_corpora'].split(',')
+            fields['query_corpora_groups'] = ','.join(
+                self._group_corpora(query_corpora, 'corp'))
+            result_corpora_list = fields['result_corpora'].split(',')
+            if result_corpora_list == ['']:
+                result_corpora = []
+            else:
+                result_corpora = [
+                    tuple(corp_hits.split(':'))
+                    for corp_hits in result_corpora_list]
+            fields['result_corpora_groups'] = format_result_corpora(
+                self._group_corpora(result_corpora, 'hits'))
+            out_writer.writerow(fields)
+
+    def _group_corpora(self, corpora, mode='corp'):
+        groups = OrderedDict()
+
+        def add_to_group_corp(group, corp, grouped=True):
+            if group not in groups:
+                groups[group] = []
+            if grouped:
+                groups[group].append(corp)
+
+        def add_to_group_corp_hits(group, corp_hits, grouped=True):
+            corp, hits = corp_hits
+            if group not in groups:
+                groups[group] = [[], 0]
+            groups[group][1] += int(hits)
+            if grouped:
+                groups[group][0].append(corp)
+
+        def make_group_str(group, group_corpora):
+            return group + ('[' + '+'.join(group_corpora) + ']' if group_corpora
+                            else '')
+
+        add_to_group_fn = (add_to_group_corp_hits if mode == 'hits'
+                           else add_to_group_corp)
+        for corp_item in corpora:
+            grouped = False
+            corp = corp_item[0] if isinstance(corp_item, tuple) else corp_item
+            for group, group_re in self._corpus_groups_re:
+                if group_re.match(corp):
+                    grouped = True
+                    add_to_group_fn(group, corp_item)
+                    break
+            if not grouped:
+                add_to_group_fn(corp, corp_item, grouped=False)
+        if mode == 'corp':
+            return [make_group_str(group, group_corpora)
+                    for group, group_corpora in groups.iteritems()]
+        else:
+            return [(make_group_str(group, group_corpora), hits)
+                    for group, group_corpora_hits in groups.iteritems()
+                    for group_corpora, hits in [group_corpora_hits]]
+
+
+def main():
+    log_processor = KorpLogGroupAdder()
+    log_processor.process_log(sys.argv[1:])
+
+
+if __name__ == '__main__':
+    main()
