@@ -111,10 +111,18 @@ class Stats(object):
         self._years = set()
         self._months = defaultdict(set)
         self._corpora = set()
+        self._hit_counts = {}
+        self._first_date = '9999-99-99'
+        self._last_date = '0000-00-00'
 
     def add(self, fields):
-        year = fields['start_date'][:4]
-        month = fields['start_date'][:7]
+        start_date = fields['start_date']
+        year = start_date[:4]
+        month = start_date[:7]
+        if start_date < self._first_date:
+            self._first_date = start_date
+        if start_date > self._last_date:
+            self._last_date = start_date
         self._years.add(year)
         self._months[year].add(month)
         corpora = set(self._get_corpora(fields[self._corpus_field + '_groups']))
@@ -128,21 +136,33 @@ class Stats(object):
     def _get_corpora(self, corplist):
         corpora = []
         for corp_group_hits in corplist.split(','):
-            corp_group = corp_group_hits.split(':')[0]
+            corp_group, _, group_hits = corp_group_hits.partition(':')
+            if corp_group == '':
+                continue
             if '[' in corp_group:
                 corp_group = corp_group.rstrip(']')
                 group, group_corp = corp_group.split('[')
                 corpora.append('*' + group)
-                corpora.extend(group + ':' + corp
-                               for corp in re.split(r'[+|]', group_corp))
+                for corp_maybe_hits in group_corp.split('+'):
+                    corp, _, corp_hits = corp_maybe_hits.partition('/')
+                    base_corp = corp.split('|')
+                    corpora.extend(group + ':' + corp0 for corp0 in base_corp)
+                    if corp_hits:
+                        self._hit_counts.update(
+                            dict((group + ':' + corp0, int(corp_hits))
+                                 for corp0 in base_corp))
+                if group_hits:
+                    self._hit_counts['*' + group] = int(group_hits)
             else:
                 corpora.extend(corp_group.split('|'))
+            if group_hits:
+                self._hit_counts[corp_group] = int(group_hits)
         return corpora
 
     def _get_addvalue(self, fields, corpus):
         return 1
 
-    def make_table(self):
+    def make_table(self, groups_only=False):
 
         def get_value(corp, date):
             cell = self._cells[corp].get(date)
@@ -165,11 +185,16 @@ class Stats(object):
                 for col in [mon for mon in sorted(self._months[year])] + [year]]
         cols.append('Total')
         table.extend_row(cols)
-        for corp in sorted(self._corpora, key=corpus_key) + ['Total']:
+        corpora = ([corp for corp in self._corpora if ':' not in corp]
+                   if groups_only else self._corpora)
+        for corp in sorted(corpora, key=corpus_key) + ['Total']:
             table.add_row([make_corpus_label(corp)])
             for col in cols:
                 table.add_cell(get_value(corp, col))
         return table
+
+    def get_date_range(self):
+        return self._first_date + '/' + self._last_date
 
     def __repr__(self):
         return repr(self._cells)
@@ -194,13 +219,6 @@ class StatsHits(Stats):
         self._hit_counts = {}
         super(StatsHits, self).add(fields)
 
-    def _get_corpora(self, corplist):
-        corpora_hits = [(corp, hits) for corp_hits in corplist.split(',')
-                        for corp0, hits in corp_hits.split(':')
-                        for corp in corp0.split('|')]
-        self._hit_counts.update(dict(corpora_hits))
-        return [corp for corp, _ in corpora_hits]
-
     def _get_addvalue(self, fields, corpus):
         return self._hit_counts.get(corpus, 0)
 
@@ -208,13 +226,18 @@ class StatsHits(Stats):
 class KorpLogSummarizer(object):
 
     def __init__(self):
-        self._stats = {
-            'query': Stats(corpus_field='query_corpora'),
-            'query_ip': StatsIP(corpus_field='query_corpora'),
-            'results': Stats(corpus_field='result_corpora'),
-            'results_ip': StatsIP(corpus_field='result_corpora'),
-#            'result_hits': StatsHits(),
-        }
+        self._stats = [
+            ('query', 'Number of queries',
+             Stats(corpus_field='query_corpora')),
+            ('query_ip', 'Number of unique IPs for queries',
+             StatsIP(corpus_field='query_corpora')),
+            ('results', 'Number of results',
+             Stats(corpus_field='result_corpora')),
+            ('results_ip', 'Number of unique IPs for results',
+             StatsIP(corpus_field='result_corpora')),
+            ('result_hits', 'Number of result hits',
+             StatsHits())
+        ]
 
     def process_log(self, args):
         if len(args) > 0:
@@ -223,18 +246,43 @@ class KorpLogSummarizer(object):
                     self._process_log(f)
         else:
             self._process_log(sys.stdin)
+        self._output_html()
 
     def _process_log(self, stream):
         csv.field_size_limit(int(1e7))
         log_reader = csv.DictReader(stream, delimiter='\t',
                                     quoting=csv.QUOTE_NONE)
         for fields in log_reader:
-            for stat in self._stats.itervalues():
+            for _, _, stat in self._stats:
                 stat.add(fields)
-        # print self._stats['query']
-        # print self._stats['query'].make_table().format_html()
-        print self._stats['query_ip'].make_table().format_html()
-            
+
+    def _output_html(self):
+        sys.stdout.write("""<!doctype html>
+<html>
+<head>
+<style>
+th {text-align: left; font-weight: normal;}
+th.colhead {font-weight: bold;}
+tr.group th {font-weight: bold;}
+td {text-align: right;}
+td.total {font-weight: bold;}
+</style>
+</head>
+<body>
+""")
+        sys.stdout.write('<h1>Korp usage statistics summary for '
+                         + self._stats[0][2].get_date_range() + '</h1>\n')
+        for title, groups_only in [('Corpora', True), ('Subcorpora', False)]:
+            sys.stdout.write('<h2>' + title + '</h2>\n')
+            for stat_name, stat_title, stat in self._stats:
+                sys.stdout.write('<h3>' + stat_title + '</h3>\n')
+                sys.stdout.write(stat.make_table(groups_only).format_html()
+                                 + '\n')
+        sys.stdout.write("""
+</body>
+</html>
+""")
+
 
 def main():
     log_processor = KorpLogSummarizer()
