@@ -61,6 +61,7 @@ class Table(list):
         self.append(row or [])
         self._format = dict((key, defaultdict(str))
                             for key in ['row', 'col', 'cell'])
+        self._formats_propagated = True
 
     def add_cell(self, cell):
         if len(self) == 0:
@@ -83,24 +84,40 @@ class Table(list):
             else:
                 index = len(self[-1]) - 1
         self._format[type_][index] = fmt
+        if type_ != 'cell':
+            self._formats_propagated = False
 
     def format_tsv(self):
         return '\n'.join('\t'.join(cell for cell in row) for row in self) + '\n'
 
     def format_html(self):
 
-        def elem(name, val):
-            return '<{name}>{val}</{name}>'.format(name=name, val=val)
+        def elem(name, val, cls=None):
+            return '<{name}{classattr}>{val}</{name}>'.format(
+                name=name, val=val,
+                classattr=(' class="' + cls + '"' if cls else ''))
 
         def elems(name, vals, joiner=''):
             return joiner.join(elem(name, val) for val in vals)
 
+        self._propagate_formats()
         return elem('table',
                     elem('tr', elems('th', self[0])) + '\n'
                     + elems('tr', (elem('th', row[0]) + elems('td', row[1:])
                                    for row in self[1:]),
                             '\n')
                 ) + '\n'
+
+    def _propagate_formats(self):
+        if self._formats_propagated:
+            return
+        for row, fmt in self._format['row'].iteritems():
+            for col in xrange(len(self[row])):
+                self._format['cell'].setdefault((row, col), fmt)
+        for col, fmt in self._format['col'].iteritems():
+            for row in self:
+                self._format['cell'].setdefault((row, col), fmt)
+        self._formats_propagated = True
 
 
 class Stats(object):
@@ -162,7 +179,13 @@ class Stats(object):
     def _get_addvalue(self, fields, corpus):
         return 1
 
-    def make_table(self, groups_only=False):
+    def make_table(self, groups_only=False, totals_first=False):
+
+        def add_totals_label(lst, label):
+            if totals_first:
+                lst[0:0] = [label]
+            else:
+                lst.append(label)
 
         def get_values(corp, date):
             cell = self._cells[corp].get(date)
@@ -173,6 +196,9 @@ class Stats(object):
                 return ['', '', '']
 
         def corpus_key(corp):
+            return corp.lstrip('*') + '\x7f' if corp.startswith('*') else corp
+
+        def corpus_key_totals_first(corp):
             return corp.lstrip('*')
 
         def make_corpus_label(corp):
@@ -182,14 +208,24 @@ class Stats(object):
         table.add_cell('')
         cols = [col for year in self._years
                 for col in [mon for mon in sorted(self._months[year])] + [year]]
-        cols.append('Total')
+        cols = []
+        for year in self._years:
+            cols_year = sorted(self._months[year])
+            if len(self._years) > 1 or len(self._months[year]) > 1:
+                add_totals_label(cols_year, year)
+            cols.extend(cols_year)
+        if len(self._years) > 1:
+            add_totals_label(cols, 'Total')
         for col in cols:
             table.extend_row([col, '', ''])
         table.add_row([''])
         table.extend_row(['Fi', 'Oth', 'Tot'] * len(cols))
         corpora = ([corp for corp in self._corpora if ':' not in corp]
-                   if groups_only else self._corpora)
-        for corp in sorted(corpora, key=corpus_key) + ['Total']:
+                   if groups_only else list(self._corpora))
+        corpora.sort(key=(corpus_key_totals_first if totals_first
+                          else corpus_key))
+        add_totals_label(corpora, 'Total')
+        for corp in corpora:
             table.add_row([make_corpus_label(corp)])
             for col in cols:
                 table.extend_row(get_values(corp, col))
@@ -278,8 +314,10 @@ td.total {font-weight: bold;}
             sys.stdout.write('<h2>' + title + '</h2>\n')
             for stat_name, stat_title, stat in self._stats:
                 sys.stdout.write('<h3>' + stat_title + '</h3>\n')
-                sys.stdout.write(stat.make_table(groups_only).format_html()
-                                 + '\n')
+                sys.stdout.write(
+                    stat.make_table(groups_only=groups_only, totals_first=True)
+                    .format_html()
+                    + '\n')
         sys.stdout.write("""
 </body>
 </html>
