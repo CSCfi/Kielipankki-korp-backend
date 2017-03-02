@@ -164,14 +164,13 @@ class Stats(object):
 
     def make_table(self, groups_only=False):
 
-        def get_value(corp, date):
+        def get_values(corp, date):
             cell = self._cells[corp].get(date)
             if cell:
                 values = cell.getvalue()
-                return ' '.join(str(values[key])
-                                for key in ['fi', 'other', 'total'])
+                return [str(values[key]) for key in ['fi', 'other', 'total']]
             else:
-                return ''
+                return ['', '', '']
 
         def corpus_key(corp):
             return corp.lstrip('*')
@@ -184,13 +183,16 @@ class Stats(object):
         cols = [col for year in self._years
                 for col in [mon for mon in sorted(self._months[year])] + [year]]
         cols.append('Total')
-        table.extend_row(cols)
+        for col in cols:
+            table.extend_row([col, '', ''])
+        table.add_row([''])
+        table.extend_row(['Fi', 'Oth', 'Tot'] * len(cols))
         corpora = ([corp for corp in self._corpora if ':' not in corp]
                    if groups_only else self._corpora)
         for corp in sorted(corpora, key=corpus_key) + ['Total']:
             table.add_row([make_corpus_label(corp)])
             for col in cols:
-                table.add_cell(get_value(corp, col))
+                table.extend_row(get_values(corp, col))
         return table
 
     def get_date_range(self):
