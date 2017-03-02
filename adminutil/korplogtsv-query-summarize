@@ -14,6 +14,7 @@
 
 import sys
 import csv
+import re
 
 from collections import defaultdict
 
@@ -116,20 +117,27 @@ class Stats(object):
         month = fields['start_date'][:7]
         self._years.add(year)
         self._months[year].add(month)
-        corpora = (set(self._get_corpora(fields[self._corpus_field]))
-                   | set(self._get_corpora(fields[self._corpus_field
-                                                  + '_groups'])))
+        corpora = set(self._get_corpora(fields[self._corpus_field + '_groups']))
         self._corpora |= corpora
         for corp in corpora:
-            self._cells[corp][year].add(self._get_addvalue(fields, corp),
-                                        fields['ip_country'])
-            self._cells[corp][month].add(self._get_addvalue(fields, corp),
-                                         fields['ip_country'])
+            for row in [corp, 'Total']:
+                for col in [year, month, 'Total']:
+                    self._cells[row][col].add(self._get_addvalue(fields, corp),
+                                              fields['ip_country'])
 
     def _get_corpora(self, corplist):
-        return [corp for corp_hits in corplist.split(',')
-                for corp0 in [corp_hits.split(':')[0]]
-                for corp in corp0.split('|')]
+        corpora = []
+        for corp_group_hits in corplist.split(','):
+            corp_group = corp_group_hits.split(':')[0]
+            if '[' in corp_group:
+                corp_group = corp_group.rstrip(']')
+                group, group_corp = corp_group.split('[')
+                corpora.append('*' + group)
+                corpora.extend(group + ':' + corp
+                               for corp in re.split(r'[+|]', group_corp))
+            else:
+                corpora.extend(corp_group.split('|'))
+        return corpora
 
     def _get_addvalue(self, fields, corpus):
         return 1
@@ -145,17 +153,22 @@ class Stats(object):
             else:
                 return ''
 
+        def corpus_key(corp):
+            return corp.lstrip('*')
+
+        def make_corpus_label(corp):
+            return re.sub(r'.*:', ' - ', corp)
+
         table = Table()
         table.add_cell('')
-        for year in self._years:
-            table.extend_row(month for month in sorted(self._months[year]))
-            table.add_cell(year)
-        for corp in sorted(self._corpora):
-            table.add_row([corp])
-            for year in self._years:
-                for month in sorted(self._months[year]):
-                    table.add_cell(get_value(corp, month))
-                table.add_cell(get_value(corp, year))
+        cols = [col for year in self._years
+                for col in [mon for mon in sorted(self._months[year])] + [year]]
+        cols.append('Total')
+        table.extend_row(cols)
+        for corp in sorted(self._corpora, key=corpus_key) + ['Total']:
+            table.add_row([make_corpus_label(corp)])
+            for col in cols:
+                table.add_cell(get_value(corp, col))
         return table
 
     def __repr__(self):
@@ -220,7 +233,7 @@ class KorpLogSummarizer(object):
                 stat.add(fields)
         # print self._stats['query']
         # print self._stats['query'].make_table().format_html()
-        print self._stats['results_ip'].make_table().format_html()
+        print self._stats['query_ip'].make_table().format_html()
             
 
 def main():
