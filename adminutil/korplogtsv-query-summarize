@@ -173,15 +173,55 @@ class Table(list):
 
 class Stats(object):
 
-    def __init__(self, cell_class=StatsCell, corpus_field=None):
-        self._cells = defaultdict(lambda: defaultdict(cell_class))
-        self._corpus_field = corpus_field or 'query_corpora'
+    class Stat(object):
+
+        def __init__(self, stats_spec, get_addvalue_fn_map):
+            self._spec = stats_spec
+            cell_class = (
+                StatsCellUnique if stats_spec.get('type') == 'ip_counter'
+                else StatsCell)
+            self._cells = defaultdict(lambda: defaultdict(cell_class))
+            self._corpus_field = (stats_spec.get('corpus_field')
+                                  or 'query_corpora')
+            self._get_addvalue = get_addvalue_fn_map[
+                stats_spec.get('type') or 'counter']
+
+        def add(self, row, col, fields, corpus):
+            self._cells[row][col].add(self._get_addvalue(fields, corpus),
+                                      fields['ip_country'])
+
+        def get(self, row, col):
+            return self._cells.get(row, {}).get(col)
+
+        def get_corpus_field(self, fields):
+            return fields[self._corpus_field + '_groups']
+
+    def __init__(self, stats_specs):
+        get_addvalue_fn_map = {
+            'counter': self._get_addvalue_counter,
+            'ip_counter': self._get_addvalue_ip_counter,
+            'hit_summer': self._get_addvalue_hit_summer,
+        }
+        self._stats = [self.Stat(stats_spec, get_addvalue_fn_map)
+                       for stats_spec in stats_specs]
+        self._statsdict = dict(
+            (stats_specs[statnum]['name'], self._stats[statnum])
+            for statnum, stat in enumerate(self._stats))
         self._years = set()
         self._months = defaultdict(set)
         self._corpora = set()
         self._hit_counts = {}
         self._first_date = '9999-99-99'
         self._last_date = '0000-00-00'
+
+    def _get_addvalue_counter(self, fields, corpus):
+        return 1
+
+    def _get_addvalue_ip_counter(self, fields, corpus):
+        return fields['ip']
+
+    def _get_addvalue_hit_summer(self, fields, corpus):
+        return self._hit_counts.get(corpus, 0)
 
     def add(self, fields):
         start_date = fields['start_date']
@@ -193,13 +233,14 @@ class Stats(object):
             self._last_date = start_date
         self._years.add(year)
         self._months[year].add(month)
-        corpora = set(self._get_corpora(fields[self._corpus_field + '_groups']))
-        self._corpora |= corpora
-        for corp in corpora:
-            for row in [corp, 'Total']:
-                for col in [year, month, 'Total']:
-                    self._cells[row][col].add(self._get_addvalue(fields, corp),
-                                              fields['ip_country'])
+        self._hit_counts = {}
+        for stat in self._stats:
+            corpora = set(self._get_corpora(stat.get_corpus_field(fields)))
+            self._corpora |= corpora
+            for corp in corpora:
+                for row in [corp, 'Total']:
+                    for col in [year, month, 'Total']:
+                        stat.add(row, col, fields, corp)
 
     def _get_corpora(self, corplist):
         corpora = []
@@ -227,10 +268,10 @@ class Stats(object):
                 self._hit_counts[corp_group] = int(group_hits)
         return corpora
 
-    def _get_addvalue(self, fields, corpus):
-        return 1
-
-    def make_table(self, groups_only=False, totals_first=False):
+    def make_table(self, stat_name, groups_only=False, totals_first=False):
+        stat = self._statsdict.get(stat_name)
+        if stat is None:
+            return ''
 
         def add_totals_label(lst, label):
             if totals_first:
@@ -239,7 +280,7 @@ class Stats(object):
                 lst.append(label)
 
         def get_values(corp, date):
-            cell = self._cells[corp].get(date)
+            cell = stat.get(corp, date)
             if cell:
                 values = cell.getvalue()
                 return [str(values[key]) for key in ['fi', 'other', 'total']]
@@ -294,44 +335,32 @@ class Stats(object):
         return repr(self._cells)
 
 
-class StatsIP(Stats):
-
-    def __init__(self, corpus_field=None):
-        super(StatsIP, self).__init__(cell_class=StatsCellUnique,
-                                      corpus_field=corpus_field)
-
-    def _get_addvalue(self, fields, corpus):
-        return fields['ip']
-
-
-class StatsHits(Stats):
-
-    def __init__(self):
-        super(StatsHits, self).__init__(corpus_field='result_corpora')
-
-    def add(self, fields):
-        self._hit_counts = {}
-        super(StatsHits, self).add(fields)
-
-    def _get_addvalue(self, fields, corpus):
-        return self._hit_counts.get(corpus, 0)
-
-
 class KorpLogSummarizer(object):
 
+    _stats_base = [
+        ('query', 'Number of queries', 'counter', 'query_corpora'),
+        ('query_ip', 'Number of unique IPs for queries', 'ip_counter',
+         'query_corpora'),
+        ('results', 'Number of results', 'counter', 'result_corpora'),
+        ('results_ip', 'Number of unique IPs for results', 'ip_counter',
+         'result_corpora'),
+        ('result_hits', 'Number of result hits', 'hit_summer',
+         'result_corpora'),
+    ]
+    _stats_spec_keys = ['name', 'title', 'type', 'corpus_field']
+    _stats_specs = []
+    for stats_base_spec in _stats_base:
+        _stats_specs.append(dict(name=stats_base_spec[0],
+                                 title=stats_base_spec[1],
+                                 type=stats_base_spec[2],
+                                 corpus_field=stats_base_spec[3]))
+    # Why doesn't the following work?
+    # _stats_specs = [dict((key, stats_base_spec[keynum])
+    #                      for keynum, key in enumerate(_stats_spec_keys))
+    #                 for stats_base_spec in _stats_base]
+
     def __init__(self):
-        self._stats = [
-            ('query', 'Number of queries',
-             Stats(corpus_field='query_corpora')),
-            ('query_ip', 'Number of unique IPs for queries',
-             StatsIP(corpus_field='query_corpora')),
-            ('results', 'Number of results',
-             Stats(corpus_field='result_corpora')),
-            ('results_ip', 'Number of unique IPs for results',
-             StatsIP(corpus_field='result_corpora')),
-            ('result_hits', 'Number of result hits',
-             StatsHits())
-        ]
+        self._stats = Stats(self._stats_specs)
 
     def process_log(self, args):
         if len(args) > 0:
@@ -347,8 +376,7 @@ class KorpLogSummarizer(object):
         log_reader = csv.DictReader(stream, delimiter='\t',
                                     quoting=csv.QUOTE_NONE)
         for fields in log_reader:
-            for _, _, stat in self._stats:
-                stat.add(fields)
+            self._stats.add(fields)
 
     def _output_html(self):
         sys.stdout.write("""<!doctype html>
@@ -366,13 +394,15 @@ td.total {font-weight: bold;}
 <body>
 """)
         sys.stdout.write('<h1>Korp usage statistics summary for '
-                         + self._stats[0][2].get_date_range() + '</h1>\n')
+                         + self._stats.get_date_range() + '</h1>\n')
         for title, groups_only in [('Corpora', True), ('Subcorpora', False)]:
             sys.stdout.write('<h2>' + title + '</h2>\n')
-            for stat_name, stat_title, stat in self._stats:
-                sys.stdout.write('<h3>' + stat_title + '</h3>\n')
+            for stats_spec in self._stats_specs:
+                sys.stdout.write('<h3>' + stats_spec['title'] + '</h3>\n')
                 sys.stdout.write(
-                    stat.make_table(groups_only=groups_only, totals_first=True)
+                    self._stats.make_table(
+                        stats_spec['name'], groups_only=groups_only,
+                        totals_first=True)
                     .format_html()
                     + '\n')
         sys.stdout.write("""
