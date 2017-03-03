@@ -240,13 +240,19 @@ class Stats(object):
         self._years.add(year)
         self._months[year].add(month)
         self._hit_counts = {}
+        columns = [year, month, 'Total']
         for stat in self._stats:
             corpora = set(self._get_corpora(stat.get_corpus_field(fields)))
             self._corpora |= corpora
             for corp in corpora:
-                for row in [corp, 'Total']:
-                    for col in [year, month, 'Total']:
-                        stat.add(row, col, fields, corp)
+                for col in columns:
+                    stat.add(corp, col, fields, corp)
+                    if (stat.get_attr('type') == 'hit_summer'
+                        and ':' not in corp):
+                        stat.add('Total', col, fields, corp)
+            if corpora and stat.get_attr('type') != 'hit_summer':
+                for col in columns:
+                    stat.add('Total', col, fields, None)
 
     def _get_corpora(self, corplist):
         corpora = []
