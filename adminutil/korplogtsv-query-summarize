@@ -333,9 +333,13 @@ class Stats(object):
         cell = stat.get(corp, date)
         if cell:
             values = cell.getvalue()
-            return [str(values[key]) for key in ['fi', 'other', 'total']]
+            return [self._format_int(values[key])
+                    for key in ['fi', 'other', 'total']]
         else:
             return ['', '', '']
+
+    def _format_int(self, val):
+        return '{0:,}'.format(val).replace(',', '&#8239;')
 
     def _add_totals_label(self, lst, label, totals_first=False):
         if totals_first:
