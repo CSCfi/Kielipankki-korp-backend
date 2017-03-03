@@ -475,16 +475,36 @@ td.total {
 </head>
 <body>
 """)
+        top_divs = [
+            ('Usage by top-level corpora', 'corpora', True),
+            ('Usage by corpora and subcorpora', 'subcorpora', False)
+        ]
         sys.stdout.write('<h1>Korp usage statistics for '
                          + self._stats.get_date_range() + '</h1>\n')
-        sys.stdout.write('<h2>Summary</h2>\n')
+        sys.stdout.write('<h2 id="contents">Contents</h2>\n')
+        sys.stdout.write('<ul>\n<li><a href="#summary">Summary</a></li>\n')
+        for title, top_id, _ in top_divs:
+            sys.stdout.write('<li><a href="#{top_id}">{title}</a>\n'.format(
+                top_id=top_id, title=title))
+            sys.stdout.write('<ul>')
+            for stats_spec in self._stats_specs:
+                sys.stdout.write(
+                    '<li><a href="#{top_id}_{id}">{title}</a></li>\n'
+                    .format(top_id=top_id, id=stats_spec['name'],
+                            title=stats_spec['title']))
+            sys.stdout.write('</ul>\n</li>\n')
+        sys.stdout.write('</ul>\n')
+        sys.stdout.write('<h2 id="summary">Summary</h2>\n')
         sys.stdout.write(self._stats.make_summary_table(totals_first=True)
                          .format_html() + '\n')
-        for title, groups_only in [('By top-level corpora', True),
-                                   ('By corpora and subcorpora', False)]:
-            sys.stdout.write('<h2>' + title + '</h2>\n')
+        for title, top_id, groups_only in top_divs:
+            sys.stdout.write(
+                '<h2 id="{id}">{title}</h2>\n'.format(id=top_id, title=title))
             for stats_spec in self._stats_specs:
-                sys.stdout.write('<h3>' + stats_spec['title'] + '</h3>\n')
+                sys.stdout.write(
+                    '<h3 id="{top_id}_{id}">{title}</h3>\n'.format(
+                        top_id=top_id, id=stats_spec['name'],
+                        title=stats_spec['title']))
                 sys.stdout.write(
                     self._stats.make_table(
                         stats_spec['name'], groups_only=groups_only,
