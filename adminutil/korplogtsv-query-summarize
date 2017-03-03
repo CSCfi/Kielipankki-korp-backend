@@ -324,7 +324,9 @@ class Stats(object):
 
     def _table_add_col_subheads(self, table, col_group_count):
         table.add_row([''], heading=True, fmt='colhead2')
-        table.extend_row(['Finland', 'Other', 'Total'] * col_group_count)
+        # TODO: Make the order depend on whether totals should be
+        # first or last
+        table.extend_row(['Total', 'Finland', 'Other'] * col_group_count)
 
     def _make_corpus_label(self, corp):
         return re.sub(r'.*:', ' - ', corp)
@@ -334,7 +336,7 @@ class Stats(object):
         if cell:
             values = cell.getvalue()
             return [self._format_int(values[key])
-                    for key in ['fi', 'other', 'total']]
+                    for key in ['total', 'fi', 'other']]
         else:
             return ['', '', '']
 
