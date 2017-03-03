@@ -280,12 +280,6 @@ class Stats(object):
         if stat is None:
             return ''
 
-        def add_totals_label(lst, label):
-            if totals_first:
-                lst[0:0] = [label]
-            else:
-                lst.append(label)
-
         def get_row_class(corp):
             return None if ':' in corp else 'group'
 
@@ -295,15 +289,14 @@ class Stats(object):
         for year in self._years:
             cols_year = sorted(self._months[year])
             if len(self._years) > 1 or len(self._months[year]) > 1:
-                add_totals_label(cols_year, year)
+                self._add_totals_label(cols_year, year, totals_first)
             cols.extend(cols_year)
         if len(self._years) > 1:
-            add_totals_label(cols, 'Total')
+            self._add_totals_label(cols, 'Total', totals_first)
         for col in cols:
             table.add_cell(col, colspan=3)
         self._table_add_col_subheads(table, len(cols))
-        corpora = self._get_corpus_list(groups_only, totals_first)
-        add_totals_label(corpora, 'Total')
+        corpora = self._make_corpus_list(groups_only, totals_first)
         for corp in corpora:
             if not include_empty_rows and not stat.has_row(corp):
                 continue
@@ -314,7 +307,7 @@ class Stats(object):
                                  fmt=('total' if corp == 'Total' else None))
         return table
 
-    def _get_corpus_list(self, groups_only=False, totals_first=False):
+    def _make_corpus_list(self, groups_only=False, totals_first=False):
 
         def corpus_key(corp):
             return corp.lstrip('*') + '\x7f' if corp.startswith('*') else corp
@@ -326,11 +319,12 @@ class Stats(object):
                    if groups_only else list(self._corpora))
         corpora.sort(key=(corpus_key_totals_first if totals_first
                           else corpus_key))
+        self._add_totals_label(corpora, 'Total', totals_first)
         return corpora
 
     def _table_add_col_subheads(self, table, col_group_count):
         table.add_row([''], heading=True, fmt='colhead2')
-        table.extend_row(['Fi', 'Oth', 'Tot'] * col_group_count)
+        table.extend_row(['Finland', 'Other', 'Total'] * col_group_count)
 
     def _make_corpus_label(self, corp):
         return re.sub(r'.*:', ' - ', corp)
@@ -343,13 +337,19 @@ class Stats(object):
         else:
             return ['', '', '']
 
+    def _add_totals_label(self, lst, label, totals_first=False):
+        if totals_first:
+            lst[0:0] = [label]
+        else:
+            lst.append(label)
+
     def make_summary_table(self, totals_first=False):
         table = Table()
         table.add_row([''], heading=True, fmt='colhead')
         for stat in self._stats:
             table.add_cell(stat.get_attr('title_short'), colspan=3)
         self._table_add_col_subheads(table, len(self._stats))
-        corpora = self._get_corpus_list(groups_only=True,
+        corpora = self._make_corpus_list(groups_only=True,
                                         totals_first=totals_first)
         for corp in corpora:
             table.add_row(fmt='group')
@@ -369,15 +369,18 @@ class Stats(object):
 class KorpLogSummarizer(object):
 
     _stats_base = [
-        ('query', 'Number of queries', 'Queries', 'counter', 'query_corpora'),
-        ('query_ip', 'Number of unique IPs for queries', 'IPs for queries',
-         'ip_counter', 'query_corpora'),
-        ('results', 'Number of results', 'Results', 'counter',
-         'result_corpora'),
-        ('results_ip', 'Number of unique IPs for results', 'IPs for results',
-         'ip_counter', 'result_corpora'),
-        ('result_hits', 'Number of result hits', 'Result hits', 'hit_summer',
-         'result_corpora'),
+        ('query', 'Number of KWIC queries to corpus', 'Queries', 'counter',
+         'query_corpora'),
+        ('query_ip', 'Number of unique IP addresses for KWIC queries to corpus',
+         'IPs for queries', 'ip_counter', 'query_corpora'),
+        ('results', 'Number of KWIC queries with results retrieved from corpus',
+         'Results', 'counter', 'result_corpora'),
+        ('results_ip',
+         ('Number of unique IP addresses for KWIC queries with results'
+          ' retrieved from corpus'),
+         'IPs for results', 'ip_counter', 'result_corpora'),
+        ('result_hits', 'Number of KWIC result hits retrieved from corpus',
+         'Result hits', 'hit_summer', 'result_corpora'),
     ]
     _stats_spec_keys = ['name', 'title', 'type', 'corpus_field']
     _stats_specs = []
@@ -412,16 +415,56 @@ class KorpLogSummarizer(object):
             self._stats.add(fields)
 
     def _output_html(self):
-        sys.stdout.write("""<!DOCTYPE html>
+        sys.stdout.write(
+"""<!DOCTYPE html>
 <html>
 <head>
 <style>
-th {text-align: left; font-weight: normal;}
-th.colhead {font-weight: bold;}
-th.colhead2 {font-style: italic;}
-tr.group th {font-weight: bold;}
-td {text-align: right;}
-td.total {font-weight: bold;}
+body {
+  font-family: Arial, Helvetical, sans-serif;
+}
+h1 {
+  margin-bottom: 1em;
+}
+h2 {
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+h3 {
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+table {
+  border-collapse: collapse;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+}
+th {
+  text-align: left;
+  font-weight: normal;
+}
+th.colhead {
+  font-weight: bold;
+  padding-right: 1.5em;
+}
+th.colhead2 {
+  font-style: italic;
+  border-bottom: 1px solid;
+  padding-bottom: 0.25em;
+}
+tr.group th {
+  font-weight: bold;
+}
+td:nth-of-type(3n) {
+  padding-right: 1.5em;
+}
+td {
+  text-align: right;
+}
+td.total {
+  font-weight: bold;
+  padding-left: 0.5em;
+}
 </style>
 </head>
 <body>
@@ -431,7 +474,8 @@ td.total {font-weight: bold;}
         sys.stdout.write('<h2>Summary</h2>\n')
         sys.stdout.write(self._stats.make_summary_table(totals_first=True)
                          .format_html() + '\n')
-        for title, groups_only in [('Corpora', True), ('Subcorpora', False)]:
+        for title, groups_only in [('By top-level corpora', True),
+                                   ('By corpora and subcorpora', False)]:
             sys.stdout.write('<h2>' + title + '</h2>\n')
             for stats_spec in self._stats_specs:
                 sys.stdout.write('<h3>' + stats_spec['title'] + '</h3>\n')
