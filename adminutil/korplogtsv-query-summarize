@@ -193,6 +193,9 @@ class Stats(object):
         def get(self, row, col):
             return self._cells.get(row, {}).get(col)
 
+        def has_row(self, row):
+            return row in self._cells
+
         def get_corpus_field(self, fields):
             return fields[self._corpus_field + '_groups']
 
@@ -268,7 +271,8 @@ class Stats(object):
                 self._hit_counts[corp_group] = int(group_hits)
         return corpora
 
-    def make_table(self, stat_name, groups_only=False, totals_first=False):
+    def make_table(self, stat_name, groups_only=False, totals_first=False,
+                   include_empty_rows=False):
         stat = self._statsdict.get(stat_name)
         if stat is None:
             return ''
@@ -301,8 +305,6 @@ class Stats(object):
 
         table = Table()
         table.add_row([''], heading=True, fmt='colhead')
-        cols = [col for year in self._years
-                for col in [mon for mon in sorted(self._months[year])] + [year]]
         cols = []
         for year in self._years:
             cols_year = sorted(self._months[year])
@@ -321,6 +323,8 @@ class Stats(object):
                           else corpus_key))
         add_totals_label(corpora, 'Total')
         for corp in corpora:
+            if not include_empty_rows and not stat.has_row(corp):
+                continue
             table.add_row(fmt=get_row_class(corp))
             table.add_cell(make_corpus_label(corp), heading=True)
             for col in cols:
