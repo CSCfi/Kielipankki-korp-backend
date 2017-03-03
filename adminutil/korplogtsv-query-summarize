@@ -57,22 +57,45 @@ class StatsCellUnique(StatsCell):
 
 class Table(list):
 
-    def add_row(self, row=None):
-        self.append(row or [])
+    def __init__(self, val=None):
+        super(Table, self).__init__(val or [])
         self._format = dict((key, defaultdict(str))
                             for key in ['row', 'col', 'cell'])
         self._formats_propagated = True
+        self._headings = dict((key, set()) for key in ['row', 'col', 'cell'])
+        self._cell_spans = dict()
 
-    def add_cell(self, cell):
+    def add_row(self, row=None, heading=False, fmt=None):
+        self.append(row or [])
+        if heading:
+            self._headings['row'].add(len(self) - 1)
+        if fmt:
+            self.add_format(fmt, 'row')
+
+    def add_cell(self, cell, heading=False, fmt=None, colspan=1):
         if len(self) == 0:
             self.add_row()
         self[-1].append(cell)
+        index = (len(self) - 1, len(self[-1]) - 1)
+        if heading:
+            self._headings['cell'].add(index)
+        if fmt:
+            self.add_format(fmt, 'cell')
+        if colspan != 1:
+            self._cell_spans[index] = (1, colspan)
         # print "add_cell", cell, self
 
-    def extend_row(self, new_cells):
+    def extend_row(self, new_cells, heading=False, fmt=None):
         if len(self) == 0:
             self.add_row()
         self[-1].extend(new_cells)
+        rownum = len(self) - 1
+        if heading:
+            self._headings['row'].add(rownum)
+        if fmt:
+            lastcol = len(self[-1]) - 1
+            for colnum0 in xrange(len(new_cells)):
+                self.add_format(fmt, 'cell', (rownum, lastcol - colnum0))
         # print "extend_row", new_cells, self
 
     def add_format(self, fmt, type_='cell', index=None):
@@ -87,26 +110,54 @@ class Table(list):
         if type_ != 'cell':
             self._formats_propagated = False
 
+    def get_cell_format(self, rownum, colnum):
+        return (self._format['cell'].get((rownum, colnum))
+                or self._format['col'].get(colnum)
+                or self._format['row'].get(rownum))
+
+    def is_heading_cell(self, rownum, colnum):
+        return (rownum in self._headings['row']
+                or colnum in self._headings['col']
+                or (rownum, colnum) in self._headings['cell'])
+
     def format_tsv(self):
         return '\n'.join('\t'.join(cell for cell in row) for row in self) + '\n'
 
     def format_html(self):
 
-        def elem(name, val, cls=None):
-            return '<{name}{classattr}>{val}</{name}>'.format(
-                name=name, val=val,
-                classattr=(' class="' + cls + '"' if cls else ''))
+        def elem(name, val, attrs=None):
+            return '<{name}{attrs}>{val}</{name}>'.format(
+                name=name, val=val, attrs=format_attrs(attrs))
+
+        def format_attrs(attrlist):
+            return ''.join(' {name}="{val}"'.format(name=name, val=val)
+                           for name, val in attrlist or [])
 
         def elems(name, vals, joiner=''):
             return joiner.join(elem(name, val) for val in vals)
 
         self._propagate_formats()
-        return elem('table',
-                    elem('tr', elems('th', self[0])) + '\n'
-                    + elems('tr', (elem('th', row[0]) + elems('td', row[1:])
-                                   for row in self[1:]),
-                            '\n')
-                ) + '\n'
+        html_rows = []
+        for rownum, row in enumerate(self):
+            html_cells = []
+            for colnum, cell in enumerate(row):
+                elem_name = (
+                    'th' if self.is_heading_cell(rownum, colnum) else 'td')
+                attrs = []
+                fmt = self.get_cell_format(rownum, colnum)
+                if fmt:
+                    attrs.append(('class', fmt))
+                spans = self._cell_spans.get((rownum, colnum))
+                if spans:
+                    for index, spantype in enumerate(['rowspan', 'colspan']):
+                        if spans[index] != 1:
+                            attrs.append((spantype, str(spans[index])))
+                html_cells.append(elem(elem_name, cell, attrs))
+            html_rows.append(
+                elem('tr', ''.join(html_cells),
+                     [('class', self._format['row'].get(rownum))])
+                + '\n')
+        return elem('table', ''.join(html_rows)) + '\n'
 
     def _propagate_formats(self):
         if self._formats_propagated:
@@ -204,8 +255,11 @@ class Stats(object):
         def make_corpus_label(corp):
             return re.sub(r'.*:', ' - ', corp)
 
+        def get_row_class(corp):
+            return None if ':' in corp else 'group'
+
         table = Table()
-        table.add_cell('')
+        table.add_row([''], heading=True, fmt='colhead')
         cols = [col for year in self._years
                 for col in [mon for mon in sorted(self._months[year])] + [year]]
         cols = []
@@ -217,8 +271,8 @@ class Stats(object):
         if len(self._years) > 1:
             add_totals_label(cols, 'Total')
         for col in cols:
-            table.extend_row([col, '', ''])
-        table.add_row([''])
+            table.add_cell(col, colspan=3)
+        table.add_row([''], heading=True, fmt='colhead2')
         table.extend_row(['Fi', 'Oth', 'Tot'] * len(cols))
         corpora = ([corp for corp in self._corpora if ':' not in corp]
                    if groups_only else list(self._corpora))
@@ -226,9 +280,11 @@ class Stats(object):
                           else corpus_key))
         add_totals_label(corpora, 'Total')
         for corp in corpora:
-            table.add_row([make_corpus_label(corp)])
+            table.add_row(fmt=get_row_class(corp))
+            table.add_cell(make_corpus_label(corp), heading=True)
             for col in cols:
-                table.extend_row(get_values(corp, col))
+                table.extend_row(get_values(corp, col),
+                                 fmt=('total' if corp == 'Total' else None))
         return table
 
     def get_date_range(self):
@@ -301,6 +357,7 @@ class KorpLogSummarizer(object):
 <style>
 th {text-align: left; font-weight: normal;}
 th.colhead {font-weight: bold;}
+th.colhead2 {font-style: italic;}
 tr.group th {font-weight: bold;}
 td {text-align: right;}
 td.total {font-weight: bold;}
