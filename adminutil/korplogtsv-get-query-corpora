@@ -11,50 +11,6 @@ from collections import OrderedDict
 
 class KorpLogCorporaGetter(object):
 
-    _corpus_groups_prefix = [
-        'ceal',
-        'erme',
-        'ethesis_en',
-        'ethesis_sv',
-        'europarl',
-        'fennougrica',
-        'fstc',
-        'ftc',
-        'jrc_acquis',
-        'kfspc',
-        'klk_fi',
-        'klk_sv',
-        'mulcold',
-        'opus',
-        'oracc',
-        'sust',
-        'topling',
-        'vks',
-    ]
-    _corpus_groups_other = [
-        ('dma', r'dma(_.*)?$'),
-        ('ethesis_fi', r'ethesis_((ma|diss)abs|ma_.*|phd_.*)'),
-        ('firulex', r'legal_.*'),
-        ('ftb3', r'ftb3.*'),
-        ('hcs2', r'hcs.*|swahili_sample'),
-        ('kotus_lakidir', r'(kotus_lakidir|ns_saadokset)'),
-        ('kotus_presidentti', r'(kotus_)?ns_presidentti_.*'),
-        ('kotus_sananparret', r'kotus_(sananparret|sp)$'),
-        ('la_murre', r'(lam|la_murre)_.*'),
-        ('las2', r'las2.*'),
-        ('lehdet', r'(tiede)?lehdet_.*'),
-        ('parfin', r'parfin(_.*)?'),
-        ('parrus', r'parrus(_.*)?'),
-        ('reittidemo', r'(reittidemo|metsatalo)$'),
-        ('scotscorr', r'scots_.*'),
-        ('s24', r's24.*'),
-        ('skk', r'skk_.*|kotus_klassikot'),
-        ('vnsk', r'vnsk?_.*'),
-    ]
-    _corpus_groups_re = (
-        [(group, re.compile(group + '_.*')) for group in _corpus_groups_prefix]
-        + [(group, re.compile(regex)) for group, regex in _corpus_groups_other])
-
     def __init__(self):
         # self.test_calc_corpus_hits()
         pass
