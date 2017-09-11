@@ -13,6 +13,8 @@ class KorpLogGroupAdder(object):
 
     _corpus_groups_prefix = [
         'ceal',
+        'coca',
+        'coha',
         'erme',
         'ethesis_en',
         'ethesis_sv',
@@ -20,6 +22,7 @@ class KorpLogGroupAdder(object):
         'fennougrica',
         'fstc',
         'ftc',
+        'glowbe',
         'jrc_acquis',
         'kfspc',
         'klk_fi',
@@ -27,7 +30,6 @@ class KorpLogGroupAdder(object):
         'mulcold',
         'opus',
         'oracc',
-        'sinebrychoff',
         'sust',
         'vks',
     ]
