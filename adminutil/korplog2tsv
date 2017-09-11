@@ -16,16 +16,21 @@ def process_log(stream):
         'start_time',
         'end_date',
         'end_time',
-        'elapsed_time',
+        'elapsed',
         'entry_script',
         'pid',
         'script',
         'referer',
         'ip',
+        'auth-domain',
+        'auth-user',
         'user-agent',
         'command',
         'params',
         'hits',
+        'content-length',
+        'cpu-load',
+        'cpu-times',
     ]
     info = defaultdict(dict)
 
@@ -61,10 +66,11 @@ def process_log(stream):
                 key = mo.group('key')
                 pid = mo.group('pid')
                 value = mo.group('value')
-                if key == 'Elapsed':
-                    print_tsv_line(outfile, pid)
-                    del info[pid]
-        # Timed-out requests with no "Elapsed" entries
+                # This no longer works, since in newer data Elapsed is
+                # not the last item
+                # if key == 'Elapsed':
+                #     print_tsv_line(outfile, pid)
+                #     del info[pid]
         for pid in info:
             print_tsv_line(outfile, pid)
     sys.stdout.write('\t'.join(tsv_fields) + '\n')
