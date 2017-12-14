@@ -27,6 +27,7 @@ def process_log(stream):
         'user-agent',
         'command',
         'params',
+        'loginfo',
         'hits',
         'content-length',
         'cpu-load',
