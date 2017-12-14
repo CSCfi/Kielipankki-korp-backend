@@ -63,9 +63,6 @@ def process_log(stream):
                     info[pid]['end_date'] = fields['date']
                     info[pid]['end_time'] = fields['time']
                 info[pid][key.lower()] = fields['value']
-                key = mo.group('key')
-                pid = mo.group('pid')
-                value = mo.group('value')
                 # This no longer works, since in newer data Elapsed is
                 # not the last item
                 # if key == 'Elapsed':
