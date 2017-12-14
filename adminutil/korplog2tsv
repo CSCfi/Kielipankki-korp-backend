@@ -48,8 +48,8 @@ def process_log(stream):
             if mo:
                 fields = mo.groupdict()
                 pid = fields['pid']
-                key = fields['key']
-                if key == 'IP':
+                key = fields['key'].lower()
+                if key == 'ip':
                     # A previous timed-out request with the same pid that
                     # has no "Elapsed" entry
                     if pid in info:
@@ -59,15 +59,18 @@ def process_log(stream):
                     info[pid]['entry_script'] = fields['script']
                     info[pid]['start_date'] = fields['date']
                     info[pid]['start_time'] = fields['time']
-                elif key == 'Elapsed':
+                elif key == 'elapsed':
                     info[pid]['end_date'] = fields['date']
                     info[pid]['end_time'] = fields['time']
-                info[pid][key.lower()] = fields['value']
-                # This no longer works, since in newer data Elapsed is
-                # not the last item
-                # if key == 'Elapsed':
-                #     print_tsv_line(outfile, pid)
-                #     del info[pid]
+                info[pid][key] = fields['value']
+                # For a while, CPU-times was the last log entry
+                # instead of Elapsed. Before that, there was no
+                # CPU-times entry, which makes it difficult to be sure
+                # when there are no more log entries for a process.
+                if ((key == 'elapsed' and 'cpu-times' in info[pid])
+                    or (key == 'cpu-times' and 'elapsed' in info[pid])):
+                    print_tsv_line(outfile, pid)
+                    del info[pid]
         for pid in info:
             print_tsv_line(outfile, pid)
     sys.stdout.write('\t'.join(tsv_fields) + '\n')
