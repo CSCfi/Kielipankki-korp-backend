@@ -9,9 +9,12 @@ from collections import defaultdict
 from tempfile import NamedTemporaryFile
 import subprocess as sp
 
+import korplog_util as util
+
 
 def process_log(stream):
     tsv_fields = [
+        'id',
         'start_date',
         'start_time',
         'end_date',
@@ -60,6 +63,7 @@ def process_log(stream):
                     info[pid]['entry_script'] = fields['script']
                     info[pid]['start_date'] = fields['date']
                     info[pid]['start_time'] = fields['time']
+                    info[pid]['id'] = util.make_logentry_id(info[pid])
                 elif key == 'elapsed':
                     info[pid]['end_date'] = fields['date']
                     info[pid]['end_time'] = fields['time']
