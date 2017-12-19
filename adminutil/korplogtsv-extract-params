@@ -59,7 +59,7 @@ class KorpLogParamsExtractor(object):
         in_fields = log_reader.fieldnames
         out_fields = ['id', 'param', 'value']
         out_writer = csv.DictWriter(
-            sys.stdout, out_fields, delimiter='\t',
+            sys.stdout, out_fields, delimiter='\t', lineterminator='\n',
             quoting=csv.QUOTE_NONE, doublequote=False, quotechar='',
             extrasaction='ignore')
         out_writer.writeheader()
