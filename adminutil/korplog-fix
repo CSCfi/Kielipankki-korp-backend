@@ -1,0 +1,61 @@
+#! /usr/bin/env python
+
+
+# korplog-fix
+#
+# Fix lines in Korp backend log files that have been split by another
+# log entry line written by another process.
+#
+# Usage: korplog-fix [<] korp-cgi.log > korp-cgi-fixed.log
+
+
+import sys
+import re
+
+
+class KorpLogFixer(object):
+
+    def __init__(self):
+        pass
+
+    def process_log(self, args):
+        if len(args) > 0:
+            for fname in args:
+                with open(fname, 'r') as f:
+                    self._process_log(f)
+        else:
+            self._process_log(sys.stdin)
+
+    def _process_log(self, stream):
+        entry_begin_re = r'\[[\w.]+ \d+ [A-Z]+ @ 20\d\d-\d\d-\d\d'
+        interrupted_re = '.' + entry_begin_re
+        interrupted_line = None
+        for line in stream:
+            mo = re.match(entry_begin_re, line)
+            if not mo:
+                if interrupted_line:
+                    line = interrupted_line + line
+                    interrupted_line = None
+                else:
+                    sys.stderr.write('Warning: line does not look like a log'
+                                     ' entry nor is a previous interrupted'
+                                     ' line found:\n' + line)
+            # NOTE: This assumes that a line may contain at most one
+            # beginning of a new log line. If there would be more, it
+            # would probably be impossible to append the continuation
+            # line(s) to the correct log lines.
+            mo = re.search(interrupted_re, line)
+            if mo:
+                start = mo.start() + 1
+                interrupted_line = line[:start]
+                line = line[start:]
+            sys.stdout.write(line)
+
+
+def main():
+    log_processor = KorpLogFixer()
+    log_processor.process_log(sys.argv[1:])
+
+
+if __name__ == '__main__':
+    main()
