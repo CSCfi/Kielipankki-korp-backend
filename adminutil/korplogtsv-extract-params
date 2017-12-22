@@ -16,6 +16,7 @@
 import sys
 import csv
 import codecs
+import re
 
 import korplog_util as util
 
@@ -38,19 +39,23 @@ class KorpLogParamsExtractor(object):
 
     def _process_log(self, stream):
 
-        def quote_value(s):
-            if '\n' in s or '\t' in s:
-                return (s.replace('\\', '\\\\').replace('\n', '\\n')
-                        .replace('\t', '\\t'))
-            else:
-                return s
+        def convert_value(s):
+            # KLUDGE: This is a bit ad hoc encoding for control
+            # characters. Another option would be to use the usual \t
+            # and \n (which need to be encoded) but that would require
+            # escaping all backslashes. Fortunately, *literal* tab and
+            # newline are rare (but not non-existent as they should)
+            # in parameter values.
+            s = re.sub(r'[\x00-\x1f]',
+                       lambda mo: '{{{{\\x{:02x}}}}}'.format(ord(mo.group(0))),
+                       s)
+            if isinstance(s, unicode):
+                s = s.encode(encoding)
+            return s
 
         def write_field(writer, fields, param_name, value):
-            fields['param'] = param_name
-            value = quote_value(value)
-            if isinstance(value, unicode):
-                value = value.encode(encoding)
-            fields['value'] = value
+            fields['param'] = convert_value(param_name)
+            fields['value'] = convert_value(value)
             out_writer.writerow(fields)
 
         csv.field_size_limit(int(1e7))
@@ -60,6 +65,7 @@ class KorpLogParamsExtractor(object):
         out_fields = ['id', 'param', 'value']
         out_writer = csv.DictWriter(
             sys.stdout, out_fields, delimiter='\t', lineterminator='\n',
+            # escapechar='\\',
             quoting=csv.QUOTE_NONE, doublequote=False, quotechar='',
             extrasaction='ignore')
         out_writer.writeheader()
