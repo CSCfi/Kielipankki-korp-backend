@@ -8,6 +8,8 @@ import csv
 # Requires Python 2.7
 from collections import OrderedDict
 
+import korplog_util as util
+
 
 class KorpLogCorporaGetter(object):
 
@@ -56,7 +58,8 @@ class KorpLogCorporaGetter(object):
                 # The value of the parameter "corpus" can be either a
                 # string of corpora (separated by commas) or a list,
                 # which adds some extra work.
-                fields['query_corpora'] = params.get('corpus', '')
+                fields['query_corpora'] = util.decode_list_param(
+                    params.get('corpus', ''))
                 if not hits or not fields['query_corpora']:
                     continue
                 corpora = fields['query_corpora']
