@@ -23,6 +23,7 @@ class KorpLogGroupAdder(object):
         'fstc',
         'ftc',
         'glowbe',
+        'ha',
         'jrc_acquis',
         'kfspc',
         'klk_fi',
@@ -32,10 +33,12 @@ class KorpLogGroupAdder(object):
         'oracc',
         'sust',
         'vks',
+        'yle_sv',
     ]
     _corpus_groups_other = [
         ('dma', r'dma(_.*)?$'),
         ('ethesis_fi', r'ethesis_((ma|diss)abs|ma_.*|phd_.*)'),
+        ('finlex_fi', r'(asd|kho|kko)_fi'),
         ('firulex', r'legal_.*'),
         ('ftb3', r'ftb3.*'),
         ('hcs2', r'hcs.*|swahili_sample'),
