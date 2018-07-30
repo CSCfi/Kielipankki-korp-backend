@@ -38,6 +38,7 @@ of Korp front end)
 
 ./auth lbr_register URN@LBR CORPUS     map LBR-ID to KORP-ID
 ./auth lbr_unregister URN@LBR CORPUS   unmap LBR-ID and KORP-ID
+./auth lbr_map                         show mappings
 
 ./auth persons               list persons
 ./auth corpora               list corpora and their licenses
@@ -206,9 +207,11 @@ def check_config(corpus, license):
 if __name__ == '__main__':
     conn = MySQLdb.connect(host = "localhost",
                            user = DBUSER,
+                           port = 3307,
                            passwd = DBPASS,
                            db = DBNAME,
                            use_unicode = True,
+                           read_default_file="/var/lib/mariadb/my.cnf",
                            charset = "utf8")
     try:
         cursor = conn.cursor()
