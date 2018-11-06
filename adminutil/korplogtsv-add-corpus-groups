@@ -12,6 +12,7 @@ from collections import OrderedDict
 class KorpLogGroupAdder(object):
 
     _corpus_groups_prefix = [
+        'agricola',
         'ceal',
         'coca',
         'coha',
@@ -25,6 +26,7 @@ class KorpLogGroupAdder(object):
         'glowbe',
         'ha',
         'jrc_acquis',
+        'kal',
         'kfspc',
         'klk_fi',
         'klk_sv',
