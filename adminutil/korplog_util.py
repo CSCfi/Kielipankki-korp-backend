@@ -33,8 +33,12 @@ def decode_list_param(str_list):
     common prefixes with suffixes marked with parentheses:
     LAM_A(HLA,NTR) -> LAM_AHLA,LAM_ANTR (nesting parentheses is not
     allowed).
+
+    If str_list is a real list, return it as is.
     """
     # Copied from korp.cgi, slightly modified.
+    if isinstance(str_list, list):
+        return str_list
     split_val = re.split(r"[.,]", str_list)
     result = []
     prefix = ""
