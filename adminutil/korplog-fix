@@ -69,7 +69,8 @@ class KorpLogFixer(object):
                             sys.stderr.write(
                                 'Warning: line does not look like a log'
                                 ' entry nor is a previous interrupted'
-                                ' line nor DEBUG entry found:\n' + repr(line))
+                                ' line nor DEBUG entry found:\n' + repr(line)
+                                + '\n')
                     if prev_value:
                         prev_value.append(line[:-1])
                         continue
