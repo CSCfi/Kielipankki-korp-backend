@@ -1,6 +1,22 @@
 #! /usr/bin/env python
 
 
+# TODO:
+# - Use an external file for corpus groups
+# - Use corpus shortnames for corpus groups. (But what to do with
+#   corpus versions, such as Suomi24 2015H2 and 2016H2 sharing
+#   subcorpora?)
+# - Ideally, get corpus grouping information from an existing source,
+#   for example, corpus info files, if shortnames (or URNs) are added
+#   to them. However, how to handle old corpus ids?
+# - Group unknown corpora separately (optionally?), as they may be
+#   errors
+# - Optionally group corpora with "_test" in their name separately
+# - Multilevel grouping: e.g. ylenews = ylenews_fi_s, ylenews_fi_a,
+#   ylenews_sv_s, ylenews_sv_a. That would probably need some
+#   rethinking.
+
+
 import sys
 import re
 import csv
@@ -35,7 +51,7 @@ class KorpLogGroupAdder(object):
         'oracc',
         'sust',
         'vks',
-        'yle_sv',
+        'wanca',
     ]
     _corpus_groups_other = [
         ('dma', r'dma(_.*)?$'),
@@ -54,10 +70,16 @@ class KorpLogGroupAdder(object):
         ('parrus', r'parrus(_.*)?'),
         ('reittidemo', r'(reittidemo|metsatalo)$'),
         ('scotscorr', r'scots_.*'),
+        ('semfinlex', r'(semfinlex|asd|kko|kho)_.*'),
         ('s24', r's24.*'),
         ('skk', r'skk_.*|kotus_klassikot'),
         ('topling', r'topling(_.*)?'),
         ('vnsk', r'vnsk?_.*'),
+        ('ylenews_fi_s', r'ylenews_fi_.*_s'),
+        ('ylenews_fi_a', r'ylenews_fi_.*_a'),
+        ('ylenews_sv_s', r'ylenews_sv_.*_s'),
+        ('ylenews_sv_a', r'yle_sv|ylenews_sv_.*_a'),
+        ('yoaineet', r'yo_?aineet'),
     ]
     _corpus_groups_re = (
         [(group, re.compile(group + '_.*')) for group in _corpus_groups_prefix]
