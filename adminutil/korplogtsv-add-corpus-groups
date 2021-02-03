@@ -46,7 +46,9 @@ class KorpLogGroupAdder(object):
         'kfspc',
         'klk_fi',
         'klk_sv',
+        'klk2test_fi',
         'mulcold',
+        'opensub_fi',
         'opus',
         'oracc',
         'sust',
@@ -55,6 +57,7 @@ class KorpLogGroupAdder(object):
     ]
     _corpus_groups_other = [
         ('dma', r'dma(_.*)?$'),
+        ('eduskunta', r'eduskunta(.*)?'),
         ('ethesis_fi', r'ethesis_((ma|diss)abs|ma_.*|phd_.*)'),
         ('finlex_fi', r'(asd|kho|kko)_fi'),
         ('firulex', r'legal_.*'),
@@ -66,6 +69,8 @@ class KorpLogGroupAdder(object):
         ('la_murre', r'(lam|la_murre)_.*'),
         ('las2', r'las2.*'),
         ('lehdet', r'(tiede)?lehdet_.*'),
+        ('pabivus', r'pabivus_([^s]|s[^c]|sc[^r]).*'),
+        ('pabivus_s', r'pabivus_s(crambled)?_.*'),
         ('parfin', r'parfin(_.*)?'),
         ('parrus', r'parrus(_.*)?'),
         ('reittidemo', r'(reittidemo|metsatalo)$'),
