@@ -12,15 +12,8 @@ from __future__ import print_function
 import MySQLdb
 import sys, codecs, re
 
-DBUSER = 'ling'
-DBPASS = 'PASSWORD_PLACEHOLDER'
-DBNAME = 'korp_auth'
+import auth_config
 
-# For testing whether there is a compatible limited_access setting
-# (and no incompatible limited_access settings) in the frontend.
-CONFIG = { '/var/www/html/config.js',
-           '/var/www/html/modes/parallel_mode.js',
-}
 
 def usage_command(cursor, command, args):
     print('''\
@@ -164,7 +157,7 @@ def check_config(corpus, license):
     config files.'''
 
     found_containing = []
-    for config in CONFIG:
+    for config in auth_config.KORP_CONFIG:
         text = codecs.open(config, 'r', 'utf-8').read()
         matches = re.findall(r'\bsettings.corpora.%s\s*=\s*[{].*?[{}]'
                              % corpus.lower(),
@@ -206,10 +199,10 @@ def check_config(corpus, license):
 
 if __name__ == '__main__':
     conn = MySQLdb.connect(host = "localhost",
-                           user = DBUSER,
+                           user = auth_config.DBUSER,
                            port = 3307,
-                           passwd = DBPASS,
-                           db = DBNAME,
+                           passwd = auth_config.DBPASS,
+                           db = auth_config.DBNAME,
                            use_unicode = True,
                            read_default_file="/var/lib/mariadb/my.cnf",
                            charset = "utf8")

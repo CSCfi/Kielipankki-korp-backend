@@ -1,0 +1,20 @@
+# -*- mode: Python; -*-
+
+# auth_config.py.template
+#
+# Configuration file template for the authing/auth script
+#
+# Copy to auth_config.py and edit the values as appropriate.
+
+
+# MySQL/MariaDB database connection parameters
+DBUSER = 'ling'
+DBPASS = 'PASSWORD_PLACEHOLDER'
+DBNAME = 'korp_auth'
+
+# For testing whether there is a compatible limited_access setting
+# (and no incompatible limited_access settings) in the frontend.
+KORP_CONFIG = {
+    '/var/www/html/config.js',
+    '/var/www/html/modes/parallel_mode.js',
+}
