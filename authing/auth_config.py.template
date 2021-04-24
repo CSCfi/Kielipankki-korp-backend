@@ -20,6 +20,8 @@ DBCONNECT = dict(
 # For testing whether there is a compatible limited_access setting
 # (and no incompatible limited_access settings) in the frontend.
 KORP_CONFIG = {
-    '/var/www/html/config.js',
+    '/var/www/html/modes/default_mode.js',
     '/var/www/html/modes/parallel_mode.js',
+    '/var/www/html/modes/swedish_mode.js',
+    '/var/www/html/modes/other_languages_mode.js',
 }
