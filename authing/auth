@@ -1,4 +1,4 @@
-#! /usr/local/bin/python
+#! /usr/bin/env python2
 # -*- mode: Python; -*-
 
 # A simple authentication and authorization database management tool
