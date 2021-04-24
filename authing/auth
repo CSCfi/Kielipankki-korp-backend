@@ -25,9 +25,8 @@ CORPUS is the Corpus Workbench Name of a corpus in Korp
 ./auth PUB CORPUS            make corpus PUB
 ./auth ACA CORPUS            make corpus ACA
 ./auth RES CORPUS            make corpus RES
-Note: ACA and RES corpora need also be configured limited_access=true,
-and PUB corpora, not (that's an attribute specification in config.js
-of Korp front end)
+Note: ACA and RES corpora also need appropriate settings in the Korp
+frontend corpus configuration.
 
 ./auth lbr_register URN@LBR CORPUS     map LBR-ID to KORP-ID
 ./auth lbr_unregister URN@LBR CORPUS   unmap LBR-ID and KORP-ID
@@ -96,7 +95,8 @@ def license_command(cursor, command, args):
     values (%s, %s)
     on duplicate key
     update license = %s''', [corpus, license, license])
-    check_config(corpus, license)
+    # Disabled because not currently working well
+    # check_config(corpus, license)
 
 def persons_command(cursor, command, args):
     '''List persons and their personally allowed corpora'''
@@ -127,7 +127,8 @@ def corpora_command(cursor, command, args):
         for person, in cursor:
             print('', person, end='')
         print()
-        check_config(corpus, license)
+        # Disabled because not currently working well
+        # check_config(corpus, license)
 
 def lbr_map_command(cursor, command, args):
     '''List URN@LBR-IDs and Korp-ID mappings'''
