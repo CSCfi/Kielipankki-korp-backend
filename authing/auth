@@ -198,14 +198,8 @@ def check_config(corpus, license):
               % (corpus, ' '.join(found_containing)))
 
 if __name__ == '__main__':
-    conn = MySQLdb.connect(host = "localhost",
-                           user = auth_config.DBUSER,
-                           port = 3307,
-                           passwd = auth_config.DBPASS,
-                           db = auth_config.DBNAME,
-                           use_unicode = True,
-                           read_default_file="/var/lib/mariadb/my.cnf",
-                           charset = "utf8")
+    conn = MySQLdb.connect(use_unicode = True,
+                           **auth_config.DBCONNECT)
     try:
         cursor = conn.cursor()
         command, args = sys.argv[1], sys.argv[2:]
