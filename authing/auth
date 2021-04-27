@@ -17,34 +17,40 @@ import auth_config
 
 def usage_command(cursor, command, args):
     print('''\
-Usage: ./auth command [arg ...]
+Usage: {prog} command [arg ...]
 
-PERSON is the login identifier in HTTP Basic Authentication
-CORPUS is the Corpus Workbench Name of a corpus in Korp
+The arguments in the command descriptions below are as follows:
+  PERSON: the Shibboleth (Haka) user name (username@domain)
+  CORPUS: the Korp corpus id (Corpus Workbench name of a corpus)
+  URN@LBR: the LBR id of the corpus: the corpus URN suffixed with "@LBR"
 
-./auth PUB CORPUS ...        make corpora PUB
-./auth ACA CORPUS ...        make corpora ACA
-./auth RES CORPUS ...        make corpora RES
-Note: ACA and RES corpora also need appropriate settings in the Korp
-frontend corpus configuration.
+Available commands and their arguments:
 
-./auth lbr_register URN@LBR CORPUS ...    map LBR-ID to KORP-IDs
-./auth lbr_unregister URN@LBR CORPUS ...  unmap LBR-ID and KORP-IDs
-./auth lbr_map                            show mappings
+  PUB CORPUS ...        make corpora PUB
+  ACA CORPUS ...        make corpora ACA
+  RES CORPUS ...        make corpora RES
+    Note: ACA and RES corpora also need appropriate settings in the Korp
+    frontend corpus configuration.
 
-./auth persons               list persons
-./auth corpora               list corpora and their licenses
+  lbr_register URN@LBR CORPUS ...
+                        map LBR id to Korp corpus ids
+  lbr_unregister URN@LBR CORPUS ...
+                        unmap LBR id and Korp corpus ids
+  lbr_map               show LBR id mappings
+
+  persons               list persons
+  corpora               list corpora and their licenses
+
+  allow PERSON [PERSON ... --] CORPUS ...
+                        give persons personal access to corpora
+  deny PERSON [PERSON ... --] CORPUS ...
+                        take away from persons personal access to corpora
+    Note: If you specify multiple PERSONs, the CORPUS ids need to be
+    separated from them by a double dash "--".
 
 DEPRECATED, DO NOT USE:
-./auth remove PERSON  ...    remove persons (idempotent)
-
-./auth allow PERSON [PERSON ... --] CORPUS ...
-                             give persons personal access to corpora
-./auth deny PERSON [PERSON ... --] CORPUS ...
-                             take away from persons personal access to corpora
-Note: If you specify multiple PERSONs, the CORPUS ids need to be separated
-from them by a double dash "--".
-    ''')
+  remove PERSON ...     remove persons (idempotent)
+    '''.format(prog=sys.argv[0]))
 
 def remove_command(cursor, command, args):
     '''Remove person'''
@@ -260,4 +266,4 @@ if __name__ == '__main__':
         # Do not show calls in libraries
         traceback.print_exc(3)
         print()
-        print('Try "./auth help" for usage')
+        print('Try "{prog} help" for usage'.format(prog=sys.argv[0]))
