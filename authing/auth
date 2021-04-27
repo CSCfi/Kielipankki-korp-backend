@@ -17,31 +17,33 @@ import auth_config
 
 def usage_command(cursor, command, args):
     print('''\
-Usage: ./auth command [arg [arg]]
+Usage: ./auth command [arg ...]
 
 PERSON is the login identifier in HTTP Basic Authentication
 CORPUS is the Corpus Workbench Name of a corpus in Korp
 
-./auth PUB CORPUS            make corpus PUB
-./auth ACA CORPUS            make corpus ACA
-./auth RES CORPUS            make corpus RES
+./auth PUB CORPUS ...        make corpora PUB
+./auth ACA CORPUS ...        make corpora ACA
+./auth RES CORPUS ...        make corpora RES
 Note: ACA and RES corpora also need appropriate settings in the Korp
 frontend corpus configuration.
 
-./auth lbr_register URN@LBR CORPUS     map LBR-ID to KORP-ID
-./auth lbr_unregister URN@LBR CORPUS   unmap LBR-ID and KORP-ID
-./auth lbr_map                         show mappings
+./auth lbr_register URN@LBR CORPUS ...    map LBR-ID to KORP-IDs
+./auth lbr_unregister URN@LBR CORPUS ...  unmap LBR-ID and KORP-IDs
+./auth lbr_map                            show mappings
 
 ./auth persons               list persons
 ./auth corpora               list corpora and their licenses
 
 DEPRECATED, DO NOT USE:
-./auth remove PERSON         remove person (idempotent)
+./auth remove PERSON  ...    remove persons (idempotent)
 
-./auth allow PERSON CORPUS   give person personal access to corpus
-./auth deny PERSON CORPUS    take away from person personal access to corpus
-
-
+./auth allow PERSON [PERSON ... --] CORPUS ...
+                             give persons personal access to corpora
+./auth deny PERSON [PERSON ... --] CORPUS ...
+                             take away from persons personal access to corpora
+Note: If you specify multiple PERSONs, the CORPUS ids need to be separated
+from them by a double dash "--".
     ''')
 
 def remove_command(cursor, command, args):
@@ -138,18 +140,18 @@ def lbr_map_command(cursor, command, args):
     for lbr_id, corpus in cursor.fetchall():
         print ("%s\t%s" % (lbr_id, corpus))
 
-dispatch = dict(remove = remove_command,
-                allow = allow_command,
-                deny = deny_command,
-                PUB = license_command,
-                ACA = license_command,
-                RES = license_command,
-                persons = persons_command,
-                corpora = corpora_command,
-                lbr_register = lbr_register_command,
-                lbr_unregister = lbr_unregister_command,
-                lbr_map = lbr_map_command,
-                help = usage_command)
+dispatch = dict(remove = (remove_command, '+'),
+                allow = (allow_command, '++'),
+                deny = (deny_command, '++'),
+                PUB = (license_command, '+'),
+                ACA = (license_command, '+'),
+                RES = (license_command, '+'),
+                persons = (persons_command, ''),
+                corpora = (corpora_command, ''),
+                lbr_register = (lbr_register_command, '1+'),
+                lbr_unregister = (lbr_unregister_command, '1+'),
+                lbr_map = (lbr_map_command, ''),
+                help = (usage_command, ''))
 
 def check_config(corpus, license):
     '''Reports on possible incompatibilities with frontend config files.
@@ -198,17 +200,64 @@ def check_config(corpus, license):
         print('! %s: found in more than one config file: %s'
               % (corpus, ' '.join(found_containing)))
 
+def parse_arglist(args, split_type):
+    '''Split list args into a pair of lists according to split_type.
+
+    split_type can be one of the following:
+      '' (or any other False-like): no args used
+      '+': all args to the first list
+      '1+': first arg to the first list, the rest to the second
+      '++': if args contains '--', args before it to the first list,
+            the rest to the second; otherwise like '1+'
+    If a list in the returned pair gets no arguments, its value will
+    be [None].
+    '''
+    if not split_type:
+        return ([None], [None])
+    elif split_type == '+':
+        return (args, [None])
+    elif split_type == '1+':
+        return ([args[0]], args[1:])
+    elif split_type == '++':
+        try:
+            sep_idx = args.index('--')
+            return (args[:sep_idx], args[sep_idx + 1:])
+        except ValueError:
+            return ([args[0]], args[1:])
+
+def do_dispatch(cursor, args):
+    '''Dispatch command function based on args, passing cursor.
+
+    args contains the command and its arguments. The arguments are
+    split as the command expects and the command function is called as
+    many times as needed.
+    '''
+    if len(args) == 0:
+        print('Error: No command given\n')
+        raise ValueError()
+    command, args = args[0], args[1:]
+    dispatch_func, dispatch_argsplit = dispatch.get(command,
+                                                    (usage_command, ''))
+    parsed_args = parse_arglist(args, dispatch_argsplit)
+    for arg1 in parsed_args[0]:
+        for arg2 in parsed_args[1]:
+            # Pass only the non-None arguments, so that they are unpacked
+            # correctly in the command functions
+            dispatch_args = tuple(arg for arg in [arg1, arg2] if arg)
+            # print(command, dispatch_args)
+            dispatch_func(cursor, command, dispatch_args)
+
 if __name__ == '__main__':
     conn = MySQLdb.connect(use_unicode = True,
                            **auth_config.DBCONNECT)
     try:
         cursor = conn.cursor()
-        command, args = sys.argv[1], sys.argv[2:]
-        dispatch.get(command, usage_command)(cursor, command, args)
+        do_dispatch(cursor, sys.argv[1:])
         cursor.close()
         conn.commit()
     except:
         import traceback
-        traceback.print_exc(2)
+        # Do not show calls in libraries
+        traceback.print_exc(3)
         print()
         print('Try "./auth help" for usage')
