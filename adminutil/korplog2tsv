@@ -43,8 +43,10 @@ def process_log(stream):
     info = defaultdict(dict)
 
     def print_tsv_line(outfile, pid):
-        outfile.write(
-            '\t'.join(info[pid].get(field, '') for field in tsv_fields) + '\n')
+        if 'start_date' in info[pid]:
+            outfile.write(
+                '\t'.join(info[pid].get(field, '') for field in tsv_fields)
+                + '\n')
 
     with NamedTemporaryFile(prefix='korplog2tsv_', delete=False) as outfile:
         tmp_filename = outfile.name
