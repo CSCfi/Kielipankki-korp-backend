@@ -28,6 +28,7 @@ from collections import OrderedDict
 class KorpLogGroupAdder(object):
 
     _corpus_groups_prefix = [
+        'achemenet',
         'agricola',
         'ceal',
         'coca',
@@ -51,7 +52,10 @@ class KorpLogGroupAdder(object):
         'opensub_fi',
         'opus',
         'oracc',
+        'oracc2021',
+        'sus_fieldwork',
         'sust',
+        'uralic_ud',
         'vks',
         'wanca',
     ]
@@ -63,6 +67,7 @@ class KorpLogGroupAdder(object):
         ('firulex', r'legal_.*'),
         ('ftb3', r'ftb3.*'),
         ('hcs2', r'hcs.*|swahili_sample'),
+        ('kaannossuomi', r'alkusuomi|kaannossuomi'),
         ('kotus_lakidir', r'(kotus_lakidir|ns_saadokset)'),
         ('kotus_presidentti', r'(kotus_)?ns_presidentti_.*'),
         ('kotus_sananparret', r'kotus_(sananparret|sp)$'),
