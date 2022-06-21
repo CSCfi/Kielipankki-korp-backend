@@ -81,6 +81,10 @@ class KorpLogCorporaGetter(object):
                 out_writer.writerow(fields)
 
     def _calc_corpus_hits(self, corpus_hits, corpora, start, end):
+        # No negative numbers of hits (start can be greater than end
+        # in direct Korp API queries)
+        if start > end:
+            return []
         cum_hits = cum_hits_prev = included_hits = 0
         start += 1
         end += 1
