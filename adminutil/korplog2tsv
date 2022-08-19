@@ -23,7 +23,7 @@ def process_log(stream):
         'entry_script',
         'pid',
         'script',
-        'referer',
+        'referrer',
         'ip',
         'auth-domain',
         'auth-user',
@@ -33,8 +33,12 @@ def process_log(stream):
         'loginfo',
         'hits',
         'content-length',
+        'cqp-time-total',
         'cpu-load',
         'cpu-times',
+        'cpu-times-diff',
+        'memory-max-rss',
+        'korp_version',
     ]
     info = defaultdict(dict)
 
@@ -46,12 +50,15 @@ def process_log(stream):
         tmp_filename = outfile.name
         for line in stream:
             mo = re.match(
-                (r'\[(?P<script>\S+) (?P<pid>\d+) INFO @ (?P<date>[\d-]+)'
+                (r'\[(?P<script>\S+)'
+                 # Korp 2.8 has "pid INFO", Korp 8 "INFO pid:request"
+                 r' (?:(?P<pid>\d+) INFO|INFO (?P<pid2>[\d:]+))'
+                 r' @ (?P<date>[\d-]+)'
                  r' (?P<time>[\d:,]+)\] (?P<key>.*?): (?P<value>.*)'),
                 line[:-1])
             if mo:
                 fields = mo.groupdict()
-                pid = fields['pid']
+                pid = fields['pid'] or fields['pid2']
                 key = fields['key'].lower()
                 if key == 'ip':
                     # A previous timed-out request with the same pid that
@@ -64,9 +71,13 @@ def process_log(stream):
                     info[pid]['start_date'] = fields['date']
                     info[pid]['start_time'] = fields['time']
                     info[pid]['id'] = util.make_logentry_id(info[pid])
+                    info[pid]['korp_version'] = '8' if ':' in pid else '5'
                 elif key == 'elapsed':
                     info[pid]['end_date'] = fields['date']
                     info[pid]['end_time'] = fields['time']
+                elif key == 'referer':
+                    # Korp 2.8 has "referer", Korp 8 "referrer"
+                    key = 'referrer'
                 info[pid][key] = fields['value']
                 # For a while, CPU-times was the last log entry
                 # instead of Elapsed. Before that, there was no

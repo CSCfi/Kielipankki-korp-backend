@@ -12,16 +12,19 @@ import time
 
 
 def make_logentry_id(fields):
-    """Return an id of the form <milliseconds since epoch> ":" <pid>"""
+    """Return an id of the form <ms since epoch> ":" <pid> ":" <request id>"""
     date_s = fields.get('start_date') or fields.get('date') or ''
     time_s, msecs = (
         (fields.get('start_time') or fields.get('time') or ',').split(","))
+    pid = fields.get('pid', '0')
+    pid, req = pid.split(':') if ':' in pid else (pid, '0')
     try:
-        return '{secs:d}{msecs}:{pid:05d}'.format(
+        return '{secs:d}{msecs}:{pid:07d}:{req:016d}'.format(
             secs=int(time.mktime(time.strptime(date_s + ' ' + time_s,
                                                '%Y-%m-%d %H:%M:%S'))),
             msecs=msecs,
-            pid=int(fields.get('pid', '0')))
+            pid=int(pid),
+            req=int(req))
     except ValueError:
         return 'None'
 
