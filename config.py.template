@@ -72,6 +72,12 @@ MEMCACHED_POOL_SIZE = 25
 # Max number of rows from count command to cache
 CACHE_MAX_STATS = 5000
 
+# Corpus configuration directory
+CORPUS_CONFIG_DIR = ""
+
+# Set to True to enable "lab mode", potentially enabling experimental features and access to lab-only corpora
+LAB_MODE = False
+
 # Whether corpus results should be sorted by corpus id by default (true) or
 # output in the order specified in the corpus parameter (false); this can be
 # overridden with the parameter sort_corpora=true|false
