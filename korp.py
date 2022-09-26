@@ -29,7 +29,7 @@ from collections import defaultdict, OrderedDict
 from dateutil.relativedelta import relativedelta
 from copy import deepcopy
 from pathlib import Path
-from typing import Union
+from typing import Union, Optional
 import datetime
 import uuid
 import binascii
@@ -3428,10 +3428,14 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
     mode["attributes"] = {t: {} for t in attr_types.values()}  # Attributes referred to by corpora
     attribute_presets = {t: {} for t in attr_types.values()}  # Attribute presets
     hash_to_attr = {}
+    mode["attribute_lists"] = {t: {} for t in attr_types.values()}  # Attribute lists referred to by corpora
+    attrlist_presets = {t: {} for t in attr_types.values()}  # Attribute list presets
+    hash_to_attrlist = {}
     warnings = set()
 
-    def get_new_attr_name(name: str) -> str:
+    def get_new_attr_name(name: str, hash_dict: Optional[dict] = None) -> str:
         """Create a unique name for attribute, to be used as identifier."""
+        hash_dict = hash_dict or hash_to_attr
         while name in hash_to_attr.values():
             name += "_"
         return name
@@ -3450,12 +3454,29 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
     else:
         corpus_files = glob.glob(os.path.join(config.CORPUS_CONFIG_DIR, "corpora", "*.yaml"))
 
-    def get_attr_preset(attr_type: str,
-                        attr_type_name: str,
-                        attr_name: str,
-                        attr_val: Union[str, dict]
-                        ) -> Union[str, None]:
-        """Return attribute preset name for the specified arguments; load preset if needed."""
+    def get_preset(attr_type: str,
+                   attr_type_name: str,
+                   attr_name: str,
+                   attr_val: Union[str, dict],
+                   preset_type: Optional[str] = None,
+                   ) -> Optional[str]:
+        """Return attribute or attribute list preset name given the arguments.
+
+        Load the preset from file if needed.
+
+        The default is to get an attribute preset; to get an attribute list
+        preset, set argument preset_type = "attrlist".
+        """
+        if preset_type == "attrlist":
+            presets = attrlist_presets
+            preset_type = "attribute_lists"
+            preset_type_name = "Attribute list"
+            preset_hash_dict = hash_to_attrlist
+        else:
+            presets = attribute_presets
+            preset_type = "attributes"
+            preset_type_name = "Attribute"
+            preset_hash_dict = hash_to_attr
         if isinstance(attr_val, str):
             preset_name = attr_val
             attr_hash = get_hash((attr_name, attr_val, attr_type))
@@ -3463,32 +3484,33 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
             preset_name = attr_val["preset"]
             attr_hash = get_hash((attr_name, json.dumps(attr_val, sort_keys=True), attr_type))
 
-        if attr_hash in hash_to_attr:  # Preset already loaded and ready to use
-            return hash_to_attr[attr_hash]
+        if attr_hash in preset_hash_dict:  # Preset already loaded and ready to use
+            return preset_hash_dict[attr_hash]
         else:
-            if preset_name not in attribute_presets[attr_type]:  # Preset not loaded yet
+            if preset_name not in presets[attr_type]:  # Preset not loaded yet
                 try:
-                    with open(os.path.join(config.CORPUS_CONFIG_DIR, "attributes",
+                    with open(os.path.join(config.CORPUS_CONFIG_DIR, preset_type,
                                            attr_type_name, preset_name + ".yaml"),
                               encoding="utf-8") as f:
                         attr_def = yaml.safe_load(f)
                         if not attr_def:
-                            warnings.add(f"Preset {preset_name!r} is empty.")
+                            warnings.add(f"{preset_type_name} preset {preset_name!r} is empty.")
                             return None
-                        attribute_presets[attr_type][preset_name] = attr_def
+                        presets[attr_type][preset_name] = attr_def
                 except FileNotFoundError:
-                    warnings.add(f"Attribute preset {preset_name!r} in corpus {corpus_id!r} "
+                    warnings.add(f"{preset_type_name} preset {preset_name!r} in corpus {corpus_id!r} "
                                  "does not exist.")
                     return None
-            attr_id = get_new_attr_name(preset_name)
-            hash_to_attr[attr_hash] = attr_id
-            mode["attributes"][attr_type][attr_id] = attribute_presets[attr_type][
+            attr_id = get_new_attr_name(preset_name, preset_hash_dict)
+            preset_hash_dict[attr_hash] = attr_id
+            mode[preset_type][attr_type][attr_id] = presets[attr_type][
                 preset_name].copy()
-            mode["attributes"][attr_type][attr_id].update({"name": attr_name})
-            if isinstance(attr_val, dict):
-                # Override preset values
-                del attr_val["preset"]
-                mode["attributes"][attr_type][attr_id].update(attr_val)
+            if preset_type == "attributes":
+                mode[preset_type][attr_type][attr_id].update({"name": attr_name})
+                if isinstance(attr_val, dict):
+                    # Override preset values
+                    del attr_val["preset"]
+                    mode[preset_type][attr_type][attr_id].update(attr_val)
             return attr_id
 
     # Go through all corpora to see if they are included in mode
@@ -3520,12 +3542,24 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
         if corpora or mode_name in [m["name"] for m in corpus_def.get("mode", [])]:
             for attr_type_name, attr_type in attr_types.items():
                 if attr_type in corpus_def:
+                    if isinstance(corpus_def[attr_type], str):
+                        # A reference to an attribute list preset
+                        # Use a dummy name "*attrlist", as attribute
+                        # lists have no name like attributes
+                        preset = get_preset(attr_type, attr_type_name, "*attrlist",
+                                            corpus_def[attr_type], "attrlist")
+                        if preset is None:
+                            corpus_def[attr_type] = []
+                            continue
+                        else:
+                            # Copy attributes in the preset to corpus definition
+                            corpus_def[attr_type] = mode["attribute_lists"][attr_type][preset].copy()
                     to_delete = []
                     for i, attr in enumerate(corpus_def[attr_type]):
                         for attr_name, attr_val in attr.items():
                             # A reference to an attribute preset
                             if isinstance(attr_val, str) or isinstance(attr_val, dict) and "preset" in attr_val:
-                                preset = get_attr_preset(attr_type, attr_type_name, attr_name, attr_val)
+                                preset = get_preset(attr_type, attr_type_name, attr_name, attr_val)
                                 if preset is None:
                                     to_delete.append(i)
                                     continue
