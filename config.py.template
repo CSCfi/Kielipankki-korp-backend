@@ -71,3 +71,7 @@ CORPUS_CONFIG_DIR = ""
 
 # Set to True to enable "lab mode", potentially enabling experimental features and access to lab-only corpora
 LAB_MODE = False
+
+# Base file name for corpus configuration template files in subdirectories
+# of "corpora", without a ".yaml" extension
+CORPUS_CONFIG_TEMPLATE_BASENAME = "_template"

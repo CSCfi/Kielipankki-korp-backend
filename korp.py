@@ -3427,6 +3427,8 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
     mode["attributes"] = {t: {} for t in attr_types.values()}  # Attributes referred to by corpora
     attribute_presets = {t: {} for t in attr_types.values()}  # Attribute presets
     hash_to_attr = {}
+    template_files = {}  # Corpus template files: subdir -> template file name
+    corpus_templates = {}  # Corpus templates: subdir -> template dict
     warnings = set()
 
     def get_new_attr_name(name: str) -> str:
@@ -3457,8 +3459,37 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
     else:
         corpus_files = glob.glob(os.path.join(config.CORPUS_CONFIG_DIR, "corpora", "*.yaml"))
         # Add files in corpora subdirectories (one level)
-        corpus_files.extend(
-            glob.glob(os.path.join(config.CORPUS_CONFIG_DIR, "corpora", "*", "*.yaml")))
+        subdir_files = glob.glob(os.path.join(config.CORPUS_CONFIG_DIR, "corpora", "*", "*.yaml"))
+        template_file_name = config.CORPUS_CONFIG_TEMPLATE_BASENAME + ".yaml"
+        template_files = dict(
+            (os.path.basename(os.path.dirname(fname)), fname)
+            for fname in subdir_files if os.path.basename(fname) == template_file_name)
+        corpus_files.extend(fname for fname in subdir_files
+                            if os.path.basename(fname) != template_file_name)
+
+    def apply_corpus_template(corpus_def: dict, corpus_file: str) -> dict:
+        """Apply the corpus template of corpus_file to corpus_def if applicable.
+
+        If corpus_file is in a subdirectory with a template file, return a
+        new corpus definition with the values from the template updated with
+        those of corpus_def. Load the template file if it has not yet been
+        loaded.
+        """
+        subdir = os.path.basename(os.path.dirname(corpus_file))
+        template = corpus_templates.get(subdir)
+        if not template:
+            template_file = template_files.get(subdir)
+            if template_file:
+                # Template file available not yet loaded, so load it
+                with open(template_file, "r", encoding="utf-8") as fp:
+                    template = corpus_templates[subdir] = yaml.safe_load(fp)
+        if template:
+            # Corpus definition can override values in template
+            result = deepcopy(template)
+            result.update(corpus_def)
+            return result
+        else:
+            return corpus_def
 
     # Go through all corpora to see if they are included in mode
     for corpus_file in corpus_files:
@@ -3474,6 +3505,7 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
         if not cached_corpus:
             with open(corpus_file, "r", encoding="utf-8") as fp:
                 corpus_def = yaml.safe_load(fp)
+            corpus_def = apply_corpus_template(corpus_def, corpus_file)
             # Save to cache
             if cache:
                 with mc_pool.reserve() as mc:
