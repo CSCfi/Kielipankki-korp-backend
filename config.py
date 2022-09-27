@@ -67,3 +67,7 @@ PLUGINS = []
 
 # Plugin configuration
 PLUGINS_CONFIG = {}
+
+# Base file name for corpus configuration template files in subdirectories
+# of "corpora", without a ".yaml" extension
+CORPUS_CONFIG_TEMPLATE_BASENAME = "_template"
