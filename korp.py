@@ -3513,16 +3513,35 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
                     mode[preset_type][attr_type][attr_id].update(attr_val)
             return attr_id
 
-    def get_inline_def_id(attr_type: str, attr_name: str, attr_val: dict) -> str:
-        """Get id for inline attribute definition attr_val."""
-        attr_hash = get_hash((attr_name, json.dumps(attr_val, sort_keys=True), attr_type))
-        if attr_hash in hash_to_attr:  # Identical attribute has previously been used
-            return hash_to_attr[attr_hash]
+    def get_inline_def_id(attr_type: str,
+                          attr_name: str,
+                          attr_val: Union[dict, list],
+                          def_type: Optional[str] = None,
+                          corpus_id: Optional[str] = None) -> str:
+        """Get id for inline attribute or attribute list definition attr_val.
+
+        The default is to get id for an attribute; to get it for an attribute
+        list, specify def_type = "attrlist" and corpus_id.
+        """
+        new_attr_basename = attr_name
+        if def_type == "attrlist":
+            hash_dict = hash_to_attrlist
+            preset_type = "attribute_lists"
+            # Include corpus_id in the base name for new attribute lists
+            if corpus_id:
+                new_attr_basename = f"{attr_type[0]}_{corpus_id}"
         else:
-            attr_id = get_new_attr_name(attr_name)
-            hash_to_attr[attr_hash] = attr_id
-            attr_val.update({"name": attr_name})
-            mode["attributes"][attr_type][attr_id] = attr_val
+            hash_dict = hash_to_attr
+            preset_type = "attributes"
+        attr_hash = get_hash((attr_name, json.dumps(attr_val, sort_keys=True), attr_type))
+        if attr_hash in hash_dict:  # Identical attribute has previously been used
+            return hash_dict[attr_hash]
+        else:
+            attr_id = get_new_attr_name(new_attr_basename, hash_dict)
+            hash_dict[attr_hash] = attr_id
+            if def_type != "attrlist":
+                attr_val.update({"name": attr_name})
+            mode[preset_type][attr_type][attr_id] = attr_val
             return attr_id
 
     # Go through all corpora to see if they are included in mode
@@ -3582,6 +3601,11 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
                                 corpus_def[attr_type][i] = get_inline_def_id(attr_type, attr_name, attr_val)
                     for i in reversed(to_delete):
                         del corpus_def[attr_type][i]
+                    if config.CORPUS_CONFIG_ATTRLIST_PRESETS and corpus_def[attr_type]:
+                        # Use or add attribute list preset for non-empty lists
+                        corpus_def[attr_type] = get_inline_def_id(
+                            attr_type, "*attrlist", corpus_def[attr_type], "attrlist", corpus_id)
+
             corpus_modes = [mode for mode in corpus_def.get("mode", []) if mode["name"] == mode_name]
             if corpus_modes:
                 corpus_mode_settings = corpus_modes.pop()
@@ -3607,6 +3631,10 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
 
     if corpora and "preselected_corpora" in mode:
         del mode["preselected_corpora"]
+
+    if not config.CORPUS_CONFIG_ATTRLIST_PRESETS:
+        # Do not output attribute list presets, as they have been inlined
+        del mode["attribute_lists"]
 
     _remove_empty_folders(mode)
     if warnings:

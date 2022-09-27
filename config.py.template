@@ -71,3 +71,8 @@ CORPUS_CONFIG_DIR = ""
 
 # Set to True to enable "lab mode", potentially enabling experimental features and access to lab-only corpora
 LAB_MODE = False
+
+# Whether /corpus_config should create new presets for inlined
+# attribute lists and output attribute list presets referenced by name;
+# if False, attribute list presets are inlined
+CORPUS_CONFIG_ATTRLIST_PRESETS = False
