@@ -128,9 +128,19 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
             if file_path.is_file():
                 corpus_files.append(file_path)
             else:
-                warnings.add(f"The corpus {c!r} does not exist, or does not have a config file.")
+                # Try corpora subdirectories (one level only)
+                file_path = glob.glob(os.path.join(
+                    app.config["CORPUS_CONFIG_DIR"], "corpora", "*", f"{c.lower()}.yaml"))
+                if file_path:
+                    corpus_files.extend(file_path)
+                else:
+                    warnings.add(f"The corpus {c!r} does not exist, or does not have a config file.")
     else:
         corpus_files = glob.glob(os.path.join(app.config["CORPUS_CONFIG_DIR"], "corpora", "*.yaml"))
+        # Add files in corpora subdirectories (one level)
+        corpus_files.extend(
+            glob.glob(os.path.join(app.config["CORPUS_CONFIG_DIR"], "corpora", "*", "*.yaml")))
+
 
     # Go through all corpora to see if they are included in mode
     for corpus_file in corpus_files:
