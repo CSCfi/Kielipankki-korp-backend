@@ -3513,6 +3513,18 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
                     mode[preset_type][attr_type][attr_id].update(attr_val)
             return attr_id
 
+    def get_inline_def_id(attr_type: str, attr_name: str, attr_val: dict) -> str:
+        """Get id for inline attribute definition attr_val."""
+        attr_hash = get_hash((attr_name, json.dumps(attr_val, sort_keys=True), attr_type))
+        if attr_hash in hash_to_attr:  # Identical attribute has previously been used
+            return hash_to_attr[attr_hash]
+        else:
+            attr_id = get_new_attr_name(attr_name)
+            hash_to_attr[attr_hash] = attr_id
+            attr_val.update({"name": attr_name})
+            mode["attributes"][attr_type][attr_id] = attr_val
+            return attr_id
+
     # Go through all corpora to see if they are included in mode
     for corpus_file in corpus_files:
         # Load corpus config from cache if possible
@@ -3567,15 +3579,7 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
                                     corpus_def[attr_type][i] = preset
                             # Inline attribute definition
                             elif isinstance(attr_val, dict):
-                                attr_hash = get_hash((attr_name, json.dumps(attr_val, sort_keys=True), attr_type))
-                                if attr_hash in hash_to_attr:  # Identical attribute has previously been used
-                                    corpus_def[attr_type][i] = hash_to_attr[attr_hash]
-                                else:
-                                    attr_id = get_new_attr_name(attr_name)
-                                    hash_to_attr[attr_hash] = attr_id
-                                    attr_val.update({"name": attr_name})
-                                    mode["attributes"][attr_type][attr_id] = attr_val
-                                    corpus_def[attr_type][i] = attr_id
+                                corpus_def[attr_type][i] = get_inline_def_id(attr_type, attr_name, attr_val)
                     for i in reversed(to_delete):
                         del corpus_def[attr_type][i]
             corpus_modes = [mode for mode in corpus_def.get("mode", []) if mode["name"] == mode_name]
