@@ -3454,6 +3454,25 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
     else:
         corpus_files = glob.glob(os.path.join(config.CORPUS_CONFIG_DIR, "corpora", "*.yaml"))
 
+    def load_preset(path: str, preset_name: str, preset_type_name: str) -> Optional[dict]:
+        """Load preset preset_name from file config_dir/path/preset_name.yaml.
+
+        Return None and add a warning if the preset file does not
+        exist or is empty.
+        """
+        try:
+            with open(os.path.join(config.CORPUS_CONFIG_DIR, path, preset_name + ".yaml"),
+                      encoding="utf-8") as f:
+                preset_def = yaml.safe_load(f)
+                if not preset_def:
+                    warnings.add(f"{preset_type_name} preset {preset_name!r} is empty.")
+                    return None
+                return preset_def
+        except FileNotFoundError:
+            warnings.add(f"{preset_type_name} preset {preset_name!r} in corpus {corpus_id!r} "
+                         "does not exist.")
+            return None
+
     def get_preset(attr_type: str,
                    attr_type_name: str,
                    attr_name: str,
@@ -3488,18 +3507,11 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
             return preset_hash_dict[attr_hash]
         else:
             if preset_name not in presets[attr_type]:  # Preset not loaded yet
-                try:
-                    with open(os.path.join(config.CORPUS_CONFIG_DIR, preset_type,
-                                           attr_type_name, preset_name + ".yaml"),
-                              encoding="utf-8") as f:
-                        attr_def = yaml.safe_load(f)
-                        if not attr_def:
-                            warnings.add(f"{preset_type_name} preset {preset_name!r} is empty.")
-                            return None
-                        presets[attr_type][preset_name] = attr_def
-                except FileNotFoundError:
-                    warnings.add(f"{preset_type_name} preset {preset_name!r} in corpus {corpus_id!r} "
-                                 "does not exist.")
+                attr_def = load_preset(os.path.join(preset_type, attr_type_name),
+                                       preset_name, preset_type_name)
+                if attr_def:
+                    presets[attr_type][preset_name] = attr_def
+                else:
                     return None
             attr_id = get_new_attr_name(preset_name, preset_hash_dict)
             preset_hash_dict[attr_hash] = attr_id
