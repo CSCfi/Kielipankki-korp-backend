@@ -3654,6 +3654,15 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
         "custom": "custom_attributes"
     }
 
+    # Possible extra presets in corpus and attribute definitions:
+    # object type -> (key in object -> configuration subdirectory for
+    # presets)
+    extra_presets = config.CORPUS_CONFIG_EXTRA_PRESETS
+    # Values of extra presets by preset type: configuration
+    # subdirectory -> (preset name -> preset value)
+    extra_preset_values = {val: {} for extra_preset in extra_presets.values()
+                           for val in extra_preset.values()}
+
     mode["corpora"] = {}  # All corpora in mode
     mode["attributes"] = {t: {} for t in attr_types.values()}  # Attributes referred to by corpora
     attribute_presets = {t: {} for t in attr_types.values()}  # Attribute presets
@@ -3726,6 +3735,25 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
         else:
             return corpus_def
 
+    def load_preset(path: str, preset_name: str, preset_type_name: str) -> Optional[dict]:
+        """Load preset preset_name from file config_dir/path/preset_name.yaml.
+
+        Return None and add a warning if the preset file does not
+        exist or is empty.
+        """
+        try:
+            with open(os.path.join(config.CORPUS_CONFIG_DIR, path, preset_name + ".yaml"),
+                      encoding="utf-8") as f:
+                preset_def = yaml.safe_load(f)
+                if not preset_def:
+                    warnings.add(f"{preset_type_name} preset {preset_name!r} is empty.")
+                    return None
+                return preset_def
+        except FileNotFoundError:
+            warnings.add(f"{preset_type_name} preset {preset_name!r} in corpus {corpus_id!r} "
+                         "does not exist.")
+            return None
+
     def get_preset(attr_type: str,
                    attr_type_name: str,
                    attr_name: str,
@@ -3760,18 +3788,11 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
             return preset_hash_dict[attr_hash]
         else:
             if preset_name not in presets[attr_type]:  # Preset not loaded yet
-                try:
-                    with open(os.path.join(config.CORPUS_CONFIG_DIR, preset_type,
-                                           attr_type_name, preset_name + ".yaml"),
-                              encoding="utf-8") as f:
-                        attr_def = yaml.safe_load(f)
-                        if not attr_def:
-                            warnings.add(f"{preset_type_name} preset {preset_name!r} is empty.")
-                            return None
-                        presets[attr_type][preset_name] = attr_def
-                except FileNotFoundError:
-                    warnings.add(f"{preset_type_name} preset {preset_name!r} in corpus {corpus_id!r} "
-                                 "does not exist.")
+                attr_def = load_preset(os.path.join(preset_type, attr_type_name),
+                                       preset_name, preset_type_name)
+                if attr_def:
+                    presets[attr_type][preset_name] = attr_def
+                else:
                     return None
             attr_id = get_new_attr_name(preset_name, preset_hash_dict)
             preset_hash_dict[attr_hash] = attr_id
@@ -3784,6 +3805,23 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
                     del attr_val["preset"]
                     mode[preset_type][attr_type][attr_id].update(attr_val)
             return attr_id
+
+    def check_extra_presets(obj_type: str, conf_obj: dict) -> None:
+        """Check if conf_obj of obj_type contains references to extra presets.
+
+        obj_type is either "corpus" or "attribute" (keys of extra_presets).
+        Load the presets if needed.
+        No new presets are generated for inline values.
+        """
+        for key, subdir in extra_presets[obj_type].items():
+            conf_value = conf_obj.get(key)
+            if isinstance(conf_value, str):
+                # String value is a reference to a preset
+                if conf_value not in extra_preset_values[subdir]:
+                    # Preset not loaded yet
+                    preset_def = load_preset(subdir, conf_value, subdir.title())
+                    if preset_def:
+                        extra_preset_values[subdir][conf_value] = preset_def
 
     def get_inline_def_id(attr_type: str,
                           attr_name: str,
@@ -3901,6 +3939,17 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
 
                 # Add corpus configuration to mode
                 mode["corpora"][corpus_id] = corpus
+
+    # Check if extra presets are referred to by corpus or attribute
+    # definitions and add the values of referenced presets to mode
+    for corpus_def in mode["corpora"].values():
+        check_extra_presets("corpus", corpus_def)
+    for attr_type in attr_types.values():
+        for attr_def in mode["attributes"].get(attr_type, {}).values():
+            check_extra_presets("attribute", attr_def)
+    for preset_type, presets in extra_preset_values.items():
+        if presets:
+            mode[preset_type] = presets
 
     if corpora and "preselected_corpora" in mode:
         del mode["preselected_corpora"]
