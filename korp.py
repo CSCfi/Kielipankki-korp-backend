@@ -29,6 +29,7 @@ from collections import defaultdict, OrderedDict
 from dateutil.relativedelta import relativedelta
 from copy import deepcopy
 from pathlib import Path
+from typing import Union, Optional
 import datetime
 import uuid
 import binascii
@@ -3657,10 +3658,14 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
     mode["attributes"] = {t: {} for t in attr_types.values()}  # Attributes referred to by corpora
     attribute_presets = {t: {} for t in attr_types.values()}  # Attribute presets
     hash_to_attr = {}
+    mode["attribute_lists"] = {t: {} for t in attr_types.values()}  # Attribute lists referred to by corpora
+    attrlist_presets = {t: {} for t in attr_types.values()}  # Attribute list presets
+    hash_to_attrlist = {}
     warnings = set()
 
-    def get_new_attr_name(name: str) -> str:
+    def get_new_attr_name(name: str, hash_dict: Optional[dict] = None) -> str:
         """Create a unique name for attribute, to be used as identifier."""
+        hash_dict = hash_dict or hash_to_attr
         while name in hash_to_attr.values():
             name += "_"
         return name
@@ -3678,6 +3683,96 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
                 warnings.add(f"The corpus {c!r} does not exist, or does not have a config file.")
     else:
         corpus_files = glob.glob(os.path.join(config.CORPUS_CONFIG_DIR, "corpora", "*.yaml"))
+
+    def get_preset(attr_type: str,
+                   attr_type_name: str,
+                   attr_name: str,
+                   attr_val: Union[str, dict],
+                   preset_type: Optional[str] = None,
+                   ) -> Optional[str]:
+        """Return attribute or attribute list preset name given the arguments.
+
+        Load the preset from file if needed.
+
+        The default is to get an attribute preset; to get an attribute list
+        preset, set argument preset_type = "attrlist".
+        """
+        if preset_type == "attrlist":
+            presets = attrlist_presets
+            preset_type = "attribute_lists"
+            preset_type_name = "Attribute list"
+            preset_hash_dict = hash_to_attrlist
+        else:
+            presets = attribute_presets
+            preset_type = "attributes"
+            preset_type_name = "Attribute"
+            preset_hash_dict = hash_to_attr
+        if isinstance(attr_val, str):
+            preset_name = attr_val
+            attr_hash = get_hash((attr_name, attr_val, attr_type))
+        else:
+            preset_name = attr_val["preset"]
+            attr_hash = get_hash((attr_name, json.dumps(attr_val, sort_keys=True), attr_type))
+
+        if attr_hash in preset_hash_dict:  # Preset already loaded and ready to use
+            return preset_hash_dict[attr_hash]
+        else:
+            if preset_name not in presets[attr_type]:  # Preset not loaded yet
+                try:
+                    with open(os.path.join(config.CORPUS_CONFIG_DIR, preset_type,
+                                           attr_type_name, preset_name + ".yaml"),
+                              encoding="utf-8") as f:
+                        attr_def = yaml.safe_load(f)
+                        if not attr_def:
+                            warnings.add(f"{preset_type_name} preset {preset_name!r} is empty.")
+                            return None
+                        presets[attr_type][preset_name] = attr_def
+                except FileNotFoundError:
+                    warnings.add(f"{preset_type_name} preset {preset_name!r} in corpus {corpus_id!r} "
+                                 "does not exist.")
+                    return None
+            attr_id = get_new_attr_name(preset_name, preset_hash_dict)
+            preset_hash_dict[attr_hash] = attr_id
+            mode[preset_type][attr_type][attr_id] = presets[attr_type][
+                preset_name].copy()
+            if preset_type == "attributes":
+                mode[preset_type][attr_type][attr_id].update({"name": attr_name})
+                if isinstance(attr_val, dict):
+                    # Override preset values
+                    del attr_val["preset"]
+                    mode[preset_type][attr_type][attr_id].update(attr_val)
+            return attr_id
+
+    def get_inline_def_id(attr_type: str,
+                          attr_name: str,
+                          attr_val: Union[dict, list],
+                          def_type: Optional[str] = None,
+                          corpus_id: Optional[str] = None) -> str:
+        """Get id for inline attribute or attribute list definition attr_val.
+
+        The default is to get id for an attribute; to get it for an attribute
+        list, specify def_type = "attrlist" and corpus_id.
+        """
+        new_attr_basename = attr_name
+        if def_type == "attrlist":
+            hash_dict = hash_to_attrlist
+            preset_type = "attribute_lists"
+            # Include corpus_id in the base name for new attribute lists
+            if corpus_id:
+                new_attr_basename = f"{attr_type[0]}_{corpus_id}"
+        else:
+            hash_dict = hash_to_attr
+            preset_type = "attributes"
+        attr_hash = get_hash((attr_name, json.dumps(attr_val, sort_keys=True), attr_type))
+        if attr_hash in hash_dict:  # Identical attribute has previously been used
+            return hash_dict[attr_hash]
+        else:
+            attr_id = get_new_attr_name(new_attr_basename, hash_dict)
+            hash_dict[attr_hash] = attr_id
+            if def_type != "attrlist":
+                attr_val.update({"name": attr_name})
+            mode[preset_type][attr_type][attr_id] = attr_val
+            return attr_id
 
     # Go through all corpora to see if they are included in mode
     for corpus_file in corpus_files:
@@ -3708,61 +3803,39 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
         if corpora or mode_name in [m["name"] for m in corpus_def.get("mode", [])]:
             for attr_type_name, attr_type in attr_types.items():
                 if attr_type in corpus_def:
+                    if isinstance(corpus_def[attr_type], str):
+                        # A reference to an attribute list preset
+                        # Use a dummy name "*attrlist", as attribute
+                        # lists have no name like attributes
+                        preset = get_preset(attr_type, attr_type_name, "*attrlist",
+                                            corpus_def[attr_type], "attrlist")
+                        if preset is None:
+                            corpus_def[attr_type] = []
+                            continue
+                        else:
+                            # Copy attributes in the preset to corpus definition
+                            corpus_def[attr_type] = mode["attribute_lists"][attr_type][preset].copy()
                     to_delete = []
                     for i, attr in enumerate(corpus_def[attr_type]):
                         for attr_name, attr_val in attr.items():
                             # A reference to an attribute preset
                             if isinstance(attr_val, str) or isinstance(attr_val, dict) and "preset" in attr_val:
-                                if isinstance(attr_val, str):
-                                    preset_name = attr_val
-                                    attr_hash = get_hash((attr_name, attr_val, attr_type))
+                                preset = get_preset(attr_type, attr_type_name, attr_name, attr_val)
+                                if preset is None:
+                                    to_delete.append(i)
+                                    continue
                                 else:
-                                    preset_name = attr_val["preset"]
-                                    attr_hash = get_hash((attr_name, json.dumps(attr_val, sort_keys=True), attr_type))
-
-                                if attr_hash in hash_to_attr:  # Preset already loaded and ready to use
-                                    corpus_def[attr_type][i] = hash_to_attr[attr_hash]
-                                else:
-                                    if preset_name not in attribute_presets[attr_type]:  # Preset not loaded yet
-                                        try:
-                                            with open(os.path.join(config.CORPUS_CONFIG_DIR, "attributes",
-                                                                   attr_type_name, preset_name + ".yaml"),
-                                                      encoding="utf-8") as f:
-                                                attr_def = yaml.safe_load(f)
-                                                if not attr_def:
-                                                    warnings.add(f"Preset {preset_name!r} is empty.")
-                                                    to_delete.append(i)
-                                                    continue
-                                                attribute_presets[attr_type][preset_name] = attr_def
-                                        except FileNotFoundError:
-                                            to_delete.append(i)
-                                            warnings.add(f"Attribute preset {preset_name!r} in corpus {corpus_id!r} "
-                                                         "does not exist.")
-                                            continue
-                                    attr_id = get_new_attr_name(preset_name)
-                                    hash_to_attr[attr_hash] = attr_id
-                                    mode["attributes"][attr_type][attr_id] = attribute_presets[attr_type][
-                                        preset_name].copy()
-                                    mode["attributes"][attr_type][attr_id].update({"name": attr_name})
-                                    if isinstance(attr_val, dict):
-                                        # Override preset values
-                                        del attr_val["preset"]
-                                        mode["attributes"][attr_type][attr_id].update(attr_val)
-                                    corpus_def[attr_type][i] = attr_id
-
+                                    corpus_def[attr_type][i] = preset
                             # Inline attribute definition
                             elif isinstance(attr_val, dict):
-                                attr_hash = get_hash((attr_name, json.dumps(attr_val, sort_keys=True), attr_type))
-                                if attr_hash in hash_to_attr:  # Identical attribute has previously been used
-                                    corpus_def[attr_type][i] = hash_to_attr[attr_hash]
-                                else:
-                                    attr_id = get_new_attr_name(attr_name)
-                                    hash_to_attr[attr_hash] = attr_id
-                                    attr_val.update({"name": attr_name})
-                                    mode["attributes"][attr_type][attr_id] = attr_val
-                                    corpus_def[attr_type][i] = attr_id
+                                corpus_def[attr_type][i] = get_inline_def_id(attr_type, attr_name, attr_val)
                     for i in reversed(to_delete):
                         del corpus_def[attr_type][i]
+                    if config.CORPUS_CONFIG_ATTRLIST_PRESETS and corpus_def[attr_type]:
+                        # Use or add attribute list preset for non-empty lists
+                        corpus_def[attr_type] = get_inline_def_id(
+                            attr_type, "*attrlist", corpus_def[attr_type], "attrlist", corpus_id)
+
             corpus_modes = [mode for mode in corpus_def.get("mode", []) if mode["name"] == mode_name]
             if corpus_modes:
                 corpus_mode_settings = corpus_modes.pop()
@@ -3788,6 +3861,10 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
 
     if corpora and "preselected_corpora" in mode:
         del mode["preselected_corpora"]
+
+    if not config.CORPUS_CONFIG_ATTRLIST_PRESETS:
+        # Do not output attribute list presets, as they have been inlined
+        del mode["attribute_lists"]
 
     _remove_empty_folders(mode)
     if warnings:

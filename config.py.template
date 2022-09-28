@@ -78,6 +78,11 @@ CORPUS_CONFIG_DIR = ""
 # Set to True to enable "lab mode", potentially enabling experimental features and access to lab-only corpora
 LAB_MODE = False
 
+# Whether /corpus_config should create new presets for inlined
+# attribute lists and output attribute list presets referenced by name;
+# if False, attribute list presets are inlined
+CORPUS_CONFIG_ATTRLIST_PRESETS = False
+
 # Whether corpus results should be sorted by corpus id by default (true) or
 # output in the order specified in the corpus parameter (false); this can be
 # overridden with the parameter sort_corpora=true|false
