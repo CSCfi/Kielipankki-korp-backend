@@ -76,3 +76,19 @@ LAB_MODE = False
 # attribute lists and output attribute list presets referenced by name;
 # if False, attribute list presets are inlined
 CORPUS_CONFIG_ATTRLIST_PRESETS = False
+
+# Possible extra preset types in corpus and attribute definitions:
+# object type -> (key in object -> configuration subdirectory), where
+# object type is "corpus" or "attribute" and configuration
+# subdirectory is also the top-level key for these presets in
+# /corpus_config output
+CORPUS_CONFIG_EXTRA_PRESETS = {
+    "corpus": {
+        "context": "contexts",
+        "within": "withins",
+    },
+    "attribute": {
+        "opts": "options",
+        "translation": "translations",
+    },
+}

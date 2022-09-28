@@ -3424,6 +3424,15 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
         "custom": "custom_attributes"
     }
 
+    # Possible extra presets in corpus and attribute definitions:
+    # object type -> (key in object -> configuration subdirectory for
+    # presets)
+    extra_presets = config.CORPUS_CONFIG_EXTRA_PRESETS
+    # Values of extra presets by preset type: configuration
+    # subdirectory -> (preset name -> preset value)
+    extra_preset_values = {val: {} for extra_preset in extra_presets.values()
+                           for val in extra_preset.values()}
+
     mode["corpora"] = {}  # All corpora in mode
     mode["attributes"] = {t: {} for t in attr_types.values()}  # Attributes referred to by corpora
     attribute_presets = {t: {} for t in attr_types.values()}  # Attribute presets
@@ -3524,6 +3533,23 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
                     del attr_val["preset"]
                     mode[preset_type][attr_type][attr_id].update(attr_val)
             return attr_id
+
+    def check_extra_presets(obj_type: str, conf_obj: dict) -> None:
+        """Check if conf_obj of obj_type contains references to extra presets.
+
+        obj_type is either "corpus" or "attribute" (keys of extra_presets).
+        Load the presets if needed.
+        No new presets are generated for inline values.
+        """
+        for key, subdir in extra_presets[obj_type].items():
+            conf_value = conf_obj.get(key)
+            if isinstance(conf_value, str):
+                # String value is a reference to a preset
+                if conf_value not in extra_preset_values[subdir]:
+                    # Preset not loaded yet
+                    preset_def = load_preset(subdir, conf_value, subdir.title())
+                    if preset_def:
+                        extra_preset_values[subdir][conf_value] = preset_def
 
     def get_inline_def_id(attr_type: str,
                           attr_name: str,
@@ -3640,6 +3666,17 @@ def get_mode(mode_name: str, corpora: list, cache: bool):
 
                 # Add corpus configuration to mode
                 mode["corpora"][corpus_id] = corpus
+
+    # Check if extra presets are referred to by corpus or attribute
+    # definitions and add the values of referenced presets to mode
+    for corpus_def in mode["corpora"].values():
+        check_extra_presets("corpus", corpus_def)
+    for attr_type in attr_types.values():
+        for attr_def in mode["attributes"].get(attr_type, {}).values():
+            check_extra_presets("attribute", attr_def)
+    for preset_type, presets in extra_preset_values.items():
+        if presets:
+            mode[preset_type] = presets
 
     if corpora and "preselected_corpora" in mode:
         del mode["preselected_corpora"]
