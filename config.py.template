@@ -83,6 +83,10 @@ LAB_MODE = False
 # if False, attribute list presets are inlined
 CORPUS_CONFIG_ATTRLIST_PRESETS = False
 
+# Base file name for corpus configuration template files in subdirectories
+# of "corpora", without a ".yaml" extension
+CORPUS_CONFIG_TEMPLATE_BASENAME = "_template"
+
 # Whether corpus results should be sorted by corpus id by default (true) or
 # output in the order specified in the corpus parameter (false); this can be
 # overridden with the parameter sort_corpora=true|false
