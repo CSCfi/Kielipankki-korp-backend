@@ -72,6 +72,24 @@ pluginconf = korppluginlib.get_plugin_config(
     ],
     # A list of individual log items to be excluded from logging.
     LOG_EXCLUDE_ITEMS = [],
+    # A dict[str, set[str]] of log levels and the log items logged at
+    # the level in question. If an item name has a leading asterisk,
+    # it is taken as a category; the level for an individual item
+    # overrides that of its category. If an item is not listed, its
+    # level is "info".
+    LOG_LEVEL_ITEMS = {
+        "debug": {
+            "App",
+            "CQP",
+            "CQP-output-length",
+            "CQP-time",
+            "Env",
+            "Resource-usage-children",
+            "Resource-usage-self",
+            "Result",
+            "SQL",
+        },
+    },
 )
 
 
@@ -190,6 +208,12 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
         self._logger.addHandler(handler)
         # Storage for request-specific data, such as start times
         self._logdata = dict()
+        # Log levels for items (other than "info")
+        self._item_levels = {
+            item: level
+            for level, items in pluginconf.LOG_LEVEL_ITEMS.items()
+            for item in items
+        }
 
     # Helper methods
 
@@ -238,12 +262,17 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
             value = value(self._logdata[request_id].get(key, default))
         self._logdata[request_id][key] = value
 
-    def _log(self, log_fn, category, item, *values, format=None, maxlen=None):
-        """Log item in category with values using function log_fn and format
+    def _log(self, logger, category, item, *values, format=None, maxlen=None,
+             levelname=None):
+        """Log item in category with values using logger and format.
 
         Do not log if pluginconf.LOG_CATEGORIES is not None and it
         does not contain category, or if pluginconf.LOG_EXCLUDE_ITEMS
         contains item.
+
+        If levelname is not None, log using the logger method
+        specified by it, otherwise by self._item_levels[item] or
+        self._item_levels["*" + category] (default: logger.info).
 
         If multiple values are given, each of them gets the format
         specifier "%s", separated by spaces, unless format is
@@ -259,6 +288,11 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
             extra = {}
             if maxlen is not None:
                 extra["maxlen"] = maxlen
+            if levelname is None:
+                levelname = (self._item_levels.get(item)
+                             or self._item_levels.get("*" + category)
+                             or "info")
+            log_fn = getattr(logger, levelname, logger.info)
             log_fn(item + ": " + format, *values, extra=extra)
 
     @staticmethod
@@ -286,19 +320,19 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
         env = request.environ
         # request.remote_addr is localhost when behind proxy, so get the
         # originating IP from request.access_route
-        self._log(logger.info, "userinfo", "IP", request.access_route[0])
-        self._log(logger.info, "userinfo", "User-agent", request.user_agent)
-        self._log(logger.info, "referrer", "Referrer", request.referrer)
+        self._log(logger, "userinfo", "IP", request.access_route[0])
+        self._log(logger, "userinfo", "User-agent", request.user_agent)
+        self._log(logger, "referrer", "Referrer", request.referrer)
         # request.script_root is empty; how to get the name of the
         # script? Or is it at all relevant here?
-        # self._log(logger.info, "params", "Script", request.script_root)
-        self._log(logger.info, "params", "Loginfo", args.get("loginfo", ""))
+        # self._log(logger, "params", "Script", request.script_root)
+        self._log(logger, "params", "Loginfo", args.get("loginfo", ""))
         cmd = request.path.strip("/")
         if not cmd:
             cmd = "info"
         # Would it be better to call this "Endpoint"?
-        self._log(logger.info, "params", "Command", cmd)
-        self._log(logger.info, "params", "Params", args)
+        self._log(logger, "params", "Command", cmd)
+        self._log(logger, "params", "Params", args)
         # Log user information (Shibboleth authentication only). How could we
         # make this depend on using a Shibboleth plugin?
         if KorpLogger._log_category("auth"):
@@ -313,11 +347,11 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
                 auth_user = hashlib.md5(remote_user.encode()).hexdigest()
             else:
                 auth_domain = auth_user = None
-            self._log(logger.info, "auth", "Auth-domain", auth_domain)
-            self._log(logger.info, "auth", "Auth-user", auth_user)
-        self._log(logger.debug, "env", "Env", env)
+            self._log(logger, "auth", "Auth-domain", auth_domain)
+            self._log(logger, "auth", "Auth-user", auth_user)
+        self._log(logger, "env", "Env", env)
         self._set_logdata(request, "cqp_time_sum", 0)
-        # self._log(logger.debug, "env", "App",
+        # self._log(logger, "env", "App",
         #           repr(korppluginlib.app_globals.app.__dict__))
 
     def exit_handler(self, endtime, elapsed_time, request):
@@ -332,29 +366,29 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
                     .replace(",", ""))
 
         logger = KorpLogger._get_logger(request)
-        self._log(logger.info, "times", "CQP-time-total",
+        self._log(logger, "times", "CQP-time-total",
                   self._get_logdata(request, "cqp_time_sum"))
-        self._log(logger.info, "load", "CPU-load", *os.getloadavg())
+        self._log(logger, "load", "CPU-load", *os.getloadavg())
         # FIXME: The CPU times probably make little sense, as the WSGI server
         # handles multiple requests in a single process. However, does CPU
         # times difference make any more sense?
         cpu_times_start = self._get_logdata(request, "cpu_times_start")
         cpu_times_end = os.times()[:4]
-        self._log(logger.info, "times", "CPU-times", *cpu_times_end)
+        self._log(logger, "times", "CPU-times", *cpu_times_end)
         # The difference of CPU times at the beginning and end of the request
         cpu_times_diff = tuple(
             "{:.2f}".format(cpu_times_end[i] - cpu_times_start[i])
             for i in range(len(cpu_times_start)))
-        self._log(logger.info, "times", "CPU-times-diff", *cpu_times_diff)
+        self._log(logger, "times", "CPU-times-diff", *cpu_times_diff)
         rusage_self = resource.getrusage(resource.RUSAGE_SELF)
         rusage_children = resource.getrusage(resource.RUSAGE_CHILDREN)
-        self._log(logger.info, "memory", "Memory-max-RSS",
+        self._log(logger, "memory", "Memory-max-RSS",
                   rusage_self[2], rusage_children[2])
-        self._log(logger.debug, "rusage", "Resource-usage-self",
+        self._log(logger, "rusage", "Resource-usage-self",
                   format_rusage(rusage_self))
-        self._log(logger.debug, "rusage", "Resource-usage-children",
+        self._log(logger, "rusage", "Resource-usage-children",
                   format_rusage(rusage_children))
-        self._log(logger.info, "times", "Elapsed", elapsed_time)
+        self._log(logger, "times", "Elapsed", elapsed_time)
         self._end_logging(request)
 
     def filter_result(self, result, request):
@@ -365,13 +399,13 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
         """
         logger = KorpLogger._get_logger(request)
         if "corpus_hits" in result:
-            self._log(logger.info, "result", "Hits", result["corpus_hits"])
-        self._log(logger.debug, "debug", "Result", result)
+            self._log(logger, "result", "Hits", result["corpus_hits"])
+        self._log(logger, "debug", "Result", result)
 
     def filter_cqp_input(self, cqp, request):
         """Debug log CQP input cqp and save start time"""
         logger = KorpLogger._get_logger(request)
-        self._log(logger.debug, "debug", "CQP", cqp)
+        self._log(logger, "debug", "CQP", cqp)
         self._set_logdata(request, "cqp_start_time",  time.time())
 
     def filter_cqp_output(self, output, request):
@@ -379,15 +413,15 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
         cqp_time = time.time() - self._get_logdata(request, "cqp_start_time")
         logger = KorpLogger._get_logger(request)
         # output is a pair (result, error): log the length of both
-        self._log(logger.debug, "debug", "CQP-output-length",
+        self._log(logger, "debug", "CQP-output-length",
                   *(len(val) for val in output))
-        self._log(logger.debug, "debug", "CQP-time", cqp_time)
+        self._log(logger, "debug", "CQP-time", cqp_time)
         self._set_logdata(request, "cqp_time_sum", lambda x: x + cqp_time, 0)
 
     def filter_sql(self, sql, request):
         """Debug log SQL statements sql"""
         logger = KorpLogger._get_logger(request)
-        self._log(logger.debug, "debug", "SQL", sql)
+        self._log(logger, "debug", "SQL", sql)
 
     def log(self, levelname, category, item, value, request):
         """Log with the given level, category, item and value
@@ -402,5 +436,4 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
         ...) whenever they wish to log something.
         """
         logger = KorpLogger._get_logger(request)
-        self._log(getattr(logger, levelname, logger.info),
-                  category, item, value)
+        self._log(logger, category, item, value, levelname=levelname)
