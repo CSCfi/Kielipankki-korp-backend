@@ -43,7 +43,7 @@ class QueryContentHider(korppluginlib.KorpCallbackPlugin):
         return (pluginconf.HIDDEN_STRUCT_NAMES
                 and request.endpoint in ("query", "relations_sentences"))
 
-    def filter_args(self, args, request):
+    def filter_args(self, request, args):
         """Add to show_struct attributes names marking a structure hidden."""
         args["show_struct"] = (
             args.get("show_struct", "")
@@ -51,7 +51,7 @@ class QueryContentHider(korppluginlib.KorpCallbackPlugin):
         ).lstrip(",")
         return args
 
-    def filter_result(self, result, request):
+    def filter_result(self, request, result):
         """Hide (mask) attributes of structures marked as hidden."""
         for row_num, kwic_row in enumerate(result.get("kwic", [])):
             linestructs = kwic_row.get("structs", {})
