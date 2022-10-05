@@ -72,7 +72,7 @@ def count2(args):
 
 class Test1b(korppluginlib.KorpCallbackPlugin):
 
-    def filter_result(self, d, request):
+    def filter_result(self, request, d):
         """Wrap the result dictionary in WRAP_NAME and add "endpoint"."""
         return {"endpoint": request.endpoint,
                 pluginconf.WRAP_NAME: d}
