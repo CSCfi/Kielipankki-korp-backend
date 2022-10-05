@@ -378,7 +378,7 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
         # logger.logf("env", "App",
         #             repr(korppluginlib.app_globals.app.__dict__))
 
-    def exit_handler(self, request, endtime, elapsed_time):
+    def exit_handler(self, request, endtime, elapsed_time, result_len):
         """Log information at exiting Korp"""
 
         def format_rusage(rusage):
@@ -390,6 +390,7 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
                     .replace(",", ""))
 
         logger = KorpLogger._get_logger(request)
+        logger.logf("result", "Content-length", result_len)
         logger.logf("times", "CQP-time-total",
                     self._get_logdata(request, "cqp_time_sum"))
         logger.logf("load", "CPU-load", *os.getloadavg())
