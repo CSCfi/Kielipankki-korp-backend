@@ -337,7 +337,7 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
 
     # Actual plugin methods (functions)
 
-    def enter_handler(self, args, starttime, request):
+    def enter_handler(self, request, args, starttime):
         """Initialize logging at entering Korp and log basic information"""
         logger = self._init_logging(request, starttime, args)
         self._set_logdata(request, "cpu_times_start", os.times()[:4])
@@ -378,7 +378,7 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
         # logger.logf("env", "App",
         #             repr(korppluginlib.app_globals.app.__dict__))
 
-    def exit_handler(self, endtime, elapsed_time, request):
+    def exit_handler(self, request, endtime, elapsed_time):
         """Log information at exiting Korp"""
 
         def format_rusage(rusage):
@@ -415,7 +415,7 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
         logger.logf("times", "Elapsed", elapsed_time)
         self._end_logging(request)
 
-    def filter_result(self, result, request):
+    def filter_result(self, request, result):
         """Debug log the result (request response)
 
         Note that the possible filter_result functions of plugins
@@ -426,13 +426,13 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
             logger.logf("result", "Hits", result["corpus_hits"])
         logger.logf("debug", "Result", result)
 
-    def filter_cqp_input(self, cqp, request):
+    def filter_cqp_input(self, request, cqp):
         """Debug log CQP input cqp and save start time"""
         logger = KorpLogger._get_logger(request)
         logger.logf("debug", "CQP", cqp)
         self._set_logdata(request, "cqp_start_time",  time.time())
 
-    def filter_cqp_output(self, output, request):
+    def filter_cqp_output(self, request, output):
         """Debug log CQP output length and time spent in CQP"""
         cqp_time = time.time() - self._get_logdata(request, "cqp_start_time")
         logger = KorpLogger._get_logger(request)
@@ -442,12 +442,12 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
         logger.logf("debug", "CQP-time", cqp_time)
         self._set_logdata(request, "cqp_time_sum", lambda x: x + cqp_time, 0)
 
-    def filter_sql(self, sql, request):
+    def filter_sql(self, request, sql):
         """Debug log SQL statements sql"""
         logger = KorpLogger._get_logger(request)
         logger.logf("debug", "SQL", sql)
 
-    def log(self, levelname, category, item, value, request):
+    def log(self, request, levelname, category, item, value):
         """Log with the given level, category, item and value
 
         levelname should be one of "debug", "info", "warning", "error"
