@@ -68,7 +68,7 @@ class ProtectedCorporaDatabase(korppluginlib.KorpCallbackPlugin):
         if self._connection:
             self._connection.close()
 
-    def filter_protected_corpora(self, protected_corpora, request):
+    def filter_protected_corpora(self, request, protected_corpora):
         """Append to protected_corpora corpora in authorization database."""
         if self._connect():
             try:
