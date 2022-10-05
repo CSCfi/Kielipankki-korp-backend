@@ -22,19 +22,19 @@ class ShibbolethAuthorizer(korppluginlib.KorpCallbackPlugin):
     # expected by the frontend (plugin).
     _username = {}
 
-    def exit_handler(self, endtime, elapsed, request):
+    def exit_handler(self, request, *args):
         """Remove request username at the end of handling the request."""
         if request in self._username:
             del self._username[request]
 
-    def filter_result(self, result, request):
+    def filter_result(self, request, result):
         """Add "username" to the result of /authenticate."""
         # Note: You cannot specify method applies_to() to restrict to
         # /authenticate, as also other endpoints call authenticate internally.
         if request.endpoint == "authenticate":
             result["username"] = self._username.get(request)
 
-    def filter_auth_postdata(self, postdata, request):
+    def filter_auth_postdata(self, request, postdata):
         """If REMOTE_USER is set, return postdata with Shibboleth info.
 
         If REMOTE_USER is set, return postdata with remote_user,
