@@ -43,6 +43,6 @@ def print_verbose_delayed(verbosity=None):
 
 
 def discard_print_verbose_delayed():
-    "Discard collected delayed print verbose arguments."""
+    """Discard collected delayed print verbose arguments."""
     global _delayed_print_verbose_args
     _delayed_print_verbose_args = []
