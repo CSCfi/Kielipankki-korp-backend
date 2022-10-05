@@ -429,11 +429,12 @@ following:
   of arguments to the endpoint and `starttime` is the current time as
   seconds since the epoch as a floating point number.
 
-- `exit_handler(self, request, endtime, elapsed_time)`: Called
-  just before exiting a view function for an endpoint (before yielding
-  a response). `endtime` is the current time as seconds since the
-  epoch as a floating point number, and `elapsed_time` is the time
-  spent in the view function as seconds.
+- `exit_handler(self, request, endtime, elapsed_time, result_len)`:
+  Called just before exiting a view function for an endpoint (before
+  yielding a response). `endtime` is the current time as seconds since
+  the epoch as a floating point number, `elapsed_time` is the time
+  spent in the view function as seconds, and `result_len` the length
+  of the response content.
 
 - `error(self, request, error, exc)`: Called after an exception
   has occurred. `error` is the `dict` to be returned in JSON as
