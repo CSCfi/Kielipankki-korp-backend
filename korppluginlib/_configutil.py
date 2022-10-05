@@ -43,15 +43,15 @@ _conf_defaults = SimpleNamespace(
 )
 
 
-def _make_config(*configs):
+def _make_config(*configs, always_add=None):
     """Return a config object with values from configs.
 
     The returned object is a SimpleNamespace object that has a value for
     each attribute in *last* non-empty of configs, treated as defaults.
     The value is overridden by the corresponding value in the *first* of
     other configs that has an attribute with the same name. If an item
-    in configs has an attribute that is not in the defaults, it is
-    ignored.
+    in configs has an attribute that is not in the defaults (or
+    always_add), it is ignored.
 
     Each configuration object is either a namespace-like object with
     attributes, in which case its __dict__ attribute is inspected, or
@@ -59,6 +59,11 @@ def _make_config(*configs):
     configs is either such a configuration object directly or a pair
     (conf, prefix), where conf is the object and prefix is a string to
     be prefixed to attributes when searching from conf.
+
+    The items in always_add (a dict or namespace) are added to the
+    result even if the keys were not present in the defaults. Their
+    values are those in always_add, unless a different value is
+    specified in a configuration object.
     """
     # We need to handle the default configuration separately, as it lists the
     # available configuration attributes
@@ -79,6 +84,9 @@ def _make_config(*configs):
                                         if key.startswith(prefix))
                 else:
                     default_conf = conf_dict
+                if always_add:
+                    for key, val in _get_dict(always_add).items():
+                        default_conf.setdefault(key, val)
             else:
                 # Prepend non-defaults to other_confs: earlier ones have higher
                 # priority, but they are later in the reversed list
