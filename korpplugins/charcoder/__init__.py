@@ -106,13 +106,13 @@ def _encode_special_chars_in_queries(cqp_list):
 
 class SpecialCharacterTranscoder(korppluginlib.KorpCallbackPlugin):
 
-    def filter_args(self, args, request):
+    def filter_args(self, request, args):
         """Encode special characters in CQP queries"""
         return self._transcode_strings(
             args, _encode_special_chars_in_query,
             argname_filter=lambda key: "cqp" in key)
 
-    def filter_result(self, result, *rest):
+    def filter_result(self, request, result):
         """Decode special characters in result"""
         return self._transcode_strings(result, _decode_special_chars, keys=True)
 
