@@ -79,3 +79,21 @@ LOG_CATEGORIES = [
 # A list of individual log items (e.g. "IP", "User-agent") to be excluded from
 # logging.
 LOG_EXCLUDE_ITEMS = []
+
+# A dict[str, set[str]] of log levels and the log items logged at the
+# level in question. If an item name has a leading asterisk, it is
+# taken as a category; the level for an individual item overrides that
+# of its category. If an item is not listed, its level is "info".
+LOG_LEVEL_ITEMS = {
+    "debug": {
+        "App",
+        "CQP",
+        "CQP-output-length",
+        "CQP-time",
+        "Env",
+        "Resource-usage-children",
+        "Resource-usage-self",
+        "Result",
+        "SQL",
+    },
+}
