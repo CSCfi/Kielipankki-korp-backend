@@ -35,8 +35,8 @@ class Test3(korppluginlib.KorpCallbackPlugin):
         print("enter_handler", request, args, starttime)
         print("app_globals:", korppluginlib.app_globals)
 
-    def exit_handler(self, request, endtime, elapsed):
-        print("exit_handler", request, endtime, elapsed)
+    def exit_handler(self, request, *args):
+        print("exit_handler", request, *args)
 
     def error(self, request, error, exc):
         print("error", request, error, traceback.format_exception(*exc))
@@ -95,7 +95,7 @@ class StateTest(korppluginlib.KorpCallbackPlugin):
         data.starttime = starttime
         print("StateTest.enter_handler: starttime =", starttime)
 
-    def exit_handler(self, request, endtime, elapsed):
+    def exit_handler(self, request, endtime, *rest):
         print("StateTest.exit_handler: starttime =",
               self._data[request].starttime, "endtime =", endtime)
         del self._data[request]
