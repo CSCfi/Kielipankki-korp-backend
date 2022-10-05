@@ -22,7 +22,7 @@ class ShibbolethAuthorizer(korppluginlib.KorpCallbackPlugin):
     # expected by the frontend (plugin).
     _username = {}
 
-    def exit_handler(self, request, endtime, elapsed):
+    def exit_handler(self, request, *args):
         """Remove request username at the end of handling the request."""
         if request in self._username:
             del self._username[request]
