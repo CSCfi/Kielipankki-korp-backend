@@ -10,6 +10,9 @@ this module should not import any korppluginlib module.
 """
 
 
+import inspect
+
+
 # A list of tuples of print_verbose call arguments whose printing has been
 # delayed until printing with print_verbose_delayed.
 _delayed_print_verbose_args = []
@@ -57,3 +60,26 @@ def discard_print_verbose_delayed():
     """Discard collected delayed print verbose arguments."""
     global _delayed_print_verbose_args
     _delayed_print_verbose_args = []
+
+
+def get_plugin_name(call_depth=1):
+    """Return (plugin name, package name, module info).
+
+    Return the information for call stack depth call_depth: the
+    default 1 returns the information for the directly calling code,
+    but it needs to be increased if you need the information for the
+    caller of the caller, for example. Module info is that returned by
+    inspect.getmodule.
+    """
+    # Use the facilities in the module inspect to avoid having to pass __name__
+    # as an argument to the function (https://stackoverflow.com/a/1095621)
+    module = inspect.getmodule(inspect.stack()[call_depth][0])
+    # Assume module name package.plugin_package.module[.submodule...],
+    # package.plugin_module or plugin_module
+    module_name_comps = module.__name__.split(".")
+    if len(module_name_comps) > 1:
+        pkg, plugin = module_name_comps[:2]
+    else:
+        pkg = None
+        plugin = module_name_comps[0]
+    return plugin, pkg, module

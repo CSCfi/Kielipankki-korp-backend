@@ -10,11 +10,12 @@ intended to be visible outside the package are imported at the package level.
 
 
 import importlib
-import inspect
 
 from types import SimpleNamespace
 
 import config as korpconf
+
+from ._util import get_plugin_name
 
 
 # Try to import korppluginlib.config as _pluginlibconf; if not available,
@@ -166,14 +167,11 @@ def get_plugin_config(defaults=None, **kw_defaults):
     """
     if defaults is None:
         defaults = kw_defaults
-    # Use the facilities in the module inspect to avoid having to pass __name__
-    # as an argument to the function (https://stackoverflow.com/a/1095621)
-    module = inspect.getmodule(inspect.stack()[1][0])
+    plugin, pkg, module = get_plugin_name(call_depth=2)
     # Assume module name package.plugin_package.module[.submodule...],
     # package.plugin_module or plugin_module
-    module_name_comps = module.__name__.split(".")
-    if len(module_name_comps) > 1:
-        pkg, plugin = module_name_comps[:2]
+    if pkg:
+        module_name_comps = module.__name__.split(".")
         # Module name does not contain ".__init__", so test it separately
         if len(module_name_comps) > 2 or "__init__.py" in module.__file__:
             # package.plugin_package.module[.submodule...]
@@ -188,7 +186,6 @@ def get_plugin_config(defaults=None, **kw_defaults):
             plugin_config_mod = SimpleNamespace()
     else:
         # plugin_module
-        plugin = module_name_comps[0]
         plugin_config_mod = SimpleNamespace()
     if plugin not in _plugin_configs_expanded:
         plugin_configs[plugin] = _make_config(

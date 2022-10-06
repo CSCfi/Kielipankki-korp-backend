@@ -14,7 +14,6 @@ intended to be visible outside the package are imported at the package level.
 
 
 import functools
-import inspect
 
 import flask
 
@@ -43,10 +42,8 @@ class KorpEndpointPlugin(flask.Blueprint):
         None, set it to the name of the calling module.
         """
         if import_name is None:
-            # Use the facilities in the module inspect to avoid having to pass
-            # __name__ as an argument (https://stackoverflow.com/a/1095621)
-            calling_module = inspect.getmodule(inspect.stack()[1][0])
-            import_name = calling_module.__name__
+            plugin_name, _, module = get_plugin_name(call_depth=2)
+            import_name = module.__name__
         if name is None:
             name = import_name
         # Flask 2 seems not to allow "." in Blueprint name
