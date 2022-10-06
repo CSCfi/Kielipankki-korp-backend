@@ -192,6 +192,9 @@ def get_plugin_config(defaults=None, **kw_defaults):
             plugin_configs.get(plugin, {}),
             getattr(korpconf, "PLUGIN_CONFIG_" + plugin.upper(), {}),
             plugin_config_mod,
-            defaults or {})
+            defaults or {},
+            # Make RENAME_ROUTES configurable even if it has not been
+            # given a default in the plugin
+            always_add={"RENAME_ROUTES": None})
         _plugin_configs_expanded.add(plugin)
     return plugin_configs[plugin]

@@ -11,6 +11,7 @@
   - [Configuring Korp for plugins](#configuring-korp-for-plugins)
   - [Configuring `korppluginlib`](#configuring-korppluginlib)
   - [Configuring individual plugins](#configuring-individual-plugins)
+  - [Renaming plugin endpoint routes](#renaming-plugin-endpoint-routes)
 - [Plugin information](#plugin-information)
 - [Endpoint plugins](#endpoint-plugins)
   - [Implementing a new WSGI endpoint](#implementing-a-new-wsgi-endpoint)
@@ -180,6 +181,40 @@ be either a dictionary- or namespace-like object. The returned value
 is always a `SimpleNamespace`.
 
 
+### Renaming plugin endpoint routes
+
+Endpoint routes (routing rules) defined by a plugin can be renamed by
+setting an appropriate value to the configuration variable
+`RENAME_ROUTES` of the plugin in question. This may be needed if two
+plugins have endpoints with the same route, or if it is otherwise
+desired to change the routes specified by a plugin.
+
+The default value of `RENAME_ROUTES` is `None`, meaning that routes
+are not renamed. Otherwise, its value can be a string, `dict` or
+function (`(str) -> str`):
+
+- A string value is used to rename all the routes defined by a plugin.
+  It is a format string in which `{}` denotes the original route
+  (without the leading a slash): for example, the value `"x_{}"` would
+  rename `/test1` to `/x_test1` and `/test2` to `/x_test2`.
+- A `dict` value is used to rename individual routes: for example,
+  `{"test1": "xtest"}` would rename `/test1` to `/xtest` but keep all
+  other routes intact.
+- A function value can be used to rename all routes more flexibly than
+  a format string. The function takes the route as an argument string
+  and returns the renamed route. For example, `lambda r: r[-1] +
+  r[:-1]` would rename `/test1` to `/1test` and `/test2` to `/2test`.
+
+Note that in all cases, the leading slash is stripped from the route
+before renaming and prepended again after it.
+
+Note that the configuration variable `RENAME_ROUTES` can always be set
+in a plugin configuration even if it had not been given a default
+value in the plugin. `RENAME_ROUTES` is also present in the
+configuration of plugins with no endpoints even if it has no effect
+there.
+
+
 ## Plugin information
 
 A plugin module or package may define `dict` `PLUGIN_INFO` containing
@@ -272,6 +307,10 @@ reverse order of application. The generator function takes a single
 result.
 
 A single plugin module can define multiple new endpoints.
+
+The routes for endpoints defined by a plugin can be renamed by setting
+the plugin configuration variable `RENAME_ROUTES` appropriately; see
+[above](#renaming-plugin-endpoint-routes).
 
 
 ### Non-JSON endpoints
