@@ -17,7 +17,7 @@ from types import SimpleNamespace
 
 from ._configutil import pluginlibconf, add_plugin_config, plugin_configs
 from ._endpointplugin import KorpEndpointPlugin
-from ._util import print_verbose, print_verbose_delayed
+from ._util import print_verbose, print_verbose_delayed, set_print_verbosity
 
 
 # The attributes of app_globals allows accessing the values of global
@@ -52,6 +52,7 @@ def load(app, plugin_list, decorators=None, app_globals=None):
     the possible config submodule of the plugin.
     """
     global loaded_plugins
+    set_print_verbosity(pluginlibconf.LOAD_VERBOSITY)
     if not decorators or not any(decor.__name__ == "main_handler"
                                  for decor in decorators):
         raise ValueError("decorators must contain main_handler")
