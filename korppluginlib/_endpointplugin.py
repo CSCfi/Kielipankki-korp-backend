@@ -14,11 +14,11 @@ intended to be visible outside the package are imported at the package level.
 
 
 import functools
-import inspect
 
 import flask
 
-from ._util import print_verbose
+from ._configutil import add_plugin_config, plugin_configs
+from ._util import print_verbose, get_plugin_name
 
 
 class KorpEndpointPlugin(flask.Blueprint):
@@ -43,12 +43,15 @@ class KorpEndpointPlugin(flask.Blueprint):
         None, set it to the name of the calling module.
         """
         if import_name is None:
-            # Use the facilities in the module inspect to avoid having to pass
-            # __name__ as an argument (https://stackoverflow.com/a/1095621)
-            calling_module = inspect.getmodule(inspect.stack()[1][0])
-            import_name = calling_module.__name__
+            plugin_name, _, module = get_plugin_name(call_depth=2)
+            import_name = module.__name__
         if name is None:
             name = import_name
+        # If plugin has no configuration, add one with RENAME_ROUTES
+        # set to None
+        if plugin_name not in plugin_configs:
+            add_plugin_config(plugin_name, {"RENAME_ROUTES": None})
+        self._plugin_name = plugin_name
         # Flask 2 seems not to allow "." in Blueprint name
         name = name.replace(".", "_")
         super().__init__(name, import_name, *args, **kwargs)
@@ -66,11 +69,36 @@ class KorpEndpointPlugin(flask.Blueprint):
         # usual way as @decorator if they were defined in a module instead of
         # korp.py? At least a simple approach with @plugin.route(...)
         # @use_custom_headers def func(...): ... does not seem to work.
+
+        def rename_rule(rule):
+            """Rename routing rule according to RENAME_ROUTES in config.
+
+            rule is without the leading slash.
+
+            If RENAME_ROUTES for the plugin exists and is a string, it
+            is used as a format string for the rule. If it is a dict,
+            rule becomes RENAME_ROUTES.get(rule, rule). If it is a
+            function (str) -> str, rule becomes RENAME_ROUTES(rule).
+            """
+            plugin_config = plugin_configs.get(self._plugin_name)
+            if not plugin_config:
+                return rule
+            rename = getattr(plugin_config, "RENAME_ROUTES", None)
+            if isinstance(rename, str):
+                return rename.format(rule)
+            elif isinstance(rename, dict):
+                return rename.get(rule, rule)
+            elif callable(rename):
+                return rename(rule)
+            else:
+                return rule
+
         extra_decorators = extra_decorators or []
         self._instances.add(self)
         if "methods" not in options:
             options["methods"] = ["GET", "POST"]
         def decorator(func):
+            nonlocal rule
             def wrapper(*args, **kwargs):
                 return func(*args, **kwargs)
             # Wrap in possible extra decorators and main_handler
@@ -80,6 +108,7 @@ class KorpEndpointPlugin(flask.Blueprint):
                     wrapper = functools.update_wrapper(
                         self._endpoint_decorators[decorator_name](wrapper),
                         func)
+            rule = "/" + rename_rule(rule[1:])
             wrapped_func = functools.update_wrapper(
                 super(KorpEndpointPlugin, self).route(rule, **options)(wrapper),
                 func)

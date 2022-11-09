@@ -10,11 +10,12 @@ intended to be visible outside the package are imported at the package level.
 
 
 import importlib
-import inspect
 
 from types import SimpleNamespace
 
 import config as korpconf
+
+from ._util import get_plugin_name
 
 
 # Try to import korppluginlib.config as _pluginlibconf; if not available,
@@ -43,15 +44,15 @@ _conf_defaults = SimpleNamespace(
 )
 
 
-def _make_config(*configs):
+def _make_config(*configs, always_add=None):
     """Return a config object with values from configs.
 
     The returned object is a SimpleNamespace object that has a value for
     each attribute in *last* non-empty of configs, treated as defaults.
     The value is overridden by the corresponding value in the *first* of
     other configs that has an attribute with the same name. If an item
-    in configs has an attribute that is not in the defaults, it is
-    ignored.
+    in configs has an attribute that is not in the defaults (or
+    always_add), it is ignored.
 
     Each configuration object is either a namespace-like object with
     attributes, in which case its __dict__ attribute is inspected, or
@@ -59,6 +60,11 @@ def _make_config(*configs):
     configs is either such a configuration object directly or a pair
     (conf, prefix), where conf is the object and prefix is a string to
     be prefixed to attributes when searching from conf.
+
+    The items in always_add (a dict or namespace) are added to the
+    result even if the keys were not present in the defaults. Their
+    values are those in always_add, unless a different value is
+    specified in a configuration object.
     """
     # We need to handle the default configuration separately, as it lists the
     # available configuration attributes
@@ -79,6 +85,9 @@ def _make_config(*configs):
                                         if key.startswith(prefix))
                 else:
                     default_conf = conf_dict
+                if always_add:
+                    for key, val in _get_dict(always_add).items():
+                        default_conf.setdefault(key, val)
             else:
                 # Prepend non-defaults to other_confs: earlier ones have higher
                 # priority, but they are later in the reversed list
@@ -158,14 +167,11 @@ def get_plugin_config(defaults=None, **kw_defaults):
     """
     if defaults is None:
         defaults = kw_defaults
-    # Use the facilities in the module inspect to avoid having to pass __name__
-    # as an argument to the function (https://stackoverflow.com/a/1095621)
-    module = inspect.getmodule(inspect.stack()[1][0])
+    plugin, pkg, module = get_plugin_name(call_depth=2)
     # Assume module name package.plugin_package.module[.submodule...],
     # package.plugin_module or plugin_module
-    module_name_comps = module.__name__.split(".")
-    if len(module_name_comps) > 1:
-        pkg, plugin = module_name_comps[:2]
+    if pkg:
+        module_name_comps = module.__name__.split(".")
         # Module name does not contain ".__init__", so test it separately
         if len(module_name_comps) > 2 or "__init__.py" in module.__file__:
             # package.plugin_package.module[.submodule...]
@@ -180,13 +186,15 @@ def get_plugin_config(defaults=None, **kw_defaults):
             plugin_config_mod = SimpleNamespace()
     else:
         # plugin_module
-        plugin = module_name_comps[0]
         plugin_config_mod = SimpleNamespace()
     if plugin not in _plugin_configs_expanded:
         plugin_configs[plugin] = _make_config(
             plugin_configs.get(plugin, {}),
             getattr(korpconf, "PLUGIN_CONFIG_" + plugin.upper(), {}),
             plugin_config_mod,
-            defaults or {})
+            defaults or {},
+            # Make RENAME_ROUTES configurable even if it has not been
+            # given a default in the plugin
+            always_add={"RENAME_ROUTES": None})
         _plugin_configs_expanded.add(plugin)
     return plugin_configs[plugin]

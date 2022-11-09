@@ -11,6 +11,7 @@
   - [Configuring Korp for plugins](#configuring-korp-for-plugins)
   - [Configuring `korppluginlib`](#configuring-korppluginlib)
   - [Configuring individual plugins](#configuring-individual-plugins)
+  - [Renaming plugin endpoint routes](#renaming-plugin-endpoint-routes)
 - [Plugin information](#plugin-information)
 - [Endpoint plugins](#endpoint-plugins)
   - [Implementing a new WSGI endpoint](#implementing-a-new-wsgi-endpoint)
@@ -180,6 +181,40 @@ be either a dictionary- or namespace-like object. The returned value
 is always a `SimpleNamespace`.
 
 
+### Renaming plugin endpoint routes
+
+Endpoint routes (routing rules) defined by a plugin can be renamed by
+setting an appropriate value to the configuration variable
+`RENAME_ROUTES` of the plugin in question. This may be needed if two
+plugins have endpoints with the same route, or if it is otherwise
+desired to change the routes specified by a plugin.
+
+The default value of `RENAME_ROUTES` is `None`, meaning that routes
+are not renamed. Otherwise, its value can be a string, `dict` or
+function (`(str) -> str`):
+
+- A string value is used to rename all the routes defined by a plugin.
+  It is a format string in which `{}` denotes the original route
+  (without the leading a slash): for example, the value `"x_{}"` would
+  rename `/test1` to `/x_test1` and `/test2` to `/x_test2`.
+- A `dict` value is used to rename individual routes: for example,
+  `{"test1": "xtest"}` would rename `/test1` to `/xtest` but keep all
+  other routes intact.
+- A function value can be used to rename all routes more flexibly than
+  a format string. The function takes the route as an argument string
+  and returns the renamed route. For example, `lambda r: r[-1] +
+  r[:-1]` would rename `/test1` to `/1test` and `/test2` to `/2test`.
+
+Note that in all cases, the leading slash is stripped from the route
+before renaming and prepended again after it.
+
+Note that the configuration variable `RENAME_ROUTES` can always be set
+in a plugin configuration even if it had not been given a default
+value in the plugin. `RENAME_ROUTES` is also present in the
+configuration of plugins with no endpoints even if it has no effect
+there.
+
+
 ## Plugin information
 
 A plugin module or package may define `dict` `PLUGIN_INFO` containing
@@ -273,6 +308,10 @@ result.
 
 A single plugin module can define multiple new endpoints.
 
+The routes for endpoints defined by a plugin can be renamed by setting
+the plugin configuration variable `RENAME_ROUTES` appropriately; see
+[above](#renaming-plugin-endpoint-routes).
+
 
 ### Non-JSON endpoints
 
@@ -342,7 +381,7 @@ are defined within subclasses of `korppluginlib.KorpCallbackPlugin` as
 instance methods having the name of the hook point. The arguments and
 return values of a callback method are specific to a hook point.
 
-In the argument `request`, each callback method gets the actual Flask
+In the first argument `request`, each callback method gets the actual Flask
 request object (not a proxy for the request) containing information on
 the request. For example, the endpoint name is available as
 `request.endpoint`.
@@ -358,23 +397,23 @@ the request. For example, the endpoint name is available as
 ### Filter hook points
 
 For filter hook points, the value returned by a callback method is
-passed as the first argument to the callback method defined by the
-next plugin, similar to function composition or method chaining.
-However, a callback for a filter hook point *need not* modify the
-value: if the returned value is `None`, either explicitly or if the
-method has no `return` statement with a value, the value is ignored
-and the argument is passed as is to the callback method in the next
-plugin. Thus, a callback method that does not modify the value need
-not return it.
+passed as the first non-`request` argument to the callback method
+defined by the next plugin, similar to function composition or method
+chaining. However, a callback for a filter hook point *need not*
+modify the value: if the returned value is `None`, either explicitly
+or if the method has no `return` statement with a value, the value is
+ignored and the argument is passed as is to the callback method in the
+next plugin. Thus, a callback method that does not modify the value
+need not return it.
 
 Filter hook points and the signatures of their callback methods are
 the following:
 
-- `filter_args(self, args, request)`: Modifies the arguments
+- `filter_args(self, request, args)`: Modifies the arguments
   `dict` `args` to any endpoint (view function) and returns the
   modified value.
 
-- `filter_result(self, result, request)`: Modifies the result `dict`
+- `filter_result(self, request, result)`: Modifies the result `dict`
   `result` returned by any endpoint (view function) and returns the
   modified value.
 
@@ -387,31 +426,31 @@ the following:
   called for `time`.) Thus, you should not assume that the value of
   the `result` argument always contains the content body.
 
-- `filter_cqp_input(self, cqp, request)`: Modifies the raw CQP
+- `filter_cqp_input(self, request, cqp)`: Modifies the raw CQP
   input string `cqp`, typically consisting of multiple CQP commands,
   already encoded as `bytes`, to be passed to the CQP executable, and
   returns the modified value.
 
-- `filter_cqp_output(self, (output, error), request)`: Modifies
+- `filter_cqp_output(self, request, (output, error))`: Modifies
   the raw output of the CQP executable, a pair consisting of the
   standard output and standard error encoded as `bytes`, and returns
   the modified values as a pair.
 
-- `filter_sql(self, sql, request)`: Modifies the SQL statement
+- `filter_sql(self, request, sql)`: Modifies the SQL statement
   `sql` to be passed to the MySQL/MariaDB database server and returns
   the modified value.
 
-- `filter_protected_corpora(self, protected_corpora, request)`:
+- `filter_protected_corpora(self, request, protected_corpora)`:
   Modifies (or replaces) the list `protected_corpora` of ids of
   protected corpora, the use of which requires authentication and
   authorization.
 
-- `filter_auth_postdata(self, postdata, request)`: Modifies (or
+- `filter_auth_postdata(self, request, postdata)`: Modifies (or
   replaces) the POST request parameters in `postdata`, to be passed to
   the authorization server (`config.AUTH_SERVER`) in the endpoint
   `/authenticate`.
 
-- `filter_auth_response(self, auth_response, request)`: Modifies the
+- `filter_auth_response(self, request, auth_response)`: Modifies the
   response `auth_response` returned by the authorization server in the
   endpoint `/authenticate`.
 
@@ -424,18 +463,19 @@ possible return value is ignored.)
 Event hook points and the signatures of their callback methods are the
 following:
 
-- `enter_handler(self, args, starttime, request)`: Called near
+- `enter_handler(self, request, args, starttime)`: Called near
   the beginning of a view function for an endpoint. `args` is a `dict`
   of arguments to the endpoint and `starttime` is the current time as
   seconds since the epoch as a floating point number.
 
-- `exit_handler(self, endtime, elapsed_time, request)`: Called
-  just before exiting a view function for an endpoint (before yielding
-  a response). `endtime` is the current time as seconds since the
-  epoch as a floating point number, and `elapsed_time` is the time
-  spent in the view function as seconds.
+- `exit_handler(self, request, endtime, elapsed_time, result_len)`:
+  Called just before exiting a view function for an endpoint (before
+  yielding a response). `endtime` is the current time as seconds since
+  the epoch as a floating point number, `elapsed_time` is the time
+  spent in the view function as seconds, and `result_len` the length
+  of the response content.
 
-- `error(self, error, exc, request)`: Called after an exception
+- `error(self, request, error, exc)`: Called after an exception
   has occurred. `error` is the `dict` to be returned in JSON as
   `ERROR`, with keys `type` and `value` (and `traceback` if
   `debug=true` had been specified), and `exc` contains exception
@@ -450,7 +490,7 @@ called at the hook point `filter_result`:
 ```python
 class Test1b(korppluginlib.KorpCallbackPlugin):
 
-    def filter_result(self, result, request):
+    def filter_result(self, request, result):
         """Wrap the result dictionary in "wrap" and add "endpoint"."""
         return {"endpoint": request.endpoint,
                 "wrap": result}
@@ -499,12 +539,12 @@ class StateTest(korppluginlib.KorpCallbackPlugin):
 
     _data = {}
 
-    def enter_handler(self, args, starttime, request):
+    def enter_handler(self, request, args, starttime):
         self._data[request] = data = SimpleNamespace()
         data.starttime = starttime
         print("enter_handler, starttime =", starttime)
 
-    def exit_handler(self, endtime, elapsed, request):
+    def exit_handler(self, request, endtime, elapsed):
         print("exit_handler, starttime =", self._data[request].starttime,
               "endtime =", endtime)
         del self._data[request]
@@ -529,7 +569,7 @@ keyword arguments and discarding the return value:
 
 ```python
 korppluginlib.KorpCallbackPluginCaller.raise_event_for_request(
-    "hook_point", *args, request, **kwargs)
+    "hook_point", *args, **kwargs, request=request)
 ```
 
 or, equivalently, getting a caller object for a request and calling
@@ -549,12 +589,11 @@ as for those in `korp.py`. The signature corresponding to the above
 calls is
 
 ```python
-hook_point(self, *args, request, **kwargs)
+hook_point(self, request, *args, **kwargs)
 ```
 
-(where `*args` should be expanded to the actual positional arguments).
-All callback methods need to have request as the last positional
-argument.
+All callback methods need to have `request` as the first positional
+argument (after `self`).
 
 Three types of call methods are available in KorpCallbackPluginCaller:
 

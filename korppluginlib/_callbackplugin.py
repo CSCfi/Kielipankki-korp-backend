@@ -150,7 +150,7 @@ class KorpCallbackPluginCaller:
         for callback, applies_to in (KorpCallbackPlugin
                                     ._callbacks.get(hook_point, [])):
             if applies_to(self._request):
-                callback(*args, self._request, **kwargs)
+                callback(self._request, *args, **kwargs)
 
     def get_values(self, hook_point, *args, **kwargs):
         """Get the values returned by the callbacks for hook_point as a list.
@@ -165,7 +165,7 @@ class KorpCallbackPluginCaller:
         for callback, applies_to in (KorpCallbackPlugin
                                      ._callbacks.get(hook_point, [])):
             if applies_to(self._request):
-                retval = callback(*args, self._request, **kwargs)
+                retval = callback(self._request, *args, **kwargs)
                 if retval is not None:
                     result.append(retval)
         return result
@@ -189,7 +189,7 @@ class KorpCallbackPluginCaller:
         for callback, applies_to in (KorpCallbackPlugin
                                      ._callbacks.get(hook_point, [])):
             if applies_to(self._request):
-                retval = callback(arg1, *args, self._request, **kwargs)
+                retval = callback(self._request, arg1, *args, **kwargs)
                 if retval is not None:
                     arg1 = retval
         return arg1

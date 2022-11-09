@@ -144,31 +144,43 @@ def main_handler(generator):
 
             def incremental_json(ff):
                 """Incrementally yield result as JSON."""
+                result_len = 0
                 if callback:
+                    result_len += len(callback) + 1
                     yield callback + "("
+                result_len += 2
                 yield "{\n"
 
                 try:
                     for response in ff:
                         if not response:
                             # Yield whitespace to prevent timeout
+                            result_len += 2
                             yield " \n"
                         else:
                             response = plugin_caller.filter_value(
                                 "filter_result", response)
-                            yield json.dumps(response)[1:-1] + ",\n"
+                            output = json.dumps(response)[1:-1] + ",\n"
+                            result_len += len(output)
+                            yield output
                 except GeneratorExit:
                     raise
                 except:
                     error = error_handler()
-                    yield json.dumps(error)[1:-1] + ",\n"
+                    output = json.dumps(error)[1:-1] + ",\n"
+                    result_len += len(output)
+                    yield output
 
                 endtime = time.time()
                 elapsed_time = endtime - starttime
-                plugin_caller.raise_event("exit_handler", endtime, elapsed_time)
-                yield json.dumps({"time": elapsed_time})[1:] + "\n"
+                output = json.dumps({"time": elapsed_time})[1:] + "\n"
+                result_len += len(output)
+                yield output
                 if callback:
+                    result_len += 1
                     yield ")"
+                plugin_caller.raise_event(
+                    "exit_handler", endtime, elapsed_time, result_len)
                 plugin_caller.cleanup()
 
             def full_json(ff):
@@ -197,7 +209,8 @@ def main_handler(generator):
                     result = callback + "(" + json.dumps(result, indent=indent) + ")"
                 else:
                     result = json.dumps(result, indent=indent)
-                plugin_caller.raise_event("exit_handler", endtime, elapsed_time)
+                plugin_caller.raise_event(
+                    "exit_handler", endtime, elapsed_time, len(result))
                 yield result
                 plugin_caller.cleanup()
 
@@ -233,7 +246,8 @@ def main_handler(generator):
 
                 endtime = time.time()
                 elapsed_time = endtime - starttime
-                plugin_caller.raise_event("exit_handler", endtime, elapsed_time)
+                plugin_caller.raise_event(
+                    "exit_handler", endtime, elapsed_time, len(result["content"]))
                 plugin_caller.cleanup()
 
                 return Response(result.get("content"),
