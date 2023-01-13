@@ -128,12 +128,44 @@ def main_handler(generator):
                     result = json.dumps(result, indent=indent)
                 yield result
 
+            def make_custom_response(ff):
+                """Return a Response with custom mimetype and/or headers.
+
+                The view function ff should yield a dict with the
+                following keys recognized:
+                - "content": the actual content;
+                - "mimetype" (default: "text/html"): possible MIME type; and
+                - "headers": possible other headers as a list of pairs
+                  (header, value).
+
+                Note that setting incremental=True does not have any effect.
+                """
+                result = {}
+                try:
+                    for response in ff:
+                        if response:
+                            result.update(response)
+                except GeneratorExit:
+                    raise
+                except:
+                    # Return error information as JSON
+                    result["content"] = json.dumps(error_handler(),
+                                                   indent=indent)
+                    result["mimetype"] = "application/json"
+
+                return Response(result.get("content"),
+                                headers=result.get("headers"),
+                                mimetype=result.get("mimetype"))
+
             starttime = time.time()
             incremental = parse_bool(args, "incremental", False)
             callback = args.get("callback")
             indent = int(args.get("indent", 0))
 
-            if incremental:
+            if getattr(generator, "use_custom_headers", None):
+                # Custom headers and/or MIME type (non-JSON)
+                return make_custom_response(generator(args, *pargs, **kwargs))
+            elif incremental:
                 # Incremental response
                 return Response(stream_with_context(incremental_json(generator(args, *pargs, **kwargs))),
                                 mimetype="application/json")
@@ -206,6 +238,19 @@ def prevent_timeout(generator):
                     raise
 
     return decorated
+
+
+def use_custom_headers(generator):
+    """Decorator for view functions possibly yielding a non-JSON result.
+
+    A view function with attribute use_custom_headers = True is
+    treated specially in main_handler: the actual content is assumed
+    to be in the value for the key "content" of the result dict, MIME
+    type in "mimetype" and possible other headers as a list of pairs
+    (header, value) in "headers".
+    """
+    generator.use_custom_headers = True
+    return generator
 
 
 def generator_to_dict(generator):
