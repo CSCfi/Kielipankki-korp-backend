@@ -1,0 +1,6 @@
+# The sample configuration for korppluginlib is in config.py.template,
+# stored in the repository. It should be copied (or symlinked) to
+# config.py, to be modified locally and not not be stored in the
+# repository.
+
+config.py
