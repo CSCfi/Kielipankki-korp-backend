@@ -1,10 +1,10 @@
 
 """
-Module korppluginlib._configutil
+Module korp.pluginlib._configutil
 
 Module of utility functions and definitions for plugin configuration.
 
-This module is intended to be internal to the package korppluginlib; the names
+This module is intended to be internal to the package korp.pluginlib; the names
 intended to be visible outside the package are imported at the package level.
 """
 
@@ -18,7 +18,7 @@ import config as korpconf
 from ._util import get_plugin_name
 
 
-# Try to import korppluginlib.config as _pluginlibconf; if not available,
+# Try to import korp.pluginlib.config as _pluginlibconf; if not available,
 # define _pluginlibconf as a SimpleNamespace. These are used to fill in the
 # pluginlibconf SimpleNamespace below.
 try:
@@ -27,7 +27,7 @@ except ImportError:
     _pluginlibconf = SimpleNamespace()
 
 
-# Default configuration values, if found neither in module korppluginlib.config
+# Default configuration values, if found neither in module korp.pluginlib.config
 # nor config
 _conf_defaults = SimpleNamespace(
     # Plugins are in package "korpplugins"
@@ -112,7 +112,7 @@ def _get_dict(obj):
 
 # An object containing configuration attribute values. Values are checked first
 # from the dictionary or namespace PLUGINLIB_CONFIG in the Korp configuration,
-# then in korppluginlib.config, and finally the defaults in _conf_defaults.
+# then in korp.pluginlib.config, and finally the defaults in _conf_defaults.
 pluginlibconf = _make_config(
     getattr(korpconf, "PLUGINLIB_CONFIG", {}),
     _pluginlibconf,

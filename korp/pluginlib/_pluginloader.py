@@ -1,10 +1,10 @@
 
 """
-Module korppluginlib._pluginloader
+Module korp.pluginlib._pluginloader
 
-Module containing the korppluginlib plugin loading function
+Module containing the korp.pluginlib plugin loading function
 
-This module is intended to be internal to the package korppluginlib; the names
+This module is intended to be internal to the package korp.pluginlib; the names
 intended to be visible outside the package are imported at the package level.
 """
 

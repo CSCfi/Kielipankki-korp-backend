@@ -1,12 +1,12 @@
 
 """
-Module korppluginlib._util
+Module korp.pluginlib._util
 
 Module of utility functions and definitions
 
-This module is intended to be internal to the package korppluginlib.
-All modules of korppluginlib should be able to import this module, so
-this module should not import any korppluginlib module.
+This module is intended to be internal to the package korp.pluginlib.
+All modules of korp.pluginlib should be able to import this module, so
+this module should not import any korp.pluginlib module.
 """
 
 

@@ -1,5 +1,5 @@
 
-# `korppluginlib`: Korp backend plugin framework (API) (proposal)
+# `korp.pluginlib`: Korp backend plugin framework (API) (proposal)
 
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -9,7 +9,7 @@
 - [Overview](#overview)
 - [Configuration](#configuration)
   - [Configuring Korp for plugins](#configuring-korp-for-plugins)
-  - [Configuring `korppluginlib`](#configuring-korppluginlib)
+  - [Configuring `korp.pluginlib`](#configuring-korppluginlib)
   - [Configuring individual plugins](#configuring-individual-plugins)
   - [Renaming plugin endpoint routes](#renaming-plugin-endpoint-routes)
 - [Plugin information](#plugin-information)
@@ -73,10 +73,10 @@ following plugin-related variables:
     the plugin module (see [below](#plugin-information)
 
 
-### Configuring `korppluginlib`
+### Configuring `korp.pluginlib`
 
-The configuration of `korppluginlib` is in the module
-`korppluginlib.config` (file `korppluginlib/config.py`). Currently,
+The configuration of `korp.pluginlib` is in the module
+`korp.pluginlib.config` (file `korp.pluginlib/config.py`). Currently,
 the following configuration variables are recognized:
 
 - `PACKAGES`: A list of packages which may contain plugins; default:
@@ -95,7 +95,7 @@ the following configuration variables are recognized:
       continue.
     - `"ignore"`: Silently ignore.
 
-- `LOAD_VERBOSITY`: What `korppluginlib` outputs when loading plugins:
+- `LOAD_VERBOSITY`: What `korp.pluginlib` outputs when loading plugins:
     - `0`: nothing
     - `1` (default): the names of loaded plugins only
     - `2`: the names of loaded plugins and their possible
@@ -129,7 +129,7 @@ PLUGINLIB_CONFIG = dict(
 ```
 
 The values specified in the top-level `config` override those in
-`korppluginlib.config`.
+`korp.pluginlib.config`.
 
 
 ### Configuring individual plugins
@@ -155,20 +155,20 @@ The value for a configuration variable is taken from the first of the
 above in which it is set.
 
 To get values from these sources, the plugin module needs to call
-`korppluginlib.get_plugin_config` with default values of configuration
+`korp.pluginlib.get_plugin_config` with default values of configuration
 variables. The function returns an object containing configuration
 variables with their values (an instance of `types.SimpleNamespace`).
 For example:
 
 ```python
-pluginconf = korppluginlib.get_plugin_config(
+pluginconf = korp.pluginlib.get_plugin_config(
     CONFIG_VAR = "value",
 )
 ```
 The configured value of `CONFIG_VAR` can be then accessed as
 `pluginconf.CONFIG_VAR`. Once the plugin has been loaded, other
 plugins can also access it as
-`korppluginlib.plugin_configs["`_plugin_`"].CONFIG_VAR`.
+`korp.pluginlib.plugin_configs["`_plugin_`"].CONFIG_VAR`.
 
 Note that the value returned by `get_plugin_config` contains values
 only for the keys specified in the default values given as arguments,
@@ -236,10 +236,10 @@ defined (and if `LOAD_VERBOSITY` is at least 1). For example:
 
 ```python
 PLUGIN_INFO = {
-    "name": "korppluginlib_test_1",
+    "name": "korp.pluginlib_test_1",
     "version": "0.1",
     "date": "2020-12-10",
-    "description": "korppluginlib test plugin 1",
+    "description": "korp.pluginlib test plugin 1",
     "author": "FIN-CLARIN",
     "author_email": "fin-clarin at helsinki dot fi",
 }
@@ -248,16 +248,16 @@ PLUGIN_INFO = {
 Or equivalently in an `info` module:
 
 ```python
-NAME = "korppluginlib_test_1"
+NAME = "korp.pluginlib_test_1"
 VERSION = "0.1"
 DATE = "2020-12-10"
-DESCRIPTION = "korppluginlib test plugin 1"
+DESCRIPTION = "korp.pluginlib test plugin 1"
 AUTHOR = "FIN-CLARIN"
 AUTHOR_EMAIL = "fin-clarin at helsinki dot fi"
 ```
 
 The information on loaded plugins is accessible in the variable
-`korppluginlib.loaded_plugins`. Its value is an `OrderedDict` whose
+`korp.pluginlib.loaded_plugins`. Its value is an `OrderedDict` whose
 keys are plugin names and values are `dict`s with the value of the key
 `"module"` containing the plugin module object and the rest taken from
 the `PLUGIN_INFO` defined in the plugin. The values in
@@ -271,18 +271,18 @@ loaded.
 ### Implementing a new WSGI endpoint
 
 To implement a new WSGI endpoint, you first create an instance of
-`korppluginlib.KorpEndpointPlugin` (a subclass of `flask.Blueprint`)
+`korp.pluginlib.KorpEndpointPlugin` (a subclass of `flask.Blueprint`)
 as follows:
 
 ```python
-test_plugin = korppluginlib.KorpEndpointPlugin()
+test_plugin = korp.pluginlib.KorpEndpointPlugin()
 ```
 
 You can also specify a name for the plugin, overriding the default
 that is the calling module name `__name__`:
 
 ```python
-test_plugin = korppluginlib.KorpEndpointPlugin("test_plugin")
+test_plugin = korp.pluginlib.KorpEndpointPlugin("test_plugin")
 ```
 
 You may also pass other arguments recognized by `flask.Blueprint`.
@@ -357,11 +357,11 @@ in `extra_decorators` include only `prevent_timeout` and
 `use_custom_headers`, as the endpoints defined in this way are always
 decorated with `main_handler` as the topmost decorator. However,
 additional decorator functions can be defined by decorating them with
-`korppluginlib.KorpEndpointPlugin.endpoint_decorator`; for example:
+`korp.pluginlib.KorpEndpointPlugin.endpoint_decorator`; for example:
 
 ```python
-# test_plugin is an instance of korppluginlib.KorpEndpointPlugin, so this
-# is equivalent to @korppluginlib.KorpEndpointPlugin.endpoint_decorator
+# test_plugin is an instance of korp.pluginlib.KorpEndpointPlugin, so this
+# is equivalent to @korp.pluginlib.KorpEndpointPlugin.endpoint_decorator
 @test_plugin.endpoint_decorator
 def test_decor(generator):
     """Add to the result an extra layer with text_decor and payload."""
@@ -377,7 +377,7 @@ def test_decor(generator):
 ## Callback plugins
 
 Callbacks to be called at specific *plugin hook points* in `korp.py`
-are defined within subclasses of `korppluginlib.KorpCallbackPlugin` as
+are defined within subclasses of `korp.pluginlib.KorpCallbackPlugin` as
 instance methods having the name of the hook point. The arguments and
 return values of a callback method are specific to a hook point.
 
@@ -488,7 +488,7 @@ An example of a callback plugin containing a callback method to be
 called at the hook point `filter_result`:
 
 ```python
-class Test1b(korppluginlib.KorpCallbackPlugin):
+class Test1b(korp.pluginlib.KorpCallbackPlugin):
 
     def filter_result(self, request, result):
         """Wrap the result dictionary in "wrap" and add "endpoint"."""
@@ -535,7 +535,7 @@ example:
 ```python
 from types import SimpleNamespace
 
-class StateTest(korppluginlib.KorpCallbackPlugin):
+class StateTest(korp.pluginlib.KorpCallbackPlugin):
 
     _data = {}
 
@@ -568,7 +568,7 @@ called as follows, with `*args` and `**kwargs` as the positional and
 keyword arguments and discarding the return value:
 
 ```python
-korppluginlib.KorpCallbackPluginCaller.raise_event_for_request(
+korp.pluginlib.KorpCallbackPluginCaller.raise_event_for_request(
     "hook_point", *args, **kwargs, request=request)
 ```
 
@@ -577,7 +577,7 @@ its instance method (typically when the same function or method
 contains several hook points):
 
 ```python
-plugin_caller = korppluginlib.KorpCallbackPluginCaller.get_instance(request)
+plugin_caller = korp.pluginlib.KorpCallbackPluginCaller.get_instance(request)
 plugin_caller.raise_event("hook_point", *args, **kwargs)
 ```
 
@@ -617,8 +617,8 @@ Only the first two are currently used in `korp.py`.
 
 The values of selected global variables, constants and functions in
 the main application module `korp.py` are available to plugin modules
-in the attributes of `korppluginlib.app_globals`, thus accessible as
-`korppluginlib.app_globals.`_name_. The variables and constants
+in the attributes of `korp.pluginlib.app_globals`, thus accessible as
+`korp.pluginlib.app_globals.`_name_. The variables and constants
 currently available are `app`, `mysql`, `mc_pool`, `KORP_VERSION`,
 `END_OF_LINE`, `LEFT_DELIM`, `RIGHT_DELIM`, `IS_NUMBER`, `IS_IDENT`
 and `QUERY_DELIM`. In addition, several helper functions defined in
@@ -664,7 +664,7 @@ needed:
 - A plugin cannot require that another plugin should have been loaded
   nor can it request other plugins to be loaded, at least not easily.
   However, it might not be difficult to add a facility in which
-  `korppluginlib.load` would check if a plugin module just imported
+  `korp.pluginlib.load` would check if a plugin module just imported
   had specified that it requires certain other plugins and call itself
   recursively to load them. They would be loaded only after the
   requiring plugin, however. If the requirements were specified in the
@@ -698,7 +698,7 @@ needed:
   also be output when loading the plugins.
 
 - Accessing helper functions in `korp.py` via
-  `korppluginlib.app_globals` is somewhat cumbersome. It could be
+  `korp.pluginlib.app_globals` is somewhat cumbersome. It could be
   simplified by moving the helper functions to a separate library
   module that could be imported by plugins.
 
@@ -723,7 +723,7 @@ have both callback plugins and endpoint plugins.
 
 ### Influcences
 
-Using a metaclass for registering callback plugins in `korppluginlib`
+Using a metaclass for registering callback plugins in `korp.pluginlib`
 was inspired by and partially adapted from Marty Alchin’s [A Simple
 Plugin
 Framework](http://martyalchin.com/2008/jan/10/simple-plugin-framework/).

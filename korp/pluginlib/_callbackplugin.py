@@ -1,6 +1,6 @@
 
 """
-Module korppluginlib._callbackplugin
+Module korp.pluginlib._callbackplugin
 
 Module containing code for callback plugins to be called at hook points
 
@@ -9,7 +9,7 @@ methods, the instances are singletons. Registering callbacks in
 KorpCallbackPlugin subclasses is handled in the metaclass, adapted from or
 inspired by http://martyalchin.com/2008/jan/10/simple-plugin-framework/ .
 
-This module is intended to be internal to the package korppluginlib; the names
+This module is intended to be internal to the package korp.pluginlib; the names
 intended to be visible outside the package are imported at the package level.
 """
 

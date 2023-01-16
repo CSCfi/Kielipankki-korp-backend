@@ -1,8 +1,8 @@
 
 """
-korppluginlib.config
+korp.pluginlib.config
 
-Configuration module for korppluginlib.
+Configuration module for korp.pluginlib.
 
 The values here may be overridden in the Korp config module within the
 dictionary or namespace object PLUGINLIB_CONFIG.
