@@ -16,7 +16,7 @@ from collections import OrderedDict
 from types import SimpleNamespace
 
 from ._configutil import pluginlibconf, add_plugin_config, plugin_configs
-from ._endpointplugin import KorpEndpointPlugin
+from ._endpointplugin import EndpointPlugin
 from ._util import print_verbose, print_verbose_delayed, set_print_verbosity
 
 
@@ -56,7 +56,7 @@ def load(app, plugin_list, decorators=None, app_globals=None):
     if not decorators or not any(decor.__name__ == "main_handler"
                                  for decor in decorators):
         raise ValueError("decorators must contain main_handler")
-    KorpEndpointPlugin.add_endpoint_decorators(decorators)
+    EndpointPlugin.add_endpoint_decorators(decorators)
     app_globals = app_globals or {}
     global_app_globals = globals()["app_globals"]
     for name, val in app_globals.items():
@@ -108,7 +108,7 @@ def load(app, plugin_list, decorators=None, app_globals=None):
                 print(msg_base, file=sys.stderr)
                 raise
     sys.path = saved_sys_path
-    KorpEndpointPlugin.register_all(app)
+    EndpointPlugin.register_all(app)
     _handle_duplicate_routing_rules(app)
 
 

@@ -6,7 +6,7 @@ Module containing code for callback plugins to be called at hook points
 
 The classes are mostly for encapsulation: although the callbacks are instance
 methods, the instances are singletons. Registering callbacks in
-KorpCallbackPlugin subclasses is handled in the metaclass, adapted from or
+CallbackPlugin subclasses is handled in the metaclass, adapted from or
 inspired by http://martyalchin.com/2008/jan/10/simple-plugin-framework/ .
 
 This module is intended to be internal to the package korp.pluginlib; the names
@@ -36,12 +36,12 @@ class Singleton(type):
         return cls._instances[cls]
 
 
-class KorpCallbackPluginMetaclass(Singleton):
+class CallbackPluginMetaclass(Singleton):
 
-    """Metaclass for KorpCallbackPlugin, registering callbacks
+    """Metaclass for CallbackPlugin, registering callbacks
 
     This metaclass takes care of registering the callback methods in the
-    plugin classes (subclasses of KorpCallbackPlugin); see
+    plugin classes (subclasses of CallbackPlugin); see
     http://martyalchin.com/2008/jan/10/simple-plugin-framework/
     """
 
@@ -71,7 +71,7 @@ class KorpCallbackPluginMetaclass(Singleton):
                             + "\": callback " + attr.__qualname__))
 
 
-class KorpCallbackPlugin(metaclass=KorpCallbackPluginMetaclass):
+class CallbackPlugin(metaclass=CallbackPluginMetaclass):
 
     """Base class for callback plugins
 
@@ -92,7 +92,7 @@ class KorpCallbackPlugin(metaclass=KorpCallbackPluginMetaclass):
         return True
 
 
-class KorpCallbackPluginCaller:
+class CallbackPluginCaller:
 
     """Class for calling plugin callbacks at named hook points.
 
@@ -102,11 +102,11 @@ class KorpCallbackPluginCaller:
     """
 
     # Instances of this class: dict[request object id,
-    # KorpCallbackPluginCaller]
+    # CallbackPluginCaller]
     _instances = {}
 
     def __init__(self, request=None):
-        """Initialize a KorpCallbackPluginCaller with the given request.
+        """Initialize a CallbackPluginCaller with the given request.
 
         If request is None, use the object for the global request proxy.
         """
@@ -135,7 +135,7 @@ class KorpCallbackPluginCaller:
         return cls._instances[id(request_obj)]
 
     def cleanup(self):
-        """Clean up when this KorpCallbackPluginCaller is no longer used."""
+        """Clean up when this CallbackPluginCaller is no longer used."""
         # Remove self from _instances
         del self._instances[id(self._request)]
 
@@ -147,7 +147,7 @@ class KorpCallbackPluginCaller:
         values. Callback methods in plugin classes whose applies_to
         method returns false for the current request are skipped.
         """
-        for callback, applies_to in (KorpCallbackPlugin
+        for callback, applies_to in (CallbackPlugin
                                     ._callbacks.get(hook_point, [])):
             if applies_to(self._request):
                 callback(self._request, *args, **kwargs)
@@ -162,7 +162,7 @@ class KorpCallbackPluginCaller:
         false for the current request are skipped.
         """
         result = []
-        for callback, applies_to in (KorpCallbackPlugin
+        for callback, applies_to in (CallbackPlugin
                                      ._callbacks.get(hook_point, [])):
             if applies_to(self._request):
                 retval = callback(self._request, *args, **kwargs)
@@ -186,7 +186,7 @@ class KorpCallbackPluginCaller:
         function composition for the callbacks, or a reduce operation
         for functions ("freduce").
         """
-        for callback, applies_to in (KorpCallbackPlugin
+        for callback, applies_to in (CallbackPlugin
                                      ._callbacks.get(hook_point, [])):
             if applies_to(self._request):
                 retval = callback(self._request, arg1, *args, **kwargs)

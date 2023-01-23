@@ -271,18 +271,18 @@ loaded.
 ### Implementing a new WSGI endpoint
 
 To implement a new WSGI endpoint, you first create an instance of
-`korp.pluginlib.KorpEndpointPlugin` (a subclass of `flask.Blueprint`)
+`korp.pluginlib.EndpointPlugin` (a subclass of `flask.Blueprint`)
 as follows:
 
 ```python
-test_plugin = korp.pluginlib.KorpEndpointPlugin()
+test_plugin = korp.pluginlib.EndpointPlugin()
 ```
 
 You can also specify a name for the plugin, overriding the default
 that is the calling module name `__name__`:
 
 ```python
-test_plugin = korp.pluginlib.KorpEndpointPlugin("test_plugin")
+test_plugin = korp.pluginlib.EndpointPlugin("test_plugin")
 ```
 
 You may also pass other arguments recognized by `flask.Blueprint`.
@@ -357,11 +357,11 @@ in `extra_decorators` include only `prevent_timeout` and
 `use_custom_headers`, as the endpoints defined in this way are always
 decorated with `main_handler` as the topmost decorator. However,
 additional decorator functions can be defined by decorating them with
-`korp.pluginlib.KorpEndpointPlugin.endpoint_decorator`; for example:
+`korp.pluginlib.EndpointPlugin.endpoint_decorator`; for example:
 
 ```python
-# test_plugin is an instance of korp.pluginlib.KorpEndpointPlugin, so this
-# is equivalent to @korp.pluginlib.KorpEndpointPlugin.endpoint_decorator
+# test_plugin is an instance of korp.pluginlib.EndpointPlugin, so this
+# is equivalent to @korp.pluginlib.EndpointPlugin.endpoint_decorator
 @test_plugin.endpoint_decorator
 def test_decor(generator):
     """Add to the result an extra layer with text_decor and payload."""
@@ -377,7 +377,7 @@ def test_decor(generator):
 ## Callback plugins
 
 Callbacks to be called at specific *plugin hook points* in `korp.py`
-are defined within subclasses of `korp.pluginlib.KorpCallbackPlugin` as
+are defined within subclasses of `korp.pluginlib.CallbackPlugin` as
 instance methods having the name of the hook point. The arguments and
 return values of a callback method are specific to a hook point.
 
@@ -488,7 +488,7 @@ An example of a callback plugin containing a callback method to be
 called at the hook point `filter_result`:
 
 ```python
-class Test1b(korp.pluginlib.KorpCallbackPlugin):
+class Test1b(korp.pluginlib.CallbackPlugin):
 
     def filter_result(self, request, result):
         """Wrap the result dictionary in "wrap" and add "endpoint"."""
@@ -535,7 +535,7 @@ example:
 ```python
 from types import SimpleNamespace
 
-class StateTest(korp.pluginlib.KorpCallbackPlugin):
+class StateTest(korp.pluginlib.CallbackPlugin):
 
     _data = {}
 
@@ -568,7 +568,7 @@ called as follows, with `*args` and `**kwargs` as the positional and
 keyword arguments and discarding the return value:
 
 ```python
-korp.pluginlib.KorpCallbackPluginCaller.raise_event_for_request(
+korp.pluginlib.CallbackPluginCaller.raise_event_for_request(
     "hook_point", *args, **kwargs, request=request)
 ```
 
@@ -577,7 +577,7 @@ its instance method (typically when the same function or method
 contains several hook points):
 
 ```python
-plugin_caller = korp.pluginlib.KorpCallbackPluginCaller.get_instance(request)
+plugin_caller = korp.pluginlib.CallbackPluginCaller.get_instance(request)
 plugin_caller.raise_event("hook_point", *args, **kwargs)
 ```
 
@@ -595,7 +595,7 @@ hook_point(self, request, *args, **kwargs)
 All callback methods need to have `request` as the first positional
 argument (after `self`).
 
-Three types of call methods are available in KorpCallbackPluginCaller:
+Three types of call methods are available in CallbackPluginCaller:
 
 - `raise_event_for_request` (and instance method `raise_event`): Call
   the callback methods and discard their possible return values (for
