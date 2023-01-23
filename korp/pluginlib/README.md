@@ -24,7 +24,6 @@
   - [Notes on implementing a callback plugin](#notes-on-implementing-a-callback-plugin)
   - [Keeping request-specific state](#keeping-request-specific-state)
   - [Defining hook points in plugins](#defining-hook-points-in-plugins)
-- [Accessing main application module globals in plugins](#accessing-main-application-module-globals-in-plugins)
 - [Limitations and deficiencies](#limitations-and-deficiencies)
 - [Influences and alternatives](#influences-and-alternatives)
   - [Influcences](#influcences)
@@ -613,21 +612,6 @@ Three types of call methods are available in CallbackPluginCaller:
 Only the first two are currently used in `korp.py`.
 
 
-## Accessing main application module globals in plugins
-
-The values of selected global variables, constants and functions in
-the main application module `korp.py` are available to plugin modules
-in the attributes of `korp.pluginlib.app_globals`, thus accessible as
-`korp.pluginlib.app_globals.`_name_. The variables and constants
-currently available are `app`, `mysql`, `mc_pool`, `KORP_VERSION`,
-`END_OF_LINE`, `LEFT_DELIM`, `RIGHT_DELIM`, `IS_NUMBER`, `IS_IDENT`
-and `QUERY_DELIM`. In addition, several helper functions defined in
-`korp.py` and useful in at least endpoint plugins can be accessed
-similarly. In this way, for example, a plugin can access the Korp
-MySQL database and the Memcached cache and use `assert_key` to assert
-the format of arguments.
-
-
 ## Limitations and deficiencies
 
 The current implementation has at least the following limitations and
@@ -696,11 +680,6 @@ needed:
   containing Git commit information in a format it recognizes, it
   could add the information to `PLUGIN_INFO` and the information could
   also be output when loading the plugins.
-
-- Accessing helper functions in `korp.py` via
-  `korp.pluginlib.app_globals` is somewhat cumbersome. It could be
-  simplified by moving the helper functions to a separate library
-  module that could be imported by plugins.
 
 - Unlike callback methods, endpoint view functions are not methods in
   a class, as at least currently, `main_handler` and `prevent_timeout`

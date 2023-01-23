@@ -13,19 +13,11 @@ import importlib
 import sys
 
 from collections import OrderedDict
-from types import SimpleNamespace
 
 from ._configutil import pluginlibconf, add_plugin_config, plugin_configs
 from ._endpointplugin import EndpointPlugin
 from ._util import print_verbose, print_verbose_delayed, set_print_verbosity
 
-
-# The attributes of app_globals allows accessing the values of global
-# application variables (and possibly functions) passed to load(), typically at
-# least "app" and "mysql". Values to app_globals are added in load(), but it is
-# initialized here, so that its value is correct when it is imported at the
-# package level.
-app_globals = SimpleNamespace()
 
 # An ordered dictionary of loaded plugins: keys are plugin names, values dicts
 # with the key "module" (the plugin module) and any keys from the PLUGIN_INFO
@@ -35,15 +27,13 @@ app_globals = SimpleNamespace()
 loaded_plugins = OrderedDict()
 
 
-def load_plugins(app, plugin_list, decorators=None, app_globals=None):
+def load_plugins(app, plugin_list, decorators=None):
     """Load the plugins in the modules listed in plugin_list.
 
     Load the plugins in the modules listed in plugin_list by importing
     the modules within this package. app is the Flask application, and
     decorators are the (globally available) decorators for endpoints.
-    (decorators must contain main_handler.) app_globals is a
-    dictionary of global application variables to be made available as
-    attributes of the module global app_globals.
+    (decorators must contain main_handler.)
 
     The items in plugin list may be either strings (plugin names) or
     pairs (plugin name, config) where config is a dictionary- or
@@ -57,10 +47,6 @@ def load_plugins(app, plugin_list, decorators=None, app_globals=None):
                                  for decor in decorators):
         raise ValueError("decorators must contain main_handler")
     EndpointPlugin.add_endpoint_decorators(decorators)
-    app_globals = app_globals or {}
-    global_app_globals = globals()["app_globals"]
-    for name, val in app_globals.items():
-        setattr(global_app_globals, name, val)
     saved_sys_path = sys.path
     sys.path.extend(pluginlibconf.SEARCH_PATH)
     for plugin in plugin_list:
