@@ -35,7 +35,7 @@ app_globals = SimpleNamespace()
 loaded_plugins = OrderedDict()
 
 
-def load(app, plugin_list, decorators=None, app_globals=None):
+def load_plugins(app, plugin_list, decorators=None, app_globals=None):
     """Load the plugins in the modules listed in plugin_list.
 
     Load the plugins in the modules listed in plugin_list by importing
