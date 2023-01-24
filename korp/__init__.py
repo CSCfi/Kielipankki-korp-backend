@@ -1,4 +1,3 @@
-import importlib
 from pathlib import Path
 
 from flask import Flask
@@ -9,6 +8,7 @@ from korp import utils
 from korp.cwb import cwb
 from korp.db import mysql
 from korp.memcached import memcached
+from korp.pluginlib import load_plugins
 
 # The version of this script
 __version__ = "8.2.5"
@@ -90,13 +90,7 @@ def create_app():
     app.register_blueprint(timespan.bp)
 
     # Load plugins
-    for plugin in app.config["PLUGINS"]:
-        module = importlib.import_module(plugin)
-        # Find all blueprints defined in module and register them
-        for name in dir(module):
-            v = getattr(module, name)
-            if isinstance(v, Blueprint):
-                app.register_blueprint(v)
+    load_plugins(app, app.config["PLUGINS"])
 
     # Register authorizer
     if utils.Authorizer.auth_class:
