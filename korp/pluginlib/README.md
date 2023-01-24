@@ -286,24 +286,31 @@ test_plugin = korp.pluginlib.EndpointPlugin("test_plugin")
 
 You may also pass other arguments recognized by `flask.Blueprint`.
 
-The actual view function is a generator function decorated with the
-`route` method of the created instance; for example:
+You also need to import `utils` from `korp` (or at least
+`utils.main_handler`):
 
 ```python
-@test_plugin.route("/test", extra_decorators=["prevent_timeout"])
+from korp import utils
+```
+
+The actual view function is a generator function decorated with the
+`route` method of the created instance, `utils.main_handler` and
+possible other view function decorators (currently,
+`utils.prevent_timeout` or `utils.use_custom_headers`); for example:
+
+```python
+@test_plugin.route("/test")
+@utils.main_hander
+@utils.prevent_timeout
 def test(args):
     """Yield arguments wrapped in "args"."""
     yield {"args": args}
 ```
 
 The decorator takes as its arguments the route of the endpoint, and
-optionally, an iterable of the names of possible additional decorators
-as the keyword argument `extra_decorators` and other options of
-`route`. `extra_decorators` lists the names in the order in which they
-would be specified as decorators (topmost first), that is, in the
-reverse order of application. The generator function takes a single
-`dict` argument containing the parameters of the call and yields the
-result.
+optionally, other options of `route`. The generator function takes a
+single `dict` argument containing the parameters of the call and
+yields the result.
 
 A single plugin module can define multiple new endpoints.
 
@@ -317,9 +324,10 @@ the plugin configuration variable `RENAME_ROUTES` appropriately; see
 Even though Korp endpoints should in general return JSON data, it may
 be desirable to implement endpoints returning another type of data,
 for example, if the endpoint generates a file for downloading. That
-can be accomplished by adding `use_custom_headers` to
-`extra_decorators`. An endpoint using `use_custom_headers` should
-yield a `dict` with the following keys recognized:
+can be accomplished by decorating the view function with
+`@utils.use_custom_headers`. An endpoint using
+`utils.use_custom_headers` should yield a `dict` with the following
+keys recognized:
 
 - `"content"`: the actual content;
 - `"mimetype"` (default: `"text/html"`): possible MIME type; and
@@ -331,7 +339,9 @@ plain-text file listing the arguments to the endpoint, named with the
 value of `filename` (`args.txt` if not specified):
 
 ```python
-@test_plugin.route("/text", extra_decorators=["use_custom_headers"])
+@test_plugin.route("/text")
+@utils.main_hander
+@utils.use_custom_headers
 def textfile(args):
     """Make downloadable plain-text file of args."""
     yield {
@@ -351,17 +361,11 @@ decorator `prevent_timeout` has any practical effect on endpoints with
 
 ### Defining additional endpoint decorators
 
-By default, the endpoint decorator functions whose names can be listed
-in `extra_decorators` include only `prevent_timeout` and
-`use_custom_headers`, as the endpoints defined in this way are always
-decorated with `main_handler` as the topmost decorator. However,
-additional decorator functions can be defined by decorating them with
-`korp.pluginlib.EndpointPlugin.endpoint_decorator`; for example:
+In addition to `main_handler`, the endpoint decorator functions
+predefined in `korp.utils` are `prevent_timeout`. Additional decorator
+functions can be defined as follows:
 
 ```python
-# test_plugin is an instance of korp.pluginlib.EndpointPlugin, so this
-# is equivalent to @korp.pluginlib.EndpointPlugin.endpoint_decorator
-@test_plugin.endpoint_decorator
 def test_decor(generator):
     """Add to the result an extra layer with text_decor and payload."""
     @functools.wraps(generator)

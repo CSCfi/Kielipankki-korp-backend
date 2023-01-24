@@ -27,13 +27,11 @@ from ._util import print_verbose, print_verbose_delayed, set_print_verbosity
 loaded_plugins = OrderedDict()
 
 
-def load_plugins(app, plugin_list, decorators=None):
+def load_plugins(app, plugin_list):
     """Load the plugins in the modules listed in plugin_list.
 
     Load the plugins in the modules listed in plugin_list by importing
-    the modules within this package. app is the Flask application, and
-    decorators are the (globally available) decorators for endpoints.
-    (decorators must contain main_handler.)
+    the modules within this package. app is the Flask application.
 
     The items in plugin list may be either strings (plugin names) or
     pairs (plugin name, config) where config is a dictionary- or
@@ -43,10 +41,6 @@ def load_plugins(app, plugin_list, decorators=None):
     """
     global loaded_plugins
     set_print_verbosity(pluginlibconf.LOAD_VERBOSITY)
-    if not decorators or not any(decor.__name__ == "main_handler"
-                                 for decor in decorators):
-        raise ValueError("decorators must contain main_handler")
-    EndpointPlugin.add_endpoint_decorators(decorators)
     saved_sys_path = sys.path
     sys.path.extend(pluginlibconf.SEARCH_PATH)
     for plugin in plugin_list:
