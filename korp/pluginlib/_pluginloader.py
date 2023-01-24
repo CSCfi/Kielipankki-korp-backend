@@ -13,6 +13,7 @@ import importlib
 import sys
 
 from collections import OrderedDict
+from flask import Blueprint
 
 from ._configutil import pluginlibconf, add_plugin_config, plugin_configs
 from ._endpointplugin import EndpointPlugin
@@ -56,6 +57,12 @@ def load_plugins(app, plugin_list):
                 loaded_plugins[plugin].update(module.PLUGIN_INFO)
             except AttributeError as e:
                 pass
+            # Find all blueprints defined in module and register them
+            # (copied from Martin Hammarstedt's plugin load code)
+            for name in dir(module):
+                v = getattr(module, name)
+                if isinstance(v, Blueprint):
+                    app.register_blueprint(v)
             load_msg = ("Loaded Korp plugin \"" + plugin + "\" ("
                         + module.__name__ + ")")
             if pluginlibconf.LOAD_VERBOSITY > 0:
@@ -88,7 +95,6 @@ def load_plugins(app, plugin_list):
                 print(msg_base, file=sys.stderr)
                 raise
     sys.path = saved_sys_path
-    EndpointPlugin.register_all(app)
     _handle_duplicate_routing_rules(app)
 
 

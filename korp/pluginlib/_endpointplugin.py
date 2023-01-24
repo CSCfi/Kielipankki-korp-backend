@@ -23,15 +23,11 @@ from ._util import print_verbose, get_plugin_name
 
 class EndpointPlugin(flask.Blueprint):
 
-    """Blueprint keeping track of instances and modifying route() method.
+    """Blueprint modifying route() method.
 
     The constructor may be called with name and import_name as None,
-    defaulting to the module name. The class also adds a class method for
-    registering all instances.
+    defaulting to the module name.
     """
-
-    # Class instances
-    _instances = set()
 
     def __init__(self, name=None, import_name=None, *args, **kwargs):
         """Initialize with name and import_name defaulting to module name.
@@ -82,7 +78,6 @@ class EndpointPlugin(flask.Blueprint):
             else:
                 return rule
 
-        self._instances.add(self)
         if "methods" not in options:
             options["methods"] = ["GET", "POST"]
         def decorator(func):
@@ -98,9 +93,3 @@ class EndpointPlugin(flask.Blueprint):
                     + func.__qualname__))
             return wrapped_func
         return decorator
-
-    @classmethod
-    def register_all(cls, app):
-        """Register all EndpointPlugin instances with the Flask app."""
-        for bp in cls._instances:
-            app.register_blueprint(bp)
