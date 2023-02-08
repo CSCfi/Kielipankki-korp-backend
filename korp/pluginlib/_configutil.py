@@ -34,6 +34,14 @@ _conf_defaults = SimpleNamespace(
     HANDLE_DUPLICATE_ROUTES = "override,warn"
 )
 
+# Plugin configuration variables, added by add_plugin_config and possibly
+# augmented by get_plugin_config (plugin name -> dict)
+plugin_configs = {}
+
+# The names of plugins whose configurations in plugin_configs have already
+# been expanded by get_plugin_config.
+_plugin_configs_expanded = set()
+
 
 def init_pluginlib_config():
     """Initialize plugin and pluginlib config; return pluginlib config.
@@ -119,15 +127,6 @@ def _make_config(*configs, always_add=None):
 def _get_dict(obj):
     """Return a dictionary representation of obj."""
     return obj if isinstance(obj, dict) else obj.__dict__
-
-
-# Plugin configuration variables, added by add_plugin_config and possibly
-# augmented by get_plugin_config (plugin name -> namespace)
-plugin_configs = {}
-
-# The names of plugins whose configurations in plugin_configs have already
-# been expanded by get_plugin_config.
-_plugin_configs_expanded = set()
 
 
 def add_plugin_config(plugin_name, config):
