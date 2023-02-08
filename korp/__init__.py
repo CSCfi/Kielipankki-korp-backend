@@ -90,7 +90,8 @@ def create_app():
     app.register_blueprint(timespan.bp)
 
     # Load plugins
-    load_plugins(app, app.config["PLUGINS"])
+    with app.app_context():
+        load_plugins(app, app.config["PLUGINS"])
 
     # Register authorizer
     if utils.Authorizer.auth_class:

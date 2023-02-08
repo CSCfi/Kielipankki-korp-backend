@@ -13,22 +13,13 @@ import importlib
 
 from types import SimpleNamespace
 
-import config as korpconf
+from flask import current_app as app
 
 from ._util import get_plugin_name
 
 
-# Try to import korp.pluginlib.config as _pluginlibconf; if not available,
-# define _pluginlibconf as a SimpleNamespace. These are used to fill in the
-# pluginlibconf SimpleNamespace below.
-try:
-    from . import config as _pluginlibconf
-except ImportError:
-    _pluginlibconf = SimpleNamespace()
-
-
-# Default configuration values, if found neither in module korp.pluginlib.config
-# nor config
+# Default configuration values, if not found in config; please see
+# README.md for more details
 _conf_defaults = SimpleNamespace(
     # Plugins are in package "korpplugins"
     PACKAGES = ["korpplugins"],
@@ -42,6 +33,26 @@ _conf_defaults = SimpleNamespace(
     # happens, print a warning
     HANDLE_DUPLICATE_ROUTES = "override,warn"
 )
+
+
+def init_pluginlib_config():
+    """Initialize plugin and pluginlib config; return pluginlib config.
+
+    Note that this needs to be called within Flask application context.
+    """
+    # If PLUGINLIB_CONFIG is not configured, set it to _conf_defaults
+    app.config.setdefault("PLUGINLIB_CONFIG", _conf_defaults)
+    # Empty PLUGINS_CONFIG by default
+    app.config.setdefault("PLUGINS_CONFIG", {})
+    # An object containing configuration attribute values. Values are
+    # checked first from the dictionary or namespace PLUGINLIB_CONFIG
+    # in the Korp configuration, and then in the defaults in
+    # _conf_defaults.
+    pluginlibconf = _make_config(
+        app.config.get("PLUGINLIB_CONFIG", {}),
+        _conf_defaults)
+    app.config["PLUGINLIB_CONFIG"] = pluginlibconf
+    return pluginlibconf
 
 
 def _make_config(*configs, always_add=None):
@@ -110,15 +121,6 @@ def _get_dict(obj):
     return obj if isinstance(obj, dict) else obj.__dict__
 
 
-# An object containing configuration attribute values. Values are checked first
-# from the dictionary or namespace PLUGINLIB_CONFIG in the Korp configuration,
-# then in korp.pluginlib.config, and finally the defaults in _conf_defaults.
-pluginlibconf = _make_config(
-    getattr(korpconf, "PLUGINLIB_CONFIG", {}),
-    _pluginlibconf,
-    _conf_defaults)
-
-
 # Plugin configuration variables, added by add_plugin_config and possibly
 # augmented by get_plugin_config (plugin name -> namespace)
 plugin_configs = {}
@@ -132,7 +134,7 @@ def add_plugin_config(plugin_name, config):
     """Add config as the configuration of plugin plugin_name.
 
     The values in config will override those specified as defaults in
-    the plugin or in the config module of the plugin.
+    the plugin.
     """
     global plugin_configs
     plugin_configs[plugin_name] = (
@@ -148,17 +150,14 @@ def get_plugin_config(defaults=None, **kw_defaults):
     can be either a dictionary- or namespace-like object. Values are
     taken from the first of the following three in which a value is
     found: (1) plugin configuration added using add_plugin_config
-    (typically in the list of plugins to load); (2) the value of Korp's
-    config.PLUGIN_CONFIG_PLUGINNAME (PLUGINNAME replaced with the name
-    of the plugin in upper case); (3) "config" module for the plugin
-    (package.plugin.config for sub-package plugins, package.config for
-    module plugins), unless the plugin is a top-level module; and (4)
-    defaults.
+    (typically in the list of plugins to load); (2) the value of
+    app.config.PLUGINS_CONFIG["pluginname"] (where pluginname is the
+    name of the plugin); and (3) defaults.
 
     If defaults is not specified or is empty and no keyword arguments
     are specified, the configuration variables and their default
-    values are taken from the first non-empty of (3), (2) and (1),
-    tried in this order.
+    values are taken from the first non-empty of (2) and (1), tried in
+    this order.
 
     The function also assigns the result to plugin_configs[plugin].
     If the function is called again for the same plugin, it returns
@@ -168,33 +167,14 @@ def get_plugin_config(defaults=None, **kw_defaults):
     if defaults is None:
         defaults = kw_defaults
     plugin, pkg, module = get_plugin_name(call_depth=2)
-    # Assume module name package.plugin_package.module[.submodule...],
-    # package.plugin_module or plugin_module
-    if pkg:
-        module_name_comps = module.__name__.split(".")
-        # Module name does not contain ".__init__", so test it separately
-        if len(module_name_comps) > 2 or "__init__.py" in module.__file__:
-            # package.plugin_package.module[.submodule...]
-            config_name = pkg + "." + plugin + ".config"
-        else:
-            # package.plugin_module
-            config_name = pkg + ".config"
-        # Import the configuration module if available
-        try:
-            plugin_config_mod = importlib.import_module(config_name)
-        except ImportError:
-            plugin_config_mod = SimpleNamespace()
-    else:
-        # plugin_module
-        plugin_config_mod = SimpleNamespace()
     if plugin not in _plugin_configs_expanded:
         plugin_configs[plugin] = _make_config(
             plugin_configs.get(plugin, {}),
-            getattr(korpconf, "PLUGIN_CONFIG_" + plugin.upper(), {}),
-            plugin_config_mod,
+            app.config["PLUGINS_CONFIG"].get(plugin, {}),
             defaults or {},
             # Make RENAME_ROUTES configurable even if it has not been
             # given a default in the plugin
             always_add={"RENAME_ROUTES": None})
         _plugin_configs_expanded.add(plugin)
+        app.config["PLUGINS_CONFIG"][plugin] = plugin_configs[plugin]
     return plugin_configs[plugin]

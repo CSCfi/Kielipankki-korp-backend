@@ -54,12 +54,15 @@ same plugin module.
 
 ### Configuring Korp for plugins
 
-Korp’s `config.py` (that is, top-level module `config`) contains the
-following plugin-related variables:
+Korp’s `config` module (`config.py`) contains the following
+plugin-related variables:
 
 - `PLUGINS`: A list of names of plugins (modules or subpackages) to be
   used, in the order they are to be loaded. If a plugin module is not
   found, a warning is output to the standard output.
+
+- `PLUGINS_CONFIG`: Configurations for individual plugins; see
+  [below](#configuring-individual-plugins).
 
 - `INFO_SHOW_PLUGINS`: What information on loaded plugins the response
   of the `/info` command should contain:
@@ -71,18 +74,31 @@ following plugin-related variables:
     information specified in the `PLUGIN_INFO` dictionary defined in
     the plugin module (see [below](#plugin-information)
 
+- `PLUGINLIB_CONFIG`: Plugin library configuration; see [the next
+  section](#configuring-korppluginlib).
+
 
 ### Configuring `korp.pluginlib`
 
-The configuration of `korp.pluginlib` is in the module
-`korp.pluginlib.config` (file `korp.pluginlib/config.py`). Currently,
-the following configuration variables are recognized:
+The configuration of `korp.pluginlib` is specified in the Korp
+configuration module within the dictionary or namespace object
+`PLUGINLIB_CONFIG`; for example:
+
+```python
+PLUGINLIB_CONFIG = dict(
+    HANDLE_NOT_FOUND = "warn",
+    LOAD_VERBOSITY = 1,
+)
+```
+
+Currently, the following configuration variables are recognized:
 
 - `PACKAGES`: A list of packages which may contain plugins; default:
-  `["korpplugins"]`. The packages may be namespace packages, so their
-  modules may be under different directory roots. An empty string
-  denotes top-level modules without packages. The packages are
-  searched for a plugin in the order in which they are listed.
+  `["plugins", "korpplugins"]`. The packages may be namespace
+  packages, so their modules may be under different directory roots.
+  An empty string denotes top-level modules without packages. The
+  packages are searched for a plugin in the order in which they are
+  listed.
 
 - `SEARCH_PATH`: A list of directories in which to search for plugins
   (the packages listed in `PACKAGES`) in addition to default ones
@@ -116,39 +132,20 @@ the following configuration variables are recognized:
     - `"error"`: Print an error message to stderr and raise a
       `ValueError`.
 
-Alternatively, the configuration variables may be specified in the
-top-level module `config` within the dictionary or namespace object
-`PLUGINLIB_CONFIG`; for example:
-
-```python
-PLUGINLIB_CONFIG = dict(
-    HANDLE_NOT_FOUND = "warn",
-    LOAD_VERBOSITY = 1,
-)
-```
-
-The values specified in the top-level `config` override those in
-`korp.pluginlib.config`.
-
 
 ### Configuring individual plugins
 
 Values for the configuration variables of individual plugin modules or
-subpackages can be specified in three places:
+subpackages can be specified in two places:
 
-1. An item in the list `PLUGINS` in Korp’s top-level `config` module
+1. An item in the list `PLUGINS` in Korp’s `config` module
    can be a pair `(`_plugin\_name_`,` _config_`)`, where _config_ may
    be either a dictionary- or namespace-like object containing
    configuration variables.
 
-2. Korp’s top-level `config` module can define the variable
-   `PLUGIN_CONFIG_`_PLUGINNAME_ (where _PLUGINNAME_ is the name of the
-   plugin in upper case), whose value may be either a dictionary- or
-   namespace-like object with configration variables.
-
-3. If the plugin is a subpackage (and not a single module), it can use
-   separate configuration module named `config` within the package,
-   consisting of configuration variables.
+2. In Korp’s `config` module, in `PLUGINS_CONFIG[`_plugin\_name_`]`,
+   whose value may be either a dictionary- or namespace-like object
+   with configration variables.
 
 The value for a configuration variable is taken from the first of the
 above in which it is set.
@@ -172,9 +169,7 @@ plugins can also access it as
 Note that the value returned by `get_plugin_config` contains values
 only for the keys specified in the default values given as arguments,
 even if the other places for configuration variables defined
-additional variables. (If `get_plugin_config` is called without
-arguments, the values defined in a possible configuration module are
-taken as defaults.) The default values can be specified either as
+additional variables. The default values can be specified either as
 keyword arguments to `get_plugin_config` or as a single value that can
 be either a dictionary- or namespace-like object. The returned value
 is always a `SimpleNamespace`.

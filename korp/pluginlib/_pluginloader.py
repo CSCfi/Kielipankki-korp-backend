@@ -15,7 +15,11 @@ import sys
 from collections import OrderedDict
 from flask import Blueprint
 
-from ._configutil import pluginlibconf, add_plugin_config, plugin_configs
+from ._configutil import (
+    init_pluginlib_config,
+    add_plugin_config,
+    plugin_configs
+)
 from ._endpointplugin import EndpointPlugin
 from ._util import print_verbose, print_verbose_delayed, set_print_verbosity
 
@@ -26,6 +30,10 @@ from ._util import print_verbose, print_verbose_delayed, set_print_verbosity
 # "date". The dictionary is ordered by the order in which the plugins have been
 # loaded.
 loaded_plugins = OrderedDict()
+
+# Shorthand for app.config["PLUGINLIB_CONFIG"], initialized in
+# load_plugins
+pluginlibconf = None
 
 
 def load_plugins(app, plugin_list):
@@ -39,8 +47,12 @@ def load_plugins(app, plugin_list):
     namespace-like object containing values for configuration
     variables of the module. The values defined here override those in
     the possible config submodule of the plugin.
+
+    Note that this needs to be called within Flask application
+    context, because of calling init_pluginlib_config.
     """
-    global loaded_plugins
+    global loaded_plugins, pluginlibconf
+    pluginlibconf = init_pluginlib_config()
     set_print_verbosity(pluginlibconf.LOAD_VERBOSITY)
     saved_sys_path = sys.path
     sys.path.extend(pluginlibconf.SEARCH_PATH)
