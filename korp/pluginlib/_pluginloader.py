@@ -18,6 +18,7 @@ from flask import Blueprint
 from ._configutil import (
     init_pluginlib_config,
     add_plugin_config,
+    get_plugin_config,
     plugin_configs
 )
 from ._endpointplugin import EndpointPlugin
@@ -63,6 +64,10 @@ def load_plugins(app, plugin_list):
             plugin = plugin[0]
         try:
             module = _find_plugin(plugin)
+            # Setup plugin configuration for plugins that do not call
+            # get_plugin_config themselves but that may have
+            # configuration specified in PLUGINS_CONFIG[plugin]
+            get_plugin_config(plugin=plugin)
             # Add plugin information to loaded_plugins
             loaded_plugins[plugin] = {"module": module}
             try:

@@ -140,8 +140,12 @@ def add_plugin_config(plugin_name, config):
         SimpleNamespace(**config) if isinstance(config, dict) else config)
 
 
-def get_plugin_config(defaults=None, **kw_defaults):
-    """Get the configuration for the calling plugin, defaulting to defaults
+def get_plugin_config(plugin=None, defaults=None, **kw_defaults):
+    """Get the configuration for (the calling) plugin, defaulting to defaults
+
+    If plugin is None, return the plugin configuration for the calling
+    plugin (as found by get_plugin_name), otherwise for the named
+    plugin.
 
     Return a namespace object with configuration variables as
     attributes. The attribute names are either the names of the keyword
@@ -165,7 +169,8 @@ def get_plugin_config(defaults=None, **kw_defaults):
     """
     if defaults is None:
         defaults = kw_defaults
-    plugin, pkg, module = get_plugin_name(call_depth=2)
+    if plugin is None:
+        plugin, _, _ = get_plugin_name(call_depth=2)
     if plugin not in _plugin_configs_expanded:
         plugin_configs[plugin] = _make_config(
             plugin_configs.get(plugin, {}),
