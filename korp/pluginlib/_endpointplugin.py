@@ -94,3 +94,9 @@ class EndpointPlugin(flask.Blueprint):
                     + func.__qualname__))
             return wrapped_func
         return decorator
+
+    def config(self, key, default=None):
+        """Return the value for key in plugin configuration (or default)."""
+        return (flask.current_app.config["PLUGINS_CONFIG"]
+                .get(self.import_name, {})
+                .get(key, default))
