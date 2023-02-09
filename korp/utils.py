@@ -23,6 +23,8 @@ from gevent.event import Event
 
 from korp.db import mysql
 from korp.memcached import memcached
+# For backward-compatibility
+from korp.pluginlib import EndpointPlugin as Plugin
 
 # Special symbols used by this script; they must NOT be in the corpus
 END_OF_LINE = "-::-EOL-::-"
@@ -653,14 +655,6 @@ def strptime(date):
 
 def sql_escape(s):
     return mysql.connection.escape_string(s).decode("utf-8") if isinstance(s, str) else s
-
-
-class Plugin(Blueprint):
-    """Simple plugin class, identical to Flask's Blueprint but with a method for accessing the plugin's
-    configuration."""
-
-    def config(self, key, default=None):
-        return app.config["PLUGINS_CONFIG"].get(self.import_name, {}).get(key, default)
 
 
 class Authorizer(ABC):
