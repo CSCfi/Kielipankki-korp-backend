@@ -70,11 +70,8 @@ def _make_config(*configs, always_add=None):
     has a key that is not in the defaults (or always_add), it is
     ignored.
 
-    Each configuration object is a dictionary-like object whose keys
-    can be iterated. Each item in configs is either such a
-    configuration object directly or a pair (conf, prefix), where conf
-    is the object and prefix is a string to be prefixed to keys when
-    searching from conf.
+    Each configuration object in configs is a dictionary-like object
+    whose keys can be iterated.
 
     The items in always_add (a dict) are added to the result even if
     the keys were not present in the defaults. Their values are those
@@ -87,31 +84,23 @@ def _make_config(*configs, always_add=None):
     other_confs = []
     # Loop over configs in the reverse order
     for conf in reversed(configs):
-        conf_dict, prefix = conf if isinstance(conf, tuple) else (conf, "")
-        if conf_dict:
+        if conf:
             if not default_conf:
                 # This is the last non-empty conf, so make it default
-                if prefix:
-                    # Use only prefixed keys and remove the prefix from the
-                    # default keys
-                    default_conf = dict((key[len(prefix):], val)
-                                        for key, val in conf_dict.items()
-                                        if key.startswith(prefix))
-                else:
-                    default_conf = conf_dict
+                default_conf = conf
                 if always_add:
                     for key, val in always_add.items():
                         default_conf.setdefault(key, val)
             else:
                 # Prepend non-defaults to other_confs: earlier ones have higher
                 # priority, but they are later in the reversed list
-                other_confs[:0] = [(conf_dict, prefix)]
+                other_confs[:0] = [conf]
     result_conf = default_conf
     if other_confs:
         for key in default_conf:
-            for conf, prefix in other_confs:
+            for conf in other_confs:
                 try:
-                    result_conf[key] = conf[prefix + key]
+                    result_conf[key] = conf[key]
                     # If a value was available, ignore the rest of configs
                     break
                 except KeyError:
