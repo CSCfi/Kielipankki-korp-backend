@@ -81,8 +81,8 @@ plugin-related variables:
 ### Configuring `korp.pluginlib`
 
 The configuration of `korp.pluginlib` is specified in the Korp
-configuration module within the dictionary or namespace object
-`PLUGINLIB_CONFIG`; for example:
+configuration module within the `dict` `PLUGINLIB_CONFIG`; for
+example:
 
 ```python
 PLUGINLIB_CONFIG = dict(
@@ -138,23 +138,21 @@ Currently, the following configuration variables are recognized:
 Values for the configuration variables of individual plugin modules or
 subpackages can be specified in two places:
 
-1. An item in the list `PLUGINS` in Korp’s `config` module
-   can be a pair `(`_plugin\_name_`,` _config_`)`, where _config_ may
-   be either a dictionary- or namespace-like object containing
-   configuration variables.
+1. An item in the list `PLUGINS` in Korp’s `config` module can be a
+   pair `(`_plugin\_name_`,` _config_`)`, where _config_ is a
+   dictionary-like object containing configuration variables.
 
 2. In Korp’s `config` module, in `PLUGINS_CONFIG[`_plugin\_name_`]`,
-   whose value may be either a dictionary- or namespace-like object
-   with configration variables.
+   whose value is a dictionary-like object with configuration
+   variables.
 
 The value for a configuration variable is taken from the first of the
 above in which it is set.
 
 To get values from these sources, the plugin module needs to call
-`korp.pluginlib.get_plugin_config` with default values of configuration
-variables. The function returns an object containing configuration
-variables with their values (an instance of `types.SimpleNamespace`).
-For example:
+`korp.pluginlib.get_plugin_config` with default values of
+configuration variables. The function returns a `dict` containing
+configuration variables with their values. For example:
 
 ```python
 pluginconf = korp.pluginlib.get_plugin_config(
@@ -162,17 +160,18 @@ pluginconf = korp.pluginlib.get_plugin_config(
 )
 ```
 The configured value of `CONFIG_VAR` can be then accessed as
-`pluginconf.CONFIG_VAR`. Once the plugin has been loaded, other
+`pluginconf["CONFIG_VAR"]`. Once the plugin has been loaded, other
 plugins can also access it as
-`korp.pluginlib.plugin_configs["`_plugin_`"].CONFIG_VAR`.
+`korp.pluginlib.plugin_configs["`_plugin_`"]["CONFIG_VAR"]`, or
+alternatively,
+`flask.current_app.config["PLUGINS_CONFIG"]["`_plugin_`"]["CONFIG_VAR"]`.
 
 Note that the value returned by `get_plugin_config` contains values
 only for the keys specified in the default values given as arguments,
 even if the other places for configuration variables defined
 additional variables. The default values can be specified either as
-keyword arguments to `get_plugin_config` or as a single value that can
-be either a dictionary- or namespace-like object. The returned value
-is always a `SimpleNamespace`.
+keyword arguments to `get_plugin_config` or as a single
+dictionary-like object.
 
 
 ### Renaming plugin endpoint routes

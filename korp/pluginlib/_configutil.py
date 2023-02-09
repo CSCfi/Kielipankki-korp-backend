@@ -11,8 +11,6 @@ intended to be visible outside the package are imported at the package level.
 
 import importlib
 
-from types import SimpleNamespace
-
 from flask import current_app as app
 
 from ._util import get_plugin_name
@@ -20,7 +18,7 @@ from ._util import get_plugin_name
 
 # Default configuration values, if not found in config; please see
 # README.md for more details
-_conf_defaults = SimpleNamespace(
+_conf_defaults = dict(
     # Plugins are in package "korpplugins"
     PACKAGES = ["korpplugins"],
     # Search plugins only in the default ones
@@ -31,7 +29,7 @@ _conf_defaults = SimpleNamespace(
     HANDLE_NOT_FOUND = "warn",
     # The last endpoint for a route overrides the preceding ones; if that
     # happens, print a warning
-    HANDLE_DUPLICATE_ROUTES = "override,warn"
+    HANDLE_DUPLICATE_ROUTES = "override,warn",
 )
 
 # Plugin configuration variables, added by add_plugin_config and possibly
@@ -52,10 +50,9 @@ def init_pluginlib_config():
     app.config.setdefault("PLUGINLIB_CONFIG", _conf_defaults)
     # Empty PLUGINS_CONFIG by default
     app.config.setdefault("PLUGINS_CONFIG", {})
-    # An object containing configuration attribute values. Values are
-    # checked first from the dictionary or namespace PLUGINLIB_CONFIG
-    # in the Korp configuration, and then in the defaults in
-    # _conf_defaults.
+    # An object containing configuration values. Values are checked
+    # first from the dict PLUGINLIB_CONFIG in the Korp configuration,
+    # and then in the defaults in _conf_defaults.
     pluginlibconf = _make_config(
         app.config.get("PLUGINLIB_CONFIG", {}),
         _conf_defaults)
@@ -66,33 +63,31 @@ def init_pluginlib_config():
 def _make_config(*configs, always_add=None):
     """Return a config object with values from configs.
 
-    The returned object is a SimpleNamespace object that has a value for
-    each attribute in *last* non-empty of configs, treated as defaults.
-    The value is overridden by the corresponding value in the *first* of
-    other configs that has an attribute with the same name. If an item
-    in configs has an attribute that is not in the defaults (or
-    always_add), it is ignored.
+    The returned object is a dict that has a value for each key in
+    *last* non-empty of configs, treated as defaults. The value is
+    overridden by the corresponding value in the *first* of other
+    configs that has a key with the same name. If an item in configs
+    has a key that is not in the defaults (or always_add), it is
+    ignored.
 
-    Each configuration object is either a namespace-like object with
-    attributes, in which case its __dict__ attribute is inspected, or
-    a dictionary-like object whose keys can be iterated. Each item in
-    configs is either such a configuration object directly or a pair
-    (conf, prefix), where conf is the object and prefix is a string to
-    be prefixed to attributes when searching from conf.
+    Each configuration object is a dictionary-like object whose keys
+    can be iterated. Each item in configs is either such a
+    configuration object directly or a pair (conf, prefix), where conf
+    is the object and prefix is a string to be prefixed to keys when
+    searching from conf.
 
-    The items in always_add (a dict or namespace) are added to the
-    result even if the keys were not present in the defaults. Their
-    values are those in always_add, unless a different value is
-    specified in a configuration object.
+    The items in always_add (a dict) are added to the result even if
+    the keys were not present in the defaults. Their values are those
+    in always_add, unless a different value is specified in a
+    configuration object.
     """
     # We need to handle the default configuration separately, as it lists the
-    # available configuration attributes
+    # available configuration keys
     default_conf = {}
     other_confs = []
     # Loop over configs in the reverse order
     for conf in reversed(configs):
-        bare_conf, prefix = conf if isinstance(conf, tuple) else (conf, "")
-        conf_dict = _get_dict(bare_conf)
+        conf_dict, prefix = conf if isinstance(conf, tuple) else (conf, "")
         if conf_dict:
             if not default_conf:
                 # This is the last non-empty conf, so make it default
@@ -105,28 +100,23 @@ def _make_config(*configs, always_add=None):
                 else:
                     default_conf = conf_dict
                 if always_add:
-                    for key, val in _get_dict(always_add).items():
+                    for key, val in always_add.items():
                         default_conf.setdefault(key, val)
             else:
                 # Prepend non-defaults to other_confs: earlier ones have higher
                 # priority, but they are later in the reversed list
                 other_confs[:0] = [(conf_dict, prefix)]
-    result_conf = SimpleNamespace(**default_conf)
+    result_conf = default_conf
     if other_confs:
-        for attrname in default_conf:
+        for key in default_conf:
             for conf, prefix in other_confs:
                 try:
-                    setattr(result_conf, attrname, conf[prefix + attrname])
+                    result_conf[key] = conf[prefix + key]
                     # If a value was available, ignore the rest of configs
                     break
                 except KeyError:
                     pass
     return result_conf
-
-
-def _get_dict(obj):
-    """Return a dictionary representation of obj."""
-    return obj if isinstance(obj, dict) else obj.__dict__
 
 
 def add_plugin_config(plugin_name, config):
@@ -136,8 +126,7 @@ def add_plugin_config(plugin_name, config):
     the plugin.
     """
     global plugin_configs
-    plugin_configs[plugin_name] = (
-        SimpleNamespace(**config) if isinstance(config, dict) else config)
+    plugin_configs[plugin_name] = config
 
 
 def get_plugin_config(plugin=None, defaults=None, **kw_defaults):
@@ -147,13 +136,12 @@ def get_plugin_config(plugin=None, defaults=None, **kw_defaults):
     plugin (as found by get_plugin_name), otherwise for the named
     plugin.
 
-    Return a namespace object with configuration variables as
-    attributes. The attribute names are either the names of the keyword
-    arguments kw_defaults or the keys or attributes of defaults, which
-    can be either a dictionary- or namespace-like object. Values are
-    taken from the first of the following three in which a value is
-    found: (1) plugin configuration added using add_plugin_config
-    (typically in the list of plugins to load); (2) the value of
+    Return a dict with configuration variables as keys. The keys are
+    either the names of the keyword arguments kw_defaults or the keys
+    of defaults (a dict-like object). Values are taken from the first
+    of the following three in which a value is found: (1) plugin
+    configuration added using add_plugin_config (typically in the list
+    of plugins to load); (2) the value of
     app.config.PLUGINS_CONFIG["pluginname"] (where pluginname is the
     name of the plugin); and (3) defaults.
 

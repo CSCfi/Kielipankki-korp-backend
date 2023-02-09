@@ -44,19 +44,19 @@ def load_plugins(app, plugin_list):
     the modules within this package. app is the Flask application.
 
     The items in plugin list may be either strings (plugin names) or
-    pairs (plugin name, config) where config is a dictionary- or
-    namespace-like object containing values for configuration
-    variables of the module. The values defined here override those in
-    the possible config submodule of the plugin.
+    pairs (plugin name, config) where config is a dictionary-like
+    object containing values for configuration variables of the
+    module. The values defined here override those in the possible
+    config submodule of the plugin.
 
     Note that this needs to be called within Flask application
     context, because of calling init_pluginlib_config.
     """
     global loaded_plugins, pluginlibconf
     pluginlibconf = init_pluginlib_config()
-    set_print_verbosity(pluginlibconf.LOAD_VERBOSITY)
+    set_print_verbosity(pluginlibconf["LOAD_VERBOSITY"])
     saved_sys_path = sys.path
-    sys.path.extend(pluginlibconf.SEARCH_PATH)
+    sys.path.extend(pluginlibconf["SEARCH_PATH"])
     for plugin in plugin_list:
         # Add possible configuration
         if isinstance(plugin, tuple) and len(plugin) > 1:
@@ -82,7 +82,7 @@ def load_plugins(app, plugin_list):
                     app.register_blueprint(v)
             load_msg = ("Loaded Korp plugin \"" + plugin + "\" ("
                         + module.__name__ + ")")
-            if pluginlibconf.LOAD_VERBOSITY > 0:
+            if pluginlibconf["LOAD_VERBOSITY"] > 0:
                 descr = ""
                 for key, fmt in [
                     ("name", "{val}"),
@@ -103,10 +103,10 @@ def load_plugins(app, plugin_list):
             # module
             print_verbose_delayed()
         except ModuleNotFoundError as e:
-            if pluginlibconf.HANDLE_NOT_FOUND == "ignore":
+            if pluginlibconf["HANDLE_NOT_FOUND"] == "ignore":
                 continue
             msg_base = "Plugin \"" + plugin + "\" not found:"
-            if pluginlibconf.HANDLE_NOT_FOUND == "warn":
+            if pluginlibconf["HANDLE_NOT_FOUND"] == "warn":
                 print("Warning:", msg_base, e, file=sys.stderr)
             else:
                 print(msg_base, file=sys.stderr)
@@ -119,14 +119,14 @@ def _find_plugin(plugin):
     """Return the imported module for plugin or raise ModuleNotFoundError.
 
     Try to import module plugin from the packages listed in
-    pluginlibconf.PACKAGES and return the first one found. If no
+    pluginlibconf["PACKAGES"] and return the first one found. If no
     module of the name was found, raise ModuleNotFoundError with a
     message showing the tried (fully-qualified) module names and
     directories.
     """
     module = None
     not_found = []
-    for pkg in pluginlibconf.PACKAGES:
+    for pkg in pluginlibconf["PACKAGES"]:
         module_name = pkg + "." + plugin if pkg else plugin
         try:
             module = importlib.import_module(module_name)
@@ -171,23 +171,23 @@ def _set_plugin_info(module):
 
 
 def _format_config(conf, indent=0):
-    """Format configuration namespace conf with the given indent.
+    """Format configuration dict conf with the given indent.
 
-    Format the namespace conf containing plugin configuration so that
+    Format the dict conf containing plugin configuration so that
     each item is on separate line and is of the form
       NAME = value
     preceded by indent spaces.
     """
     return "\n".join(
         "{ind}{key} = {val}".format(ind=indent * " ", key=key, val=repr(val))
-        for key, val in conf.__dict__.items())
+        for key, val in conf.items())
 
 
 def _handle_duplicate_routing_rules(app):
     """Handle duplicate routing rules according to HANDLE_DUPLICATE_ROUTES.
 
     If app contains duplicate routing rules (added by plugins), handle
-    them as specified by  pluginlibconf.HANDLE_DUPLICATE_ROUTES:
+    them as specified by  pluginlibconf["HANDLE_DUPLICATE_ROUTES"]:
       "override": use the endpoint defined last without printing anything,
           allowing a plugin to override a built-in endpoint; if multiple
           plugins define an endpoint for the same route, the last one is
@@ -199,7 +199,7 @@ def _handle_duplicate_routing_rules(app):
           warning message to stderr
       "error": print an error message to stderr and raise ValueError
     """
-    handle_mode = pluginlibconf.HANDLE_DUPLICATE_ROUTES
+    handle_mode = pluginlibconf["HANDLE_DUPLICATE_ROUTES"]
     if "override" in handle_mode:
         _remove_duplicate_routing_rules(app)
     elif handle_mode in ("warn", "error"):
@@ -267,7 +267,7 @@ def _remove_duplicate_routing_rules(app):
                 # and and url_map._rules_by_endpoint
                 url_map._rules.remove(rule)
                 url_map._rules_by_endpoint[rule.endpoint].remove(rule)
-            if "warn" in pluginlibconf.HANDLE_DUPLICATE_ROUTES:
+            if "warn" in pluginlibconf["HANDLE_DUPLICATE_ROUTES"]:
                 print("Warning: Endpoint", rules[-1].endpoint,
                       "overrides endpoints defined earlier for routing rule \""
                       + rule_name + "\":",
