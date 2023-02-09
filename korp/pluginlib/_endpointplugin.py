@@ -35,6 +35,7 @@ class EndpointPlugin(flask.Blueprint):
         If name is None, set it to import_name. If import_name is
         None, set it to the name of the calling module.
         """
+        plugin_name = import_name
         if import_name is None:
             plugin_name, _, module = get_plugin_name(call_depth=2)
             import_name = module.__name__
