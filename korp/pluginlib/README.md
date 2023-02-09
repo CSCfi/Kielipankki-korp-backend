@@ -94,11 +94,13 @@ PLUGINLIB_CONFIG = dict(
 Currently, the following configuration variables are recognized:
 
 - `PACKAGES`: A list of packages which may contain plugins; default:
-  `["plugins", "korpplugins"]`. The packages may be namespace
+  `["plugins", "korpplugins"]`. The packages are searched for a plugin
+  in the order in which they are listed. The packages may be namespace
   packages, so their modules may be under different directory roots.
-  An empty string denotes top-level modules without packages. The
-  packages are searched for a plugin in the order in which they are
-  listed.
+  An empty string denotes top-level modules without packages. Plugin
+  names containing a dot in `PLUGINS` are treated as fully qualified
+  module or subpackage names; such plugins are always first searched
+  from the top level, implicitly prepending `""` to `PACKAGES`.
 
 - `SEARCH_PATH`: A list of directories in which to search for plugins
   (the packages listed in `PACKAGES`) in addition to default ones

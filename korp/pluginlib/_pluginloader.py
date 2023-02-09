@@ -119,14 +119,15 @@ def _find_plugin(plugin):
     """Return the imported module for plugin or raise ModuleNotFoundError.
 
     Try to import module plugin from the packages listed in
-    pluginlibconf["PACKAGES"] and return the first one found. If no
-    module of the name was found, raise ModuleNotFoundError with a
-    message showing the tried (fully-qualified) module names and
-    directories.
+    pluginlibconf["PACKAGES"] and return the first one found. If
+    plugin contains a dot, the name is considered fully qualified and
+    it is tried directly first. If no module of the name was found,
+    raise ModuleNotFoundError with a message showing the tried
+    (fully-qualified) module names and directories.
     """
     module = None
     not_found = []
-    for pkg in pluginlibconf["PACKAGES"]:
+    for pkg in ([""] if "." in plugin else []) + pluginlibconf["PACKAGES"]:
         module_name = pkg + "." + plugin if pkg else plugin
         try:
             module = importlib.import_module(module_name)
