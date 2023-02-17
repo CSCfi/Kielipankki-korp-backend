@@ -23,6 +23,7 @@ from gevent.event import Event
 
 from korp.db import mysql
 from korp.memcached import memcached
+from korp.pluginlib import CallbackPluginCaller
 # For backward-compatibility
 from korp.pluginlib import EndpointPlugin as Plugin
 
@@ -71,6 +72,7 @@ def main_handler(generator):
             return generator(args, *pargs, **kwargs)
         else:
             # Function is called externally
+            plugin_caller = CallbackPluginCaller()
             def error_handler():
                 """Format exception info for output to user."""
                 exc = sys.exc_info()
@@ -81,30 +83,49 @@ def main_handler(generator):
                                    }}
                 if "debug" in args:
                     error["ERROR"]["traceback"] = "".join(traceback.format_exception(*exc)).splitlines()
+                plugin_caller.raise_event("error", error, exc)
                 return error
 
             def incremental_json(ff):
                 """Incrementally yield result as JSON."""
+                result_len = 0
                 if callback:
+                    result_len += len(callback) + 1
                     yield callback + "("
+                result_len += 2
                 yield "{\n"
 
                 try:
                     for response in ff:
                         if not response:
                             # Yield whitespace to prevent timeout
+                            result_len += 2
                             yield " \n"
                         else:
-                            yield json.dumps(response)[1:-1] + ",\n"
+                            response = plugin_caller.filter_value(
+                                "filter_result", response)
+                            output = json.dumps(response)[1:-1] + ",\n"
+                            result_len += len(output)
+                            yield output
                 except GeneratorExit:
                     raise
                 except:
                     error = error_handler()
-                    yield json.dumps(error)[1:-1] + ",\n"
+                    output = json.dumps(error)[1:-1] + ",\n"
+                    result_len += len(output)
+                    yield output
 
-                yield json.dumps({"time": time.time() - starttime})[1:] + "\n"
+                endtime = time.time()
+                elapsed_time = endtime - starttime
+                output = json.dumps({"time": elapsed_time})[1:] + "\n"
+                result_len += len(output)
+                yield output
                 if callback:
+                    result_len += 1
                     yield ")"
+                plugin_caller.raise_event(
+                    "exit_handler", endtime, elapsed_time, result_len)
+                plugin_caller.cleanup()
 
             def full_json(ff):
                 """Yield full JSON at the end, but until then keep returning newlines to prevent timeout."""
@@ -122,13 +143,20 @@ def main_handler(generator):
                 except:
                     result = error_handler()
 
-                result["time"] = time.time() - starttime
+                endtime = time.time()
+                elapsed_time = endtime - starttime
+                result["time"] = elapsed_time
+
+                result = plugin_caller.filter_value("filter_result", result)
 
                 if callback:
                     result = callback + "(" + json.dumps(result, indent=indent) + ")"
                 else:
                     result = json.dumps(result, indent=indent)
+                plugin_caller.raise_event(
+                    "exit_handler", endtime, elapsed_time, len(result))
                 yield result
+                plugin_caller.cleanup()
 
             def make_custom_response(ff):
                 """Return a Response with custom mimetype and/or headers.
@@ -155,11 +183,25 @@ def main_handler(generator):
                                                    indent=indent)
                     result["mimetype"] = "application/json"
 
+                # Filter only the content. Should we also allow filtering the
+                # headers and/or mimetype, using separate hook points?
+                result["content"] = plugin_caller.filter_value(
+                    "filter_result", result["content"])
+
+                endtime = time.time()
+                elapsed_time = endtime - starttime
+                plugin_caller.raise_event(
+                    "exit_handler", endtime, elapsed_time,
+                    len(result["content"]))
+                plugin_caller.cleanup()
+
                 return Response(result.get("content"),
                                 headers=result.get("headers"),
                                 mimetype=result.get("mimetype"))
 
             starttime = time.time()
+            plugin_caller.raise_event("enter_handler", args, starttime)
+            args = plugin_caller.filter_value("filter_args", args)
             incremental = parse_bool(args, "incremental", False)
             callback = args.get("callback")
             indent = int(args.get("indent", 0))
