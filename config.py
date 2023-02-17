@@ -68,6 +68,12 @@ PLUGINS = []
 # Plugin configuration
 PLUGINS_CONFIG = {}
 
+# Show plugin information in the result of the /info endpoint:
+#  "name" = plugin names only
+#  "info" = plugin information in the PLUGIN_INFO of the plugin
+#  None = nothing
+INFO_SHOW_PLUGINS = "name"
+
 # Plugin library (korp.pluginlib) configuration (see
 # korp/pluginlib/README.md for more details)
 PLUGINLIB_CONFIG = dict(

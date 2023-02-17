@@ -1,12 +1,14 @@
 import time
 
 from flask import Blueprint
+from flask import current_app as app
 from pymemcache.exceptions import MemcacheError
 
 import korp
 from korp import utils
 from korp.cwb import cwb
 from korp.memcached import memcached
+from korp.pluginlib import get_loaded_plugins
 
 bp = Blueprint("info", __name__)
 
@@ -47,6 +49,10 @@ def info(args):
         "corpora": list(corpora),
         "protected_corpora": protected
     }
+
+    if app.config["INFO_SHOW_PLUGINS"]:
+        result["plugins"] = get_loaded_plugins(
+            names_only=(app.config["INFO_SHOW_PLUGINS"] == "names"))
 
     if args["cache"]:
         with memcached.get_client() as mc:
