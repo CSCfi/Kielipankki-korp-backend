@@ -38,12 +38,13 @@ The Korp backend supports two kinds of plugins:
 
 1. *endpoint plugins* implementing new WSGI endpoints, and
 2. *callback plugins* containing callbacks called at certain points
-   (*plugin hook points*) in `korp.py` when handling a request, to
-   filter data or to perform an action.
+   (*plugin hook points*) in modules of the package `korp` when
+   handling a request, to filter data or to perform an action.
 
 Plugins are defined as Python modules or subpackages, by default
-within the package `korpplugins` (customizable via the configuration
-variable `PACKAGES`; see [below](#configuring-korppluginlib)).
+within the package `plugins` or `korpplugins` (customizable via the
+configuration variable `PACKAGES`; see
+[below](#configuring-korppluginlib)).
 
 Both WSGI endpoint plugins and callback plugins can be defined in the
 same plugin module.
@@ -123,8 +124,8 @@ Currently, the following configuration variables are recognized:
   routing rule, added by plugins:
     - `"override"`: Use the endpoint defined last without printing
       anything, allowing a plugin to override an endpoint defined in
-      `korp.py`; if multiple plugins define an endpoint for the same
-      route, the last one is used.
+      a module in the package `korp`; if multiple plugins define an
+      endpoint for the same route, the last one is used.
     - `"override,warn"` (default): Use the endpoint defined last and
       print a warning to stderr.
     - `"ignore"`: Use the endpoint defined first (Flask default
@@ -375,17 +376,18 @@ def test_decor(generator):
 
 ## Callback plugins
 
-Callbacks to be called at specific *plugin hook points* in `korp.py`
-are defined within subclasses of `korp.pluginlib.CallbackPlugin` as
-instance methods having the name of the hook point. The arguments and
-return values of a callback method are specific to a hook point.
+Callbacks to be called at specific *plugin hook points* in modules of
+the package `korp` are defined within subclasses of
+`korp.pluginlib.CallbackPlugin` as instance methods having the name of
+the hook point. The arguments and return values of a callback method
+are specific to a hook point.
 
 In the first argument `request`, each callback method gets the actual Flask
 request object (not a proxy for the request) containing information on
 the request. For example, the endpoint name is available as
 `request.endpoint`.
 
-`korp.py` contains two kinds of hook points:
+`korp` modules contain two kinds of hook points:
 
 1. *filter hook points* call callbacks that may filter (modify) a
    value, and
@@ -555,9 +557,9 @@ methods is the actual Flask request object, not the global proxy.
 
 ### Defining hook points in plugins
 
-In addition to the hook points in `korp.py` listed above, you can
-define hook points in plugins by invoking callbacks with the name of
-the hook point by using the appropriate methods. For example, a
+In addition to the hook points in `korp` modules, listed above, you
+can define hook points in plugins by invoking callbacks with the name
+of the hook point by using the appropriate methods. For example, a
 logging plugin could implement a callback method `log` that could be
 called from other plugins, both callback and endpoint plugins.
 
@@ -584,8 +586,8 @@ If `request` is omitted or `None`, the request object referred to by
 the global request proxy is used.
 
 Callbacks for such additional hook points are defined in the same way
-as for those in `korp.py`. The signature corresponding to the above
-calls is
+as for those in `korp` modules. The signature corresponding to the
+above calls is
 
 ```python
 hook_point(self, request, *args, **kwargs)
@@ -609,7 +611,7 @@ Three types of call methods are available in CallbackPluginCaller:
   methods, collect their return values to a list and finally return
   the list.
 
-Only the first two are currently used in `korp.py`.
+Only the first two are currently used in `korp` modules.
 
 
 ## Limitations and deficiencies
