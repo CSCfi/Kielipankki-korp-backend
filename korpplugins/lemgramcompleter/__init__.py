@@ -127,7 +127,7 @@ def _query_lemgrams(cursor, wf, param_corpora, limit):
             # print(sql)
             sql = (pluginlib.CallbackPluginCaller
                    .filter_value_for_request("filter_sql", sql))
-            cursor.execute(sql)
+            db.sql_execute(cursor, sql)
             _retrieve_lemgrams(cursor, wf, modcase, is_any_prefix, result,
                                result_set)
             # print(repr(result))
