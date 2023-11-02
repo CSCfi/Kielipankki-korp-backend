@@ -9,8 +9,8 @@ Korp example plugin: endpoint /example and a result wrapper in a package.
 import functools
 
 from korp import pluginlib, utils
-# Rename info to views_info to avoid a clash with korpplugins.example1.info
-from korp.views import info as views_info
+# Rename to views_* to avoid clashes with local names
+from korp.views import count as views_count, info as views_info
 
 
 pluginconf = pluginlib.get_plugin_config(
@@ -93,6 +93,26 @@ def info1(args):
     print("example1.info1")
     yield {pluginconf["ARGS_NAME"]: args,
            "result": next(views_info.info(args))}
+
+
+@example_plugin.route("/count1")
+@utils.main_handler
+@example_decor
+def count1(args):
+    """Yield arguments wrapped in ARGS_NAME, result of /count in "result".
+
+    This is another example of calling the view function of an
+    existing endpoint from the one of a new endpoint, when the
+    existing view function can yield multiple values.
+    """
+    print("example1.count1")
+    count_orig = views_count.count(args)
+    result = next(count_orig)
+    while "corpora" not in result:
+        yield result
+        result = next(count_orig)
+    yield {pluginconf["ARGS_NAME"]: args,
+           "result": result}
 
 
 class Example1b(pluginlib.CallbackPlugin):
