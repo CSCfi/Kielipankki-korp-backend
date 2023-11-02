@@ -12,21 +12,24 @@ completions for a prefix.
 # - Add parameters affecting the result.
 
 
-import pylibmc
+from pymemcache.exceptions import MemcacheError
 
-import korppluginlib
+from korp import db, memcached, pluginlib, utils
+from flask import current_app as app
 
 
-pluginconf = korppluginlib.get_plugin_config(
+pluginconf = pluginlib.get_plugin_config(
     # The name of the lemgram index table in the MySQL database
     LEMGRAM_DBTABLE = "lemgram_index",
 )
 
 
-plugin = korppluginlib.KorpEndpointPlugin()
+plugin = pluginlib.EndpointPlugin()
 
 
-@plugin.route("/lemgram_complete", extra_decorators=["prevent_timeout"])
+@plugin.route("/lemgram_complete")
+@utils.main_handler
+@utils.prevent_timeout
 def lemgram_complete(args):
     """Find lemgrams beginning with the specified prefix.
 
@@ -43,13 +46,12 @@ def lemgram_complete(args):
     - format (optional): if "old", use an old, Karp-like format, instead
       of the simpler default
     """
-    appglob = korppluginlib.app_globals
-    appglob.assert_key("wf", args, r"", True)
-    appglob.assert_key("corpus", args, appglob.IS_IDENT)
-    appglob.assert_key("limit", args, appglob.IS_NUMBER)
-    appglob.assert_key("format", args, r"old")
+    utils.assert_key("wf", args, r"", True)
+    utils.assert_key("corpus", args, utils.IS_IDENT)
+    utils.assert_key("limit", args, utils.IS_NUMBER)
+    utils.assert_key("format", args, r"old")
     wf = args.get("wf")
-    corpora = appglob.parse_corpora(args)
+    corpora = utils.parse_corpora(args)
     limit = int(args.get("limit", 10))
     fmt = args.get("format")
 
@@ -57,18 +59,23 @@ def lemgram_complete(args):
     # TODO: Add a helper function in korp.py abstracting the relevant
     # parts of the cache handling code
     if args["cache"]:
-        checksum = appglob.get_hash((wf, sorted(corpora), limit, fmt))
-        cache_key = (
-            "%s:lemgramcomplete_%s" % (appglob.cache_prefix(), checksum))
-        with appglob.mc_pool.reserve() as mc:
+        checksum = utils.get_hash((wf, sorted(corpora), limit, fmt))
+        with memcached.get_client() as mc:
+            # Would it be better to use just "multi" in the cache key
+            # instead of all the corpus ids?
+            cache_key = (
+                "%s:lemgramcomplete_%s" %
+                (",".join(utils.cache_prefix(mc, corpora).values()),
+                 checksum))
+            print(cache_key)
             result = mc.get(cache_key)
-        if result:
-            if "debug" in args:
-                result.setdefault("DEBUG", {})
-                result["DEBUG"]["cache_read"] = True
-                result["DEBUG"]["checksum"] = checksum
-            yield result
-            return
+            if result:
+                if "debug" in args:
+                    result.setdefault("DEBUG", {})
+                    result["DEBUG"]["cache_read"] = True
+                    result["DEBUG"]["checksum"] = checksum
+                yield result
+                return
 
     result = _get_lemgrams(wf, corpora, limit)
     if fmt == "old":
@@ -83,23 +90,22 @@ def lemgram_complete(args):
 
     if args["cache"]:
         # Cache the result
-        with appglob.mc_pool.reserve() as mc:
-            try:
+        try:
+            with memcached.get_client() as mc:
                 saved = mc.add(cache_key, result)
-            except pylibmc.TooBig:
-                pass
-            else:
-                if saved and "debug" in args:
-                    result.setdefault("DEBUG", {})
-                    result["DEBUG"]["cache_saved"] = True
+        except MemcahceError:
+            pass
+        else:
+            if saved and "debug" in args:
+                result.setdefault("DEBUG", {})
+                result["DEBUG"]["cache_saved"] = True
 
     yield result
 
 
 def _get_lemgrams(wf, corpora, limit):
-    app_globals = korppluginlib.app_globals
-    with app_globals.app.app_context():
-        cursor = app_globals.mysql.connection.cursor()
+    with app.app_context():
+        cursor = db.mysql.connection.cursor()
         result = _query_lemgrams(cursor, wf, corpora, limit)[:limit]
     return result
 
@@ -119,7 +125,7 @@ def _query_lemgrams(cursor, wf, param_corpora, limit):
         for suffpatt, is_any_prefix in [("..%", False), ("%", True)]:
             sql = _make_lemgram_query_part(wf + suffpatt, corpora, limit)
             # print(sql)
-            sql = (korppluginlib.KorpCallbackPluginCaller
+            sql = (pluginlib.CallbackPluginCaller
                    .filter_value_for_request("filter_sql", sql))
             cursor.execute(sql)
             _retrieve_lemgrams(cursor, wf, modcase, is_any_prefix, result,
@@ -159,7 +165,7 @@ def _retrieve_lemgrams(cursor, wf, modcase, is_any_prefix, result, result_set):
 
 
 def _make_lemgram_query_part(pattern, corpora, limit):
-    return ("(SELECT DISTINCT lemgram FROM `" + pluginconf.LEMGRAM_DBTABLE
+    return ("(SELECT DISTINCT lemgram FROM `" + pluginconf["LEMGRAM_DBTABLE"]
             + "` WHERE lemgram LIKE '" + pattern + "'"
             + (" AND CORPUS IN (" + ','.join(["'" + corp + "'"
                                              for corp in corpora]) + ")"
