@@ -6,20 +6,22 @@ Korp test plugin: non-JSON endpoint.
 """
 
 
-import korppluginlib
+from korp import pluginlib, utils
 
 
 PLUGIN_INFO = {
-    "name": "korppluginlib test plugin 3 (non-JSON endpoint /text)",
-    "version": "0.1",
-    "date": "2021-01-07",
+    "name": "korp.pluginlib test plugin 3 (non-JSON endpoint /text)",
+    "version": "0.2",
+    "date": "2023-10-31",
 }
 
 
-plugin = korppluginlib.KorpEndpointPlugin()
+plugin = pluginlib.EndpointPlugin()
 
 
-@plugin.route("/text", extra_decorators=["use_custom_headers"])
+@plugin.route("/text")
+@utils.main_handler
+@utils.use_custom_headers
 def text(args):
     """Return the arguments as text/plain
 

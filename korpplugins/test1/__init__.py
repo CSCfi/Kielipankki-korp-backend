@@ -2,33 +2,31 @@
 """
 korpplugins.test1
 
-Korp test plugin for an object- and Blueprint-based plugin proposal: endpoint
-/test and a result wrapper in a package with a separate configuration module.
+Korp test plugin: endpoint /test and a result wrapper in a package.
 """
 
 
 import functools
 
-import korppluginlib
+from korp import pluginlib, utils
 
 
-pluginconf = korppluginlib.get_plugin_config(
+pluginconf = pluginlib.get_plugin_config(
     ARGS_NAME = "args_default",
     WRAP_NAME = "wrap_default",
 )
 
 
 PLUGIN_INFO = {
-    "name": "korppluginlib test plugin 1",
-    "version": "0.1",
-    "date": "2020-12-10",
+    "name": "korp.pluginlib test plugin 1",
+    "version": "0.2",
+    "date": "2023-11-02",
 }
 
 
-test_plugin = korppluginlib.KorpEndpointPlugin()
+test_plugin = pluginlib.EndpointPlugin()
 
 
-@test_plugin.endpoint_decorator
 def test_decor(generator):
     """A decorator for testing specifying extra decorators in WSGI
     endpoint plugins."""
@@ -40,39 +38,51 @@ def test_decor(generator):
     return decorated
 
 
-@test_plugin.route("/test", extra_decorators=["test_decor"])
+@test_plugin.route("/test")
+@utils.main_handler
+@test_decor
 def test(args):
     """Yield arguments wrapped in ARGS_NAME."""
-    yield {pluginconf.ARGS_NAME: args}
+    yield {pluginconf["ARGS_NAME"]: args}
 
 
-@test_plugin.route("/query", extra_decorators=["test_decor"])
+@test_plugin.route("/query")
+@utils.main_handler
+@test_decor
 def query(args):
     """Yield arguments wrapped in ARGS_NAME."""
-    yield {pluginconf.ARGS_NAME: args}
+    yield {pluginconf["ARGS_NAME"]: args}
 
 
-@test_plugin.route("/query", extra_decorators=["test_decor"])
+@test_plugin.route("/query")
+@utils.main_handler
+@test_decor
 def query2(args):
     """Yield arguments wrapped in ARGS_NAME."""
-    yield {pluginconf.ARGS_NAME: args}
+    yield {pluginconf["ARGS_NAME"]: args}
 
 
-@test_plugin.route("/count", extra_decorators=["test_decor"])
+@test_plugin.route("/count")
+@utils.main_handler
+@test_decor
 def count(args):
     """Yield arguments wrapped in ARGS_NAME."""
-    yield {pluginconf.ARGS_NAME: args}
+    print("test1.count")
+    yield {pluginconf["ARGS_NAME"]: args}
 
 
-@test_plugin.route("/count", extra_decorators=["test_decor"])
+@test_plugin.route("/count")
+@utils.main_handler
+@test_decor
 def count2(args):
     """Yield arguments wrapped in ARGS_NAME."""
-    yield {pluginconf.ARGS_NAME: args}
+    print("test1.count2")
+    yield {pluginconf["ARGS_NAME"]: args}
 
 
-class Test1b(korppluginlib.KorpCallbackPlugin):
+class Test1b(pluginlib.CallbackPlugin):
 
     def filter_result(self, request, d):
         """Wrap the result dictionary in WRAP_NAME and add "endpoint"."""
         return {"endpoint": request.endpoint,
-                pluginconf.WRAP_NAME: d}
+                pluginconf["WRAP_NAME"]: d}
