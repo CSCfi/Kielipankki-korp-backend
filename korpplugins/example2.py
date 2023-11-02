@@ -1,8 +1,8 @@
 
 """
-korpplugins.test2
+korpplugins.example2
 
-Korp test plugin: a result wrapper as a stand-alone module.
+Korp example plugin: a result wrapper as a stand-alone module.
 """
 
 
@@ -14,19 +14,19 @@ from korp import pluginlib
 
 
 PLUGIN_INFO = {
-    "name": "korp.pluginlib test plugin 2",
-    "version": "0.2",
-    "date": "2023-10-31",
+    "name": "korp.pluginlib example plugin 2",
+    "version": "0.3",
+    "date": "2023-11-02",
 }
 
 
-class Test2(pluginlib.CallbackPlugin):
+class Example2(pluginlib.CallbackPlugin):
 
     def filter_result(self, request, d):
         return {"wrap2": d}
 
 
-class Test3(pluginlib.CallbackPlugin):
+class Example3(pluginlib.CallbackPlugin):
 
     """Print the arguments at all plugin mount points"""
 
@@ -55,7 +55,7 @@ class Test3(pluginlib.CallbackPlugin):
         print("filter_sql", request, sql)
 
 
-class Test4a(pluginlib.CallbackPlugin):
+class Example4a(pluginlib.CallbackPlugin):
 
     """A callback plugin that applies only to the "info" endpoint."""
 
@@ -70,7 +70,7 @@ class Test4a(pluginlib.CallbackPlugin):
         return {'info': result}
 
 
-class Test4b(pluginlib.CallbackPlugin):
+class Example4b(pluginlib.CallbackPlugin):
 
     """A callback plugin that applies only to all but the "info" endpoint."""
 
@@ -82,7 +82,7 @@ class Test4b(pluginlib.CallbackPlugin):
         print("enter_handler, not info")
 
 
-class StateTest(pluginlib.CallbackPlugin):
+class StateExample(pluginlib.CallbackPlugin):
 
     """A callback plugin keeping state (starttime) across callbacks."""
 
@@ -91,9 +91,9 @@ class StateTest(pluginlib.CallbackPlugin):
     def enter_handler(self, request, args, starttime):
         self._data[request] = data = SimpleNamespace()
         data.starttime = starttime
-        print("StateTest.enter_handler: starttime =", starttime)
+        print("StateExample.enter_handler: starttime =", starttime)
 
     def exit_handler(self, request, endtime, *rest):
-        print("StateTest.exit_handler: starttime =",
+        print("StateExample.exit_handler: starttime =",
               self._data[request].starttime, "endtime =", endtime)
         del self._data[request]

@@ -1,8 +1,8 @@
 
 """
-korpplugins.test3
+korpplugins.example3
 
-Korp test plugin: non-JSON endpoint.
+Korp example plugin: non-JSON endpoint.
 """
 
 
@@ -10,9 +10,9 @@ from korp import pluginlib, utils
 
 
 PLUGIN_INFO = {
-    "name": "korp.pluginlib test plugin 3 (non-JSON endpoint /text)",
-    "version": "0.2",
-    "date": "2023-10-31",
+    "name": "korp.pluginlib example plugin 3 (non-JSON endpoint /text)",
+    "version": "0.3",
+    "date": "2023-11-02",
 }
 
 

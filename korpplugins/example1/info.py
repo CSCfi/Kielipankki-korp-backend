@@ -1,4 +1,4 @@
 
 NAME = "Plugin test1 (name from info)"
-DESCRIPTION = "A test plugin for korp.pluginlib"
-TEST_KEY = "Test value"
+DESCRIPTION = "An example plugin for korp.pluginlib"
+EXAMPLE_KEY = "Example value"
