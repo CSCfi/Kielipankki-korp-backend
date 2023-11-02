@@ -311,6 +311,36 @@ yields the result.
 
 A single plugin module can define multiple new endpoints.
 
+A view function in a plugin may call the view function of an existing
+endpoint if the plugin imports the module containing the latter. This
+can be used to create a new endpoint modifying the arguments or result
+of an existing endpoint. For example:
+
+```python
+from korp.views import count
+
+@example_plugin.route("/count1")
+@utils.main_handler
+@utils.prevent_timeout
+def count1(args):
+    """Yield arguments wrapped in "args", result of /count in "result"."""
+    count_orig = count.count(args)
+    result = next(count_orig)
+    # Handle incremental=true
+    while "corpora" not in result:
+        yield result
+        result = next(count_orig)
+    yield {"args": args, "result": result}
+```
+
+If the value of the `korp.pluginlib` configuration variable
+`HANDLE_DUPLICATE_ROUTES` is `"override"` or `"override,warn"`, this
+approach can also be used to modify the functionality of an existing
+endpoint by using the same route as the existing one. An alternative
+is to define appropriate callback methods for hook points
+`filter_args` and `filter_result` modifying the arguments or the
+result; see [below](#filter-hook-points).
+
 The routes for endpoints defined by a plugin can be renamed by setting
 the plugin configuration variable `RENAME_ROUTES` appropriately; see
 [above](#renaming-plugin-endpoint-routes).
@@ -619,14 +649,6 @@ Only the first two are currently used in `korp` modules.
 The current implementation has at least the following limitations and
 deficiencies, which might be subjects for future development, if
 needed:
-
-- In endpoint plugins, it is not possible to modify the functionality
-  of an existing endpoint, for example, by calling an existing view
-  function from a function defined in a plugin, possibly modifying the
-  arguments or the result. However, in many cases, a similar effect
-  can be achieved by defining the appropriate callback methods for
-  hook points `filter_args` and `filter_result`; see
-  [above](#filter-hook-points).
 
 - The order of calling the callbacks for a hook point is determined by
   the order of plugins listed in `config.PLUGINS`. The plugins
