@@ -253,9 +253,9 @@ def _remove_duplicate_routing_rules(app):
     recently added?) of them, so that a plugin can override an
     endpoint.
 
-    This requires using non-public attributes in Flask objects
-    (app.url_map._rules, ._rules_by_endpoint and ._remap), so this may
-    break if they are changed; see
+    NOTE: This requires using non-public attributes in Flask
+    (Werkzeug) objects (app.url_map._rules, ._rules_by_endpoint,
+    ._remap and ._matcher), so this may break if they are changed; see
     https://stackoverflow.com/a/24137773
     """
     url_map = app.url_map
@@ -277,6 +277,17 @@ def _remove_duplicate_routing_rules(app):
         # Update the rule map
         url_map._remap = True
         url_map.update()
+        # url_map.update() does not seem to remove the removed rules
+        # from the state machine matcher url_map._matcher, which is
+        # used to find the view function to dispatch. (Has this
+        # perhaps changed between Flask/Werkzeug 1.0 and 2.0?)
+        # StateMachineMatcher has no method to remove rules, so it is
+        # simpler to replace _matcher with a completely new instance
+        # and add the retained rules to it.
+        url_map._matcher = url_map._matcher.__class__(
+            url_map._matcher.merge_slashes)
+        for rule in url_map.iter_rules():
+            url_map._matcher.add(rule)
 
 
 def get_loaded_plugins(names_only=False):
