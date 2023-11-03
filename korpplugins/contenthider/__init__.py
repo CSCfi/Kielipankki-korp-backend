@@ -14,12 +14,12 @@ specified fixed strings.
 # - Hide hidden structure names from the results of corpus_info
 
 
-import korppluginlib
+from korp import pluginlib
 
 
-# See config.py.template for further documentation of the configuration
+# See README.md for further documentation of the configuration
 # variables
-pluginconf = korppluginlib.get_plugin_config(
+pluginconf = pluginlib.get_plugin_config(
     # Structural attribute (annotation) names marking a structure as hidden and
     # not to be shown to the user in query results
     HIDDEN_STRUCT_NAMES = ["text__removed"],
@@ -34,20 +34,20 @@ pluginconf = korppluginlib.get_plugin_config(
 )
 
 
-class QueryContentHider(korppluginlib.KorpCallbackPlugin):
+class QueryContentHider(pluginlib.CallbackPlugin):
 
     """Callback plugin class for hiding the content of marked query results"""
 
     def applies_to(self, request):
         """Apply hiding only to KWIC results."""
-        return (pluginconf.HIDDEN_STRUCT_NAMES
-                and request.endpoint in ("query", "relations_sentences"))
+        return (pluginconf["HIDDEN_STRUCT_NAMES"]
+                and request.path in ("/query", "/relations_sentences"))
 
     def filter_args(self, request, args):
         """Add to show_struct attributes names marking a structure hidden."""
         args["show_struct"] = (
             args.get("show_struct", "")
-            + ",".join([""] + pluginconf.HIDDEN_STRUCT_NAMES)
+            + ",".join([""] + pluginconf["HIDDEN_STRUCT_NAMES"])
         ).lstrip(",")
         return args
 
@@ -56,33 +56,33 @@ class QueryContentHider(korppluginlib.KorpCallbackPlugin):
         for row_num, kwic_row in enumerate(result.get("kwic", [])):
             linestructs = kwic_row.get("structs", {})
             # Hide (mask) results that are within structures listed in
-            # pluginconf.HIDDEN_STRUCT_NAMES by replacing actual attribute values
-            # with fixed values. Note that the structure name exists in
+            # pluginconf["HIDDEN_STRUCT_NAMES"] by replacing actual attribute
+            # values with fixed values. Note that the structure name exists in
             # linestructs in the results from all corpora having it, so we need
             # to check that its value is not None, which indicates that the
             # structure is actually marked as hidden.
             if any((hidden in linestructs and linestructs[hidden] is not None)
-                   for hidden in pluginconf.HIDDEN_STRUCT_NAMES):
+                   for hidden in pluginconf["HIDDEN_STRUCT_NAMES"]):
                 # Replace positional attribute values with
-                # pluginconf.HIDDEN_VALUE_POS_ATTR
-                if pluginconf.HIDDEN_VALUE_POS_ATTR is not None:
+                # pluginconf["HIDDEN_VALUE_POS_ATTR"]
+                if pluginconf["HIDDEN_VALUE_POS_ATTR"] is not None:
                     kwic_row["tokens"] = [
-                        dict((key, (pluginconf.HIDDEN_VALUE_POS_ATTR
+                        dict((key, (pluginconf["HIDDEN_VALUE_POS_ATTR"]
                                     if key != "structs" else val))
                              for key, val in token.items())
                         for token in kwic_row.get("tokens", [])]
                 # Replace structural attribute annotation values with
-                # pluginconf.HIDDEN_VALUE_STRUCT_ATTR
-                if pluginconf.HIDDEN_VALUE_STRUCT_ATTR is not None:
+                # pluginconf["HIDDEN_VALUE_STRUCT_ATTR"]
+                if pluginconf["HIDDEN_VALUE_STRUCT_ATTR"] is not None:
                     kwic_row["structs"] = dict(
                         (key,
-                         (pluginconf.HIDDEN_VALUE_STRUCT_ATTR
-                          if key not in pluginconf.HIDDEN_STRUCT_NAMES
+                         (pluginconf["HIDDEN_VALUE_STRUCT_ATTR"]
+                          if key not in pluginconf["HIDDEN_STRUCT_NAMES"]
                           else val))
                         for key, val in linestructs.items())
                 # Adjust match position to the start of the sentence if
-                # pluginconf.HIDE_MATCH_POS
-                if pluginconf.HIDE_MATCH_POS:
+                # pluginconf["HIDE_MATCH_POS"]
+                if pluginconf["HIDE_MATCH_POS"]:
                     match = kwic_row.get("match", {"position": 0, "start": 0})
                     pos = match["position"] - match["start"]
                     kwic_row["match"] = {
