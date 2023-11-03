@@ -117,6 +117,18 @@ class LevelLoggerAdapter(logging.LoggerAdapter):
     def getEffectiveLevel(self):
         return self._level
 
+    def isEnabledFor(self, level):
+        """Is this logger enabled for level?"""
+        # This is copied from Python 3.6 logging.Logger.isEnabledFor.
+        # Python 3.7 and greater have a more complex one with logging
+        # level caching and locking, and their
+        # LoggerAdapter.isEnabledFor delegates directly to
+        # Logging.isEnabledFor, instead of calling getEffectiveLevel
+        # directly.
+        if self.manager.disable >= level:
+            return False
+        return level >= self.getEffectiveLevel()
+
     def process(self, msg, kwargs):
         """If the kwargs (passed to a logging method) contain dict
         "extra", its values override those of the instance-level
@@ -133,7 +145,7 @@ class LevelLoggerAdapter(logging.LoggerAdapter):
         # LoggerAdapter.log calls logger.log, which re-checks isEnabledFor
         # based on the info in logger, so we need to redefine it to use
         # self._level here. The following is a combination of Logger.log and
-        # LoggerAdapter.log, but calling self.isEnabledFor (of LoggerAdapter),
+        # LoggerAdapter.log, but calling self.isEnabledFor (of this class),
         # which in turn calls self.getEffectiveLevel (of this class).
         if not isinstance(level, int):
             if logging.raiseExceptions:
