@@ -4,11 +4,9 @@ korpplugins.logger
 
 Simple logging plugin for the Korp backend
 
-The plugin contains functions for the plugin mount points in korp.py. The
-plugin uses Python's standard logging module.
-
-Configuration variables for the plugin are specified in
-korpplugins.logger.config.
+The plugin contains functions for the plugin mount points in the
+modules of the korp package. The plugin uses Python's standard logging
+module.
 
 Note that the plugin currently handles concurrent logging from multiple worker
 processes (such as when running the Korp backend with Gunicorn) only by writing
@@ -25,12 +23,12 @@ import os.path
 import resource
 import time
 
-import korppluginlib
+from korp.pluginlib import get_plugin_config, CallbackPlugin
 
 
-# See config.py.template for more information on the configuration variables
+# See README.md for more information on the configuration variables
 
-pluginconf = korppluginlib.get_plugin_config(
+pluginconf = get_plugin_config(
     # Base directory for log files
     LOG_BASEDIR = "/v/korp/log/korp-py",
     # Log filename format string (for str.format())
@@ -45,7 +43,7 @@ pluginconf = korppluginlib.get_plugin_config(
     # Log message format string using the percent formatting for
     # logging.Formatter.
     LOG_FORMAT = (
-        "[korp.py %(levelname)s %(process)d:%(starttime_us)d @ %(asctime)s]"
+        "[korp %(levelname)s %(process)d:%(starttime_us)d @ %(asctime)s]"
         " %(message)s"),
     # The maximum length of a log message, including the fixed part; 0 for
     # unlimited
@@ -176,7 +174,7 @@ class TruncatingLogFormatter(logging.Formatter):
 
     The class truncates messages to the length specified by the maxlen
     attribute of the LogRecord instance to be formatted or to
-    pluginconf.LOG_MESSAGE_DEFAULT_MAX_LEN if it does not exist. If
+    pluginconf["LOG_MESSAGE_DEFAULT_MAX_LEN"] if it does not exist. If
     the value is <= 0, do not truncate the message.
     """
 
@@ -185,11 +183,11 @@ class TruncatingLogFormatter(logging.Formatter):
 
     def format(self, record):
         maxlen = getattr(record, "maxlen",
-                         pluginconf.LOG_MESSAGE_DEFAULT_MAX_LEN)
+                         pluginconf["LOG_MESSAGE_DEFAULT_MAX_LEN"])
         result = super().format(record)
         if maxlen > 0 and len(result) > maxlen:
-            trunc_text = pluginconf.LOG_MESSAGE_TRUNCATE_TEXT
-            trunc_pos = pluginconf.LOG_MESSAGE_TRUNCATE_POS
+            trunc_text = pluginconf["LOG_MESSAGE_TRUNCATE_TEXT"]
+            trunc_pos = pluginconf["LOG_MESSAGE_TRUNCATE_POS"]
             if trunc_pos < 0:
                 trunc_head_len = maxlen + trunc_pos - len(trunc_text)
                 trunc_tail_len = -trunc_pos
@@ -201,7 +199,7 @@ class TruncatingLogFormatter(logging.Formatter):
         return result
 
 
-class KorpLogger(korppluginlib.KorpCallbackPlugin):
+class KorpLogger(CallbackPlugin):
 
     """Class containing plugin functions for various mount points"""
 
@@ -217,24 +215,24 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
         """Initialize logging; called only once per process"""
         super().__init__()
         self._logger = logging.getLogger(__name__)
-        self._logger.setLevel(pluginconf.LOG_LEVEL)
+        self._logger.setLevel(pluginconf["LOG_LEVEL"])
         tm = time.localtime()
-        logfile = (os.path.join(pluginconf.LOG_BASEDIR,
-                                pluginconf.LOG_FILENAME_FORMAT)
+        logfile = (os.path.join(pluginconf["LOG_BASEDIR"],
+                                pluginconf["LOG_FILENAME_FORMAT"])
                    .format(year=tm.tm_year, mon=tm.tm_mon, mday=tm.tm_mday,
                            hour=tm.tm_hour, min=tm.tm_min, sec=tm.tm_sec,
                            pid=os.getpid()))
         logdir = os.path.split(logfile)[0]
         os.makedirs(logdir, exist_ok=True)
         handler = logging.FileHandler(logfile)
-        handler.setFormatter(TruncatingLogFormatter(pluginconf.LOG_FORMAT))
+        handler.setFormatter(TruncatingLogFormatter(pluginconf["LOG_FORMAT"]))
         self._logger.addHandler(handler)
         # Storage for request-specific data, such as start times
         self._logdata = dict()
         # Log levels for items (other than "info")
         self._item_levels = {
             item: level
-            for level, items in pluginconf.LOG_LEVEL_ITEMS.items()
+            for level, items in pluginconf["LOG_LEVEL_ITEMS"].items()
             for item in items
         }
 
@@ -243,9 +241,9 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
     def _init_logging(self, request, starttime, args):
         """Initialize logging; called once per request (in enter_handler)"""
         request_id = KorpLogger._get_request_id(request)
-        loglevel = (logging.DEBUG if (pluginconf.LOG_ENABLE_DEBUG_PARAM
+        loglevel = (logging.DEBUG if (pluginconf["LOG_ENABLE_DEBUG_PARAM"]
                                       and "debug" in args)
-                    else pluginconf.LOG_LEVEL)
+                    else pluginconf["LOG_LEVEL"])
         logger = FunctionLoggerAdapter(
             self._logger,
             {
@@ -255,7 +253,7 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
                 "starttime_ms": int(starttime * 1000),
                 "starttime_us": int(starttime * 1e6),
                 # Default maximum message length
-                "maxlen": pluginconf.LOG_MESSAGE_DEFAULT_MAX_LEN,
+                "maxlen": pluginconf["LOG_MESSAGE_DEFAULT_MAX_LEN"],
             },
             self._log,
             loglevel)
@@ -290,8 +288,8 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
              levelname=None):
         """Log item in category with values using logger and format.
 
-        Do not log if pluginconf.LOG_CATEGORIES is not None and it
-        does not contain category, or if pluginconf.LOG_EXCLUDE_ITEMS
+        Do not log if pluginconf["LOG_CATEGORIES"] is not None and it
+        does not contain category, or if pluginconf["LOG_EXCLUDE_ITEMS"]
         contains item.
 
         If levelname is not None, log using the logger method
@@ -306,7 +304,7 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
         of the log message, overriding the default.
         """
         if (KorpLogger._log_category(category)
-                and item not in pluginconf.LOG_EXCLUDE_ITEMS):
+                and item not in pluginconf["LOG_EXCLUDE_ITEMS"]):
             if format is None:
                 format = " ".join(len(values) * ("%s",))
             extra = {}
@@ -332,8 +330,8 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
     @staticmethod
     def _log_category(category):
         """Return True if logging category"""
-        return (pluginconf.LOG_CATEGORIES is None
-                or category in pluginconf.LOG_CATEGORIES)
+        return (pluginconf["LOG_CATEGORIES"] is None
+                or category in pluginconf["LOG_CATEGORIES"])
 
     # Actual plugin methods (functions)
 
@@ -457,7 +455,7 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
 
         This general logging method can be called from other plugins
         via
-        korppluginlib.KorpCallbackPluginCaller.raise_event_for_request("log",
+        korp.pluginlib.CallbackPluginCaller.raise_event_for_request("log",
         ...) whenever they wish to log something.
         """
         logger = KorpLogger._get_logger(request)
