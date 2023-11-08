@@ -38,7 +38,8 @@ IS_IDENT = re.compile(r"^[\w\-,|]+$")
 
 QUERY_DELIM = ","
 
-authorizer: Optional["Authorizer"] = None
+authorizer: Optional["BaseAuthorizer"] = None
+protected_corpora_getter: Optional["ProtectedCorporaGetter"] = None
 
 
 def main_handler(generator):
@@ -661,8 +662,8 @@ def assert_key(key, attrs, regexp, required=False):
 
 def get_protected_corpora() -> List[str]:
     """Return a list of corpora with restricted access."""
-    if authorizer:
-        return authorizer.get_protected_corpora()
+    if protected_corpora_getter:
+        return protected_corpora_getter.get_protected_corpora()
     else:
         return []
 
@@ -699,8 +700,28 @@ def sql_escape(s):
     return mysql.connection.escape_string(s).decode("utf-8") if isinstance(s, str) else s
 
 
-class Authorizer(ABC):
-    """Class to subclass when implementing an authorizer plugin."""
+class ProtectedCorporaGetter(ABC):
+    """Class to subclass for a plugin with get_protected_corpora."""
+
+    protcorp_class = None
+
+    def __init__(self):
+        pass
+
+    def __init_subclass__(cls):
+        # super().__init_subclass() seems to be needed to make
+        # multiple inheritance work correctly
+        super().__init_subclass__()
+        ProtectedCorporaGetter.protcorp_class = cls
+
+    @abstractmethod
+    def get_protected_corpora(self, use_cache: bool = True) -> List[str]:
+        """Get list of corpora with restricted access, in uppercase."""
+        pass
+
+
+class BaseAuthorizer(ABC):
+    """Class to subclass for an authorizer plugin with check_authorization."""
 
     auth_class = None
 
@@ -708,14 +729,18 @@ class Authorizer(ABC):
         pass
 
     def __init_subclass__(cls):
-        Authorizer.auth_class = cls
-
-    @abstractmethod
-    def get_protected_corpora(self, use_cache: bool = True) -> List[str]:
-        """Get list of corpora with restricted access, in uppercase."""
-        pass
+        super().__init_subclass__()
+        BaseAuthorizer.auth_class = cls
 
     @abstractmethod
     def check_authorization(self, corpora: List[str]) -> Tuple[bool, List[str], Optional[str]]:
         """Take a list of corpora and check that the user has permission to access them."""
         pass
+
+
+class Authorizer(ProtectedCorporaGetter, BaseAuthorizer):
+    """Class to subclass when implementing an authorizer plugin with both
+    get_protected_corpora and check_authorization."""
+
+    def __init__(self):
+        super().__init__()

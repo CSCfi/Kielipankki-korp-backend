@@ -94,7 +94,15 @@ def create_app():
         load_plugins(app, app.config["PLUGINS"])
 
     # Register authorizer
-    if utils.Authorizer.auth_class:
-        utils.authorizer = utils.Authorizer.auth_class()
+    if utils.BaseAuthorizer.auth_class:
+        utils.authorizer = utils.BaseAuthorizer.auth_class()
+    # Register protected corpora getter
+    if utils.ProtectedCorporaGetter.protcorp_class:
+        if utils.ProtectedCorporaGetter.protcorp_class == utils.BaseAuthorizer.auth_class:
+            # This results in using utils.Authorizer, so use the same
+            # object for both authoerizer and protected_corpora_getter
+            utils.protected_corpora_getter = utils.authorizer
+        else:
+            utils.protected_corpora_getter = utils.ProtectedCorporaGetter.protcorp_class()
 
     return app
