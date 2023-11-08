@@ -1,5 +1,5 @@
 
-# `korp.pluginlib`: Korp backend plugin framework (API) (proposal)
+# `korp.pluginlib`: Korp backend plugin framework (API)
 
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -13,15 +13,15 @@
   - [Configuring individual plugins](#configuring-individual-plugins)
   - [Renaming plugin endpoint routes](#renaming-plugin-endpoint-routes)
 - [Plugin information](#plugin-information)
-- [Endpoint plugins](#endpoint-plugins)
+- [Endpoints](#endpoints)
   - [Implementing a new WSGI endpoint](#implementing-a-new-wsgi-endpoint)
   - [Non-JSON endpoints](#non-json-endpoints)
   - [Defining additional endpoint decorators](#defining-additional-endpoint-decorators)
-- [Callback plugins](#callback-plugins)
+- [Callbacks](#callbacks)
   - [Filter hook points](#filter-hook-points)
   - [Event hook points](#event-hook-points)
-  - [Callback plugin example](#callback-plugin-example)
-  - [Notes on implementing a callback plugin](#notes-on-implementing-a-callback-plugin)
+  - [Callback example](#callback-example)
+  - [Notes on implementing callbacks](#notes-on-implementing-callbacks)
   - [Keeping request-specific state](#keeping-request-specific-state)
   - [Defining hook points in plugins](#defining-hook-points-in-plugins)
 - [Limitations and deficiencies](#limitations-and-deficiencies)
@@ -34,10 +34,11 @@
 
 ## Overview
 
-The Korp backend supports two kinds of plugins:
+The Korp backend supports plugin modules, which can add new
+functionality or modify existing functionality in two ways:
 
-1. *endpoint plugins* implementing new WSGI endpoints, and
-2. *callback plugins* containing callbacks called at certain points
+1. by implementing new WSGI *endpoints*, and
+2. by defining *callback methods* to be called at certain points
    (*plugin hook points*) in modules of the package `korp` when
    handling a request, to filter data or to perform an action.
 
@@ -46,8 +47,8 @@ within the package `plugins` or `korpplugins` (customizable via the
 configuration variable `PACKAGES`; see
 [below](#configuring-korppluginlib)).
 
-Both WSGI endpoint plugins and callback plugins can be defined in the
-same plugin module.
+One plugin module can contain both new WSGI endpoints and callback
+methods.
 
 
 ## Configuration
@@ -261,7 +262,7 @@ the `PLUGIN_INFO` defined in the plugin. The values in
 loaded.
 
 
-## Endpoint plugins
+## Endpoints
 
 
 ### Implementing a new WSGI endpoint
@@ -309,7 +310,7 @@ optionally, other options of `route`. The generator function takes a
 single `dict` argument containing the parameters of the call and
 yields the result.
 
-A single plugin module can define multiple new endpoints.
+A single plugin can define multiple new endpoints.
 
 A view function in a plugin may call the view function of an existing
 endpoint if the plugin imports the module containing the latter. This
@@ -404,7 +405,7 @@ def test_decor(generator):
 ```
 
 
-## Callback plugins
+## Callbacks
 
 Callbacks to be called at specific *plugin hook points* in modules of
 the package `korp` are defined within subclasses of
@@ -513,9 +514,9 @@ following:
   information as returned by `sys.exc_info()`.
 
 
-### Callback plugin example
+### Callback example
 
-An example of a callback plugin containing a callback method to be
+An example of a callback class containing a callback method to be
 called at the hook point `filter_result`:
 
 ```python
@@ -528,23 +529,23 @@ class Test1b(korp.pluginlib.CallbackPlugin):
 ```
 
 
-### Notes on implementing a callback plugin
+### Notes on implementing callbacks
 
-Each plugin class is instantiated only once (it is a singleton), so
+Each callback class is instantiated only once (it is a singleton), so
 the possible state stored in `self` is shared by all invocations
 (requests). However, see [the next
 subsection](#keeping-request-specific-state) for an approach of
 keeping request-specific state across hook points.
 
-A single plugin class can define only one callback method for each
+A single callback class can define only one callback method for each
 hook point, but a module may contain multiple classes defining
 callback methods for the same hook point.
 
 If multiple plugins define a callback method for a hook point, they
-are called in the order in which the plugin modules are listed in
-`config.PLUGINS`. If a plugin module contains multiple classes
+are called in the order in which the plugins are listed in
+`config.PLUGINS`. If a plugin contains multiple classes
 defining a callback method for a hook point, they are called in the
-order in which they are defined in the module.
+order in which they are defined in the plugin.
 
 If the callback methods of a class should be applied only to certain
 kinds of requests, for example, to a certain endpoint, the class can
@@ -556,7 +557,7 @@ only for requests to which the plugin is applicable. (The parameter
 ### Keeping request-specific state
 
 Request-specific data can be passed from one callback method to
-another within the same callback plugin class by using a `dict`
+another within the same callback class by using a `dict`
 attribute (or similar) indexed by request objects (or their ids). In
 general, the `enter_handler` callback method (called at the first hook
 point) should initialize a space for the data for a request, and
@@ -591,7 +592,7 @@ In addition to the hook points in `korp` modules, listed above, you
 can define hook points in plugins by invoking callbacks with the name
 of the hook point by using the appropriate methods. For example, a
 logging plugin could implement a callback method `log` that could be
-called from other plugins, both callback and endpoint plugins.
+called from other plugins, both in callbacks and endpoints.
 
 Given the Flask request object (or the global request proxy)
 `request`, callbacks for the (event) hook point `hook_point` can be
@@ -663,7 +664,7 @@ needed:
   one can specify that a callback (event listener) is called before
   the previously registered ones instead of after them (the default).
 
-- It might be possible for a single callback plugin class to implement
+- It might be possible for a single callback class to implement
   multiple callbacks for the same hook point if a decorator was used
   to register callback methods for a hook point, instead of or as an
   alternative to linking methods to a hook point by their name. But
@@ -721,17 +722,18 @@ needed:
 
 Many Python plugin frameworks or libraries exist, but they did not
 appear suitable for Korp plugins as such. In particular, we wished to
-have both callback plugins and endpoint plugins.
+be able to both implement new endpoints and modify existing
+functionality via callbacks.
 
 
 ### Influcences
 
-Using a metaclass for registering callback plugins in `korp.pluginlib`
+Using a metaclass for registering callback classes in `korp.pluginlib`
 was inspired by and partially adapted from Marty Alchin’s [A Simple
 Plugin
 Framework](http://martyalchin.com/2008/jan/10/simple-plugin-framework/).
 
-The terms used in conjunction with callback plugins were partially
+The terms used in conjunction with callbacks were partially
 influenced by the terminology for [WordPress
 plugins](https://developer.wordpress.org/plugins/hooks/).
 
@@ -742,7 +744,7 @@ used to implement new endpoints. Moreover, for callback (event)
 plugins, it would have had to be extended to support passing the
 result from one plugin callback as the input of another.
 
-Using Flask Blueprints for endpoint plugins was hinted at by Martin
+Using Flask Blueprints for implementing endpoints was hinted at by Martin
 Hammarstedt.
 
 
