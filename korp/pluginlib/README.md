@@ -13,6 +13,10 @@
   - [Configuring individual plugins](#configuring-individual-plugins)
   - [Renaming plugin endpoint routes](#renaming-plugin-endpoint-routes)
 - [Plugin information](#plugin-information)
+- [Concrete subclasses of abstract classes](#concrete-subclasses-of-abstract-classes)
+  - [Retrieving names of restricted corpora](#retrieving-names-of-restricted-corpora)
+  - [Checking authorization](#checking-authorization)
+  - [Combining `ProtectedCorporaGetter` and `BaseAuthorizer`](#combining-protectedcorporagetter-and-baseauthorizer)
 - [Endpoints](#endpoints)
   - [Implementing a new WSGI endpoint](#implementing-a-new-wsgi-endpoint)
   - [Non-JSON endpoints](#non-json-endpoints)
@@ -34,11 +38,12 @@
 
 ## Overview
 
-The Korp backend supports plugin modules, which can add new
-functionality or modify existing functionality in two ways:
+The Korp backend supports plugin modules, which can add new or modify
+existing functionality in three ways:
 
-1. by implementing new WSGI *endpoints*, and
-2. by defining *callback methods* to be called at certain points
+1. by implementing *concrete subclasses* of certain abstract classes;
+2. by implementing new WSGI *endpoints*; and
+3. by defining *callback methods* to be called at certain points
    (*plugin hook points*) in modules of the package `korp` when
    handling a request, to filter data or to perform an action.
 
@@ -262,6 +267,67 @@ the `PLUGIN_INFO` defined in the plugin. The values in
 loaded.
 
 
+## Concrete subclasses of abstract classes
+
+Plugins that implement concrete subclasses of abstract base classes
+are currently used for two related purposes in Korp: retrieving the
+names of corpora with restricted access and checking the authorization
+of the user to use specified corpora. The concrete classes in plugins
+need to implement the abstract methods in the abstract classes, to be
+called in appropriate places in Korp.
+
+The abstract classes to subclass are defined in module `korp.utils` as
+subclasses of `korp.pluginlib.SubclassPlugin` (and `abc.ABC`).
+
+If multiple plugins define a subclass of the same abstract base class,
+Korp uses the subclass in the plugin loaded last (listed last in
+`config.PLUGINS`).
+
+
+### Retrieving names of restricted corpora
+
+A plugin for retrieving the names of restricted-access corpora needs
+to contain a subclass of `korp.utils.ProtectedCorporaGetter` that
+implements the following method:
+
+- `get_protected_corpora(self, use_cache: bool = True) -> List[str]`
+  - Argument:
+    - `use_cache`: if `True` (the default), save the value into cache
+      or use a previously cached value
+  - Return value: a `list` of names (ids) of the corpora with
+    restricted access, in uppercase
+
+
+### Checking authorization
+
+A plugin for checking the whether the user has a permission to access
+a list of corpora needs to contain a subclass of
+`korp.utils.BaseAuthorizer` that implements the following method:
+
+- `def check_authorization(self, corpora: List[str]) -> Tuple[bool,
+  List[str], Optional[str]]`
+  - Argument:
+    - `corpora`: a `list` of the ids of the corpora for which to check
+      the user’s access permission
+  - Return value: a 3-tuple:
+    - `success: bool`: whether the user has access to all corpora in
+      `corpora`
+    - `unauthorized: List[str]`: a list of ids of corpora to which the
+      user has no access
+    - `message: Optional[str]`: an error message to be output when the
+      user does not have access to all corpora in `corpora`; if
+      `None`, a default error message is used
+
+
+### Combining `ProtectedCorporaGetter` and `BaseAuthorizer`
+
+For backward-compatibility, a plugin can subclass the abstract class
+`korp.utils.Authorizer` to provide both `get_protected_corpora` and
+`check_authorization` in the same class. (`korp.utils.Authorizer` is a
+subclass of both `korp.utils.ProtectedCorporaGetter` and
+`korp.utils.BaseAuthorizer`.)
+
+
 ## Endpoints
 
 
@@ -471,20 +537,6 @@ the following:
 - `filter_sql(self, request, sql)`: Modifies the SQL statement
   `sql` to be passed to the MySQL/MariaDB database server and returns
   the modified value.
-
-- `filter_protected_corpora(self, request, protected_corpora)`:
-  Modifies (or replaces) the list `protected_corpora` of ids of
-  protected corpora, the use of which requires authentication and
-  authorization.
-
-- `filter_auth_postdata(self, request, postdata)`: Modifies (or
-  replaces) the POST request parameters in `postdata`, to be passed to
-  the authorization server (`config.AUTH_SERVER`) in the endpoint
-  `/authenticate`.
-
-- `filter_auth_response(self, request, auth_response)`: Modifies the
-  response `auth_response` returned by the authorization server in the
-  endpoint `/authenticate`.
 
 
 ### Event hook points

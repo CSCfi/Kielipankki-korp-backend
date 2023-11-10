@@ -23,7 +23,7 @@ from gevent.event import Event
 
 from korp.db import mysql
 from korp.memcached import memcached
-from korp.pluginlib import CallbackPluginCaller
+from korp.pluginlib import CallbackPluginCaller, SubclassPlugin
 # For backward-compatibility
 from korp.pluginlib import EndpointPlugin as Plugin
 
@@ -700,10 +700,8 @@ def sql_escape(s):
     return mysql.connection.escape_string(s).decode("utf-8") if isinstance(s, str) else s
 
 
-class ProtectedCorporaGetter(ABC):
+class ProtectedCorporaGetter(ABC, SubclassPlugin):
     """Class to subclass for a plugin with get_protected_corpora."""
-
-    protcorp_class = None
 
     def __init__(self):
         pass
@@ -712,7 +710,7 @@ class ProtectedCorporaGetter(ABC):
         # super().__init_subclass() seems to be needed to make
         # multiple inheritance work correctly
         super().__init_subclass__()
-        ProtectedCorporaGetter.protcorp_class = cls
+        cls.set_baseclass(ProtectedCorporaGetter)
 
     @abstractmethod
     def get_protected_corpora(self, use_cache: bool = True) -> List[str]:
@@ -720,17 +718,15 @@ class ProtectedCorporaGetter(ABC):
         pass
 
 
-class BaseAuthorizer(ABC):
+class BaseAuthorizer(ABC, SubclassPlugin):
     """Class to subclass for an authorizer plugin with check_authorization."""
-
-    auth_class = None
 
     def __init__(self):
         pass
 
     def __init_subclass__(cls):
         super().__init_subclass__()
-        BaseAuthorizer.auth_class = cls
+        cls.set_baseclass(BaseAuthorizer)
 
     @abstractmethod
     def check_authorization(self, corpora: List[str]) -> Tuple[bool, List[str], Optional[str]]:
