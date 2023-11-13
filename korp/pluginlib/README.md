@@ -328,6 +328,22 @@ subclass of both `korp.utils.ProtectedCorporaGetter` and
 `korp.utils.BaseAuthorizer`.)
 
 
+### Defining new abstract classes for plugins
+
+When defining a new abstract class _C_ for a new type of a plugin, the
+class should be a subclass of `pluginlib.SubclassPlugin` and `abc.ABC`
+and define one or more abstract methods (decorated with
+`@abc.abstractmethod`) to be implemented in a concrete subclass.
+
+In addition, a Korp module should define a variable `v` for an
+instance of the class _C_ as `v: Optional["`_C_`"] = None`. The type
+annotation is essential for `pluginlib` to recognize the variable to
+be instantiated with a singleton instance of a concrete subclass of
+`C`. If the variable definition is in some other module than
+`korp.utils`, the module in question should be added to the
+`register_subclass_plugins` call in `korp/__init__.py`.
+
+
 ## Endpoints
 
 

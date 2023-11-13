@@ -38,6 +38,9 @@ IS_IDENT = re.compile(r"^[\w\-,|]+$")
 
 QUERY_DELIM = ","
 
+# The type annotation is essential here for the authorizer and
+# protected corpora getter plugins to be correctly initialized by
+# pluginlib.register_subclass_plugins (in package initialization)
 authorizer: Optional["BaseAuthorizer"] = None
 protected_corpora_getter: Optional["ProtectedCorporaGetter"] = None
 

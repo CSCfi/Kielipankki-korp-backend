@@ -8,7 +8,7 @@ from korp import utils
 from korp.cwb import cwb
 from korp.db import mysql
 from korp.memcached import memcached
-from korp.pluginlib import load_plugins
+from korp.pluginlib import load_plugins, register_subclass_plugins
 
 # The version of this script
 __version__ = "8.2.5"
@@ -93,9 +93,11 @@ def create_app():
     with app.app_context():
         load_plugins(app, app.config["PLUGINS"])
 
-    # Register authorizer
-    utils.authorizer = utils.BaseAuthorizer.get_instance()
-    # Register protected corpora getter
-    utils.protected_corpora_getter = utils.ProtectedCorporaGetter.get_instance()
+    # Register subclass plugins in utils (authorizer and protected
+    # corpora getter)
+    # TODO: Could we register subclass plugins for all korp modules,
+    # so that this would not need to be changed if entry points to
+    # such are added elsewhere than in utils?
+    register_subclass_plugins([utils])
 
     return app

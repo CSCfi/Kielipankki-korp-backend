@@ -14,6 +14,9 @@ the package level.
 """
 
 
+import typing
+
+
 class SubclassPlugin:
 
     """Base class for (abstract) plugin base classes
@@ -57,3 +60,51 @@ class SubclassPlugin:
             return SubclassPlugin._instance.setdefault(subclass, subclass())
         else:
             return None
+
+
+def register_subclass_plugins(modules, override=False):
+    """Register subclass plugins in modules.
+
+    For all names c in module with type annotation Optional["C"] or
+    "C" where C is a subclass of SubclassPlugin (an abstract plugin
+    class), set the value of module.c to C.get_instance() (a singleton
+    instance of the subclass of C defined last).
+
+    modules can be a single module or an iterable of modules.
+    If override == True, replace a possibly existing non-None value;
+    otherwise, keep the existing value.
+    """
+
+    def test_and_set_value(module, cls, attr):
+        """If cls is a subclass of SubclassPlugin, set module.attr to
+        cls.get_instance() and return True."""
+        try:
+            if issubclass(cls, SubclassPlugin):
+                setattr(module, attr, cls.get_instance())
+                return True
+        except TypeError:
+            pass
+        return False
+
+    if getattr(typing, "get_origin", None):
+        # Python 3.8+
+        get_origin = typing.get_origin
+        get_args = typing.get_args
+    else:
+        # Python <3.8
+        get_origin = lambda tp: tp.__origin__
+        get_args = lambda tp: tp.__args__
+    if modules.__class__.__name__ == "module":
+        modules = [modules]
+    for module in modules:
+        annots = typing.get_type_hints(module)
+        # Go through all type annotations in module
+        for name, annot in annots.items():
+            if getattr(module, name, None) is None or override:
+                origin = get_origin(annot)
+                if repr(origin) == "typing.Union":
+                    for cls in get_args(annot):
+                        if test_and_set_value(module, cls, name):
+                            break
+                else:
+                    test_and_set_value(module, origin, name)
