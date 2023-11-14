@@ -14,6 +14,7 @@ the package level.
 """
 
 
+import inspect
 import typing
 
 
@@ -46,6 +47,9 @@ class SubclassPlugin:
     @classmethod
     def set_baseclass(cls, baseclass):
         """Set cls to be the subclass of baseclass to instantiate."""
+        # Ignore cls if it is abstract, too
+        if inspect.isabstract(cls):
+            return
         SubclassPlugin._subclass[baseclass] = cls
 
     @classmethod
