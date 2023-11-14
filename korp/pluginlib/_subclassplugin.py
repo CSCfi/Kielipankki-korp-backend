@@ -15,7 +15,12 @@ the package level.
 
 
 import inspect
+import sys
 import typing
+
+from collections import defaultdict
+
+from ._util import print_verbose
 
 
 class SubclassPlugin:
@@ -37,6 +42,9 @@ class SubclassPlugin:
 
     # The concrete subclasses of abstract base classes
     _subclass = {}
+    # Overridden concrete subclasses of abstract base classes (not
+    # instantiated)
+    _overridden = defaultdict(list)
     # The instances of abstract base classes
     _instance = {}
 
@@ -50,6 +58,11 @@ class SubclassPlugin:
         # Ignore cls if it is abstract, too
         if inspect.isabstract(cls):
             return
+        # If baseclass has already set a class, append the previous
+        # value to _overridden, to be warned about in get_instance
+        if baseclass in SubclassPlugin._subclass:
+            SubclassPlugin._overridden[baseclass].append(
+                SubclassPlugin._subclass[baseclass])
         SubclassPlugin._subclass[baseclass] = cls
 
     @classmethod
@@ -79,12 +92,38 @@ def register_subclass_plugins(modules, override=False):
     otherwise, keep the existing value.
     """
 
+    def get_qualname(obj):
+        """Return the fully qualified name of obj."""
+        return f"{obj.__module__}.{obj.__name__}"
+
     def test_and_set_value(module, cls, attr):
         """If cls is a subclass of SubclassPlugin, set module.attr to
-        cls.get_instance() and return True."""
+        cls.get_instance() and return True. Also print informational
+        messages."""
         try:
             if issubclass(cls, SubclassPlugin):
-                setattr(module, attr, cls.get_instance())
+                instance = cls.get_instance()
+                if instance is not None:
+                    setattr(module, attr, instance)
+                    subclass = instance.__class__
+                    print_verbose(
+                        1,
+                        f"{cls.__name__}: Using subclass {subclass.__name__}"
+                        f" in {subclass.__module__}",
+                        immediate=True)
+                    if cls in SubclassPlugin._overridden:
+                        print(
+                            f"Warning: Class {get_qualname(subclass)} overrides"
+                            f" subclasses of {cls.__name__} defined earlier: "
+                            + ", ".join(
+                                f"{get_qualname(overridden)}"
+                                for overridden
+                                in SubclassPlugin._overridden[cls]),
+                            file=sys.stderr)
+                else:
+                    print("Warning: No concrete subclasses found for",
+                          cls.__name__,
+                          file=sys.stderr)
                 return True
         except TypeError:
             pass
