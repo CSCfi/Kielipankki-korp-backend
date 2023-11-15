@@ -11,6 +11,8 @@ intended to be visible outside the package are imported at the package level.
 
 import importlib
 
+from difflib import get_close_matches
+
 from flask import current_app as app
 
 from ._util import get_plugin_name
@@ -41,6 +43,13 @@ plugin_configs = {}
 _plugin_configs_expanded = set()
 
 
+class ConfigKeyError(KeyError):
+
+    """Error class for reporting uknown configuration variables."""
+
+    pass
+
+
 def init_pluginlib_config():
     """Initialize plugin and pluginlib config; return pluginlib config.
 
@@ -60,7 +69,7 @@ def init_pluginlib_config():
     return pluginlibconf
 
 
-def _make_config(*configs, always_add=None):
+def _make_config(*configs, always_add=None, plugin="", config_descrs=None):
     """Return a config object with values from configs.
 
     The returned object is a dict that has a value for each key in
@@ -77,13 +86,40 @@ def _make_config(*configs, always_add=None):
     the keys were not present in the defaults. Their values are those
     in always_add, unless a different value is specified in a
     configuration object.
+
+    plugin is the name of the plugin, and config_descrs is a list of
+    descriptions of the configurations in the order they are in
+    configs, both for an error message.
     """
+    config_descrs = config_descrs or []
     # We need to handle the default configuration separately, as it lists the
     # available configuration keys
     default_conf = {}
     other_confs = []
+    # The descriptions of configs in other_confs from config_descrs
+    other_conf_descrs = []
+
+    def make_error_msg(key, confnum):
+        """Construct error message for key in configs[confnum]."""
+        msg = f"Plugin {plugin}: Unknown configuration key" f" \"{key}\""
+        if other_conf_descrs[confnum]:
+            msg += f" in {other_conf_descrs[confnum]}"
+        msg += ". "
+        supported_keys = default_conf.keys()
+        nearby_keys = get_close_matches(key, supported_keys)
+        if nearby_keys:
+            msg += "Did you mean "
+            if len(nearby_keys) > 1:
+                msg += "one of "
+            msg += ", ".join(f"\"{k}\"" for k in nearby_keys)
+            msg += "?"
+        else:
+            msg += "The supported ones are: "
+            msg += ", ".join(f"\"{k}\"" for k in sorted(supported_keys)) + "."
+        return msg
+
     # Loop over configs in the reverse order
-    for conf in reversed(configs):
+    for confnum, conf in reversed(list(enumerate(configs))):
         if conf:
             if not default_conf:
                 # This is the last non-empty conf, so make it default
@@ -95,6 +131,10 @@ def _make_config(*configs, always_add=None):
                 # Prepend non-defaults to other_confs: earlier ones have higher
                 # priority, but they are later in the reversed list
                 other_confs[:0] = [conf]
+                try:
+                    other_conf_descrs[:0] = [config_descrs[confnum]]
+                except IndexError:
+                    other_conf_descrs[:0] = [""]
     result_conf = default_conf
     if other_confs:
         for key in default_conf:
@@ -103,6 +143,10 @@ def _make_config(*configs, always_add=None):
                     result_conf[key] = conf[key]
                     # If a value was available, ignore the rest of configs
                     break
+        for confnum, conf in enumerate(other_confs):
+            for key in conf:
+                if key not in default_conf:
+                    raise ConfigKeyError(make_error_msg(key, confnum))
     return result_conf
 
 
@@ -153,7 +197,13 @@ def get_plugin_config(plugin=None, defaults=None, **kw_defaults):
             defaults or {},
             # Make RENAME_ROUTES configurable even if it has not been
             # given a default in the plugin
-            always_add={"RENAME_ROUTES": None})
+            always_add={"RENAME_ROUTES": None},
+            plugin=plugin,
+            config_descrs=[
+                f"PLUGINS[\"{plugin}\"][1]",
+                f"PLUGINS_CONFIG[\"{plugin}\"]",
+                "",
+            ])
         _plugin_configs_expanded.add(plugin)
         app.config["PLUGINS_CONFIG"][plugin] = plugin_configs[plugin]
     return plugin_configs[plugin]

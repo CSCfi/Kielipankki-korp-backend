@@ -160,7 +160,8 @@ above in which it is set.
 
 To get values from these sources, the plugin module needs to call
 `korp.pluginlib.get_plugin_config` with default values of
-configuration variables. The function returns a `dict` containing
+configuration variables specified either as keyword arguments or as a
+single dictionary-like object. The function returns a `dict` containing
 configuration variables with their values. For example:
 
 ```python
@@ -175,12 +176,17 @@ plugins can also access it as
 alternatively,
 `flask.current_app.config["PLUGINS_CONFIG"]["`_plugin_`"]["CONFIG_VAR"]`.
 
-Note that the value returned by `get_plugin_config` contains values
-only for the keys specified in the default values given as arguments,
-even if the other places for configuration variables defined
-additional variables. The default values can be specified either as
-keyword arguments to `get_plugin_config` or as a single
-dictionary-like object.
+Note that if a plugin sets defaults with `get_plugin_config`, it is an
+error to try to set a value to a configuration variable that has not
+been set a default value.
+
+If a plugin does _not_ call `get_plugin_config` but
+`PLUGINS_CONFIG[`_plugin\_name_`]` exists, the values in the latter
+are used as the defaults. For an endpoint plugin instantiated as
+`plugin` (see [below](#implementing-a-new-wsgi-endpoint)), the value
+for such a configuration variable `CONFIG_VAR`, defaulting to
+`"default"`, can be obtained with `plugin.config("CONFIG_VAR",
+"default")`.
 
 
 ### Renaming plugin endpoint routes
