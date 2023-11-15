@@ -99,12 +99,10 @@ def _make_config(*configs, always_add=None):
     if other_confs:
         for key in default_conf:
             for conf in other_confs:
-                try:
+                if key in conf:
                     result_conf[key] = conf[key]
                     # If a value was available, ignore the rest of configs
                     break
-                except KeyError:
-                    pass
     return result_conf
 
 
