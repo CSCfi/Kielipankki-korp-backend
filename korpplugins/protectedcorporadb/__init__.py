@@ -8,12 +8,12 @@ Retrieve a list of protected corpora from a MySQL database.
 
 import MySQLdb
 
-import korppluginlib
+from korp import pluginlib, utils
+from korp.cwb import cwb
 
 
-# See config.py.template for further documentation of the configuration
-# variables
-pluginconf = korppluginlib.get_plugin_config(
+# See README.py for further documentation of the configuration variables
+pluginconf = pluginlib.get_plugin_config(
     # All MySQL connection parameters as a dict; if non-empty, overrides the
     # individual DBCONN_* values
     DBCONN_PARAMS = {},
@@ -42,9 +42,9 @@ pluginconf = korppluginlib.get_plugin_config(
 )
 
 
-class ProtectedCorporaDatabase(korppluginlib.KorpCallbackPlugin):
+class ProtectedCorporaDatabase(utils.ProtectedCorporaGetter):
 
-    """Callback plugin class for retrieving protected corpora from database"""
+    """Retrieve protected corpora from a MySQL database"""
 
     def __init__(self):
         """Initialize but do not connect to the database yet."""
@@ -53,13 +53,12 @@ class ProtectedCorporaDatabase(korppluginlib.KorpCallbackPlugin):
         # Fill in values in LIST_PROTECTED_CORPORA_SQL from other values in
         # pluginconf
         self._list_protected_corpora_sql = (
-            pluginconf.LIST_PROTECTED_CORPORA_SQL.format(
-                **pluginconf.__dict__))
+            pluginconf["LIST_PROTECTED_CORPORA_SQL"].format(**pluginconf))
         # Non-empty DBCONN_PARAMS overrides individual DBCONN_* values
         self._conn_params = (
-            pluginconf.DBCONN_PARAMS
+            pluginconf["DBCONN_PARAMS"]
             or dict((key.lower().split("_", 1)[1], val)
-                    for key, val in pluginconf.__dict__.items()
+                    for key, val in pluginconf.items()
                     if (key.startswith("DBCONN_")
                         and key != "DBCONN_PARAMS")))
 
@@ -68,23 +67,28 @@ class ProtectedCorporaDatabase(korppluginlib.KorpCallbackPlugin):
         if self._connection:
             self._connection.close()
 
-    def filter_protected_corpora(self, request, protected_corpora):
-        """Append to protected_corpora corpora in authorization database."""
+    def get_protected_corpora(self, use_cache=False):
+        """Get list of corpora with restricted access, in uppercase."""
+        protected_corpora = None
         if self._connect():
             try:
                 cursor = self._connection.cursor()
                 cursor.execute(self._list_protected_corpora_sql)
-                protected_corpora.extend(corpus for corpus, in cursor)
+                protected_corpora = [corpus.upper() for corpus, in cursor]
                 cursor.close()
                 # If the database connection is not persistent, close it
-                if not pluginconf.PERSISTENT_DB_CONNECTION:
+                if not pluginconf["PERSISTENT_DB_CONNECTION"]:
                     self._connection.close()
                     self._connection = None
             except (AttributeError, MySQLdb.MySQLError, MySQLdb.InterfaceError,
                     MySQLdb.DatabaseError):
-                # Assume that no corpora are protected if trying to access the
-                # database results in an error
                 pass
+        # Assume that all corpora are protected if trying to access the
+        # database results in an error
+        if protected_corpora is None:
+            # The first item in the result of "show corpora;" is CQP
+            # version, so omit it
+            protected_corpora = list(cwb.run_cqp("show corpora;"))[1:]
         return protected_corpora
 
     def _connect(self):
