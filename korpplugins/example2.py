@@ -1,9 +1,8 @@
 
 """
-korpplugins.test2
+korpplugins.example2
 
-Korp test plugin for an object-based plugin proposal: a result wrapper as a
-stand-alone module.
+Korp example plugin: a result wrapper as a stand-alone module.
 """
 
 
@@ -11,29 +10,28 @@ import traceback
 
 from types import SimpleNamespace
 
-import korppluginlib
+from korp import pluginlib
 
 
 PLUGIN_INFO = {
-    "name": "korppluginlib test plugin 2",
-    "version": "0.1",
-    "date": "2020-12-10",
+    "name": "korp.pluginlib example plugin 2",
+    "version": "0.3",
+    "date": "2023-11-02",
 }
 
 
-class Test2(korppluginlib.KorpCallbackPlugin):
+class Example2(pluginlib.CallbackPlugin):
 
     def filter_result(self, request, d):
         return {"wrap2": d}
 
 
-class Test3(korppluginlib.KorpCallbackPlugin):
+class Example3(pluginlib.CallbackPlugin):
 
     """Print the arguments at all plugin mount points"""
 
     def enter_handler(self, request, args, starttime):
         print("enter_handler", request, args, starttime)
-        print("app_globals:", korppluginlib.app_globals)
 
     def exit_handler(self, request, *args):
         print("exit_handler", request, *args)
@@ -57,13 +55,13 @@ class Test3(korppluginlib.KorpCallbackPlugin):
         print("filter_sql", request, sql)
 
 
-class Test4a(korppluginlib.KorpCallbackPlugin):
+class Example4a(pluginlib.CallbackPlugin):
 
     """A callback plugin that applies only to the "info" endpoint."""
 
     @classmethod
     def applies_to(cls, request_obj):
-        return request_obj.endpoint == 'info'
+        return request_obj.endpoint == 'info.info'
 
     def enter_handler(self, request, args, starttime):
         print("enter_handler, info only")
@@ -72,19 +70,19 @@ class Test4a(korppluginlib.KorpCallbackPlugin):
         return {'info': result}
 
 
-class Test4b(korppluginlib.KorpCallbackPlugin):
+class Example4b(pluginlib.CallbackPlugin):
 
     """A callback plugin that applies only to all but the "info" endpoint."""
 
     @classmethod
     def applies_to(cls, request_obj):
-        return request_obj.endpoint != 'info'
+        return request_obj.endpoint != 'info.info'
 
     def enter_handler(self, request, args, starttime):
         print("enter_handler, not info")
 
 
-class StateTest(korppluginlib.KorpCallbackPlugin):
+class StateExample(pluginlib.CallbackPlugin):
 
     """A callback plugin keeping state (starttime) across callbacks."""
 
@@ -93,9 +91,9 @@ class StateTest(korppluginlib.KorpCallbackPlugin):
     def enter_handler(self, request, args, starttime):
         self._data[request] = data = SimpleNamespace()
         data.starttime = starttime
-        print("StateTest.enter_handler: starttime =", starttime)
+        print("StateExample.enter_handler: starttime =", starttime)
 
     def exit_handler(self, request, endtime, *rest):
-        print("StateTest.exit_handler: starttime =",
+        print("StateExample.exit_handler: starttime =",
               self._data[request].starttime, "endtime =", endtime)
         del self._data[request]
