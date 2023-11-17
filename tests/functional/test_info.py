@@ -15,7 +15,7 @@ class TestInfo:
 
     def test_info_contains_version(self, client):
         """Test that /info response contains version info."""
-        data = get_response_json(client, "/info")
+        data = get_response_json(client(), "/info")
         assert data["version"] and data["version"] != ""
 
 
@@ -27,7 +27,7 @@ class TestCorpusInfo:
         """Test /corpus_info for a single corpus."""
         corpus = corpora[0].upper()
         data = get_response_json(
-            client, "/corpus_info",
+            client(), "/corpus_info",
             query_string={
                 "cache": "false",
                 "corpus": corpus,

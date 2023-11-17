@@ -16,7 +16,7 @@ class TestQuery:
     def test_query_single_corpus(self, client, corpora):
         """Test a simple query on a single corpus."""
         data = get_response_json(
-            client, "/query",
+            client(), "/query",
             query_string={
                 "corpus": "testcorpus",
                 "cqp": "[lemma=\"this\"]",
