@@ -16,7 +16,7 @@ class TestCorpusConfig:
     def test_corpus_config(self, client, corpus_configs):
         """Test that a corpus configuration can be retrieved."""
         data = get_response_json(
-            client, "/corpus_config",
+            client(), "/corpus_config",
             query_string={
                 "mode": "default",
                 "cache": "false",

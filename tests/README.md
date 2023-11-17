@@ -79,8 +79,12 @@ The following Pytest fixtures have been defined in
 - `corpus_configs`: Copy corpus configurations in
   `data/corpora/config` to a temporary directory used in tests
 - `corpora`: Encode the corpora in `data/corpora/src` and return their ids
-- `app`: Create and configure a Korp Flask app instance
-- `client`: Create and return a test client
+- `app`: Return a function to create and configure a Korp Flask app
+  instance. The returned function optionally takes as its argument a
+  `dict` for overriding default Korp configuration values.
+- `client`: Return a function to create and return a test client. The
+  returned function optionally takes as its argument a `dict` for
+  overriding default Korp configuration values.
 
 
 ### Functional tests
@@ -91,7 +95,7 @@ A typical functional test testing an endpoint uses the `client` and
 ```python
 def test_corpus_info_single_corpus(self, client, corpora):
     corpus = corpora[0].upper()
-    response = client.get(
+    response = client().get(
         "/corpus_info",
         query_string={
             "cache": "false",

@@ -52,22 +52,37 @@ def corpus_config_dir(tmp_path_factory):
 
 @pytest.fixture()
 def app(corpus_registry_dir, cache_dir, corpus_config_dir):
-    """Create and configure a Korp app instance."""
-    app = create_app({
-        # https://flask.palletsprojects.com/en/2.2.x/config/#TESTING
-        "TESTING": True,
-        "CWB_REGISTRY": corpus_registry_dir,
-        "CACHE_DIR": cache_dir,
-        "CORPUS_CONFIG_DIR": corpus_config_dir,
-    })
-    # print(app.config)
-    yield app
+    """Return a function for creating and configuring a Korp app instance.
+
+    Uses the "factory as fixture" pattern:
+    https://docs.pytest.org/en/7.3.x/how-to/fixtures.html#factories-as-fixtures
+    """
+
+    def _app(config=None):
+        """Return Korp app instance with config overriding defaults."""
+        base_config = {
+            # https://flask.palletsprojects.com/en/2.2.x/config/#TESTING
+            "TESTING": True,
+            "CWB_REGISTRY": corpus_registry_dir,
+            "CACHE_DIR": cache_dir,
+            "CORPUS_CONFIG_DIR": corpus_config_dir,
+        }
+        base_config.update(config or {})
+        return create_app(base_config)
+        # print(app.config)
+
+    yield _app
 
 
 @pytest.fixture()
 def client(app):
-    """Create and return a test client."""
-    return app.test_client()
+    """Return a function for creating and returning a test client."""
+
+    def _client(config=None):
+        """Return test client for app with config overriding defaults."""
+        return app(config).test_client()
+
+    return _client
 
 
 @pytest.fixture(scope="session")
