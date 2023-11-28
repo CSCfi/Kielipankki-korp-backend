@@ -13,6 +13,7 @@ from shutil import copytree
 
 from korp import create_app
 from tests.corpusutils import CWBEncoder
+from tests.dbutils import KorpDatabase
 
 
 # Functions in tests.utils are called by tests and contain assertions
@@ -22,6 +23,16 @@ pytest.register_assert_rewrite("tests.testutils")
 
 # Test data (source) directory
 _datadir = Path(__file__).parent / "data"
+
+
+def pytest_addoption(parser):
+    """Add pytest command-line options related to MySQL database access."""
+    KorpDatabase.pytest_add_db_options(parser)
+
+
+def pytest_configure(config):
+    """Process the command-line options related to MySQL database access."""
+    KorpDatabase.pytest_config_db_options(config)
 
 
 @pytest.fixture(scope="session")
@@ -50,8 +61,22 @@ def corpus_config_dir(tmp_path_factory):
     return tmp_path_factory.mktemp("corpus-config")
 
 
+@pytest.fixture(scope="session")
+def database():
+    """Create and yield a KorpDatabase (Korp MySQL database) for a session.
+
+    If the database could not be created, the dbname attribute of the
+    returned value is None.
+    Afterwards, drop the database.
+    """
+    db = KorpDatabase(_datadir / "db")
+    db.create()
+    yield db
+    db.drop()
+
+
 @pytest.fixture()
-def app(corpus_registry_dir, cache_dir, corpus_config_dir):
+def app(corpus_registry_dir, cache_dir, corpus_config_dir, database):
     """Return a function for creating and configuring a Korp app instance.
 
     Uses the "factory as fixture" pattern:
@@ -67,6 +92,10 @@ def app(corpus_registry_dir, cache_dir, corpus_config_dir):
             "CACHE_DIR": cache_dir,
             "CORPUS_CONFIG_DIR": corpus_config_dir,
         }
+        # Update the configuration from the database configuration, as
+        # custom pytest command-line options can be used to change the
+        # MySQL connection parameters
+        base_config.update(database.get_config())
         base_config.update(config or {})
         return create_app(base_config)
         # print(app.config)
