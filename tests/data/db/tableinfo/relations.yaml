@@ -1,0 +1,78 @@
+
+# Korp MySQL database table information for relations tables
+
+
+- tablename: relations_{1:u}
+  filenames:
+  - relations/(.*?)([:+]relations)?
+  - (.*)/relations
+  exclude_filenames:
+  - '.*_(strings|rel|head_rel|dep_rel|sentences)'
+  definition: |
+    `id` int UNIQUE NOT NULL,
+    `head` int NOT NULL,
+    `rel` enum('SS','OBJ','ADV','AT','ET','PA','APP','AUX','CPL','CPR','CRD','MOD','OTH','OWN','VPT') NOT NULL DEFAULT 'SS',
+    `dep` int NOT NULL,
+    `freq` int NOT NULL,
+    `bfhead` bool NOT NULL,
+    `bfdep` bool NOT NULL,
+    `wfhead` bool NOT NULL,
+    `wfdep` bool NOT NULL,
+    PRIMARY KEY (`head`,`wfhead`,`dep`,`rel`,`freq`,`id`),
+    KEY `dep-wfdep-head-rel-freq-id` (`dep`,`wfdep`,`head`,`rel`,`freq`,`id`),
+    KEY `head-dep-bfhead-bfdep-rel-freq-id` (`head`,`dep`,`bfhead`,`bfdep`,`rel`,`freq`,`id`),
+    KEY `dep-head-bfhead-bfdep-rel-freq-id` (`dep`,`head`,`bfhead`,`bfdep`,`rel`,`freq`,`id`)
+
+- tablename: relations_{1:u}_strings
+  filenames:
+  - relations/(.*?)([:+]relations)?_strings
+  - (.*)/relations_strings
+  definition: |
+    `id` int UNIQUE NOT NULL,
+    `string` varchar(100) NOT NULL,
+    `stringextra` varchar(32) DEFAULT NULL,
+    `pos` varchar(5) DEFAULT NULL,
+    PRIMARY KEY (`string`,`id`,`pos`,`stringextra`),
+    KEY `id-string-pos-stringextra` (`id`,`string`,`pos`,`stringextra`)
+
+- tablename: relations_{1:u}_rel
+  filenames:
+  - relations/(.*?)([:+]relations)?_rel
+  - (.*)/relations_rel
+  exclude_filenames:
+  - .*_(head|dep)_rel
+  definition: |
+    `rel` enum('SS','OBJ','ADV','AT','ET','PA','APP','AUX','CPL','CPR','CRD','MOD','OTH','OWN','VPT') NOT NULL DEFAULT 'SS',
+    `freq` int NOT NULL,
+    PRIMARY KEY (`rel`,`freq`)
+
+- tablename: relations_{1:u}_head_rel
+  filenames:
+  - relations/(.*?)([:+]relations)?_head_rel
+  - (.*)/relations_head_rel
+  definition: |
+    `head` int NOT NULL,
+    `rel` enum('SS','OBJ','ADV','AT','ET','PA','APP','AUX','CPL','CPR','CRD','MOD','OTH','OWN','VPT') NOT NULL DEFAULT 'SS',
+    `freq` int NOT NULL,
+    PRIMARY KEY (`head`,`rel`,`freq`)
+
+- tablename: relations_{1:u}_dep_rel
+  filenames:
+  - relations/(.*?)([:+]relations)?_dep_rel
+  - (.*)/relations_dep_rel
+  definition: |
+    `dep` int NOT NULL,
+    `rel` enum('SS','OBJ','ADV','AT','ET','PA','APP','AUX','CPL','CPR','CRD','MOD','OTH','OWN','VPT') NOT NULL DEFAULT 'SS',
+    `freq` int NOT NULL,
+    PRIMARY KEY (`dep`,`rel`,`freq`)
+
+- tablename: relations_{1:u}_sentences
+  filenames:
+  - relations/(.*?)([:+]relations)?_sentences
+  - (.*)/relations_sentences
+  definition: |
+    `id` int NOT NULL,
+    `sentence` varchar(64) NOT NULL,
+    `start` int NOT NULL,
+    `end` int NOT NULL,
+    KEY `id` (`id`)
