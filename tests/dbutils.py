@@ -99,6 +99,11 @@ class KorpDatabase:
         """
         # Database name; None if no database active
         self.dbname = None
+        # Possible error that occurred when trying to create database:
+        # a dict with keys "exception" (MySQLdb.Error object),
+        # "message" (stringified error object) and "sql" (SQL
+        # statement or None)
+        self.create_error = None
         # Database data directory
         self._datadir = datadir
         # Database options: pytest command-line options combined with
@@ -196,19 +201,27 @@ class KorpDatabase:
             return
         korp_conf = get_korp_config()
         try:
+            sql = None
             with self._connect() as conn:
                 cursor = conn.cursor()
                 dbname = self._make_db_name(cursor)
                 charset = korp_conf['DBCHARSET']
                 user = self._db_options['user']
                 host = self._conn_params['host']
-                cursor.execute(
-                    f"CREATE DATABASE {dbname} CHARACTER SET {charset};")
-                cursor.execute(
-                    f"GRANT ALL ON {dbname}.* TO '{user}'@'{host}'")
-        except MySQLdb.Error:
+                for sql in [
+                        f"CREATE DATABASE {dbname} CHARACTER SET {charset};",
+                        f"GRANT ALL ON {dbname}.* TO '{user}'@'{host}'",
+                ]:
+                    cursor.execute(sql)
+        except MySQLdb.Error as exc:
+            self.create_error = {
+                "exception": exc,
+                "message": str(exc),
+                "sql": sql,
+            }
             return
         self._set_db_name(dbname)
+        self.create_error = None
 
     def _set_db_name(self, dbname):
         """Set current database name to dbname."""

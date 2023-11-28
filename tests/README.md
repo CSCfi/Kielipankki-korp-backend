@@ -61,6 +61,9 @@ privilege.
 The database user should also have the file privilege to load data
 from files.
 
+If the test database cannot be created, tests using the database
+(fixture `database`) are skipped.
+
 
 ### Test coverage
 

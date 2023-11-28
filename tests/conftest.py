@@ -62,12 +62,15 @@ def corpus_config_dir(tmp_path_factory):
 
 
 @pytest.fixture(scope="session")
-def database():
+def _database():
     """Create and yield a KorpDatabase (Korp MySQL database) for a session.
 
     If the database could not be created, the dbname attribute of the
     returned value is None.
     Afterwards, drop the database.
+
+    Actual tests should use fixture "database" instead of this, so
+    that they are skipped if the test database cannot be created.
     """
     db = KorpDatabase(_datadir / "db")
     db.create()
@@ -75,8 +78,22 @@ def database():
     db.drop()
 
 
+@pytest.fixture(scope="session")
+def database(_database):
+    """Yield a KorpDatabase for a session; if that fails, skip test."""
+    if _database.dbname is None:
+        error = _database.create_error
+        msg = ""
+        if error is not None:
+            msg = "Unable to create Korp database: Error " + error["message"]
+            if error["sql"] is not None:
+                msg += " when executing SQL statement: " + error["sql"]
+        pytest.skip(msg)
+    yield _database
+
+
 @pytest.fixture()
-def app(corpus_registry_dir, cache_dir, corpus_config_dir, database):
+def app(corpus_registry_dir, cache_dir, corpus_config_dir, _database):
     """Return a function for creating and configuring a Korp app instance.
 
     Uses the "factory as fixture" pattern:
@@ -95,7 +112,7 @@ def app(corpus_registry_dir, cache_dir, corpus_config_dir, database):
         # Update the configuration from the database configuration, as
         # custom pytest command-line options can be used to change the
         # MySQL connection parameters
-        base_config.update(database.get_config())
+        base_config.update(_database.get_config())
         base_config.update(config or {})
         return create_app(base_config)
         # print(app.config)
