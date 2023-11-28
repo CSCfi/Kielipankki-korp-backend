@@ -269,6 +269,17 @@ regular expressions in `filenames` and `exclude_filenames` do not
 begin with `.*/` and end with `\.tsv`, these are affixed to the
 expressions.
 
+The value of `definition` may contain variable references as
+`{`_var_`}`. Their values must be defined before use in a separate
+sequence item with key `definition_vars` and value that is a mapping
+from variable names to values:
+
+```yaml
+- definition_vars:
+    var1: value1
+    var2: value2
+```
+
 Currently, the table information files support the following file
 names for the various tables, shown here relative to `tests/data/db/`
 and using shell globs instead of regular expressions:
