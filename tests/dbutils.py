@@ -286,11 +286,37 @@ class KorpDatabase:
                 filenames_re.append(re.compile(regex))
             return filenames_re
 
+        def expand_vars(tableinfo_items):
+            """Expand variables in table definitions in tableinfo_items.
+
+            Replace variable references "{var}" in the value of
+            "definition" of tableinfo_items.
+
+            Variable values are defined in separate sequence items
+            that are mappings containing key "definition_vars", whose
+            value is a mapping whose keys are variable names and
+            values the replacement values.
+
+            The returned result contains tableinfo_items with mappings
+            containing key "definition_vars" removed and values for
+            "definition" expanded in other mappings.
+            """
+            result = []
+            vardefs = {}
+            for item in tableinfo_items:
+                if "definition_vars" in item:
+                    vardefs.update(item["definition_vars"])
+                else:
+                    item["definition"] = item["definition"].format(**vardefs)
+                    result.append(item)
+            return result
+
         tableinfo_dir = self._datadir / "tableinfo"
         tableinfo = []
         for filepath in tableinfo_dir.glob("*.yaml"):
             with open(str(filepath), "r") as f:
-                tableinfo.extend(yaml.safe_load(f))
+                tableinfo_new = yaml.safe_load(f)
+                tableinfo.extend(expand_vars(tableinfo_new))
         for info in tableinfo:
             # For filenames and exclude_filenames, add corresponding
             # *_re keys with compiled regular expressions

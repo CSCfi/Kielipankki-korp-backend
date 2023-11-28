@@ -2,6 +2,13 @@
 # Korp MySQL database table information for relations tables
 
 
+# Definitions of variables referenced in "definitions" as "{var}"
+- definition_vars:
+    # Type of field `rel`
+    rel_type: |
+      enum('SS','OBJ','ADV','AT','ET','PA','APP','AUX','CPL','CPR','CRD','MOD','OTH','OWN','VPT') NOT NULL DEFAULT 'SS'
+
+
 - tablename: relations_{1:u}
   filenames:
   - relations/(.*?)([:+]relations)?
@@ -11,7 +18,7 @@
   definition: |
     `id` int UNIQUE NOT NULL,
     `head` int NOT NULL,
-    `rel` enum('SS','OBJ','ADV','AT','ET','PA','APP','AUX','CPL','CPR','CRD','MOD','OTH','OWN','VPT') NOT NULL DEFAULT 'SS',
+    `rel` {rel_type},
     `dep` int NOT NULL,
     `freq` int NOT NULL,
     `bfhead` bool NOT NULL,
@@ -42,7 +49,7 @@
   exclude_filenames:
   - .*_(head|dep)_rel
   definition: |
-    `rel` enum('SS','OBJ','ADV','AT','ET','PA','APP','AUX','CPL','CPR','CRD','MOD','OTH','OWN','VPT') NOT NULL DEFAULT 'SS',
+    `rel` {rel_type},
     `freq` int NOT NULL,
     PRIMARY KEY (`rel`,`freq`)
 
@@ -52,7 +59,7 @@
   - (.*)/relations_head_rel
   definition: |
     `head` int NOT NULL,
-    `rel` enum('SS','OBJ','ADV','AT','ET','PA','APP','AUX','CPL','CPR','CRD','MOD','OTH','OWN','VPT') NOT NULL DEFAULT 'SS',
+    `rel` {rel_type},
     `freq` int NOT NULL,
     PRIMARY KEY (`head`,`rel`,`freq`)
 
@@ -62,7 +69,7 @@
   - (.*)/relations_dep_rel
   definition: |
     `dep` int NOT NULL,
-    `rel` enum('SS','OBJ','ADV','AT','ET','PA','APP','AUX','CPL','CPR','CRD','MOD','OTH','OWN','VPT') NOT NULL DEFAULT 'SS',
+    `rel` {rel_type},
     `freq` int NOT NULL,
     PRIMARY KEY (`dep`,`rel`,`freq`)
 
