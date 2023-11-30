@@ -186,6 +186,36 @@ class KorpDatabase:
         """Return a MySQLdb Connection using the pre-specified parameters."""
         return MySQLdb.Connect(local_infile=True, **self._conn_params)
 
+    def execute(self, sql, cursor=None, commit=True):
+        """Execute SQL statements sql on cursor and commit if commit == True.
+
+        sql can be str or an iterable of str, in which case all the
+        items are concatenated and executed with a single call.
+        If cursor is None, create a connection to the database and a
+        cursor for it.
+        Return the number of rows affected.
+        """
+        if not isinstance(sql, str):
+            sql = "".join(sql)
+        if cursor is None:
+            with self._connect() as conn:
+                return self.execute(sql, conn.cursor())
+        else:
+            retval = cursor.execute(sql)
+            if commit:
+                cursor.connection.commit()
+            return retval
+
+    def execute_file(self, sqlfile, cursor=None, commit=True):
+        """Execute SQL statements in sqlfile on cursor and commit if commit.
+
+        If cursor is None, create a connection to the database and a
+        cursor for it.
+        Return the number of rows affected.
+        """
+        with open(sqlfile, "r") as sqlf:
+            return self.execute(sqlf, cursor, commit=commit)
+
     def create(self):
         """Create a Korp MySQL database and grant privileges
 
@@ -212,7 +242,7 @@ class KorpDatabase:
                         f"CREATE DATABASE {dbname} CHARACTER SET {charset};",
                         f"GRANT ALL ON {dbname}.* TO '{user}'@'{host}'",
                 ]:
-                    cursor.execute(sql)
+                    self.execute(sql, cursor)
         except MySQLdb.Error as exc:
             self.create_error = {
                 "exception": exc,
@@ -230,9 +260,7 @@ class KorpDatabase:
     def drop(self):
         """Drop the created database and set current database name to None."""
         if self.dbname and not self._use_existing_table:
-            with self._connect() as conn:
-                cursor = conn.cursor()
-                cursor.execute(f"DROP DATABASE {self.dbname};")
+            self.execute(f"DROP DATABASE {self.dbname};")
         self._set_db_name(None)
 
     def _make_db_name(self, cursor):
@@ -260,7 +288,7 @@ class KorpDatabase:
 
     def _get_db_names(self, cursor):
         """Return a list of database names using MySQLdb cursor."""
-        cursor.execute("SHOW DATABASES;")
+        self.execute("SHOW DATABASES;", cursor)
         return [item[0] for item in cursor]
 
     def _read_tableinfo(self):
@@ -333,15 +361,13 @@ class KorpDatabase:
                 for tablefile in self._datadir.glob(tablefile_glob):
                     tablefile = str(tablefile)
                     if tablefile.endswith(".sql"):
-                        self._execute_sql_file(tablefile, cursor)
+                        # If commit == True, the following may result
+                        # in MySQLdb.ProgrammingError: (2014,
+                        # "Commands out of sync; you can't run this
+                        # command now"); why?
+                        self.execute_file(tablefile, cursor, commit=False)
                     else:
                         self._import_table(tablefile, cursor)
-
-    def _execute_sql_file(self, sqlfile, cursor):
-        """Execute SQL statements in sqlfile on cursor."""
-        with open(sqlfile, "r") as sqlf:
-            sql = "".join(line for line in sqlf)
-            cursor.execute(sql)
 
     def _import_table(self, tablefile, cursor):
         """Import table data from tablefile using cursor.
@@ -382,10 +408,11 @@ class KorpDatabase:
         Return the name of the created table.
         """
         tablename = self._make_tablename(tableinfo, fname_mo)
-        cursor.execute(
+        self.execute(
             f"""CREATE TABLE IF NOT EXISTS `{tablename}` (
                 {tableinfo["definition"]}
-                );"""
+                );""",
+            cursor
         )
         return tablename
 
@@ -408,7 +435,7 @@ class KorpDatabase:
         Load the data from TSV file tablefile using LOAD DATA LOCAL
         INFILE. This thus requires allowing LOAD DATA INFILE.
         """
-        cursor.execute(
+        self.execute(
             f"""LOAD DATA LOCAL INFILE '{tablefile}' INTO TABLE `{tablename}`
-                FIELDS ESCAPED BY '';""")
-        cursor.connection.commit()
+                FIELDS ESCAPED BY '';""",
+            cursor)
