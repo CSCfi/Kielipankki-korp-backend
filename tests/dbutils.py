@@ -9,10 +9,10 @@ The test database should typically be different from the production
 database, so this module contains facilities for creating a database
 from scratch.
 
-Individual database tables are created based on TSV files in the
-specified test data directory. File names are mapped to tables and
-their definitions in YAML files in the subdirectory "tableinfo". For
-more information, please see the documentation in tests/README.md.
+Individual database tables are created based on SQL or TSV files in
+the specified test data directory. TSV file names are mapped to tables
+and their definitions in YAML files in the subdirectory "tableinfo".
+For more information, please see the documentation in tests/README.md.
 """
 
 
@@ -331,7 +331,17 @@ class KorpDatabase:
             cursor = conn.cursor()
             for tablefile_glob in tablefile_globs:
                 for tablefile in self._datadir.glob(tablefile_glob):
-                    self._import_table(str(tablefile), cursor)
+                    tablefile = str(tablefile)
+                    if tablefile.endswith(".sql"):
+                        self._execute_sql_file(tablefile, cursor)
+                    else:
+                        self._import_table(tablefile, cursor)
+
+    def _execute_sql_file(self, sqlfile, cursor):
+        """Execute SQL statements in sqlfile on cursor."""
+        with open(sqlfile, "r") as sqlf:
+            sql = "".join(line for line in sqlf)
+            cursor.execute(sql)
 
     def _import_table(self, tablefile, cursor):
         """Import table data from tablefile using cursor.

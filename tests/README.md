@@ -237,14 +237,24 @@ for more information.
 
 ### Database data
 
-Test database data resides in TSV (tab-separated values) files under
-the subdirectory `data/db/` and its subdirectories. The files should
-not have a header row. Backslash escapes are not recognized, so values
-cannot contain tab or newline characters.
+Test database data resides in files under the subdirectory `data/db/`
+and its subdirectories. It can be specified in two formats:
 
-YAML files in [`data/db/tableinfo/`](data/db/tableinfo) contain table
-information specifying a mapping from data files to database tables.
-Each file contains a sequence of one or more mappings with the
+1. SQL files (extension `.sql`) containing all the necessary table
+   creation and value insertion statements. A single SQL file may
+   contain data for multiple tables.
+2. TSV (tab-separated values) files (extension `.tsv`), each
+   containing values for a single table. The table is inferred based
+   on the file name and _table information files_ in YAML format that
+   also specify the table definition (see below).
+
+TSV files should not have a header row: columns in the file must be in
+the order they are in the table definition. Backslash escapes are not
+recognized, so values cannot contain tab or newline characters.
+
+The YAML files in [`data/db/tableinfo/`](data/db/tableinfo) contain
+table information specifying a mapping from TSV data files to database
+tables. Each file contains a sequence of one or more mappings with the
 following keys recognized:
 
 - `tablename`: The name of the table. The name may contain format
