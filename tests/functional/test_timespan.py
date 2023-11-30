@@ -30,7 +30,7 @@ def timespan_testcorpus(client, database):
             "cache": "false",
         }
         # Import all timedata table data
-        database.import_tables(["timedata/*.tsv"])
+        database.import_table_files(["timedata/*.tsv"])
         query_params.update(params or {})
         return get_response_json(
             client(config or {}), "/timespan", query_string=query_params)

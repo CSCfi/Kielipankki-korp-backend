@@ -353,7 +353,7 @@ class KorpDatabase:
                     info.get(propname, []))
         return tableinfo
 
-    def import_tables(self, tablefile_globs):
+    def import_table_files(self, tablefile_globs):
         """Import table data from files matched by tablefile_globs."""
         with self._connect() as conn:
             cursor = conn.cursor()
