@@ -28,7 +28,7 @@ def lemgram_count_testcorpus(client, database):
             "cache": "false",
         }
         # Import all lemgram_index table data
-        database.import_tables(["lemgram_index/*.tsv"])
+        database.import_table_files(["lemgram_index/*.tsv"])
         query_params.update(params or {})
         return get_response_json(
             client(config or {}), "/lemgram_count", query_string=query_params)
