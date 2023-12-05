@@ -4,7 +4,8 @@
 
 - tablename: timedata
   filenames:
-  - '.*/timedata/?.*'
+  - 'timedata/{corpus}([_:+]timedata)?'
+  - '{corpus}/timedata'
   exclude_filenames:
   - '.*_date'
   definition: |
@@ -16,7 +17,8 @@
 
 - tablename: timedata_date
   filenames:
-  - '.*/timedata/?.*_date'
+  - 'timedata/{corpus}([_:+]timedata)?_date'
+  - '{corpus}/timedata_date'
   definition: |
     `corpus` varchar(64) NOT NULL DEFAULT '',
     `datefrom` date NOT NULL DEFAULT '0000-00-00',

@@ -4,7 +4,8 @@
 
 - tablename: lemgram_index
   filenames:
-  - .*/lemgram_index/?.*
+  - 'lemgram(s|_index)/{corpus}([_:+]lemgram(s|_index))?'
+  - '{corpus}/lemgram(s|_index)'
   definition: |
     `lemgram` varchar(64) NOT NULL,
     `freq` int(11) DEFAULT NULL,

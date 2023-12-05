@@ -19,6 +19,7 @@ For more information, please see the documentation in tests/README.md.
 import csv
 import re
 
+from collections import defaultdict
 from string import Formatter
 
 import MySQLdb
@@ -113,7 +114,11 @@ class KorpDatabase:
         # MySQL database connection parameters
         self._conn_params = {}
         # Table information
-        self._tableinfo = self._read_tableinfo()
+        self._tableinfo = []
+        # Filename patterns by table type
+        self._tabletype_patts = defaultdict(list)
+        # Initialize self._tableinfo, self._tabletype_patts
+        self._read_tableinfo()
         # If True, use an existing table in the database, so do not
         # drop it afterwards
         self._use_existing_table = False
@@ -313,6 +318,8 @@ class KorpDatabase:
 
             If a filename does not end in ".tsv", add the suffix. If a
             filename does not begin with ".*/", add the prefix.
+            Replace corpus name placeholder "{corpus}” with
+            "[a-zA-Z0-9_-]+?".
             """
             filenames_re = []
             for regex in filenames:
@@ -320,8 +327,20 @@ class KorpDatabase:
                     regex = regex + r"\.tsv"
                 if not regex.startswith(r".*/"):
                     regex = r".*/" + regex
+                regex = regex.replace("{corpus}", "[a-zA-Z0-9_-]+?")
                 filenames_re.append(re.compile(regex))
             return filenames_re
+
+        def add_tabletype(tableinfo_items, tabletype):
+            """Add key "tabletype" with value tabletype to tableinfo_items.
+
+            Skip items lacking key "filenames".
+            Return tableinfo_items.
+            """
+            for item in tableinfo_items:
+                if "filenames" in item:
+                    item["tabletype"] = tabletype
+            return tableinfo_items
 
         def expand_vars(tableinfo_items):
             """Expand variables in table definitions in tableinfo_items.
@@ -353,6 +372,7 @@ class KorpDatabase:
         for filepath in tableinfo_dir.glob("*.yaml"):
             with open(str(filepath), "r") as f:
                 tableinfo_new = yaml.safe_load(f)
+                tableinfo_new = add_tabletype(tableinfo_new, filepath.stem)
                 tableinfo.extend(expand_vars(tableinfo_new))
         for info in tableinfo:
             # For filenames and exclude_filenames, add corresponding
@@ -360,14 +380,64 @@ class KorpDatabase:
             for propname in ["filenames", "exclude_filenames"]:
                 info[f"{propname}_re"] = compile_filenames(
                     info.get(propname, []))
-        return tableinfo
+            # Add filename patterns for the tabletype
+            for filename in info["filenames"]:
+                if not filename.startswith(".*/"):
+                    filename = ".*/" + filename
+                self._tabletype_patts[info["tabletype"]].append(filename)
+        self._tableinfo = tableinfo
+
+    def import_tables(self, corpora, tabletypes=None):
+        """Import database tables of tabletypes (or all) for corpora.
+
+        Import database tables in TSV or SQL files matching patterns
+        in self._tabletype_patts for the tabletypes and corpora.
+        corpora and tabletypes may be single strings or lists of
+        strings. If tabletypes is None (default), import all types of
+        tables for corpora.
+        """
+        files = self._find_table_files(corpora, tabletypes)
+        self.import_table_files(files)
+
+    def _find_table_files(self, corpora, tabletypes=None):
+        """Return a list of table data file names for corpora and tabletypes."""
+        if tabletypes is None:
+            tabletypes = self._tabletype_patts.keys()
+        elif isinstance(tabletypes, str):
+            tabletypes = [tabletypes]
+        if isinstance(corpora, str):
+            corpora = [corpora]
+        files = []
+        for ext in ["sql", "tsv"]:
+            for filename in self._datadir.rglob(f"*.{ext}"):
+                filename = str(filename)
+                for tabletype in tabletypes:
+                    for corpus in corpora:
+                        for patt in self._tabletype_patts[tabletype]:
+                            patt = patt.replace("{corpus}", corpus) + f".{ext}"
+                            if re.fullmatch(patt, filename):
+                                files.append(filename)
+        return files
 
     def import_table_files(self, tablefile_globs):
         """Import table data from files matched by tablefile_globs."""
+
+        def find_files(tablefile_glob):
+            """Find files in tablefile_globs or use directly if absolute.
+
+            If tablefile_glob begins with a "/", it is an absolute and
+            returned as a single-item list. Otherwise, return a glob
+            generator for tablefile_glob.
+            """
+            if tablefile_glob and tablefile_glob[0] == "/":
+                return [tablefile_glob]
+            else:
+                return self._datadir.glob(tablefile_glob)
+
         with self._connect() as conn:
             cursor = conn.cursor()
             for tablefile_glob in tablefile_globs:
-                for tablefile in self._datadir.glob(tablefile_glob):
+                for tablefile in find_files(tablefile_glob):
                     tablefile = str(tablefile)
                     if tablefile.endswith(".sql"):
                         # If commit == True, the following may result

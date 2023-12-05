@@ -126,6 +126,8 @@ The following Pytest fixtures have been defined in
   `data/corpora/config` to a temporary directory used in tests
 - `corpora`: Encode the corpora in `data/corpora/src` and return their ids
 - `database`: Return a `KorpDatabase` object for a session
+- `database_tables`: Import database data for the specified corpora
+  and table types
 - `app`: Return a function to create and configure a Korp Flask app
   instance. The returned function optionally takes as its argument a
   `dict` for overriding default Korp configuration values.
@@ -252,10 +254,18 @@ TSV files should not have a header row: columns in the file must be in
 the order they are in the table definition. Backslash escapes are not
 recognized, so values cannot contain tab or newline characters.
 
+Each file, whether SQL or TSV, should contain data only for one
+corpus, whose id should be a part of the file (or directory) name.
+
+Data can be imported by specifying either the corpus id and type(s) of
+table(s) (one or more of `timedata`, `lemgram_index` and `relations`)
+or the files containing data (globs can be used).
+
 The YAML files in [`data/db/tableinfo/`](data/db/tableinfo) contain
-table information specifying a mapping from TSV data files to database
-tables. Each file contains a sequence of one or more mappings with the
-following keys recognized:
+table information specifying a mapping from (TSV) data files to
+database tables (and indirectly also the other way round). Each file
+contains a sequence of one or more mappings with the following keys
+recognized:
 
 - `tablename`: The name of the table. The name may contain format
   specifications referring to capturing groups in the regular
@@ -267,7 +277,9 @@ following keys recognized:
 - `filenames`: A sequence of file name regular expressions. If a full
   file name matches one of the expressions and none of those in
   `exclude_filenames`, load the data from it to the table specified in
-  `tablename`.
+  `tablename`. Each regular expression should contain the placeholder
+  `{corpus}` to be replaced with a corpus id for the fixture
+  `database_tables` to be able to find the database data for a corpus.
 - `exclude_filenames`: A sequence of excluded file name regular expressions.
 - `definition`: A string containing the MySQL table definition:
   columns and possible keys.
@@ -276,8 +288,8 @@ If a file name would match regular expression in multiple mappings,
 the first mapping found is used. Regular expressions are matched to
 absolute file names in their entirety, including the directory. If the
 regular expressions in `filenames` and `exclude_filenames` do not
-begin with `.*/` and end with `\.tsv`, these are affixed to the
-expressions.
+begin with `.*/`, it is prefixed to the expression. The regular
+expressions should not include the extension `.tsv` (or `.sql`).
 
 The value of `definition` may contain variable references as
 `{`_var_`}`. Their values must be defined before use in a separate
@@ -290,44 +302,23 @@ from variable names to values:
     var2: value2
 ```
 
-Currently, the table information files support the following file
-names for the various tables, shown here relative to `tests/data/db/`
-and using shell globs instead of regular expressions:
+Currently, the table information files support the following file name
+and directory naming schemes (under `tests/data/db/`) for the various
+types of tables:
 
-- Table `lemgram_index`:
-  - `lemgram_index/*.tsv`
-  - `*/lemgram_index*.tsv`
-- Table `timedata`:
-  - `timedata/*.tsv`
-  - `*/timedata*.tsv`
-  - _Not_ `*/*_date.tsv`
-- Table `timedata_date`:
-  - `timedata/*_date.tsv`
-  - `*/timedata*_date.tsv`
-- Table `relations_CORPUS` (for corpus `corpus`):
-  - `relations/corpus.tsv`
-  - `relations/corpus[:+]relations.tsv`
-  - `corpus/relations.tsv`
-  - _Not_ `*/*_strings.tsv`, `*/*_rel.tsv`, `*/*_head_rel.tsv`,
-    `*/*_dep_rel.tsv`, `*/*_sentences.tsv`
-- Table `relations_CORPUS_strings`:
-  - `relations/corpus_strings.tsv`
-  - `relations/corpus[:+]relations_strings.tsv`
-  - `corpus/relations_strings.tsv`
-- Table `relations_CORPUS_rel`:
-  - `relations/corpus_rel.tsv`
-  - `relations/corpus[:+]relations_rel.tsv`
-  - `corpus/relations_rel.tsv`
-  - _Not_ `*/*_head_rel.tsv`, `*/*_dep_rel.tsv`
-- Table `relations_CORPUS_head_rel`:
-  - `relations/corpus_head_rel.tsv`
-  - `relations/corpus[:+]relations_head_rel.tsv`
-  - `corpus/relations_head_rel.tsv`
-- Table `relations_CORPUS_dep_rel`:
-  - `relations/corpus_dep_rel.tsv`
-  - `relations/corpus[:+]relations_dep_rel.tsv`
-  - `corpus/relations_dep_rel.tsv`
-- Table `relations_CORPUS_sentences`:
-  - `relations/corpus_sentences.tsv`
-  - `relations/corpus[:+]relations_sentences.tsv`
-  - `corpus/relations_sentences.tsv`
+- _tabletype_`/`_corpus_`.`_ext_
+- _tabletype_`/`_corpus_`[_:+]`_tabletype\_detailed_`.`_ext_
+- _corpus_`/`_tabletype\_detailed_`.`_ext_
+
+Here:
+
+- _corpus_ = corpus id (in lower case)
+- _tabletype_ = high-level table type: one of `lemgram_index` (or
+  `lemgrams`), `timedata` and `relations`
+- _tabletype\_detailed_ = more detailed table type (mainly for TSV files):
+   - `lemgram_index`: `lemgram_index` (or `lemgrams`) (the same as the
+     high-level type)
+   - `timedata`: `timedata` or `timedata_date`
+   - `relations`: `relations`, `relations_strings`, `relations_rel`,
+     `relations_head_rel`, `relations_dep_rel` or `relations_sentence`
+- _ext_ = file type extension: `tsv` or `sql`

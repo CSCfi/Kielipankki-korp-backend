@@ -93,6 +93,23 @@ def database(_database):
 
 
 @pytest.fixture()
+def database_tables(database):
+    """Return a function for importing Korp database tables.
+
+    The returned function takes as its arguments a list of corpora
+    (corpus ids) or a single corpus id (string) whose data to import,
+    and the type of table data to import (if omitted, import all
+    types).
+    """
+
+    def _database_tables(corpora, tabletype=None):
+        """Import Korp database tables of tabletype for corpora."""
+        database.import_tables(corpora, tabletype)
+
+    yield _database_tables
+
+
+@pytest.fixture()
 def app(corpus_registry_dir, cache_dir, corpus_config_dir, _database):
     """Return a function for creating and configuring a Korp app instance.
 

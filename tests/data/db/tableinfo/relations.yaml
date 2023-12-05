@@ -11,8 +11,8 @@
 
 - tablename: relations_{1:u}
   filenames:
-  - relations/(.*?)([:+]relations)?
-  - (.*)/relations
+  - 'relations/({corpus})([_:+]relations)?'
+  - '({corpus})/relations'
   exclude_filenames:
   - '.*_(strings|rel|head_rel|dep_rel|sentences)'
   definition: |
@@ -32,8 +32,8 @@
 
 - tablename: relations_{1:u}_strings
   filenames:
-  - relations/(.*?)([:+]relations)?_strings
-  - (.*)/relations_strings
+  - 'relations/({corpus})([_:+]relations)?_strings'
+  - '({corpus})/relations_strings'
   definition: |
     `id` int UNIQUE NOT NULL,
     `string` varchar(100) NOT NULL,
@@ -44,8 +44,8 @@
 
 - tablename: relations_{1:u}_rel
   filenames:
-  - relations/(.*?)([:+]relations)?_rel
-  - (.*)/relations_rel
+  - 'relations/({corpus})([_:+]relations)?_rel'
+  - '({corpus})/relations_rel'
   exclude_filenames:
   - .*_(head|dep)_rel
   definition: |
@@ -55,8 +55,8 @@
 
 - tablename: relations_{1:u}_head_rel
   filenames:
-  - relations/(.*?)([:+]relations)?_head_rel
-  - (.*)/relations_head_rel
+  - 'relations/({corpus})([_:+]relations)?_head_rel'
+  - '({corpus})/relations_head_rel'
   definition: |
     `head` int NOT NULL,
     `rel` {rel_type},
@@ -65,8 +65,8 @@
 
 - tablename: relations_{1:u}_dep_rel
   filenames:
-  - relations/(.*?)([:+]relations)?_dep_rel
-  - (.*)/relations_dep_rel
+  - 'relations/({corpus})([_:+]relations)?_dep_rel'
+  - '({corpus})/relations_dep_rel'
   definition: |
     `dep` int NOT NULL,
     `rel` {rel_type},
@@ -75,8 +75,8 @@
 
 - tablename: relations_{1:u}_sentences
   filenames:
-  - relations/(.*?)([:+]relations)?_sentences
-  - (.*)/relations_sentences
+  - 'relations/({corpus})([_:+]relations)?_sentences'
+  - '({corpus})/relations_sentences'
   definition: |
     `id` int NOT NULL,
     `sentence` varchar(64) NOT NULL,
