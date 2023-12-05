@@ -186,25 +186,34 @@ class KorpDatabase:
         """Return a MySQLdb Connection using the pre-specified parameters."""
         return MySQLdb.Connect(local_infile=True, **self._conn_params)
 
-    def execute(self, sql, cursor=None, commit=True):
+    def execute_get_cursor(self, sql, cursor=None, commit=True):
         """Execute SQL statements sql on cursor and commit if commit == True.
 
         sql can be str or an iterable of str, in which case all the
         items are concatenated and executed with a single call.
         If cursor is None, create a connection to the database and a
         cursor for it.
-        Return the number of rows affected.
+        Return the number of rows affected and the cursor.
         """
         if not isinstance(sql, str):
             sql = "".join(sql)
         if cursor is None:
             with self._connect() as conn:
-                return self.execute(sql, conn.cursor())
+                return self.execute_get_cursor(sql, conn.cursor())
         else:
             retval = cursor.execute(sql)
             if commit:
                 cursor.connection.commit()
-            return retval
+            return retval, cursor
+
+    def execute(self, sql, cursor=None, commit=True):
+        """Execute SQL statements sql on cursor and commit if commit == True.
+
+        The arguments and functionality are the same as for
+        execute_get_cursor, but only return the number of rows
+        affected.
+        """
+        return self.execute_get_cursor(sql, cursor, commit)[0]
 
     def execute_file(self, sqlfile, cursor=None, commit=True):
         """Execute SQL statements in sqlfile on cursor and commit if commit.
