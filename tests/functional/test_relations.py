@@ -41,8 +41,12 @@ class TestRelations:
 
     """Tests for /relations"""
 
-    def test_relations_single_corpus(self, relations_testcorpus):
-        """Test /relations on a single corpus."""
-        word = "är"
-        data = relations_testcorpus(word, ["testcorpus2", "testcorpus2b"])
+    @pytest.mark.parametrize("word", ["är"])
+    @pytest.mark.parametrize("corpora", ["testcorpus2",
+                                         ["testcorpus2", "testcorpus2b"]])
+    def test_relations_simple(self, word, corpora, relations_testcorpus):
+        """Test /relations with the given word and corpora."""
+        data = relations_testcorpus(word, corpora)
         assert "relations" in data
+        for rel in data["relations"]:
+            assert rel["head"] == word or rel["dep"] == word
