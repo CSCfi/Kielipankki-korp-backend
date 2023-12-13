@@ -450,11 +450,7 @@ class KorpDatabase:
                 for tablefile in find_files(tablefile_glob):
                     tablefile = str(tablefile)
                     if tablefile.endswith(".sql"):
-                        # If commit == True, the following may result
-                        # in MySQLdb.ProgrammingError: (2014,
-                        # "Commands out of sync; you can't run this
-                        # command now"); why?
-                        self.execute_file(tablefile, cursor, commit=False)
+                        self.execute_file(tablefile, cursor)
                     else:
                         self._import_table(tablefile, cursor)
 
