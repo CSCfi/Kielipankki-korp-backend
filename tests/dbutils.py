@@ -208,7 +208,15 @@ class KorpDatabase:
         else:
             retval = cursor.execute(sql)
             if commit:
-                cursor.connection.commit()
+                # cursor.connection.commit() may result in
+                # MySQLdb.ProgrammingError: (2014, "Commands out of
+                # sync; you can't run this command now") (why?); if
+                # that happens, use cursor.execute("COMMIT;"), which
+                # however seems to reset the cursor.
+                try:
+                    cursor.connection.commit()
+                except MySQLdb.ProgrammingError:
+                    cursor.execute("COMMIT;")
             return retval, cursor
 
     def execute(self, sql, cursor=None, commit=True):
@@ -302,7 +310,9 @@ class KorpDatabase:
 
     def _get_db_names(self, cursor):
         """Return a list of database names using MySQLdb cursor."""
-        self.execute("SHOW DATABASES;", cursor)
+        # commit=False to guarantee that we can retrieve database
+        # names via cursor
+        self.execute("SHOW DATABASES;", cursor, commit=False)
         return [item[0] for item in cursor]
 
     def _read_tableinfo(self):
