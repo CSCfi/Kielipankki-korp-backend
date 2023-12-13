@@ -254,7 +254,7 @@ class KorpDatabase:
                 host = self._conn_params['host']
                 for sql in [
                         f"CREATE DATABASE {dbname} CHARACTER SET {charset};",
-                        f"GRANT ALL ON {dbname}.* TO '{user}'@'{host}'",
+                        f"GRANT ALL ON {dbname}.* TO '{user}'@'{host}';",
                 ]:
                     self.execute(sql, cursor)
         except MySQLdb.Error as exc:
