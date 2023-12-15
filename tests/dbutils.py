@@ -42,37 +42,6 @@ class KorpDatabase:
     pytest_configure(config) in conftest.py.
     """
 
-    class CaseConversionFormatter(Formatter):
-
-        """
-        String formatter extending the format spec with case conversions
-
-        Support three case-converting types in the format
-        specification: "l" to convert a string to lowercase, "u" to
-        uppercase and "t" to title-case.
-        """
-
-        # String case converter functions for format types
-        converter = {
-            "l": str.lower,
-            "t": str.title,
-            "u": str.upper,
-        }
-
-        def format_field(self, value, format_spec):
-            """Format value according to format_spec.
-
-            Handle the case-converting format types l (lower-case), t
-            (title-case) and u (upper-case): format the string value
-            accordingly and replace the type with "s".
-            """
-            if format_spec and format_spec[-1] in self.converter:
-                value = self.converter[format_spec](value)
-                format_spec = format_spec[:-1] + "s"
-            return super().format_field(value, format_spec)
-
-    _formatter = CaseConversionFormatter()
-
     # Custom pytest command-line options (without the prefix "--db-")
     # affecting the Korp MySQL test database and their help strings
     # (or dicts of keyword arguments to argparse.addoption()), where
@@ -329,7 +298,7 @@ class KorpDatabase:
             If a filename does not end in ".tsv", add the suffix. If a
             filename does not begin with ".*/", add the prefix.
             Replace corpus name placeholder "{corpus}” with
-            "[a-zA-Z0-9_-]+?".
+            "(?P<corpus>[a-zA-Z0-9_-]+?)".
             """
             filenames_re = []
             for regex in filenames:
@@ -337,7 +306,7 @@ class KorpDatabase:
                     regex = regex + r"\.tsv"
                 if not regex.startswith(r".*/"):
                     regex = r".*/" + regex
-                regex = regex.replace("{corpus}", "[a-zA-Z0-9_-]+?")
+                regex = regex.replace("{corpus}", "(?P<corpus>[a-zA-Z0-9_-]+?)")
                 filenames_re.append(re.compile(regex))
             return filenames_re
 
@@ -460,11 +429,11 @@ class KorpDatabase:
         Raise ValueError if no table info has a matching rule for file
         name tablefile.
         """
-        tableinfo, fname_mo = self._find_tableinfo(tablefile)
+        tableinfo, corpus = self._find_tableinfo(tablefile)
         if tableinfo is None:
             raise ValueError(
                 f"No table info matches file name \"{tablefile}\"")
-        tablename = self._create_table(tableinfo, fname_mo, cursor)
+        tablename = self._create_table(tableinfo, corpus, cursor)
         self._load_file(tablename, tablefile, cursor)
 
     def _find_tableinfo(self, tablefile):
@@ -475,24 +444,26 @@ class KorpDatabase:
         regexps (filenames_re) match tablefile and none of excluded
         file name regexps (exclude_filename_re) match.
 
-        Return a tuple (info, match object), or (None, None) if no
-        table info was found.
+        Return a tuple (info, corpus) where corpus is the part
+        matching "{corpus}" in the file name regexp, or (None, None)
+        if no table info was found.
         """
         for info in self._tableinfo:
             for regex in info["filenames_re"]:
                 mo = regex.fullmatch(tablefile)
                 if mo and not any(exclude.fullmatch(tablefile)
                                   for exclude in info["exclude_filenames_re"]):
-                    return info, mo
+                    corpus = mo.groupdict().get("corpus")
+                    return info, corpus
         return None, None
 
-    def _create_table(self, tableinfo, fname_mo, cursor):
-        """Create table based on tableinfo and match obj fname_mo using cursor.
+    def _create_table(self, tableinfo, corpus, cursor):
+        """Create table based on tableinfo and corpus id using cursor.
 
         If the table already exists, do not do anything.
         Return the name of the created table.
         """
-        tablename = self._make_tablename(tableinfo, fname_mo)
+        tablename = self._make_tablename(tableinfo, corpus)
         self.execute(
             f"""CREATE TABLE IF NOT EXISTS `{tablename}` (
                 {tableinfo["definition"]}
@@ -501,18 +472,15 @@ class KorpDatabase:
         )
         return tablename
 
-    def _make_tablename(self, tableinfo, fname_mo):
-        """Return table name based on tableinfo and match object fname_mo.
+    def _make_tablename(self, tableinfo, corpus):
+        """Return table name based on tableinfo and corpus id.
 
         Take the table name from tableinfo["tablename"] and replace
-        the possible format placeholders in it with values of the
-        match groups in fname_mo, possibly converting case. For
-        example, "{1:u}" is replaced with the value of the first match
-        group in uppercase.
+        the possible format placeholders {corpus} and {CORPUS} in it
+        with the corpus id in lower or upper case, respectively.
         """
         tablename = tableinfo["tablename"]
-        # Dummy format argument "" to number the real arguments from 1
-        return self._formatter.format(tablename, "", *fname_mo.groups())
+        return tablename.format(corpus=corpus.lower(), CORPUS=corpus.upper())
 
     def _load_file(self, tablename, tablefile, cursor):
         """Load the data from tablefile to table tablename using cursor.
