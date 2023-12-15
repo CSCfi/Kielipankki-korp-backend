@@ -267,13 +267,10 @@ database tables (and indirectly also the other way round). Each file
 contains a sequence of one or more mappings with the following keys
 recognized:
 
-- `tablename`: The name of the table. The name may contain format
-  specifications referring to capturing groups in the regular
-  expressions in `filenames`: `{1}` is expanded to the value of the
-  first group, `{2}` to that of the second one and so on. In addition,
-  a format specification may contain a case-converting type: `{1:u}`
-  is the value of the first group uppercased, `{1:l}` lowercased and
-  `{1:t}` title-cased.
+- `tablename`: The name of the table. The name may contain the format
+  specification `{corpus}` or `{CORPUS}`, referring to the corpus id
+  replacing the placeholder `{corpus}` in the regular expression in
+  `filenames` (see below), in lower or upper case, respectively.
 - `filenames`: A sequence of file name regular expressions. If a full
   file name matches one of the expressions and none of those in
   `exclude_filenames`, load the data from it to the table specified in
