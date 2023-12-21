@@ -16,6 +16,11 @@ For more information, please see the documentation in tests/README.md.
 """
 
 
+# TODO:
+# - Specify default collation for db
+# - Remove corpus data before importing to a multi-corpus table
+
+
 import csv
 import re
 
