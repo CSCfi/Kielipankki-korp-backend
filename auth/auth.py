@@ -67,7 +67,7 @@ def auth():
     logging.getLogger().setLevel(
         logging.DEBUG if debugging else config.LOG_LEVEL)
     args_without_personal_data = {
-        key: value for key, value in args if key != "remote_user"
+        key: value for key, value in args.items() if key != "remote_user"
     }
     if debugging:
         logging.info("Arguments: %s", args)
