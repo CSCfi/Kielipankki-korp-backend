@@ -32,12 +32,11 @@ __all__ = ['make_download_file',
            'KorpExporter']
 
 
-def make_download_file(form, korp_server_url, **kwargs):
+def make_download_file(args, korp_server_url, **kwargs):
     """Format Korp query results and return them in a downloadable format.
 
     Arguments:
-        form (dict): Input form containing CGI (query string)
-            parameters
+        args (dict): Query string parameters
         korp_server_url (str): Korp server URL
 
     Keyword arguments:
@@ -54,7 +53,7 @@ def make_download_file(form, korp_server_url, **kwargs):
             - download_content_type: MIME type for the content
             - download_filename: Name of the file
     """
-    exporter = KorpExporter(form, **kwargs)
+    exporter = KorpExporter(args, **kwargs)
     return exporter.make_download_file(korp_server_url, **kwargs)
 
 
@@ -130,12 +129,12 @@ class KorpExporter(object):
        korp_download.cgi can be called with Korp 8 parameters, even if
        it calls Korp 2.8."""
 
-    def __init__(self, form, options=None, filename_format=None,
+    def __init__(self, args, options=None, filename_format=None,
                  filename_encoding="utf-8", **kwargs):
         """Construct a KorpExporter.
 
         Arguments:
-            form (dict): CGI (query string) parameters
+            args (dict): Query string parameters
 
         Keyword arguments:
             options (dict): Options passed to formatter
@@ -145,9 +144,9 @@ class KorpExporter(object):
             filename_encoding (str): The encoding to use for the
                 filename
         """
-        self._form = form
+        self._args = args
         self._filename_format = (filename_format
-                                 or form.get("filename_format")
+                                 or args.get("filename_format")
                                  or self._filename_format_default)
         self._filename_encoding = filename_encoding
         self._opts = options or {}
@@ -162,7 +161,7 @@ class KorpExporter(object):
             korp_server_url (str): The Korp server to query
 
         Keyword arguments:
-            form (dict): Use the parameters in here instead of those
+            args (dict): Use the parameters in here instead of those
                 provided to the constructor
             **kwargs: Passed on to formatter
 
@@ -170,8 +169,8 @@ class KorpExporter(object):
             dict: As described above in :func:`make_download_file`
         """
         result = {}
-        if "form" in kwargs:
-            self._form = kwargs["form"]
+        if "args" in kwargs:
+            self._args = kwargs["args"]
         self._formatter = self._formatter or self._get_formatter(**kwargs)
         self.process_query(korp_server_url)
         self._add_corpus_info(korp_server_url, self._query_result)
@@ -191,7 +190,7 @@ class KorpExporter(object):
         return result
 
     def _get_formatter(self, **kwargs):
-        """Get a formatter instance for the format specified in self._form.
+        """Get a formatter instance for the format specified in self._args.
 
         Keyword arguments:
             **kwargs: Passed to formatter constructor; "options"
@@ -200,8 +199,8 @@ class KorpExporter(object):
         Returns:
             An instance of a korpexport.KorpExportFormatter subclass
         """
-        format_name = self._form.get("format", "json").lower()
-        subformat_names = self._form.get("subformat", [])
+        format_name = self._args.get("format", "json").lower()
+        subformat_names = self._args.get("subformat", [])
         if subformat_names:
             subformat_names = subformat_names.split(",")
         formatter_class = self._get_formatter_class(format_name)
@@ -303,34 +302,34 @@ class KorpExporter(object):
                               .format(format_name))
 
     def process_query(self, korp_server_url, query_params=None):
-        """Get the query result in form or perform query via a Korp server.
+        """Get the query result in args or perform query via a Korp server.
 
         Arguments:
             korp_server_url (str): The Korp server to query
             query_params (dict): Korp query parameters
 
-        If `self._form` contains `query_result`, use it. Otherwise use
+        If `self._args` contains `query_result`, use it. Otherwise use
         the result obtained by performing a query to the Korp server
         at `korp_server_url`. The query parameters are retrieved from
-        argument `query_params`, form field `query_params` (as JSON)
-        or the form as a whole.
+        argument `query_params`, query parameter `query_params` (as
+        JSON) or the query parameters as a whole.
 
         Set a private attribute to contain the result, a dictionary
         converted from the JSON returned by Korp.
         """
-        if "query_result" in self._form:
-            query_result_json = self._form.get("query_result", "{}")
+        if "query_result" in self._args:
+            query_result_json = self._args.get("query_result", "{}")
         else:
             if query_params:
                 self._query_params = query_params
-            elif "query_params" in self._form:
-                self._query_params = json.loads(self._form.get("query_params"))
+            elif "query_params" in self._args:
+                self._query_params = json.loads(self._args.get("query_params"))
             else:
-                self._query_params = self._form
+                self._query_params = self._args
             self._rename_query_params()
             self._decode_query_params()
-            if "debug" in self._form and "debug" not in self._query_params:
-                self._query_params["debug"] = self._form["debug"]
+            if "debug" in self._args and "debug" not in self._query_params:
+                self._query_params["debug"] = self._args["debug"]
             # If the format uses structural information, add the
             # structs in param "show_struct" to "show", so that tokens
             # are associated with information on opening and closing
@@ -443,17 +442,17 @@ class KorpExporter(object):
             return re.sub(r"(?s)^.*?\n\n", "", output, count=1)
 
     def _extract_options(self, korp_server_url=None):
-        """Extract formatting options from form, affected by query params.
+        """Extract formatting options from args, affected by query params.
 
         Arguments:
             korp_server_url: The default Korp server URL; may be
-                overridden by options on the form.
+                overridden by options on the query parameters.
 
         Returns:
             dict: The extracted options.
 
-        Extract options from the form: take the values of all
-        parameters for which `_default_options` contains an option
+        Extract options from the query parameters: take the values of
+        all parameters for which `_default_options` contains an option
         with the same name.
 
         In addition, the values of the CGI parameters `attrs` and
@@ -475,8 +474,8 @@ class KorpExporter(object):
                              query_result_struct_name):
             """Set the show option opt_name based on query params and result.
             """
-            if opt_name in self._form:
-                vals = self._form.get(opt_name, "").split(",")
+            if opt_name in self._args:
+                vals = self._args.get(opt_name, "").split(",")
                 new_vals = []
                 for valnum, val in enumerate(vals):
                     if val in ["*", "+"]:
@@ -501,19 +500,19 @@ class KorpExporter(object):
         extract_show_opt("attrs", "show", "tokens")
         extract_show_opt("structs", "show_struct", "structs")
         for opt_name, default_val in self._formatter.get_options().items():
-            opts[opt_name] = self._form.get(opt_name, default_val)
-        if self._form.get("korp_url"):
-            opts["korp_url"] = self._form.get("korp_url")
+            opts[opt_name] = self._args.get(opt_name, default_val)
+        if self._args.get("korp_url"):
+            opts["korp_url"] = self._args.get("korp_url")
         # FIXME: This does not make sense to the user if
         # korp_server_url uses localhost.
         opts["korp_server_url"] = (korp_server_url
-                                   or self._form.get("korp_server_url", ""))
+                                   or self._args.get("korp_server_url", ""))
         return opts
 
     def _add_corpus_info(self, korp_server_url, query_result):
         """Add information on the corpora to the query result.
 
-        Retrieve info for each corpus in `query_result` from the form
+        Retrieve info for each corpus in `query_result` from args
         or from the Korp server `korp_server_url` and add the
         information as ``corpus_info`` to each hit in `query_result`.
         Also add ``corpus_config`` to each hit if available.
@@ -526,25 +525,25 @@ class KorpExporter(object):
                 query_hit["corpus_config"] = self._corpus_config[corpname]
 
     def _retrieve_corpus_info(self, korp_server_url):
-        """Retrieve corpus info from the form or from a Korp server.
+        """Retrieve corpus info from args or from a Korp server.
 
         Retrieve corpus information and configuration first from
-        `self._form` and then (for the corpus info only) from the Korp
-        server `korp_server_url` (overriding the values on the form),
+        `self._args` and then (for the corpus info only) from the Korp
+        server `korp_server_url` (overriding the values on args),
         and fill `self._corpus_info` and `self._corpus_config` with
         them, corpus names as keys.
 
-        For the corpus information on the form, the form parameter
+        For the corpus information on args, the query parameter
         ``corpus_info`` is preferred; if not available, use values in
         ``corpus_config``. These parameters need to be encoded in
         JSON.
         """
         self._corpus_info = defaultdict(dict)
         self._corpus_config = {}
-        if "corpus_info" in self._form:
-            self._corpus_info = json.loads(self._form["corpus_info"])
-        elif "corpus_config" in self._form:
-            self._corpus_config = json.loads(self._form["corpus_config"])
+        if "corpus_info" in self._args:
+            self._corpus_info = json.loads(self._args["corpus_info"])
+        elif "corpus_config" in self._args:
+            self._corpus_config = json.loads(self._args["corpus_config"])
             self._corpus_info = dict(
                 [(corpname.lower(), config.get("info"))
                  for corpname, config in self._corpus_config.items()])
@@ -555,14 +554,14 @@ class KorpExporter(object):
         """Add corpus info items from corpus configuration information.
 
         Fill in `self._corpus_info` based on the values in
-        `self._corpus_config` whose keys are specified by the form
+        `self._corpus_config` whose keys are specified by the query
         parameter ``corpus_config_info_keys`` or end in ``urn`` or
         ``url``. ``corpus_config_info_keys`` should be a string of
         comma-separated values.
         """
         config_info_items = (
-            self._form["corpus_config_info_keys"].split(",")
-            if "corpus_config_info_keys" in self._form
+            self._args["corpus_config_info_keys"].split(",")
+            if "corpus_config_info_keys" in self._args
             else [])
         for corpname, config in self._corpus_config.items():
             corpname = corpname.lower()
@@ -627,9 +626,9 @@ class KorpExporter(object):
                     for corpname in corpus_hit["corpus"].split("|")])
 
     def _get_filename(self):
-        """Return the filename for the result, from form or formatted.
+        """Return the filename for the result, from args or formatted.
 
-        If the form contains parameter `filename`, return it;
+        If args contains parameter `filename`, return it;
         otherwise format using `self._filename_format`. The filename
         format may contain the following keys (specified as
         ``{key}``):
@@ -646,7 +645,7 @@ class KorpExporter(object):
         # unlikely possibility of date changing between formatting the
         # date and time.
         # TODO: User-specified date and time formatting
-        return (self._form.get(
+        return (self._args.get(
                 "filename",
                 self._filename_format.format(
                     date=time.strftime("%Y%m%d"),
