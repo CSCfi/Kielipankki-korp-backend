@@ -19,7 +19,7 @@ import pkgutil
 import json
 import urllib.request, urllib.parse, urllib.error, urllib.request, urllib.error, urllib.parse
 import re
-import logging
+# import logging
 
 from subprocess import Popen, PIPE
 from collections import defaultdict
@@ -174,10 +174,10 @@ class KorpExporter(object):
         self._formatter = self._formatter or self._get_formatter(**kwargs)
         self.process_query(korp_server_url)
         self._add_corpus_info(korp_server_url, self._query_result)
-        logging.debug('qr: %s', self._query_result)
+        # logging.debug('qr: %s', self._query_result)
         if "ERROR" in self._query_result:
             return self._query_result
-        logging.debug('formatter: %s', self._formatter)
+        # logging.debug('formatter: %s', self._formatter)
         result["download_charset"] = self._formatter.download_charset
         content = self._formatter.make_download_content(
             self._query_result, self._query_params, self._opts, **kwargs)
@@ -186,7 +186,7 @@ class KorpExporter(object):
         result["download_content"] = content
         result["download_content_type"] = self._formatter.mime_type
         result["download_filename"] = self._get_filename()
-        logging.debug('make_download_file result: %s', result)
+        # logging.debug('make_download_file result: %s', result)
         return result
 
     def _get_formatter(self, **kwargs):
@@ -342,17 +342,17 @@ class KorpExporter(object):
                         "," + self._query_params["show_struct"])
                 else:
                     self._query_params["show"] = self._query_params["show_struct"]
-            logging.debug("query_params: %s", self._query_params)
+            # logging.debug("query_params: %s", self._query_params)
             query_result_json = self._query_korp_server(korp_server_url)
             # Support "sort" in format params even if not specified
             if "sort" not in self._query_params:
                 self._query_params["sort"] = "none"
         self._query_result = json.loads(query_result_json)
-        logging.debug("query result: %s", self._query_result)
+        # logging.debug("query result: %s", self._query_result)
         if "ERROR" in self._query_result or "kwic" not in self._query_result:
             return
         self._opts = self._extract_options(korp_server_url)
-        logging.debug("opts: %s", self._opts)
+        # logging.debug("opts: %s", self._opts)
 
     def _rename_query_params(self):
         for (orig, renamed) in self._RENAME_QUERY_PARAMS:
@@ -406,13 +406,13 @@ class KorpExporter(object):
         else:
             query_params["loginfo"] = loginfo_text
         # Encode the query parameters in UTF-8 for Korp server
-        logging.debug("Korp server: %s", url_or_progname)
-        logging.debug("Korp query params: %s", query_params)
+        # logging.debug("Korp server: %s", url_or_progname)
+        # logging.debug("Korp query params: %s", query_params)
         query_params_encoded = urllib.parse.urlencode(
             dict((key, val.encode("utf-8"))
                  for key, val in query_params.items()))
-        logging.debug("Encoded query params: %s", query_params_encoded)
-        logging.debug("Env: %s", os.environ)
+        # logging.debug("Encoded query params: %s", query_params_encoded)
+        # logging.debug("Env: %s", os.environ)
         if url_or_progname.startswith("http"):
             return urllib.request.urlopen(url_or_progname, query_params_encoded).read()
         else:
@@ -434,10 +434,10 @@ class KorpExporter(object):
                  "QUERY_STRING": "",
                  "CONTENT_TYPE": "application/x-www-form-urlencoded",
                  "CONTENT_LENGTH": str(len(query_params_encoded))})
-            logging.debug("Env modified: %s", env)
+            # logging.debug("Env modified: %s", env)
             p = Popen(url_or_progname, stdin=PIPE, stdout=PIPE, env=env)
             output = p.communicate(query_params_encoded)[0]
-            logging.debug("Korp server output: %s", output)
+            # logging.debug("Korp server output: %s", output)
             # Remove HTTP headers from the result
             return re.sub(r"(?s)^.*?\n\n", "", output, count=1)
 
