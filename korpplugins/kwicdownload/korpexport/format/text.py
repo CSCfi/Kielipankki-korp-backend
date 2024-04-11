@@ -8,7 +8,7 @@ Format Korp query results in plain text formats.
 """
 
 
-from __future__ import absolute_import
+
 
 from korpexport.formatter import KorpExportFormatter
 
@@ -35,13 +35,13 @@ class KorpExportFormatterText(KorpExportFormatter):
     # methods are as inherited from :class:`KorpExportFormatter`.
 
     _option_defaults = {
-        "content_format": u"{info}{sentences}",
-        "infoitems_format": u"{title}\n{infoitems}\n\n",
-        "infoitem_format": u"## {label}:{sp_or_nl}{value}",
-        "title_format": u"## {title}\n",
-        "param_format": u"##   {label}: {value}",
+        "content_format": "{info}{sentences}",
+        "infoitems_format": "{title}\n{infoitems}\n\n",
+        "infoitem_format": "## {label}:{sp_or_nl}{value}",
+        "title_format": "## {title}\n",
+        "param_format": "##   {label}: {value}",
         "param_sep": "\n",
-        "sentence_format": (u"{corpus} [{match_pos}]: {tokens} || {structs}\n"),
+        "sentence_format": ("{corpus} [{match_pos}]: {tokens} || {structs}\n"),
         "struct_sep": " | ",
         "match_open": "<<< ",
         "match_close": " >>>",
@@ -51,12 +51,12 @@ class KorpExportFormatterText(KorpExportFormatter):
         # Bare sentences without annotations or metadata, sentence per
         # line; the fist line contains title, timestamp and Korp URL
         "sentences-bare": {
-            "infoitems_format": u"{title} | {infoitems}\n",
-            "infoitem_format": u"{value}",
+            "infoitems_format": "{title} | {infoitems}\n",
+            "infoitem_format": "{value}",
             "infoitems" : "date,korp_url",
             "infoitem_sep" : " | ",
-            "title_format": u"{title}",
-            "sentence_format": u"{tokens}\n",
+            "title_format": "{title}",
+            "sentence_format": "{tokens}\n",
             "skip_leading_lines": "1",
         },
     }

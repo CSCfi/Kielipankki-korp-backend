@@ -11,13 +11,13 @@ generate downloadable file contents.
 """
 
 
-from __future__ import absolute_import
+
 
 import os.path
 import time
 import pkgutil
 import json
-import urllib, urllib2
+import urllib.request, urllib.parse, urllib.error, urllib.request, urllib.error, urllib.parse
 import re
 import logging
 
@@ -110,7 +110,7 @@ class KorpExporter(object):
     _FORMATTER_SUBPACKAGE = "format"
     """The `korpexport` subpackage containing actual formatter modules"""
 
-    _filename_format_default = u"korp_kwic_{cqpwords:.60}_{date}_{time}{ext}"
+    _filename_format_default = "korp_kwic_{cqpwords:.60}_{date}_{time}{ext}"
     """Default filename format"""
 
     _ENCODED_LIST_QUERY_PARAMS = [
@@ -182,7 +182,7 @@ class KorpExporter(object):
         result["download_charset"] = self._formatter.download_charset
         content = self._formatter.make_download_content(
             self._query_result, self._query_params, self._opts, **kwargs)
-        if isinstance(content, unicode) and self._formatter.download_charset:
+        if isinstance(content, str) and self._formatter.download_charset:
             content = content.encode(self._formatter.download_charset)
         result["download_content"] = content
         result["download_content_type"] = self._formatter.mime_type
@@ -241,7 +241,7 @@ class KorpExporter(object):
         concrete representation: for example, a token per line content
         format represented as comma-separated values.
         """
-        if isinstance(format_names, basestring):
+        if isinstance(format_names, str):
             format_names = re.split(r"[,;+\s]+", format_names)
         if len(format_names) == 1:
             return self._find_formatter_class(format_names[0])
@@ -409,13 +409,13 @@ class KorpExporter(object):
         # Encode the query parameters in UTF-8 for Korp server
         logging.debug("Korp server: %s", url_or_progname)
         logging.debug("Korp query params: %s", query_params)
-        query_params_encoded = urllib.urlencode(
+        query_params_encoded = urllib.parse.urlencode(
             dict((key, val.encode("utf-8"))
-                 for key, val in query_params.iteritems()))
+                 for key, val in query_params.items()))
         logging.debug("Encoded query params: %s", query_params_encoded)
         logging.debug("Env: %s", os.environ)
         if url_or_progname.startswith("http"):
-            return urllib2.urlopen(url_or_progname, query_params_encoded).read()
+            return urllib.request.urlopen(url_or_progname, query_params_encoded).read()
         else:
             env = {}
             # Pass the environment of this scropt appropriately
@@ -500,7 +500,7 @@ class KorpExporter(object):
 
         extract_show_opt("attrs", "show", "tokens")
         extract_show_opt("structs", "show_struct", "structs")
-        for opt_name, default_val in self._formatter.get_options().iteritems():
+        for opt_name, default_val in self._formatter.get_options().items():
             opts[opt_name] = self._form.get(opt_name, default_val)
         if self._form.get("korp_url"):
             opts["korp_url"] = self._form.get("korp_url")
@@ -547,7 +547,7 @@ class KorpExporter(object):
             self._corpus_config = json.loads(self._form["corpus_config"])
             self._corpus_info = dict(
                 [(corpname.lower(), config.get("info"))
-                 for corpname, config in self._corpus_config.iteritems()])
+                 for corpname, config in self._corpus_config.items()])
             self._add_corpus_info_from_config()
         self._retrieve_corpus_info_from_server(korp_server_url)
 
@@ -564,15 +564,15 @@ class KorpExporter(object):
             self._form["corpus_config_info_keys"].split(",")
             if "corpus_config_info_keys" in self._form
             else [])
-        for corpname, config in self._corpus_config.iteritems():
+        for corpname, config in self._corpus_config.items():
             corpname = corpname.lower()
-            for confkey, confval in config.iteritems():
+            for confkey, confval in config.items():
                 confkey = confkey.lower()
                 if (confkey in ["urn", "url"] or confkey.endswith("_urn")
                     or confkey.endswith("_url")):
                     self._add_corpus_info_item(corpname, confkey, confval)
                 elif confkey in config_info_items:
-                    for subkey, subval in confval.iteritems():
+                    for subkey, subval in confval.items():
                         self._add_corpus_info_item(
                             corpname, confkey + "_" + subkey, subval)
 
@@ -610,11 +610,10 @@ class KorpExporter(object):
         korp_corpus_info_json = self._query_korp_server(korp_server_url,
                                                         korp_info_params)
         korp_corpus_info = json.loads(korp_corpus_info_json)
-        for corpname, corpdata in (korp_corpus_info.get("corpora", {})
-                                   .iteritems()):
+        for corpname, corpdata in (iter(korp_corpus_info.get("corpora", {}).items())):
             corpname = corpname.lower()
             corpinfo = corpdata.get("info", {})
-            for infoname, infoval in corpinfo.iteritems():
+            for infoname, infoval in corpinfo.items():
                 self._add_corpus_info_item(corpname, infoname, infoval)
 
     def _get_corpus_names(self):
@@ -686,4 +685,4 @@ class KorpExporter(object):
 # For testing: find formatter class for format "json".
 
 if __name__ == "__main__":
-    print KorpExporter._find_formatter_class('json')
+    print(KorpExporter._find_formatter_class('json'))

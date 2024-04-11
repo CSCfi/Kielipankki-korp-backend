@@ -52,7 +52,7 @@ changed by specifying the parameter `logfile`.
 """
 
 
-from __future__ import absolute_import
+
 
 import sys
 import os
@@ -60,7 +60,7 @@ import os.path
 import time
 import cgi
 import logging
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import time
 import md5
 
@@ -116,7 +116,7 @@ def main():
     # encoded as \r\n.
     form = dict((field,
                  form_raw.getvalue(field).decode("utf-8").replace('\r\n', '\n'))
-                 for field in form_raw.keys())
+                 for field in list(form_raw.keys()))
     # Configure logging
     loglevel = logging.DEBUG if "debug" in form else LOG_LEVEL
     logfile = form.get("logfile")
@@ -192,17 +192,17 @@ def print_header(obj):
             ``text/plain``, not an attachment.
     """
     charset = obj.get("download_charset")
-    print ("Content-Type: "
+    print(("Content-Type: "
            + (obj.get("download_content_type", "text/plain")
               if "ERROR" not in obj
               else "text/plain")
-           + (("; charset=" + charset) if charset else ""))
+           + (("; charset=" + charset) if charset else "")))
     if "ERROR" not in obj:
         # Default filename 
-        print make_content_disposition_attachment(
-            obj.get("download_filename", "korp_kwic"))
-        print "Content-Length: " + str(len(obj["download_content"]))
-    print
+        print(make_content_disposition_attachment(
+            obj.get("download_filename", "korp_kwic")))
+        print("Content-Length: " + str(len(obj["download_content"])))
+    print()
 
 
 def make_content_disposition_attachment(filename):
@@ -227,7 +227,7 @@ def make_content_disposition_attachment(filename):
 
     .. _Stackoverflow discussion: http://stackoverflow.com/questions/93551/how-to-encode-the-filename-parameter-of-content-disposition-header-in-http
     """
-    filename = urllib.quote(filename)
+    filename = urllib.parse.quote(filename)
     return (("Content-Disposition: attachment; "
              + ("filename*=UTF-8''{filename}; " if "%" in filename else "")
              + "filename={filename}")
@@ -243,12 +243,12 @@ def print_object(obj):
     """
     if "ERROR" in obj:
         error = obj["ERROR"]
-        print "Error when trying to download results:"
-        print error["type"] + ": " + error["value"]
+        print("Error when trying to download results:")
+        print(error["type"] + ": " + error["value"])
         if "traceback" in error:
-            print error["traceback"]
+            print(error["traceback"])
     else:
-        print obj["download_content"],
+        print(obj["download_content"], end=' ')
 
 
 if __name__ == "__main__":

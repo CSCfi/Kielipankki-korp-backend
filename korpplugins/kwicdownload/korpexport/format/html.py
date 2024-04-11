@@ -8,7 +8,7 @@ Format Korp query results in HTML.
 """
 
 
-from __future__ import absolute_import
+
 
 import re
 
@@ -77,20 +77,20 @@ class KorpExportFormatterHtml(KorpExportFormatter):
 
     _option_defaults = {
         "html_page_format": (
-            u"{doctype}\n<html>\n<head>\n{head}\n</head>\n"
-            u"<body>\n{body}</body>\n</html>\n"),
+            "{doctype}\n<html>\n<head>\n{head}\n</head>\n"
+            "<body>\n{body}</body>\n</html>\n"),
         "html_doctype_format": "<!DOCTYPE html>",
-        "html_head_format": (u"<meta charset=\"utf-8\"/>\n"
-                             u"<title>{title}</title>\n"
-                             u"<style>{style}</style>"),
-        "html_title_format": u"{title} {date}",
-        "html_style": u"",
-        "html_body_format": u"{heading}\n{korp_link}\n<hr/>\n{lines}",
-        "html_heading_format": u"<h1>{title} {date}</h1>",
+        "html_head_format": ("<meta charset=\"utf-8\"/>\n"
+                             "<title>{title}</title>\n"
+                             "<style>{style}</style>"),
+        "html_title_format": "{title} {date}",
+        "html_style": "",
+        "html_body_format": "{heading}\n{korp_link}\n<hr/>\n{lines}",
+        "html_heading_format": "<h1>{title} {date}</h1>",
         "html_korp_link_format": (
-            u"<p><a href=\"{korp_url}\" target=\"_blank\">{korp_url}</a></p>"),
-        "html_line_format": u"<p>{line}</p>\n",
-        "html_match_format": u"<strong>{match}</strong>",
+            "<p><a href=\"{korp_url}\" target=\"_blank\">{korp_url}</a></p>"),
+        "html_line_format": "<p>{line}</p>\n",
+        "html_match_format": "<strong>{match}</strong>",
     }
 
     def __init__(self, **kwargs):
@@ -104,7 +104,7 @@ class KorpExportFormatterHtml(KorpExportFormatter):
             and self._opts["html_match_format"]):
             self._match_re = re.compile(re.escape(self._match_open) + r"(.*?)"
                                         + re.escape(self._match_close))
-        for optname, optval in self._opts.iteritems():
+        for optname, optval in self._opts.items():
             if optname.startswith('html_') and optname.endswith('_format'):
                 self._opts[optname] = self._protect_html_tags(optval)
         self._skip_leading_lines = (self.get_option_int("skip_leading_lines")
@@ -198,12 +198,12 @@ class KorpExportFormatterHtmlTable(KorpExportFormatterHtml):
     formats = ["html-table", "html_table"]
 
     _option_defaults = {
-        "html_style": u"th { text-align: left; }",
+        "html_style": "th { text-align: left; }",
         "html_body_format": (
-            u"{heading}\n{korp_link}\n<hr/>\n<table>\n{lines}</table>\n"),
-        "html_line_format": u"<tr>{line}</tr>\n",
-        "html_heading_cell_format": u"<th>{cell}</th>",
-        "html_data_cell_format": u"<td>{cell}</td>",
+            "{heading}\n{korp_link}\n<hr/>\n<table>\n{lines}</table>\n"),
+        "html_line_format": "<tr>{line}</tr>\n",
+        "html_heading_cell_format": "<th>{cell}</th>",
+        "html_data_cell_format": "<td>{cell}</td>",
     }
 
     def __init__(self, **kwargs):

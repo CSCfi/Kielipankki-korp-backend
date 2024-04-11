@@ -13,7 +13,7 @@ information.
 """
 
 
-from __future__ import absolute_import
+
 
 import time
 import string
@@ -297,7 +297,7 @@ class KorpExportFormatter(object):
         "newline": "\n",
         "show_info": "True",
         "show_field_headings": "True",
-        "content_format": u"{info}{sentence_field_headings}{sentences}",
+        "content_format": "{info}{sentence_field_headings}{sentences}",
         "infoitems_format": "{title}{infoitems}\n",
         "infoitems": "date,korp_url,params,hitcount",
         "infoitem_labels": {
@@ -307,13 +307,13 @@ class KorpExportFormatter(object):
             "korp_url": "Korp URL",
             "korp_server_url": "Korp server URL"
             },
-        "infoitem_format": u"{label}:{sp_or_nl}{value}",
+        "infoitem_format": "{label}:{sp_or_nl}{value}",
         "infoitem_sep": "\n",
-        "title_format": u"{title}\n",
+        "title_format": "{title}\n",
         "title": "Korp search results",
         "date_format": "%Y-%m-%d %H:%M:%S",
-        "hitcount_format": u"{hitcount}",
-        "params_format": u"{params}",
+        "hitcount_format": "{hitcount}",
+        "params_format": "{params}",
         "params": "corpus,cqp,defaultcontext,defaultwithin,sort,start,end",
         "param_labels": {
             "corpus": "corpora",
@@ -322,14 +322,14 @@ class KorpExportFormatter(object):
             "defaultwithin": "within",
             "sort": "sorting"
             },
-        "param_format": u"{label}: {value}",
+        "param_format": "{label}: {value}",
         "param_sep": "; ",
-        "field_headings_format": u"{field_headings}\n",
-        "sentence_format": (u"{info}: {left_context}"
-                            u"{match_open}{match}{match_close}"
-                            u"{right_context}\n"),
-        "sentence_sep": u"",
-        "sentence_info_format": u"{corpus} {match_pos}",
+        "field_headings_format": "{field_headings}\n",
+        "sentence_format": ("{info}: {left_context}"
+                            "{match_open}{match}{match_close}"
+                            "{right_context}\n"),
+        "sentence_sep": "",
+        "sentence_info_format": "{corpus} {match_pos}",
         "sentence_fields": "",
         "sentence_field_labels": {
             "match_pos": "match position",
@@ -351,10 +351,10 @@ class KorpExportFormatter(object):
             "originals": "original forms",
             "normalizeds": "normalized forms",
             },
-        "sentence_field_format": u"{value}",
+        "sentence_field_format": "{value}",
         "sentence_field_sep": "",
         "sentence_token_attrs": "",
-        "corpus_info_format": u"{fields}",
+        "corpus_info_format": "{fields}",
         "corpus_info_fields": "",
         "corpus_info_field_labels": {
             "corpus_name": "corpus",
@@ -363,34 +363,34 @@ class KorpExportFormatter(object):
             "licence_link": "licence link",
             "metadata_link": "metadata link",
             },
-        "corpus_info_field_format": u"{value}",
+        "corpus_info_field_format": "{value}",
         "corpus_info_field_sep": "",
-        "aligned_format": u"{sentence}",
-        "aligned_sep": u" | ",
-        "struct_format": u"{name}: {value}",
-        "struct_sep": u"; ",
-        "token_format": u"{match_open}{word}[{attrs}]{match_close}",
-        "token_noattrs_format": u"{match_open}{word}{match_close}",
-        "token_attr_format": u"{match_open}{attr}{match_close}",
-        "token_sep": u" ",
-        "word_format": u"{word}",
-        "attr_only_format": u"{value}",
+        "aligned_format": "{sentence}",
+        "aligned_sep": " | ",
+        "struct_format": "{name}: {value}",
+        "struct_sep": "; ",
+        "token_format": "{match_open}{word}[{attrs}]{match_close}",
+        "token_noattrs_format": "{match_open}{word}{match_close}",
+        "token_attr_format": "{match_open}{attr}{match_close}",
+        "token_sep": " ",
+        "word_format": "{word}",
+        "attr_only_format": "{value}",
         "token_fields": "word,*attrs",
         "token_field_labels": {
             "match_mark": "match"
             },
-        "token_field_format": u"{value}",
+        "token_field_format": "{value}",
         "token_field_sep": ";",
-        "attr_format": u"{value}",
-        "attr_sep": u";",
-        "token_struct_open_format": u"",
-        "token_struct_close_format": u"",
+        "attr_format": "{value}",
+        "attr_sep": ";",
+        "token_struct_open_format": "",
+        "token_struct_close_format": "",
         "token_struct_open_sep": "",
         "token_struct_close_sep": "",
         "combine_token_structs": "False",
-        "match_open": u"",
-        "match_close": u"",
-        "match_marker": u"*",
+        "match_open": "",
+        "match_close": "",
+        "match_marker": "*",
         }
     """Default values for options; subclasses can override individually."""
 
@@ -551,7 +551,7 @@ class KorpExportFormatter(object):
             if item in self._opts:
                 available_corpus_info.add(item)
         for optkey in self._opts.get("list_valued_opts", []):
-            if isinstance(self._opts.get(optkey), basestring):
+            if isinstance(self._opts.get(optkey), str):
                 if self._opts[optkey] == "":
                     self._opts[optkey] = []
                 else:
@@ -761,7 +761,7 @@ class KorpExportFormatter(object):
             key=key,
             label=lambda: self._opts[item_type + "_labels"].get(key, key),
             value=value,
-            sp_or_nl=lambda: "\n" if "\n" in unicode(value) else space,
+            sp_or_nl=lambda: "\n" if "\n" in str(value) else space,
             **format_args)
 
     def _format_field_headings(self, item_type, **kwargs):

@@ -13,7 +13,7 @@ functions in this module.
 """
 
 
-from __future__ import absolute_import
+
 
 
 def get_sentences(query_result):
@@ -79,8 +79,8 @@ def get_occurring_corpus_info(query_result):
     """Return the keys of ``corpus_info`` in `query_result` as a set."""
     result = set()
     for sentence in get_sentences(query_result):
-        for key, val in (sentence.get("corpus_info") or {}).iteritems():
-            if isinstance(val, basestring):
+        for key, val in (sentence.get("corpus_info") or {}).items():
+            if isinstance(val, str):
                 result.add(key)
             else:
                 for subval in val:
@@ -114,7 +114,7 @@ def get_sentence_corpus_info_item(sentence, item, subitem=None):
     info = sentence.get("corpus_info") or {}
     if item in info:
         if subitem is not None:
-            if not isinstance(info[item], basestring) and subitem in info[item]:
+            if not isinstance(info[item], str) and subitem in info[item]:
                 return info[item][subitem]
             else:
                 return ""
@@ -220,7 +220,7 @@ def get_aligned_sentences(sentence):
             alignment attribute, corresponding to the id of the
             aligned corpus. The list is sorted by the align key.
     """
-    return sorted(sentence.get("aligned", {}).iteritems())
+    return sorted(sentence.get("aligned", {}).items())
 
 
 def get_sentence_structs(sentence, structnames=None):
@@ -240,7 +240,7 @@ def get_sentence_structs(sentence, structnames=None):
     if sentence_structs is None:
         return []
     elif structnames is None:
-        return list(sentence_structs.iteritems())
+        return list(sentence_structs.items())
     else:
         # Value may be None; convert them to empty strings
         return [(structname, sentence_structs.get(structname) or "")
@@ -266,7 +266,7 @@ def get_token_attrs(token, attrnames=None):
             the attributes occurring in `token`
     """
     if attrnames is None:
-        return [(attrname, val) for attrname, val in token.iteritems()
+        return [(attrname, val) for attrname, val in token.items()
                 if attrname != "structs"]
     else:
         return [(attrname, token.get(attrname) or "") for attrname in attrnames]

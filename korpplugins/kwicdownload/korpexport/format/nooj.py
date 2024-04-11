@@ -23,7 +23,7 @@ NooJ should now display annotation if you tick the "Show text
 annotation structure" box. 
 """
 
-from __future__ import absolute_import
+
 
 import re
 import korpexport.queryresult as qr
@@ -55,21 +55,21 @@ class KorpExportFormatterNooJ(KorpExportFormatter):
     """
 
     _option_defaults = {
-        "content_format": u"{sentences}\n\n<!--\n{info}\n-->",
-        "infoitem_format": u"## {label}:{sp_or_nl}{value}",
+        "content_format": "{sentences}\n\n<!--\n{info}\n-->",
+        "infoitem_format": "## {label}:{sp_or_nl}{value}",
         "title_format": "## {title} \n",
-        "param_format": u"## {label}: {value}",
+        "param_format": "## {label}: {value}",
         "param_sep": "\n",
-        "sentence_format": u"<S>{tokens}</S>",
+        "sentence_format": "<S>{tokens}</S>",
         "sentence_sep": "\n\n",
         "sentence_fields": ("tokens"),
         "sentence_field_sep": " ",
-        "token_format": u'<LU LEMMA="{lemma}" '\
-                        u'CAT="{nooj_attrs}"{nooj_dep}>{word}</LU>',
-        "attr_sep": u" ",
-        "delimiter": u",",
-        "quote": u"\"",
-        "replace_quote": u"\"",
+        "token_format": '<LU LEMMA="{lemma}" '\
+                        'CAT="{nooj_attrs}"{nooj_dep}>{word}</LU>',
+        "attr_sep": " ",
+        "delimiter": ",",
+        "quote": "\"",
+        "replace_quote": "\"",
         }
 
     def __init__(self, *args, **kwargs):
@@ -106,23 +106,23 @@ class KorpExportFormatterNooJ(KorpExportFormatter):
         token attribute names (unformatted values).
         """
 
-        if "lemma" in token.keys():
+        if "lemma" in list(token.keys()):
             lemma_key = "lemma"
         else:
             lemma_key = ""
 
         dep_lemmas = {}
         for item in token_list:
-            if 'deprel' in item.keys() and lemma_key:
+            if 'deprel' in list(item.keys()) and lemma_key:
                 dep_lemmas.update({item['ref']: item[lemma_key]})
     
         # rename " and , to overcome NooJ XML-restrictions
-        rename_dict = {'"': u'QUOTE',
-                       ',': u'COMMA',
-                       '<': u'A_BRACKET_LEFT',
-                       '>': u'A_BRACKET_RIGHT'}
+        rename_dict = {'"': 'QUOTE',
+                       ',': 'COMMA',
+                       '<': 'A_BRACKET_LEFT',
+                       '>': 'A_BRACKET_RIGHT'}
 
-        if lemma_key and token[lemma_key] in rename_dict.keys():
+        if lemma_key and token[lemma_key] in list(rename_dict.keys()):
             token[lemma_key] = rename_dict[token[lemma_key]]
         
         if token['msd']:
@@ -135,44 +135,44 @@ class KorpExportFormatterNooJ(KorpExportFormatter):
             token['word'] = brackets[token['word']]
         
         if token['msd']:
-            token['msd'] = re.sub('<', u'\u02C2', token['msd'])
-            token['msd'] = re.sub('>', u'\u02C3', token['msd'])
+            token['msd'] = re.sub('<', u'\\u02C2', token['msd'])
+            token['msd'] = re.sub('>', u'\\u02C3', token['msd'])
         '''
         # remove POS if found also in MSD, add default NooJ category
         # marker for unknowns (UNK)
-        if "msd" and "pos" in token.keys():
+        if "msd" and "pos" in list(token.keys()):
             if token["msd"] is None:
                 token["msd"] = "None"
             #token["msd"] = token["msd"].encode("utf8", "replace")
             token["msd"] = "+".join(list(set(re.split("[\| ;]",
                                                       token["msd"])) -
                                          set([token["pos"]])))
-        elif "msd" in token.keys():
+        elif "msd" in list(token.keys()):
             token["pos"] = "UNK"
-        elif "pos" in token.keys():
+        elif "pos" in list(token.keys()):
             token["msd"] = ""
         else:
             token["pos"] = "UNK"
             token["msd"] = ""
 
         # format POS and MSD to NooJ standard
-        nooj_attrs = re.sub("\+$", "", u"{pos}+{msd}".format(
+        nooj_attrs = re.sub("\+$", "", "{pos}+{msd}".format(
             pos=token["pos"].upper(),
             msd=token["msd"].lower()))
 
         # add lemma refenrences
-        if "dephead" in token.keys():
+        if "dephead" in list(token.keys()):
             if token["dephead"] == "0":
                 dep_lemma = token[lemma_key]
                 token["dephead"] = token["ref"]
-            elif token["dephead"] in dep_lemmas.keys():
+            elif token["dephead"] in list(dep_lemmas.keys()):
                 dep_lemma = dep_lemmas[token["dephead"]]
             elif token["dephead"] == "_":
                 dep_lemma = "phrase"
             else:
                 dep_lemma = "[   ]"
 
-            nooj_dep = u' ID="{ref}" DEP="{deprel}+{dep_lemma}" ID_REF="{dephead}"'.format(
+            nooj_dep = ' ID="{ref}" DEP="{deprel}+{dep_lemma}" ID_REF="{dephead}"'.format(
                 ref=token["ref"],
                 deprel=token["deprel"].upper(),
                 dep_lemma=dep_lemma,
@@ -201,9 +201,9 @@ class KorpExportFormatterNooJ(KorpExportFormatter):
         # Allow direct format references to attr names
         format_args.update(dict(self._get_token_attrs(token)))
         format_args.update(kwargs)
-        format_args.update({u"nooj_attrs": nooj_attrs})
-        format_args.update({u"nooj_dep": nooj_dep})
-        if lemma_key: format_args.update({u"lemma": token[lemma_key]})
+        format_args.update({"nooj_attrs": nooj_attrs})
+        format_args.update({"nooj_dep": nooj_dep})
+        if lemma_key: format_args.update({"lemma": token[lemma_key]})
         result = self._format_item(
             format_name,
             fields=self._format_list("token_field",

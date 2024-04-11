@@ -8,9 +8,9 @@ Format Korp query results as an Excel 97–2003 workbook (XLS).
 """
 
 
-from __future__ import absolute_import
 
-import cStringIO as strio
+
+import io as strio
 
 import xlwt
 

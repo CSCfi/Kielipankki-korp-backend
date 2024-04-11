@@ -13,7 +13,7 @@ values).
 """
 
 
-from __future__ import absolute_import
+
 
 import re
 
@@ -48,9 +48,9 @@ class KorpExportFormatterDelimited(KorpExportFormatter):
     """
 
     _option_defaults = {
-        "infoitem_format": u"## {label}:{sp_or_nl}{value}",
-        "title_format": u"## {title}\n",
-        "param_format": u"##   {label}: {value}",
+        "infoitem_format": "## {label}:{sp_or_nl}{value}",
+        "title_format": "## {title}\n",
+        "param_format": "##   {label}: {value}",
         "param_sep": "\n",
         "sentence_fields": ("corpus,urn,metadata_link,licence_name,"
                             "licence_link,match_pos,left_context,match,"
@@ -107,8 +107,8 @@ class KorpExportFormatterDelimitedSentence(KorpExportFormatterDelimited):
     formats = ["sentence_line", "sentences", "fields_sentence"]
 
     _option_defaults = {
-        "content_format": u"{sentence_field_headings}{sentences}\n\n{info}",
-        "sentence_format": u"{fields}",
+        "content_format": "{sentence_field_headings}{sentences}\n\n{info}",
+        "sentence_format": "{fields}",
         "sentence_sep": "\n",
         "sentence_fields": ("corpus,?urn,?metadata_link,?licence_name,"
                             "?licence_link,match_pos,left_context,match,"
@@ -142,9 +142,9 @@ class KorpExportFormatterDelimitedSentence(KorpExportFormatterDelimited):
     _subformat_options = {
         "lemmas-resultinfo": {
             "show_info": "false",
-            "title_format": u"{title}",
-            "infoitem_format": u"{value}",
-            "param_format": u"{key}={value}",
+            "title_format": "{title}",
+            "infoitem_format": "{value}",
+            "param_format": "{key}={value}",
             "param_sep": "; ",
             "infoitems": "date,korp_url",
             "sentence_fields": ("hit_num,corpus,tokens,"
@@ -153,7 +153,7 @@ class KorpExportFormatterDelimitedSentence(KorpExportFormatterDelimited):
                                 "*structs,?urn,?metadata_link,?licence_name,"
                                 "date,hitcount,?korp_url,params"),
             "sentence_token_attrs": _lemmas_sentence_token_attrs,
-            "token_format": u"{match_open}{word}{match_close}",
+            "token_format": "{match_open}{word}{match_close}",
             "heading_rows": 1,
             # "match_open": u"<<<",
             # "match_close": u">>>",
@@ -239,7 +239,7 @@ class KorpExportFormatterDelimitedSentenceSimple(
             else:
                 match_format[opt_name] = ""
                 token_format = token_format.replace("{" + opt_name + "}", "")
-        mark_matches = any(match_format.itervalues())
+        mark_matches = any(match_format.values())
         # If token_format contains no match marking placeholders nor
         # any additional content, set token_format to None to speed up
         # token formatting in _format_sentence.
@@ -335,19 +335,19 @@ class KorpExportFormatterDelimitedSentenceSimple(
                     if token_format is not None:
                         # Sring replacing is faster than using
                         # string.format (called by self._format_item)
-                        token_str = token_format.replace(u"{word}", token_str)
+                        token_str = token_format.replace("{word}", token_str)
                         if match_open:
                             token_str = token_str.replace(
-                                u"{match_open}",
+                                "{match_open}",
                                 match_open if token_num == match_start else "")
                         if match_close:
                             token_str = token_str.replace(
-                                u"{match_close}",
+                                "{match_close}",
                                 (match_close if token_num == match_end - 1
                                  else ""))
                         if match_marker:
                             token_str = token_str.replace(
-                                u"{match_marker}",
+                                "{match_marker}",
                                 (match_marker
                                  if match_start <= token_num < match_end
                                  else ""))
@@ -369,7 +369,7 @@ class KorpExportFormatterDelimitedSentenceSimple(
             if callable(field_vals[fieldname]):
                 field_vals[fieldname] = field_vals[fieldname]()
         return self._opts["sentence_field_sep"].join(
-            unicode(field_vals[fieldname]) for fieldname in fieldnames)
+            str(field_vals[fieldname]) for fieldname in fieldnames)
 
 
 class KorpExportFormatterDelimitedToken(KorpExportFormatterDelimited):
@@ -393,29 +393,29 @@ class KorpExportFormatterDelimitedToken(KorpExportFormatterDelimited):
     formats = ["token_line", "tokens", "fields_token", "annotations", "annot"]
 
     _option_defaults = {
-        "content_format": u"{info}{token_field_headings}{sentences}",
-        "infoitems_format": u"{title}\n{infoitems}\n\n",
-        "field_headings_format": u"{field_headings}\n\n",
-        "sentence_format": u"{info}{fields}",
-        "sentence_info_format": (u"# {corpus}"
-                                 u" ({corpus_info}):"
-                                 u" sentence {sentence_id},"
-                                 u" position {match_pos};"
-                                 u" text attributes: {structs}\n"),
+        "content_format": "{info}{token_field_headings}{sentences}",
+        "infoitems_format": "{title}\n{infoitems}\n\n",
+        "field_headings_format": "{field_headings}\n\n",
+        "sentence_format": "{info}{fields}",
+        "sentence_info_format": ("# {corpus}"
+                                 " ({corpus_info}):"
+                                 " sentence {sentence_id},"
+                                 " position {match_pos};"
+                                 " text attributes: {structs}\n"),
         "sentence_fields": "left_context,match,right_context",
-        "sentence_field_format": u"{value}",
+        "sentence_field_format": "{value}",
         "sentence_field_sep": "",
         # Skip empty fields or fields containing only spaces
         "sentence_field_skip": r"\s*",
-        "corpus_info_format": (u"URN {urn};"
-                               u" licence {licence_name}: {licence_link};"
-                               u" metadata {metadata_link}"),
-        "token_format": u"{fields}\n",
-        "token_noattrs_format": u"{fields}\n",
+        "corpus_info_format": ("URN {urn};"
+                               " licence {licence_name}: {licence_link};"
+                               " metadata {metadata_link}"),
+        "token_format": "{fields}\n",
+        "token_noattrs_format": "{fields}\n",
         "token_sep": "",
         "token_fields": "word,*attrs",
         "token_field_sep": "\t",
-        "struct_format": u"{name}: {value}",
+        "struct_format": "{name}: {value}",
         "match_marker": "*",
         "match_field": "0"
         }
@@ -452,22 +452,22 @@ class KorpExportFormatterDelimitedReference(KorpExportFormatterDelimited):
     formats = ["reference", "biblio", "bibref", "ref"]
 
     _option_defaults = {
-        "content_format": u"{info}\n{sentences}",
-        "title_format": u"## {title}\n",
-        "infoitem_format": u"## {label}{sp_or_nl}{value}",
+        "content_format": "{info}\n{sentences}",
+        "title_format": "## {title}\n",
+        "infoitem_format": "## {label}{sp_or_nl}{value}",
         "infoitem_spacechar": "\t",
-        "param_format": u"##   {label}\t{value}",
-        "sentence_format": u"sentence\t{tokens}\n{corpus_info}\n{structs}\n",
+        "param_format": "##   {label}\t{value}",
+        "sentence_format": "sentence\t{tokens}\n{corpus_info}\n{structs}\n",
         "sentence_sep": "\n",
         "corpus_info_fields": (
             "corpus_name,urn,licence_name,licence_link,metadata_link"),
-        "corpus_info_field_format": u"{label}\t{value}",
+        "corpus_info_field_format": "{label}\t{value}",
         "corpus_info_field_sep": "\n",
-        "struct_format": u"{name}\t{value}",
+        "struct_format": "{name}\t{value}",
         "struct_sep": "\n",
-        "token_format": u"{match_open}{word}{match_close}",
-        "match_open": u"<<< ",
-        "match_close": u" >>>",
+        "token_format": "{match_open}{word}{match_close}",
+        "match_open": "<<< ",
+        "match_close": " >>>",
         "heading_cols": 1,
         }
 
@@ -495,9 +495,9 @@ class KorpExportFormatterCSV(KorpExportFormatterDelimited):
 
     _option_defaults = {
         "newline": "\r\n",
-        "delimiter": u",",
-        "quote": u"\"",
-        "replace_quote": u"\"\"",
+        "delimiter": ",",
+        "quote": "\"",
+        "replace_quote": "\"\"",
         }
 
     def __init__(self, **kwargs):
@@ -521,9 +521,9 @@ class KorpExportFormatterTSV(KorpExportFormatterDelimited):
     formats = ["tsv"]
 
     _option_defaults = {
-        "delimiter": u"\t",
-        "quote": u"",
-        "replace_quote": u""
+        "delimiter": "\t",
+        "quote": "",
+        "replace_quote": ""
         }
 
     def __init__(self, **kwargs):
