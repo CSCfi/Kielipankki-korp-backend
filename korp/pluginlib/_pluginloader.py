@@ -10,6 +10,7 @@ intended to be visible outside the package are imported at the package level.
 
 
 import importlib
+import traceback
 import sys
 
 from collections import OrderedDict
@@ -134,7 +135,13 @@ def _find_plugin(plugin):
             _set_plugin_info(module)
             return module
         except ModuleNotFoundError as e:
-            not_found.append("'" + module_name + "'")
+            if f"'{module_name}'" in str(e):
+                not_found.append("'" + module_name + "'")
+            else:
+                # Error importing a module within the plugin
+                raise ImportError(
+                    f"Error when importing module '{module_name}': "
+                    + "".join(traceback.format_exception(e)))
     if len(not_found) == 1:
         not_found_str = not_found[0]
     else:
