@@ -14,7 +14,7 @@ from abc import ABC, abstractmethod
 from collections import defaultdict
 from typing import List, Tuple, Optional, Union, Dict
 
-from flask import Response, request, copy_current_request_context, stream_with_context
+from flask import Response, request, copy_current_request_context, stream_with_context, make_response
 from flask import current_app as app
 from flask.blueprints import Blueprint
 from gevent.queue import Queue, Empty
@@ -134,7 +134,9 @@ def main_handler(generator):
                 The view function ff should yield a dict with the
                 following keys recognized:
                 - "content": the actual content;
-                - "mimetype" (default: "text/html"): possible MIME type; and
+                - "mimetype" (default: "text/html"): possible MIME type;
+                - "content_type": full content type including charset
+                  (overrides "mimetype"); and
                 - "headers": possible other headers as a list of pairs
                   (header, value).
 
@@ -153,9 +155,18 @@ def main_handler(generator):
                                                    indent=indent)
                     result["mimetype"] = "application/json"
 
-                return Response(result.get("content"),
-                                headers=result.get("headers"),
-                                mimetype=result.get("mimetype"))
+                headers = result.get("headers")
+                content_type = result.get("content_type")
+                # content_type overrides mimetype
+                if content_type:
+                    headers += [("Content-Type", content_type)]
+                    mimetype = None
+                else:
+                    mimetype = result.get("mimetype")
+                response = make_response(result.get("content"), headers)
+                if mimetype:
+                    response.mimetype = mimetype
+                return response
 
             starttime = time.time()
             incremental = parse_bool(args, "incremental", False)
@@ -245,9 +256,10 @@ def use_custom_headers(generator):
 
     A view function with attribute use_custom_headers = True is
     treated specially in main_handler: the actual content is assumed
-    to be in the value for the key "content" of the result dict, MIME
-    type in "mimetype" and possible other headers as a list of pairs
-    (header, value) in "headers".
+    to be in the value for the key "content" of the result dict,
+    Content-Type in "content_type" (or MIME type in "mimetype") and
+    possible other headers as a list of pairs (header, value) in
+    "headers".
     """
     generator.use_custom_headers = True
     return generator
