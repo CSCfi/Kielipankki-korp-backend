@@ -433,7 +433,7 @@ class KorpLogger(CallbackPlugin):
         loaded before this one have been applied to the result.
         """
         logger = KorpLogger._get_logger(request)
-        if "corpus_hits" in result:
+        if isinstance(result, dict) and "corpus_hits" in result:
             logger.logf("result", "Hits", result["corpus_hits"])
         logger.logf("debug", "Result", result)
 
