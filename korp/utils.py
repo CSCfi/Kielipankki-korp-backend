@@ -133,7 +133,8 @@ def main_handler(generator):
 
                 The view function ff should yield a dict with the
                 following keys recognized:
-                - "content": the actual content;
+                - "response" (alias "body", "content"): the actual
+                  content (response body);
                 - "mimetype" (default: "text/html"): possible MIME type;
                 - "content_type": full content type including charset
                   (overrides "mimetype"); and
@@ -151,10 +152,12 @@ def main_handler(generator):
                     raise
                 except:
                     # Return error information as JSON
-                    result["content"] = json.dumps(error_handler(),
-                                                   indent=indent)
+                    result["response"] = json.dumps(error_handler(),
+                                                    indent=indent)
                     result["mimetype"] = "application/json"
 
+                body = (result.get("response") or result.get("body")
+                        or result.get("content"))
                 headers = result.get("headers")
                 content_type = result.get("content_type")
                 # content_type overrides mimetype
@@ -163,7 +166,7 @@ def main_handler(generator):
                     mimetype = None
                 else:
                     mimetype = result.get("mimetype")
-                response = make_response(result.get("content"), headers)
+                response = make_response(body, headers)
                 if mimetype:
                     response.mimetype = mimetype
                 return response
@@ -256,10 +259,10 @@ def use_custom_headers(generator):
 
     A view function with attribute use_custom_headers = True is
     treated specially in main_handler: the actual content is assumed
-    to be in the value for the key "content" of the result dict,
-    Content-Type in "content_type" (or MIME type in "mimetype") and
-    possible other headers as a list of pairs (header, value) in
-    "headers".
+    to be in the value for the key "response" (or "body" or "content")
+    of the result dict, Content-Type in "content_type" (or MIME type
+    in "mimetype") and possible other headers as a list of pairs
+    (header, value) in "headers".
     """
     generator.use_custom_headers = True
     return generator
