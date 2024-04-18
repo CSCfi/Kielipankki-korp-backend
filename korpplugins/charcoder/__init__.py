@@ -126,6 +126,10 @@ class SpecialCharacterTranscoder(pluginlib.CallbackPlugin):
         and obj is a dict, transcode only the values of the keys for
         which the function argname_filter returns True.
         """
+        # Return bytes, int and float as such
+        if isinstance(obj, (bytes, int, float)):
+            return obj
+        # Transcode string
         if isinstance(obj, str):
             return transfunc(obj)
         # dict
