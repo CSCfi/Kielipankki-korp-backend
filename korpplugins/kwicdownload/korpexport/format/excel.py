@@ -53,6 +53,6 @@ class KorpExportFormatterExcel(delimited.KorpExportFormatterDelimited):
             if row:
                 for colnum, value in enumerate(row.split("\t")):
                     worksheet.write(rownum, colnum, value)
-        output = strio.StringIO()
+        output = strio.BytesIO()
         workbook.save(output)
         return output.getvalue()
