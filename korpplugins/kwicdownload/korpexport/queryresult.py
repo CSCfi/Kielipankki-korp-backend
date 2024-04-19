@@ -150,7 +150,7 @@ def get_sentence_corpus_link(sentence, itemname=None, urn_resolver=""):
 
 def get_sentence_tokens_base(sentence, start, end):
     """Get the tokens (list) of `sentence`, in the range [`start`:`end`]."""
-    if (start >= 0 or start is None) and (end >= 0 or end is None):
+    if (start is None or start >= 0) and (end is None or end >= 0):
         return sentence["tokens"][start:end]
     else:
         return []
