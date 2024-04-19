@@ -26,8 +26,9 @@ annotation structure" box.
 
 
 import re
-import korpexport.queryresult as qr
-from korpexport.formatter import KorpExportFormatter
+from ...korpexport import queryresult as qr
+from ...korpexport.formatter import KorpExportFormatter
+
 
 __all__ = ['KorpExportFormatterNooJ']
 

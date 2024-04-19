@@ -12,8 +12,8 @@ Format Korp query results in JSON.
 
 import json
 
-import korpexport.queryresult as qr
-from korpexport.formatter import KorpExportFormatter
+from ...korpexport import queryresult as qr
+from ...korpexport.formatter import KorpExportFormatter
 
 
 class KorpExportFormatterJSON(KorpExportFormatter):

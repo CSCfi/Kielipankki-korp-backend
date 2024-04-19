@@ -19,7 +19,7 @@ import time
 import string
 import re
 
-import korpexport.queryresult as qr
+from . import queryresult as qr
 
 __all__ = ["KorpExportFormatter"]
 

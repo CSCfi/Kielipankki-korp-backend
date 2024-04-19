@@ -14,7 +14,7 @@ import re
 
 from xml.sax.saxutils import escape
 
-from korpexport.formatter import KorpExportFormatter
+from ...korpexport.formatter import KorpExportFormatter
 
 
 class KorpExportFormatterHtml(KorpExportFormatter):

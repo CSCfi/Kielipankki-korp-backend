@@ -14,7 +14,7 @@ import io as strio
 
 import xlwt
 
-import korpexport.format.delimited as delimited
+from . import delimited
 
 
 __all__ = ['KorpExportFormatterExcel']
