@@ -158,7 +158,7 @@ class KorpExportFormatter(object):
     to be used or overridden by subclasses.
 
     The `_option_defaults` contains the following keys. Values are
-    strings (`unicode`) unless otherwise specified. In `bool` options,
+    strings unless otherwise specified. In `bool` options,
     the strings ``false``, ``off``, ``no``, ``0`` (case-insensitively)
     and the empty string are interpreted as `False`.
 
@@ -189,7 +189,7 @@ class KorpExportFormatter(object):
         hitcount_format: Format string for the total number of hits
         params_format: Format string for query parameters as a whole
         params (list[str] | str): Names of the query parameters (as in
-            the CGI query string) to show in the info
+            the query string) to show in the info
         param_labels (dict[str->str]): Mapping from query parameter
             names to more human-readable labels
         param_format: Format string for a single query parameter
