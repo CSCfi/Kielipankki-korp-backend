@@ -40,7 +40,7 @@ class KorpExportFormatterJSON(KorpExportFormatter):
         }
 
     def __init__(self, **kwargs):
-        super(KorpExportFormatterJSON, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     # This class does not use the formatting methods or
     # `_option_default` values in :class:`KorpExportFormatter`.

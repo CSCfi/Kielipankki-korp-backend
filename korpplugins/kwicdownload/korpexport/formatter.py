@@ -42,8 +42,7 @@ class _PartialStringFormatter(string.Formatter):
     def get_field(self, field_name, args, kwargs):
         # Handle missing fields
         try:
-            return super(_PartialStringFormatter, self).get_field(
-                field_name, args, kwargs)
+            return super().get_field(field_name, args, kwargs)
         except (KeyError, AttributeError):
             return None, field_name
 
@@ -51,8 +50,7 @@ class _PartialStringFormatter(string.Formatter):
         if value is None:
             return self.missing
         else:
-            return super(_PartialStringFormatter, self).format_field(
-                value, spec)
+            return super().format_field(value, spec)
 
 
 class _LazyStringFormatter(string.Formatter):
@@ -68,11 +66,11 @@ class _LazyStringFormatter(string.Formatter):
     """
 
     def __init__(self, **kwargs):
-        super(_LazyStringFormatter, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         # self._value_cache = {}
 
     def get_value(self, key, args, kwargs):
-        value = super(_LazyStringFormatter, self).get_value(key, args, kwargs)
+        value = super().get_value(key, args, kwargs)
         if callable(value):
             value = value()
             # # The function value might be cached, so that format
@@ -95,16 +93,15 @@ class _LazyPartialStringFormatter(_PartialStringFormatter,
     """
 
     def __init__(self, **kwargs):
-        super(_LazyPartialStringFormatter, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def format_field(self, value, spec):
         if callable(value):
             value = value()
-        return super(_LazyPartialStringFormatter, self).format_field(
-            value, spec)
+        return super().format_field(value, spec)
 
 
-class KorpExportFormatter(object):
+class KorpExportFormatter:
 
     r"""
     The base class for formatting a Korp query result for export.

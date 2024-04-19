@@ -104,7 +104,7 @@ class KorpExportError(Exception):
     pass
 
 
-class KorpExporter(object):
+class KorpExporter:
 
     """A class for exporting Korp query results to a downloadable file."""
 

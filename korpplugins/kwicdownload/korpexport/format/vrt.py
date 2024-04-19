@@ -63,10 +63,10 @@ class KorpExportFormatterVRT(KorpExportFormatter):
         }
 
     def __init__(self, **kwargs):
-        super(KorpExportFormatterVRT, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def _adjust_opts(self):
-        super(KorpExportFormatterVRT, self)._adjust_opts()
+        super()._adjust_opts()
         if self.get_option_bool("xml_declaration"):
             self._opts["content_format"] = (
                 '<?xml version="1.0" encoding="UTF-8" standalone="yes” ?>\n'

@@ -92,7 +92,7 @@ class KorpExportFormatterHtml(KorpExportFormatter):
     }
 
     def __init__(self, **kwargs):
-        super(KorpExportFormatterHtml, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self._match_open = self._opts.get("match_open") or ""
         self._match_close = self._opts.get("match_close") or ""
         self._match_starttag = ""
@@ -205,7 +205,7 @@ class KorpExportFormatterHtmlTable(KorpExportFormatterHtml):
     }
 
     def __init__(self, **kwargs):
-        super(KorpExportFormatterHtmlTable, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self._heading_rows = self.get_option_int("heading_rows") or 0
         self._heading_cols = self.get_option_int("heading_cols") or 0
 

@@ -38,7 +38,7 @@ class KorpExportFormatterExcel(delimited.KorpExportFormatterDelimited):
     formats = ["xls", "excel"]
 
     def __init__(self, **kwargs):
-        super(KorpExportFormatterExcel, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def _postprocess(self, text):
         """Return an XLS file content of `text`.

@@ -62,4 +62,4 @@ class KorpExportFormatterText(KorpExportFormatter):
     _subformat_options["bare"] = _subformat_options["sentences-bare"]
 
     def __init__(self, **kwargs):
-        super(KorpExportFormatterText, self).__init__(**kwargs)
+        super().__init__(**kwargs)

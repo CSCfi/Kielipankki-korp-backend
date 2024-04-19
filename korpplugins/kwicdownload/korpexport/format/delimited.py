@@ -59,7 +59,7 @@ class KorpExportFormatterDelimited(KorpExportFormatter):
         }
 
     def __init__(self, **kwargs):
-        super(KorpExportFormatterDelimited, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def _postprocess(self, text):
         """Add quotes around fields in `text` if specified.
@@ -171,7 +171,7 @@ class KorpExportFormatterDelimitedSentence(KorpExportFormatterDelimited):
     }
 
     def __init__(self, **kwargs):
-        super(KorpExportFormatterDelimitedSentence, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
 
 class KorpExportFormatterDelimitedSentenceSimple(
@@ -201,8 +201,7 @@ class KorpExportFormatterDelimitedSentenceSimple(
                "fields_sentence_simple"]
 
     def __init__(self, **kwargs):
-        super(KorpExportFormatterDelimitedSentenceSimple, self).__init__(
-            **kwargs)
+        super().__init__(**kwargs)
 
     def _format_sentences(self, **kwargs):
         """Format the sentences of a query result.
@@ -419,11 +418,11 @@ class KorpExportFormatterDelimitedToken(KorpExportFormatterDelimited):
         }
 
     def __init__(self, **kwargs):
-        super(KorpExportFormatterDelimitedToken, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def _adjust_opts(self):
         """Add a match field to ``token_fields`` based on ``match_field``."""
-        super(KorpExportFormatterDelimitedToken, self)._adjust_opts()
+        super()._adjust_opts()
         if self._opts["match_field"]:
             if self._opts["match_field"] == "0":
                 self._opts["token_fields"][0:0] = ["match_mark"]
@@ -470,7 +469,7 @@ class KorpExportFormatterDelimitedReference(KorpExportFormatterDelimited):
         }
 
     def __init__(self, **kwargs):
-        super(KorpExportFormatterDelimitedReference, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
 
 class KorpExportFormatterCSV(KorpExportFormatterDelimited):
@@ -499,7 +498,7 @@ class KorpExportFormatterCSV(KorpExportFormatterDelimited):
         }
 
     def __init__(self, **kwargs):
-        super(KorpExportFormatterCSV, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
 
 class KorpExportFormatterTSV(KorpExportFormatterDelimited):
@@ -525,4 +524,4 @@ class KorpExportFormatterTSV(KorpExportFormatterDelimited):
         }
 
     def __init__(self, **kwargs):
-        super(KorpExportFormatterTSV, self).__init__(**kwargs)
+        super().__init__(**kwargs)

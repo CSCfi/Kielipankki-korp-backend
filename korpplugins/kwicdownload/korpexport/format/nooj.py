@@ -269,5 +269,5 @@ class KorpExportFormatterCSV(KorpExportFormatterNooJ):
 
     def __init__(self, *args, **kwargs):
         #KorpExportFormatterNooJ.__init__(self, *args, **kwargs)
-        super(KorpExportFormatterNooJ, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
