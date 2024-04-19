@@ -7,7 +7,7 @@ It should generally be sufficient to call func:`make_download_file` to
 generate downloadable file contents.
 
 :Author: Jyrki Niemi <jyrki.niemi@helsinki.fi> for FIN-CLARIN
-:Date: 2014
+:Date: 2014, 2024 (converted CGI script to a plugin)
 """
 
 
@@ -17,14 +17,17 @@ import os.path
 import time
 import pkgutil
 import json
-import urllib.request, urllib.parse, urllib.error, urllib.request, urllib.error, urllib.parse
+import importlib
+import urllib.request, urllib.parse
 import re
 # import logging
 
-from subprocess import Popen, PIPE
 from collections import defaultdict
 
-import korpexport.queryresult as qr
+from korp import utils
+from korp.views import info, query
+
+from . import queryresult as qr
 
 
 __all__ = ['make_download_file',
@@ -37,7 +40,7 @@ def make_download_file(args, korp_server_url, **kwargs):
 
     Arguments:
         args (dict): Query string parameters
-        korp_server_url (str): Korp server URL
+        korp_server_url (str): Korp server URL (for documentation)
 
     Keyword arguments:
         **kwargs: Passed to class:`KorpExporter` constructor and its
@@ -67,15 +70,14 @@ def _decode_list_param(str_list, alt_delim=None):
     # This function is slightly modified from decode_list_param in
     # korp.cgi. It would probably be better to have a single function
     # in a utility module.
-    QUERY_DELIM = ","
     QUERY_DELIM_ALT = "."
     if alt_delim is None:
         alt_delim = QUERY_DELIM_ALT
     if alt_delim:
-        split_val = re.split(r"[" + QUERY_DELIM + alt_delim + r"]",
+        split_val = re.split(r"[" + utils.QUERY_DELIM + alt_delim + r"]",
                              str_list)
     else:
-        split_val = str_list.split(QUERY_DELIM)
+        split_val = str_list.split(utils.QUERY_DELIM)
     result = []
     prefix = ""
     for elem in split_val:
@@ -122,8 +124,8 @@ class KorpExporter(object):
     """List-valued query parameters that may have been prefix-encoded"""
 
     _RENAME_QUERY_PARAMS = [
-        ("default_context", "defaultcontext"),
-        ("default_within", "defaultwithin"),
+        # ("default_context", "defaultcontext"),
+        # ("default_within", "defaultwithin"),
     ]
     """List of query parameters to rename (original, renamed), so that
        korp_download.cgi can be called with Korp 8 parameters, even if
@@ -138,7 +140,7 @@ class KorpExporter(object):
 
         Keyword arguments:
             options (dict): Options passed to formatter
-            filename_format (unicode): A format specification for the
+            filename_format (str): A format specification for the
                 resulting filename; may contain the following format
                 keys: cqpwords, start, end, date, time, ext
             filename_encoding (str): The encoding to use for the
@@ -158,7 +160,8 @@ class KorpExporter(object):
         """Format query results and return them in a downloadable format.
 
         Arguments:
-            korp_server_url (str): The Korp server to query
+            korp_server_url (str): The Korp server URL (for
+                documentation)
 
         Keyword arguments:
             args (dict): Use the parameters in here instead of those
@@ -286,18 +289,19 @@ class KorpExporter(object):
                                self._FORMATTER_SUBPACKAGE)
         for _, module_name, _ in pkgutil.iter_modules([pkgpath]):
             try:
-                subpkg = __import__(
-                    self._FORMATTER_SUBPACKAGE + "." + module_name, globals())
+                modname_full = ".".join([__name__.rpartition(".")[0],
+                                         self._FORMATTER_SUBPACKAGE,
+                                         module_name])
+                module = importlib.import_module(modname_full)
+                for name in dir(module):
+                    try:
+                        module_class = getattr(module, name)
+                        if format_name in module_class.formats:
+                            return module_class
+                    except AttributeError as e:
+                        pass
             except ImportError as e:
                 continue
-            module = getattr(subpkg, module_name)
-            for name in dir(module):
-                try:
-                    module_class = getattr(module, name)
-                    if format_name in module_class.formats:
-                        return module_class
-                except AttributeError as e:
-                    pass
         raise KorpExportError("No formatter found for format '{0}'"
                               .format(format_name))
 
@@ -305,13 +309,15 @@ class KorpExporter(object):
         """Get the query result in args or perform query via a Korp server.
 
         Arguments:
-            korp_server_url (str): The Korp server to query
+            korp_server_url (str): The Korp server URL (for
+                documentation)
             query_params (dict): Korp query parameters
 
         If `self._args` contains `query_result`, use it. Otherwise use
-        the result obtained by performing a query to the Korp server
-        at `korp_server_url`. The query parameters are retrieved from
-        argument `query_params`, query parameter `query_params` (as
+        the result obtained by performing a query to the Korp server.
+        (`korp_server_url` is only for including in the downloaded
+        data.) The query parameters are retrieved from
+        argument `query_params`, query argument `query_params` (as
         JSON) or the query parameters as a whole.
 
         Set a private attribute to contain the result, a dictionary
@@ -343,11 +349,11 @@ class KorpExporter(object):
                 else:
                     self._query_params["show"] = self._query_params["show_struct"]
             # logging.debug("query_params: %s", self._query_params)
-            query_result_json = self._query_korp_server(korp_server_url)
+            self._query_result = utils.generator_to_dict(
+                query.query(self._query_params))
             # Support "sort" in format params even if not specified
             if "sort" not in self._query_params:
                 self._query_params["sort"] = "none"
-        self._query_result = json.loads(query_result_json)
         # logging.debug("query result: %s", self._query_result)
         if "ERROR" in self._query_result or "kwic" not in self._query_result:
             return
@@ -365,82 +371,6 @@ class KorpExporter(object):
                 self._query_params[paramname] = ",".join(_decode_list_param(
                     self._query_params[paramname]))
 
-    def _query_korp_server(self, url_or_progname, query_params=None):
-        """Query a Korp server, either via HTTP or as a subprocess.
-
-        Arguments:
-            url_or_progname (str): Korp server URL or program name
-            query_params (dict): The query parameters to pass to the
-                Korp server; if not specified or `None`, use
-                self._query_params
-
-        Returns:
-            str: The value returned by the Korp server, most probably
-                an object encoded in JSON
-
-        If `url_or_progname` begins with "http", make a query via
-        HTTP. Otherwise assume it as program name and call it directly
-        as a subprocess but make it believe that it is run via CGI.
-        The latter approach passes the environment variable values of
-        this script to the Korp server, so it gets e.g. the Sibboleth
-        authentication information. (Could the authentication
-        information be passed when using HTTP by adding appropriate
-        request headers?)
-        """
-
-        def adjust_path(name_src, ref_name_src, ref_name_dst):
-            """Make a name that is to name_src as ref_name_dst is to
-            ref_name_src."""
-            # FIXME: This works only if path separator is a slash
-            src_common_prefix = os.path.commonprefix([name_src, ref_name_src])
-            ref_name_suffix_len = len(ref_name_src) - len(src_common_prefix)
-            name_suffix_len = len(name_src) - len(src_common_prefix)
-            return (ref_name_dst[:-ref_name_suffix_len]
-                    + name_src[-name_suffix_len:])
-
-        if query_params is None:
-            query_params = self._query_params
-        loginfo_text = "client=korp_download_kwic"
-        if "loginfo" in query_params:
-            query_params["loginfo"] += " " + loginfo_text
-        else:
-            query_params["loginfo"] = loginfo_text
-        # Encode the query parameters in UTF-8 for Korp server
-        # logging.debug("Korp server: %s", url_or_progname)
-        # logging.debug("Korp query params: %s", query_params)
-        query_params_encoded = urllib.parse.urlencode(
-            dict((key, val.encode("utf-8"))
-                 for key, val in query_params.items()))
-        # logging.debug("Encoded query params: %s", query_params_encoded)
-        # logging.debug("Env: %s", os.environ)
-        if url_or_progname.startswith("http"):
-            return urllib.request.urlopen(url_or_progname, query_params_encoded).read()
-        else:
-            env = {}
-            # Pass the environment of this scropt appropriately
-            # modified, so that Korp server script thinks it is run
-            # via CGI.
-            env.update(os.environ)
-            # Adjusting the script names is perhaps not necessary but
-            # we do it for completeness sake.
-            script_name = adjust_path(
-                url_or_progname, env.get("SCRIPT_FILENAME", ""),
-                env.get("SCRIPT_NAME", ""))
-            env.update(
-                {"SCRIPT_FILENAME": url_or_progname,
-                 "SCRIPT_NAME": script_name,
-                 "REQUEST_URI": script_name,
-                 "REQUEST_METHOD": "POST",
-                 "QUERY_STRING": "",
-                 "CONTENT_TYPE": "application/x-www-form-urlencoded",
-                 "CONTENT_LENGTH": str(len(query_params_encoded))})
-            # logging.debug("Env modified: %s", env)
-            p = Popen(url_or_progname, stdin=PIPE, stdout=PIPE, env=env)
-            output = p.communicate(query_params_encoded)[0]
-            # logging.debug("Korp server output: %s", output)
-            # Remove HTTP headers from the result
-            return re.sub(r"(?s)^.*?\n\n", "", output, count=1)
-
     def _extract_options(self, korp_server_url=None):
         """Extract formatting options from args, affected by query params.
 
@@ -455,7 +385,7 @@ class KorpExporter(object):
         all parameters for which `_default_options` contains an option
         with the same name.
 
-        In addition, the values of the CGI parameters `attrs` and
+        In addition, the values of the query parameters `attrs` and
         `structs` control the attributes and structures to be shown in
         the result. Their values may be comma-separated lists of the
         following:
@@ -512,9 +442,9 @@ class KorpExporter(object):
     def _add_corpus_info(self, korp_server_url, query_result):
         """Add information on the corpora to the query result.
 
-        Retrieve info for each corpus in `query_result` from args
-        or from the Korp server `korp_server_url` and add the
-        information as ``corpus_info`` to each hit in `query_result`.
+        Retrieve info for each corpus in `query_result` from args and
+        add the information as ``corpus_info`` to each hit in
+        `query_result`.
         Also add ``corpus_config`` to each hit if available.
         """
         self._retrieve_corpus_info(korp_server_url)
@@ -604,12 +534,11 @@ class KorpExporter(object):
         corpora = self._get_corpus_names()
         if not corpora:
             return
-        korp_info_params = {'command': 'info',
-                            'corpus': ','.join(corpora)}
-        korp_corpus_info_json = self._query_korp_server(korp_server_url,
-                                                        korp_info_params)
-        korp_corpus_info = json.loads(korp_corpus_info_json)
-        for corpname, corpdata in (iter(korp_corpus_info.get("corpora", {}).items())):
+        korp_info_params = {'corpus': ','.join(corpora)}
+        korp_corpus_info = utils.generator_to_dict(
+            info.corpus_info(korp_info_params))
+        for corpname, corpdata in (iter(korp_corpus_info.get("corpora", {})
+                                        .items())):
             corpname = corpname.lower()
             corpinfo = corpdata.get("info", {})
             for infoname, infoval in corpinfo.items():
@@ -669,7 +598,7 @@ class KorpExporter(object):
                 characters removed from the CQP query
 
         Returns:
-            unicode: A representation of the CQP query 
+            str: A representation of the CQP query
         """
         # TODO: If attrs is True, include attribute names. Could we
         # encode somehow the operator which could be != or contains?
