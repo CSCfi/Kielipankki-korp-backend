@@ -20,11 +20,10 @@ import json
 import importlib
 import urllib.request, urllib.parse
 import re
-# import logging
 
 from collections import defaultdict
 
-from korp import utils
+from korp import utils, pluginlib
 from korp.views import info, query
 
 from . import queryresult as qr
@@ -123,10 +122,10 @@ class KorpExporter:
         self._formatter = self._formatter or self._get_formatter(**kwargs)
         self.process_query(korp_server_url)
         self._add_corpus_info(korp_server_url, self._query_result)
-        # logging.debug('qr: %s', self._query_result)
+        self._debug_log("query-result", self._query_result)
         if "ERROR" in self._query_result:
             return self._query_result
-        # logging.debug('formatter: %s', self._formatter)
+        self._debug_log("formatter", self._formatter)
         result["download_charset"] = self._formatter.download_charset
         content = self._formatter.make_download_content(
             self._query_result, self._query_params, self._opts, **kwargs)
@@ -135,8 +134,17 @@ class KorpExporter:
         result["download_content"] = content
         result["download_content_type"] = self._formatter.mime_type
         result["download_filename"] = self._get_filename()
-        # logging.debug('make_download_file result: %s', result)
+        self._debug_log("result", repr(result))
         return result
+
+    def _debug_log(self, key, value):
+        """Write a debug log entry Kwicdownload-key: value.
+
+        Calls callback plugin hook point `"log"` as defined in plugin
+        "logger".
+        """
+        pluginlib.CallbackPluginCaller.raise_event_for_request(
+            "log", "debug", "debug", f"Kwicdownload-{key}", value)
 
     def _get_formatter(self, **kwargs):
         """Get a formatter instance for the format specified in self._args.
@@ -292,17 +300,18 @@ class KorpExporter:
                         "," + self._query_params["show_struct"])
                 else:
                     self._query_params["show"] = self._query_params["show_struct"]
-            # logging.debug("query_params: %s", self._query_params)
+            self._debug_log("query-params", self._query_params)
             self._query_result = utils.generator_to_dict(
                 query.query(self._query_params))
             # Support "sort" in format params even if not specified
             if "sort" not in self._query_params:
                 self._query_params["sort"] = "none"
-        # logging.debug("query result: %s", self._query_result)
+        # Query result with info is logged in make_download_file
+        # self._debug_log("query-result-0", self._query_result)
         if "ERROR" in self._query_result or "kwic" not in self._query_result:
             return
         self._opts = self._extract_options(korp_server_url)
-        # logging.debug("opts: %s", self._opts)
+        self._debug_log("opts", self._opts)
 
     def _extract_options(self, korp_server_url=None):
         """Extract formatting options from args, affected by query params.
