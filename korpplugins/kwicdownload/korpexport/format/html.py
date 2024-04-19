@@ -8,8 +8,6 @@ Format Korp query results in HTML.
 """
 
 
-
-
 import re
 
 from xml.sax.saxutils import escape

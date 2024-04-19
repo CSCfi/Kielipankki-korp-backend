@@ -13,9 +13,6 @@ functions in this module.
 """
 
 
-
-
-
 def get_sentences(query_result):
     """Get the sentences  contained in `query_result`."""
     return query_result.get("kwic", [])

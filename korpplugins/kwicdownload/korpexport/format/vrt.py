@@ -8,8 +8,6 @@ Format Korp query results in the VeRticalized Text (VRT) format of CWB.
 """
 
 
-
-
 from ...korpexport.formatter import KorpExportFormatter
 
 

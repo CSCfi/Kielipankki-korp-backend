@@ -8,8 +8,6 @@ Format Korp query results in plain text formats.
 """
 
 
-
-
 from ...korpexport.formatter import KorpExportFormatter
 
 

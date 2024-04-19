@@ -8,8 +8,6 @@ Format Korp query results in JSON.
 """
 
 
-
-
 import json
 
 from ...korpexport import queryresult as qr

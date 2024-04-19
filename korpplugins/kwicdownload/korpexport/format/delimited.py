@@ -13,8 +13,6 @@ values).
 """
 
 
-
-
 import re
 
 from ...korpexport import queryresult as qr

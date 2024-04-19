@@ -8,8 +8,6 @@ Format Korp query results as an Excel 97–2003 workbook (XLS).
 """
 
 
-
-
 import io as strio
 
 import xlwt
