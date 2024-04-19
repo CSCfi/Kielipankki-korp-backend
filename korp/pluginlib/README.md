@@ -445,8 +445,11 @@ can be accomplished by decorating the view function with
 `utils.use_custom_headers` should yield a `dict` with the following
 keys recognized:
 
-- `"content"`: the actual content;
-- `"mimetype"` (default: `"text/html"`): possible MIME type; and
+- `"response"` (alias `"body"`, `"content"`): the actual content
+  (response body);
+- `"mimetype"` (default: `"text/html"`): possible MIME type;
+- `"content_type"`: full content type including charset, for the
+  `Content-Type` header (overrides `"mimetype"`); and
 - `"headers"`: possible other headers as a list of pairs (_header_,
   _value_).
 
@@ -461,7 +464,7 @@ value of `filename` (`args.txt` if not specified):
 def textfile(args):
     """Make downloadable plain-text file of args."""
     yield {
-        "content": "\n".join(arg + "=" + repr(args[arg]) for arg in args),
+        "response": "\n".join(arg + "=" + repr(args[arg]) for arg in args),
         "mimetype": "text/plain",
         "headers": [
             ("Content-Disposition",
