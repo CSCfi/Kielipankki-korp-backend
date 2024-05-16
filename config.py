@@ -80,3 +80,31 @@ PLUGINS = []
 
 # Plugin configuration
 PLUGINS_CONFIG = {}
+
+# Show plugin information in the result of the /info endpoint:
+#  "name" = plugin names only
+#  "info" = plugin information in the PLUGIN_INFO of the plugin
+#  None = nothing
+INFO_SHOW_PLUGINS = "name"
+
+# Plugin library (korp.pluginlib) configuration (see
+# korp/pluginlib/README.md for more details)
+PLUGINLIB_CONFIG = dict(
+    # List of packages (possibly namespace packages) which may contain
+    # plugins, "" for top-level modules without packages. The packages
+    # are searched for a plugin in the listed order.
+    PACKAGES = ["plugins", "korpplugins"],
+    # List of directories in which to search for plugins in addition
+    # to default ones
+    SEARCH_PATH = [],
+    # What to do when a plugin is not found: "error", "warn" or "ignore"
+    HANDLE_NOT_FOUND = "warn",
+    # What is output to the console when loading plugins: 0 = nothing,
+    # 1 = plugin names only, 2 = plugin names and plugin function
+    # names
+    LOAD_VERBOSITY = 1,
+    # What to do with duplicate endpoints for a routing rule, added by
+    # plugins: "override", "override,warn", "ignore", "warn" or
+    # "error"
+    HANDLE_DUPLICATE_ROUTES = "override,warn",
+)

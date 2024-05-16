@@ -14,7 +14,7 @@ from abc import ABC, abstractmethod
 from collections import defaultdict
 from typing import List, Tuple, Optional, Union, Dict
 
-from flask import Response, request, copy_current_request_context, stream_with_context
+from flask import Response, request, copy_current_request_context, stream_with_context, make_response
 from flask import current_app as app
 from flask.blueprints import Blueprint
 from gevent.queue import Queue, Empty
@@ -23,6 +23,9 @@ from gevent.event import Event
 
 from korp.db import mysql
 from korp.memcached import memcached
+from korp.pluginlib import CallbackPluginCaller, SubclassPlugin
+# For backward-compatibility
+from korp.pluginlib import EndpointPlugin as Plugin
 
 # Special symbols used by this script; they must NOT be in the corpus
 END_OF_LINE = "-::-EOL-::-"
@@ -35,7 +38,11 @@ IS_IDENT = re.compile(r"^[\w\-,|]+$")
 
 QUERY_DELIM = ","
 
-authorizer: Optional["Authorizer"] = None
+# The type annotation is essential here for the authorizer and
+# protected corpora getter plugins to be correctly initialized by
+# pluginlib.register_subclass_plugins (in package initialization)
+authorizer: Optional["BaseAuthorizer"] = None
+protected_corpora_getter: Optional["ProtectedCorporaGetter"] = None
 
 
 def main_handler(generator):
@@ -69,6 +76,7 @@ def main_handler(generator):
             return generator(args, *pargs, **kwargs)
         else:
             # Function is called externally
+            plugin_caller = CallbackPluginCaller()
             def error_handler():
                 """Format exception info for output to user."""
                 exc = sys.exc_info()
@@ -79,30 +87,49 @@ def main_handler(generator):
                                    }}
                 if "debug" in args:
                     error["ERROR"]["traceback"] = "".join(traceback.format_exception(*exc)).splitlines()
+                plugin_caller.raise_event("error", error, exc)
                 return error
 
             def incremental_json(ff):
                 """Incrementally yield result as JSON."""
+                result_len = 0
                 if callback:
+                    result_len += len(callback) + 1
                     yield callback + "("
+                result_len += 2
                 yield "{\n"
 
                 try:
                     for response in ff:
                         if not response:
                             # Yield whitespace to prevent timeout
+                            result_len += 2
                             yield " \n"
                         else:
-                            yield json.dumps(response)[1:-1] + ",\n"
+                            response = plugin_caller.filter_value(
+                                "filter_result", response)
+                            output = json.dumps(response)[1:-1] + ",\n"
+                            result_len += len(output)
+                            yield output
                 except GeneratorExit:
                     raise
                 except:
                     error = error_handler()
-                    yield json.dumps(error)[1:-1] + ",\n"
+                    output = json.dumps(error)[1:-1] + ",\n"
+                    result_len += len(output)
+                    yield output
 
-                yield json.dumps({"time": time.time() - starttime})[1:] + "\n"
+                endtime = time.time()
+                elapsed_time = endtime - starttime
+                output = json.dumps({"time": elapsed_time})[1:] + "\n"
+                result_len += len(output)
+                yield output
                 if callback:
+                    result_len += 1
                     yield ")"
+                plugin_caller.raise_event(
+                    "exit_handler", endtime, elapsed_time, result_len)
+                plugin_caller.cleanup()
 
             def full_json(ff):
                 """Yield full JSON at the end, but until then keep returning newlines to prevent timeout."""
@@ -120,20 +147,87 @@ def main_handler(generator):
                 except:
                     result = error_handler()
 
-                result["time"] = time.time() - starttime
+                endtime = time.time()
+                elapsed_time = endtime - starttime
+                result["time"] = elapsed_time
+
+                result = plugin_caller.filter_value("filter_result", result)
 
                 if callback:
                     result = callback + "(" + json.dumps(result, indent=indent) + ")"
                 else:
                     result = json.dumps(result, indent=indent)
+                plugin_caller.raise_event(
+                    "exit_handler", endtime, elapsed_time, len(result))
                 yield result
+                plugin_caller.cleanup()
+
+            def make_custom_response(ff):
+                """Return a Response with custom mimetype and/or headers.
+
+                The view function ff should yield a dict with the
+                following keys recognized:
+                - "response" (alias "body", "content"): the actual
+                  content (response body);
+                - "mimetype" (default: "text/html"): possible MIME type;
+                - "content_type": full content type including charset
+                  (overrides "mimetype"); and
+                - "headers": possible other headers as a list of pairs
+                  (header, value).
+
+                Note that setting incremental=True does not have any effect.
+                """
+                result = {}
+                try:
+                    for response in ff:
+                        if response:
+                            result.update(response)
+                except GeneratorExit:
+                    raise
+                except:
+                    # Return error information as JSON
+                    result["response"] = json.dumps(error_handler(),
+                                                    indent=indent)
+                    result["mimetype"] = "application/json"
+
+                # Filter only the content. Should we also allow filtering the
+                # headers and/or mimetype, using separate hook points?
+                result["content"] = plugin_caller.filter_value(
+                    "filter_result", result["content"])
+
+                endtime = time.time()
+                elapsed_time = endtime - starttime
+                plugin_caller.raise_event(
+                    "exit_handler", endtime, elapsed_time,
+                    len(result["content"]))
+                plugin_caller.cleanup()
+
+                body = (result.get("response") or result.get("body")
+                        or result.get("content"))
+                headers = result.get("headers")
+                content_type = result.get("content_type")
+                # content_type overrides mimetype
+                if content_type:
+                    headers += [("Content-Type", content_type)]
+                    mimetype = None
+                else:
+                    mimetype = result.get("mimetype")
+                response = make_response(body, headers)
+                if mimetype:
+                    response.mimetype = mimetype
+                return response
 
             starttime = time.time()
+            plugin_caller.raise_event("enter_handler", args, starttime)
+            args = plugin_caller.filter_value("filter_args", args)
             incremental = parse_bool(args, "incremental", False)
             callback = args.get("callback")
             indent = int(args.get("indent", 0))
 
-            if incremental:
+            if getattr(generator, "use_custom_headers", None):
+                # Custom headers and/or MIME type (non-JSON)
+                return make_custom_response(generator(args, *pargs, **kwargs))
+            elif incremental:
                 # Incremental response
                 return Response(stream_with_context(incremental_json(generator(args, *pargs, **kwargs))),
                                 mimetype="application/json")
@@ -206,6 +300,20 @@ def prevent_timeout(generator):
                     raise
 
     return decorated
+
+
+def use_custom_headers(generator):
+    """Decorator for view functions possibly yielding a non-JSON result.
+
+    A view function with attribute use_custom_headers = True is
+    treated specially in main_handler: the actual content is assumed
+    to be in the value for the key "response" (or "body" or "content")
+    of the result dict, Content-Type in "content_type" (or MIME type
+    in "mimetype") and possible other headers as a list of pairs
+    (header, value) in "headers".
+    """
+    generator.use_custom_headers = True
+    return generator
 
 
 def generator_to_dict(generator):
@@ -581,8 +689,8 @@ def assert_key(key, attrs, regexp, required=False):
 
 def get_protected_corpora() -> List[str]:
     """Return a list of corpora with restricted access."""
-    if authorizer:
-        return authorizer.get_protected_corpora()
+    if protected_corpora_getter:
+        return protected_corpora_getter.get_protected_corpora()
     else:
         return []
 
@@ -619,31 +727,43 @@ def sql_escape(s):
     return mysql.connection.escape_string(s).decode("utf-8") if isinstance(s, str) else s
 
 
-class Plugin(Blueprint):
-    """Simple plugin class, identical to Flask's Blueprint but with a method for accessing the plugin's
-    configuration."""
-
-    def config(self, key, default=None):
-        return app.config["PLUGINS_CONFIG"].get(self.import_name, {}).get(key, default)
-
-
-class Authorizer(ABC):
-    """Class to subclass when implementing an authorizer plugin."""
-
-    auth_class = None
+class ProtectedCorporaGetter(ABC, SubclassPlugin):
+    """Class to subclass for a plugin with get_protected_corpora."""
 
     def __init__(self):
         pass
 
     def __init_subclass__(cls):
-        Authorizer.auth_class = cls
+        # super().__init_subclass() seems to be needed to make
+        # multiple inheritance work correctly
+        super().__init_subclass__()
+        cls.set_baseclass(ProtectedCorporaGetter)
 
     @abstractmethod
     def get_protected_corpora(self, use_cache: bool = True) -> List[str]:
         """Get list of corpora with restricted access, in uppercase."""
         pass
 
+
+class BaseAuthorizer(ABC, SubclassPlugin):
+    """Class to subclass for an authorizer plugin with check_authorization."""
+
+    def __init__(self):
+        pass
+
+    def __init_subclass__(cls):
+        super().__init_subclass__()
+        cls.set_baseclass(BaseAuthorizer)
+
     @abstractmethod
     def check_authorization(self, corpora: List[str]) -> Tuple[bool, List[str], Optional[str]]:
         """Take a list of corpora and check that the user has permission to access them."""
         pass
+
+
+class Authorizer(ProtectedCorporaGetter, BaseAuthorizer):
+    """Class to subclass when implementing an authorizer plugin with both
+    get_protected_corpora and check_authorization."""
+
+    def __init__(self):
+        super().__init__()

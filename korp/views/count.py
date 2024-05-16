@@ -5,7 +5,8 @@ from concurrent import futures
 from concurrent.futures import ThreadPoolExecutor
 
 from dateutil.relativedelta import relativedelta
-from flask import Blueprint, current_app as app
+from flask import Blueprint, request
+from flask import current_app as app
 from pymemcache.exceptions import MemcacheError
 
 from korp import utils
@@ -165,11 +166,16 @@ def count(args, abort_event=None):
         return
 
     with ThreadPoolExecutor(max_workers=app.config["PARALLEL_THREADS"]) as executor:
+        # The query worker is outside the request context, so we pass the
+        # current request object to it, so that the plugin hook points in
+        # run_cqp can use it.
         future_query = dict((executor.submit(count_function, corpus=corpus, cqp=cqp, group_by=group_by,
                                              within=within[corpus], ignore_case=ignore_case,
                                              expand_prequeries=expand_prequeries,
                                              use_cache=args["cache"], cache_max=app.config["CACHE_MAX_STATS"],
-                                             abort_event=abort_event), corpus)
+                                             abort_event=abort_event,
+                                             request=request._get_current_object()),
+                             corpus)
                             for corpus in corpora if corpus not in zero_hits)
 
         for future in futures.as_completed(future_query):
@@ -484,10 +490,15 @@ def count_time(args):
         yield {"progress_corpora": corpora}
 
     with ThreadPoolExecutor(max_workers=app.config["PARALLEL_THREADS"]) as executor:
+        # The query worker is outside the request context, so we pass the
+        # current request object to it, so that the plugin hook points in
+        # run_cqp can use it.
         future_query = dict((executor.submit(count_query_worker, corpus=corpus, cqp=cqp, group_by=group_by,
                                              within=within[corpus],
                                              expand_prequeries=expand_prequeries,
-                                             use_cache=args["cache"], cache_max=app.config["CACHE_MAX_STATS"]), corpus)
+                                             use_cache=args["cache"], cache_max=app.config["CACHE_MAX_STATS"],
+                                             request=request._get_current_object()),
+                             corpus)
                             for corpus in corpora)
 
         for future in futures.as_completed(future_query):
@@ -610,7 +621,9 @@ def count_time(args):
 
 
 def count_query_worker(corpus, cqp, group_by, within, ignore_case=(), cut=None, expand_prequeries=True,
-                       use_cache=False, cache_max=0, abort_event=None):
+                       use_cache=False, cache_max=0, abort_event=None,
+                       request=request):
+    # request is used only for passing to run_cqp
     fullcqp = cqp
     subcqp = None
     if isinstance(cqp[-1], list):
@@ -682,7 +695,7 @@ def count_query_worker(corpus, cqp, group_by, within, ignore_case=(), cut=None, 
 
     cmd += ["exit;"]
 
-    lines = cwb.run_cqp(cmd, abort_event=abort_event)
+    lines = cwb.run_cqp(cmd, abort_event=abort_event, request=request)
 
     # Skip CQP version
     next(lines)
@@ -715,9 +728,11 @@ def count_query_worker(corpus, cqp, group_by, within, ignore_case=(), cut=None, 
 
 
 def count_query_worker_simple(corpus, cqp, group_by, within=None, ignore_case=(), expand_prequeries=True,
-                              use_cache=False, cache_max=0, abort_event=None):
+                              use_cache=False, cache_max=0, abort_event=None,
+                              request=request):
     """Worker for simple statistics queries which can be run using cwb-scan-corpus.
     Currently only used for searches on [] (any word)."""
+    # request is only for signature compatibity with count_query_worker
 
     if use_cache:
         checksum = utils.get_hash((cqp,

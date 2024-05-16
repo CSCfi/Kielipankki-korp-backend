@@ -3,7 +3,10 @@ import psutil
 import subprocess
 import re
 
+from flask import request
+
 from korp import utils
+from korp.pluginlib import CallbackPluginCaller
 
 
 class CWB:
@@ -22,19 +25,25 @@ class CWB:
         self.locale = locale
         self.encoding = encoding
 
-    def run_cqp(self, command, attr_ignore=False, abort_event=None, errors="strict"):
+    def run_cqp(self, command, attr_ignore=False, abort_event=None,
+                errors="strict", request=request):
         """Call the CQP binary with the given command, and the request data.
         Yield one result line at the time, disregarding empty lines.
         If there is an error, raise a CQPError exception, unless the
         parameter errors is "ignore" or "report" (report errors at the
         beginning of the output as lines beginning with "CQP Error:").
+
+        request is used only for passing to plugins, as run_cqp is also
+        called outside Flask request context.
         """
         env = os.environ.copy()
         env["LC_COLLATE"] = self.locale
+        plugin_caller = CallbackPluginCaller.get_instance(request)
         if not isinstance(command, str):
             command = "\n".join(command)
         command = "set PrettyPrint off;\n" + command
         command = command.encode(self.encoding)
+        command = plugin_caller.filter_value("filter_cqp_input", command)
         process = subprocess.Popen([self.executable, "-c", "-r", self.registry],
                                    stdin=subprocess.PIPE,
                                    stdout=subprocess.PIPE,
@@ -58,6 +67,9 @@ class CWB:
                 except subprocess.TimeoutExpired:
                     continue
                 break
+
+        reply, error = plugin_caller.filter_value(
+            "filter_cqp_output", (reply, error))
 
         if error and errors != "ignore":
             error = error.decode(self.encoding)
