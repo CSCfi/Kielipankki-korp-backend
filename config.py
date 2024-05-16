@@ -59,6 +59,11 @@ CACHE_MAX_STATS = 50
 # Max size in bytes per cached query data file (0 = no limit)
 CACHE_MAX_QUERY_DATA = 0
 
+# Whether corpus results should be sorted by corpus id by default (True) or
+# output in the order specified in the corpus parameter (False); this can be
+# overridden with the parameter sort_corpora=true|false
+SORT_CORPORA_DEFAULT = True
+
 # Corpus configuration directory
 CORPUS_CONFIG_DIR = ""
 
