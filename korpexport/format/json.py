@@ -7,9 +7,6 @@ Format Korp query results in JSON.
 :Date: 2014
 """
 
-
-from __future__ import absolute_import
-
 import json
 
 import korpexport.queryresult as qr
