@@ -1,4 +1,4 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -192,17 +192,17 @@ def print_header(obj):
             ``text/plain``, not an attachment.
     """
     charset = obj.get("download_charset")
-    print ("Content-Type: "
+    print("Content-Type: "
            + (obj.get("download_content_type", "text/plain")
               if "ERROR" not in obj
               else "text/plain")
            + (("; charset=" + charset) if charset else ""))
     if "ERROR" not in obj:
         # Default filename 
-        print make_content_disposition_attachment(
-            obj.get("download_filename", "korp_kwic"))
-        print "Content-Length: " + str(len(obj["download_content"]))
-    print
+        print(make_content_disposition_attachment(
+            obj.get("download_filename", "korp_kwic")))
+        print("Content-Length: " + str(len(obj["download_content"])))
+    print()
 
 
 def make_content_disposition_attachment(filename):
@@ -227,7 +227,7 @@ def make_content_disposition_attachment(filename):
 
     .. _Stackoverflow discussion: http://stackoverflow.com/questions/93551/how-to-encode-the-filename-parameter-of-content-disposition-header-in-http
     """
-    filename = urllib.quote(filename)
+    filename = urllib.parse.quote(filename)
     return (("Content-Disposition: attachment; "
              + ("filename*=UTF-8''{filename}; " if "%" in filename else "")
              + "filename={filename}")
@@ -243,12 +243,12 @@ def print_object(obj):
     """
     if "ERROR" in obj:
         error = obj["ERROR"]
-        print "Error when trying to download results:"
-        print error["type"] + ": " + error["value"]
+        print("Error when trying to download results:")
+        print(error["type"] + ": " + error["value"])
         if "traceback" in error:
-            print error["traceback"]
+            print(error["traceback"])
     else:
-        print obj["download_content"],
+        print(obj["download_content"], end=" ")
 
 
 if __name__ == "__main__":
