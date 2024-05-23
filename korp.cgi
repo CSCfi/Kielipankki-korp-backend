@@ -24,7 +24,7 @@ import MySQLdb
 import zlib
 import urllib.request, urllib.parse, urllib.error
 import base64
-import md5
+from hashlib import md5
 from queue import Queue, Empty
 import threading
 import ast
@@ -176,7 +176,7 @@ def main():
     remote_user = cgi.os.environ.get('REMOTE_USER')
     if remote_user:
         auth_domain = remote_user.partition('@')[2]
-        auth_user = md5.new(remote_user).hexdigest()
+        auth_user = md5(remote_user.encode("utf-8")).hexdigest()
     else:
         auth_domain = auth_user = None
     logging.info('Auth-domain: %s', auth_domain)
@@ -3689,7 +3689,7 @@ def authenticate(_=None):
         postdata = {
             "username": user,
             "password": pw,
-            "checksum": md5.new(user + pw + config.AUTH_SECRET).hexdigest()
+            "checksum": md5((user + pw + config.AUTH_SECRET).encode("utf-8")).hexdigest()
         }
     else:
         return dict(username=None)

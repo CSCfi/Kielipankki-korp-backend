@@ -62,7 +62,7 @@ import cgi
 import logging
 import urllib
 import time
-import md5
+from hashlib import md5
 
 import korpexport.exporter as ke
 
@@ -145,7 +145,7 @@ def main():
     remote_user = cgi.os.environ.get('REMOTE_USER')
     if remote_user:
         logging.info('Auth-domain: %s', remote_user.partition('@')[2])
-        logging.info('Auth-user: %s', md5.new(remote_user).hexdigest())
+        logging.info('Auth-user: %s', md5(remote_user.encode('utf-8')).hexdigest())
     logging.debug('Env: %s', cgi.os.environ)
     try:
         result = ke.make_download_file(
