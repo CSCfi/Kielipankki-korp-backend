@@ -115,7 +115,7 @@ def main():
     # Decode \r\n as \n, since a bare \n in parameters seems to get
     # encoded as \r\n.
     form = dict((field,
-                 form_raw.getvalue(field).decode("utf-8").replace('\r\n', '\n'))
+                 form_raw.getvalue(field).replace('\r\n', '\n'))
                  for field in form_raw.keys())
     # Configure logging
     loglevel = logging.DEBUG if "debug" in form else LOG_LEVEL
