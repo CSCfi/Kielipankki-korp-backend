@@ -105,8 +105,8 @@ def main():
             return s[:maxlen - len(ellipsis) - 10] + ellipsis + s[-10:]
 
     starttime = time.time()
-    # Open unbuffered stdout
-    sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
+    # Open stdout
+    sys.stdout = os.fdopen(sys.stdout.fileno(), 'w')
     # Convert form fields to regular dictionary with unicode values;
     # assume that the input is encoded in UTF-8. Note that this does
     # not handle list values resulting form multiple occurrences of a

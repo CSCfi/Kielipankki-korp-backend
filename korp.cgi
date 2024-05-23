@@ -129,7 +129,7 @@ def main():
      - debug: if set, return some extra information (for debugging)
     """
     starttime = time.time()
-    sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # Open unbuffered stdout
+    sys.stdout = os.fdopen(sys.stdout.fileno(), 'w')  # Open stdout
     print_header()
 
     if config.CACHE_DIR and not os.path.exists(config.CACHE_DIR):
