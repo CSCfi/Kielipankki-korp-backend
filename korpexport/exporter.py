@@ -288,10 +288,10 @@ class KorpExporter(object):
         for _, module_name, _ in pkgutil.iter_modules([pkgpath]):
             try:
                 subpkg = __import__(
-                    self._FORMATTER_SUBPACKAGE + "." + module_name, globals())
+                    f"korpexport.format.{module_name}", globals())
             except ImportError as e:
                 continue
-            module = getattr(subpkg, module_name)
+            module = getattr(subpkg.format, module_name)
             for name in dir(module):
                 try:
                     module_class = getattr(module, name)
