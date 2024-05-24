@@ -537,7 +537,7 @@ def query(form):
         cqpextra["cut"] = form.get("cut")
 
     # Sort numbered CQP-queries numerically
-    cqp = [form.get(key).decode("utf-8") for key in sorted([k for k in form.keys() if k.startswith("cqp")], key=lambda x: int(x[3:]) if len(x) > 3 else 0)]
+    cqp = [form.get(key) for key in sorted([k for k in form.keys() if k.startswith("cqp")], key=lambda x: int(x[3:]) if len(x) > 3 else 0)]
 
     result = {}
 
@@ -736,10 +736,8 @@ def query(form):
         ("%d" % (statistics[c],) for c in sorted(corpora))
         if config.COMPACT_SAVED_STATS
         else ("%s:%d" % (c, h) for c, h in statistics.items()))
-    result["querydata"] = (
-        zlib.compress(
-            checksum + ";" + str(ns.total_hits) + ";" + querydata_corpora)
-        .encode("base64").replace("+", "-").replace("/", "_"))
+    data = checksum + ";" + str(ns.total_hits) + ";" + querydata_corpora
+    result["querydata"] = str(zlib.compress(data.encode("utf-8")))
     
     if use_cache:
         cachefilename = os.path.join(config.CACHE_DIR, "query_" + checksum)
@@ -3357,7 +3355,7 @@ def translate_undef(s):
 
 def get_hash(values):
     """Get a hash for a list of values."""
-    return str(zlib.crc32(";".join(x.encode("UTF-8") if isinstance(x, str) else str(x) for x in values)))
+    return str(zlib.crc32(";".join(str(x) for x in values).encode("utf-8")))
 
 
 class CQPError(Exception):

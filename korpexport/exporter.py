@@ -440,7 +440,7 @@ class KorpExporter(object):
             output = p.communicate(query_params_url_encoded.encode("utf-8"))[0]
             logging.debug("Korp server output: %s", output)
             # Remove HTTP headers from the result
-            return re.sub(r"(?s)^.*?\n\n", "", output, count=1)
+            return re.sub(r"(?s)^.*?\n\n", "", output.decode("utf-8"), count=1)
 
     def _extract_options(self, korp_server_url=None):
         """Extract formatting options from form, affected by query params.
