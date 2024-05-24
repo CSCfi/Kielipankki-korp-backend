@@ -409,13 +409,13 @@ class KorpExporter(object):
         # Encode the query parameters in UTF-8 for Korp server
         logging.debug("Korp server: %s", url_or_progname)
         logging.debug("Korp query params: %s", query_params)
-        query_params_encoded = urllib.parse.urlencode(
+        query_params_url_encoded = urllib.parse.urlencode(
             dict((key, val.encode("utf-8"))
                  for key, val in list(query_params.items())))
-        logging.debug("Encoded query params: %s", query_params_encoded)
+        logging.debug("Encoded query params: %s", query_params_url_encoded)
         logging.debug("Env: %s", os.environ)
         if url_or_progname.startswith("http"):
-            return urllib.request.urlopen(url_or_progname, query_params_encoded).read()
+            return urllib.request.urlopen(url_or_progname, query_params_url_encoded).read()
         else:
             env = {}
             # Pass the environment of this scropt appropriately
@@ -434,10 +434,10 @@ class KorpExporter(object):
                  "REQUEST_METHOD": "POST",
                  "QUERY_STRING": "",
                  "CONTENT_TYPE": "application/x-www-form-urlencoded",
-                 "CONTENT_LENGTH": str(len(query_params_encoded))})
+                 "CONTENT_LENGTH": str(len(query_params_url_encoded))})
             logging.debug("Env modified: %s", env)
             p = Popen(url_or_progname, stdin=PIPE, stdout=PIPE, env=env)
-            output = p.communicate(query_params_encoded)[0]
+            output = p.communicate(query_params_url_encoded.encode("utf-8"))[0]
             logging.debug("Korp server output: %s", output)
             # Remove HTTP headers from the result
             return re.sub(r"(?s)^.*?\n\n", "", output, count=1)
