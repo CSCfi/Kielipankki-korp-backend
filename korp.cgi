@@ -20,7 +20,6 @@ import time
 import cgi
 import re
 import json
-import MySQLdb
 import zlib
 import urllib.request, urllib.parse, urllib.error
 import base64
@@ -29,10 +28,13 @@ from queue import Queue, Empty
 import threading
 import ast
 import itertools
-import MySQLdb.cursors
 import pickle
 import logging
 import korp_config as config
+
+import pymysql
+pymysql.install_as_MySQLdb()
+import MySQLdb
 
 ################################################################################
 # Nothing needs to be changed in this file. Use korp_config.py for configuration.
