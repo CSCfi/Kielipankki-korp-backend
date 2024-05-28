@@ -248,7 +248,8 @@ def print_object(obj):
         if "traceback" in error:
             print(error["traceback"])
     else:
-        print(obj["download_content"], end=" ")
+        sys.stdout.flush()
+        sys.stdout.buffer.write(obj["download_content"])
 
 
 if __name__ == "__main__":

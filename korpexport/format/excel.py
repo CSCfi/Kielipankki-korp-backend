@@ -8,7 +8,7 @@ Format Korp query results as an Excel 97–2003 workbook (XLS).
 """
 
 
-import io as strio
+import io
 
 import xlwt
 
@@ -53,6 +53,6 @@ class KorpExportFormatterExcel(delimited.KorpExportFormatterDelimited):
             if row:
                 for colnum, value in enumerate(row.split("\t")):
                     worksheet.write(rownum, colnum, value)
-        output = strio.StringIO()
+        output = io.BytesIO()
         workbook.save(output)
         return output.getvalue()
