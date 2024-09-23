@@ -886,7 +886,7 @@ def query(args):
                     if future.exception() is not None:
                         raise CQPError(future.exception())
                     else:
-                        _, nr_hits, _, _ = future.result()
+                        _, nr_hits, _ = future.result()
                         statistics[corpus] = nr_hits
                         ns.total_hits += nr_hits
                         if incremental:
@@ -1207,7 +1207,7 @@ def query_corpus(corpus, cqp, within=None, cut=None, context=None, show=None, sh
         except FileNotFoundError:
             pass
 
-    return lines, nr_hits, attrs, context2
+    return lines, nr_hits, attrs
 
 
 def query_parse_lines(corpus, lines, attrs, show, show_structs, free_matches=False,
@@ -1441,9 +1441,10 @@ def query_and_parse(corpus, cqp, within=None, cut=None, context=None, show=None,
                     sort=None, random_seed=None, no_results=False, expand_prequeries=True, free_search=False,
                     use_cache=False, request=request):
     # request is used only for passing to run_cqp via query_corpus
-    lines, nr_hits, attrs, context2 = query_corpus(corpus, cqp, within, cut, context, show, show_structs, start, end, sort,
-                                                   random_seed, no_results, expand_prequeries, free_search, use_cache,
-                                                   request)
+    context, context2 = split_context2(context)
+    lines, nr_hits, attrs = query_corpus(corpus, cqp, within, cut, context, show, show_structs, start, end, sort,
+                                         random_seed, no_results, expand_prequeries, free_search, use_cache,
+                                         request)
     kwic = query_parse_lines(corpus, lines, attrs, show, show_structs, free_matches=free_search,
                              context2=context2)
     return kwic, nr_hits
