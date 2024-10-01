@@ -1062,6 +1062,8 @@ def query_corpus(corpus, cqp, within=None, cut=None, context=None, show=None, sh
     cqpparams = {"within": within,
                  "cut": cut}
 
+    context, context2 = split_context2(context)
+
     # Handle aligned corpora
     if "|" in corpus:
         linked = corpus.split("|")
@@ -1208,7 +1210,8 @@ def query_corpus(corpus, cqp, within=None, cut=None, context=None, show=None, sh
     return lines, nr_hits, attrs
 
 
-def query_parse_lines(corpus, lines, attrs, show, show_structs, free_matches=False):
+def query_parse_lines(corpus, lines, attrs, show, show_structs, free_matches=False,
+                      context2=None):
     """Parse concordance lines from CWB."""
 
     # Filter out unavailable attributes
@@ -1342,10 +1345,14 @@ def query_parse_lines(corpus, lines, attrs, show, show_structs, free_matches=Fal
                 tokens.append(token)
 
                 n += 1
+
         except IndexError:
             # Attributes containing ">" or "<" can make some lines unparseable. We skip them
             # until we come up with better a solution.
             continue
+
+        if context2 is not None:
+            limit_kwic_by_context2(tokens, match, context2)
 
         if aligned:
             # If this was an aligned row, we add it to the previous kwic row
@@ -1374,15 +1381,114 @@ def query_parse_lines(corpus, lines, attrs, show, show_structs, free_matches=Fal
     return kwic
 
 
+def limit_kwic_by_context2(tokens, match, context2):
+    """Limit a KWIC result line `tokens` with `match` by `context2`.
+
+    Limit the tokens of a KWIC result line according to the possible
+    secondary context.
+    """
+
+    # Secondary left context
+    if context2[0] is not None:
+        context_unit, unit_count = context2[0]
+        first_token_num = 0
+        if context_unit == "words":
+            # Context unit is token
+            if match["start"] > unit_count:
+                first_token_num = match["start"] - unit_count
+        else:
+            # Context unit is a structural attribute: go through
+            # tokens from the match start towards the beginning, until
+            # the number of closing context units matches the
+            # secondary context unit count.
+            i = match["start"] - 1
+            struct_count = 0
+            while i >= 0 and struct_count < unit_count:
+                if context_unit in (tokens[i].get("structs", {})
+                                    .get("close", [])):
+                    struct_count += 1
+                i -= 1
+            first_token_num = i + 1 + int(struct_count >= unit_count)
+        if first_token_num > 0:
+            tokens[:first_token_num] = []
+            match["start"] -= first_token_num
+            match["end"] -= first_token_num
+
+    # Secondary right context
+    if context2[1] is not None:
+        context_unit, unit_count = context2[1]
+        token_count = len(tokens)
+        last_token_num = token_count
+        if context_unit == "words":
+            last_token_num = min(match["end"] + unit_count, last_token_num)
+        else:
+            # Go through toknes from the match end towards the end,
+            # until the number of opening context units matches the
+            # secondary context unit count.
+            i = match["end"]
+            struct_count = 0
+            while i < token_count and struct_count < unit_count:
+                if context_unit in (tokens[i].get("structs", {})
+                                    .get("open", [])):
+                    struct_count += 1
+                i += 1
+            last_token_num = i - int(struct_count >= unit_count)
+        if last_token_num <= token_count:
+            tokens[last_token_num:] = []
+
+
 def query_and_parse(corpus, cqp, within=None, cut=None, context=None, show=None, show_structs=None, start=0, end=10,
                     sort=None, random_seed=None, no_results=False, expand_prequeries=True, free_search=False,
                     use_cache=False, request=request):
     # request is used only for passing to run_cqp via query_corpus
+    context, context2 = split_context2(context)
     lines, nr_hits, attrs = query_corpus(corpus, cqp, within, cut, context, show, show_structs, start, end, sort,
                                          random_seed, no_results, expand_prequeries, free_search, use_cache,
                                          request)
-    kwic = query_parse_lines(corpus, lines, attrs, show, show_structs, free_matches=free_search)
+    kwic = query_parse_lines(corpus, lines, attrs, show, show_structs, free_matches=free_search,
+                             context2=context2)
     return kwic, nr_hits
+
+
+def split_context2(context):
+    """Split `context` to primary and secondary; return (primary, secondary).
+
+    Split the context parameters in `context` to a primary and
+    secondary context, specified as "primary/secondary". The primary
+    context is passed to CQP as usual, and the secondary context is
+    handled in `query_parse_lines`. The secondary context is used to
+    limit the context further if necessary; for example, "20 words/1
+    sentence" limits a context to a maximum of 20 words within a
+    single sentence and "1 paragraph/3 sentence" to a maximum of three
+    sentences within a single paragraph. The contexts A/B and B/A
+    produce the same result for any A and B. This might be generalized
+    to multiple secondary contexts, each providing a maximum context
+    by a different unit.
+
+    The secondary context is always a pair of pairs: for the left and
+    right context, a pair of the context unit (a structural attribute
+    name or "words"/"word") and the number of units. If a context has
+    only the primary context, the corresponding item in the secondary
+    context is `None`.
+    """
+    context2 = []
+    for ctxt in context:
+        ctxt2 = ctxt.partition('/')[2]
+        if ctxt2:
+            try:
+                unit_count, context_unit = ctxt2.split()
+                if context_unit == "word":
+                    context_unit = "words"
+                context2.append((context_unit, int(unit_count)))
+            except ValueError:
+                raise ValueError("Malformed value for secondary context.")
+        else:
+            context2.append(None)
+    if len(context2) == 1:
+        context2.append(context2[0])
+    context2 = tuple(context2)
+    context = tuple([ctxt.partition('/')[0] for ctxt in context])
+    return context, context2
 
 
 def which_hits(corpora, stats, start, end):
