@@ -3695,7 +3695,7 @@ def authenticate(_=None):
         return dict(username=None)
 
     try:
-        contents = urllib.request.urlopen(config.AUTH_SERVER, urllib.parse.urlencode(postdata)).read()
+        contents = urllib.request.urlopen(config.AUTH_SERVER, urllib.parse.urlencode(postdata).encode("utf-8")).read()
         auth_response = json.loads(contents)
     except urllib.error.HTTPError:
         raise KorpAuthenticationError("Could not contact authentication server.")
