@@ -174,10 +174,10 @@ class KorpLogGroupAdder(object):
                 add_to_group_fn(corp, corp_item, grouped=False)
         if mode == 'corp':
             return [make_group_str(group, group_corpora)
-                    for group, group_corpora in groups.iteritems()]
+                    for group, group_corpora in groups.items()]
         else:
             return [(make_group_str_hits(group, group_corpora), hits)
-                    for group, group_corpora_hits in groups.iteritems()
+                    for group, group_corpora_hits in groups.items()
                     for group_corpora, hits in [group_corpora_hits]]
 
 

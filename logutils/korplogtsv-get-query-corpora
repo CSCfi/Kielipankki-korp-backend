@@ -56,7 +56,7 @@ class KorpLogCorporaGetter(object):
                 except SyntaxError:
                     continue
                 hits = dict((corp.lower(), hitcnt)
-                            for corp, hitcnt in hits.iteritems())
+                            for corp, hitcnt in hits.items())
                 # The value of the parameter "corpus" can be either a
                 # string of corpora (separated by commas) or a list,
                 # which adds some extra work.

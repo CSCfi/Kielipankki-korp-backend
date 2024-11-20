@@ -32,8 +32,8 @@ class StatsCell(object):
 
     def getvalue(self):
         values = dict((key, self._getvalue(key))
-                      for key in self._value.iterkeys())
-        values['total'] = sum(val for val in values.itervalues())
+                      for key in self._value.keys())
+        values['total'] = sum(val for val in values.values())
         return values
 
     def _getvalue(self, key):
@@ -94,7 +94,7 @@ class Table(list):
             self._headings['row'].add(rownum)
         if fmt:
             lastcol = len(self[-1]) - 1
-            for colnum0 in xrange(len(new_cells)):
+            for colnum0 in range(len(new_cells)):
                 self.add_format(fmt, 'cell', (rownum, lastcol - colnum0))
         # print "extend_row", new_cells, self
 
@@ -162,10 +162,10 @@ class Table(list):
     def _propagate_formats(self):
         if self._formats_propagated:
             return
-        for row, fmt in self._format['row'].iteritems():
-            for col in xrange(len(self[row])):
+        for row, fmt in self._format['row'].items():
+            for col in range(len(self[row])):
                 self._format['cell'].setdefault((row, col), fmt)
-        for col, fmt in self._format['col'].iteritems():
+        for col, fmt in self._format['col'].items():
             for row in self:
                 self._format['cell'].setdefault((row, col), fmt)
         self._formats_propagated = True
