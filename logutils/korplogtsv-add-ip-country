@@ -4,8 +4,9 @@
 import sys
 import csv
 
-# Requires packages python-geoip and python-geoip-geolite2 from PyPi
-from geoip import geolite2
+# Requires package geoip2fast from PyPi, providing access to GeoLite2
+# data from MaxMind
+from geoip2fast import GeoIP2Fast
 
 
 class KorpLogIPAdder(object):
@@ -33,13 +34,16 @@ class KorpLogIPAdder(object):
         out_writer = csv.DictWriter(sys.stdout, out_fields, delimiter='\t',
                                     quoting=csv.QUOTE_NONE,
                                     extrasaction='ignore')
+        geolite2 = GeoIP2Fast()
         for fields in log_reader:
             try:
                 ip_info = geolite2.lookup(fields['ip'])
+                country = ip_info.country_code
+                if country == '--':
+                    country = '-'
             except ValueError:
-                ip_info = None
-            fields['ip_country'] = (ip_info.country if ip_info is not None
-                                    else '-')
+                country = '-'
+            fields['ip_country'] = country
             out_writer.writerow(fields)
 
 
