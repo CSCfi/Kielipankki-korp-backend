@@ -48,7 +48,8 @@ def process_log(stream):
                 '\t'.join(info[pid].get(field, '') for field in tsv_fields)
                 + '\n')
 
-    with NamedTemporaryFile(prefix='korplog2tsv_', delete=False) as outfile:
+    with NamedTemporaryFile('w+', prefix='korplog2tsv_',
+                            delete=False) as outfile:
         tmp_filename = outfile.name
         for line in stream:
             mo = re.match(
