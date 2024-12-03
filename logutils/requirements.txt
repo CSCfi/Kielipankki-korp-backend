@@ -1,0 +1,4 @@
+# Required PyPI modules for logutils
+
+# For korplogtsv-add-ip-country
+geoip2fast >= 1.2.0
