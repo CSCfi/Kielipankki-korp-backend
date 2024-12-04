@@ -1,4 +1,4 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -62,7 +62,7 @@ import cgi
 import logging
 import urllib
 import time
-import md5
+from hashlib import md5
 
 import korpexport.exporter as ke
 
@@ -105,8 +105,8 @@ def main():
             return s[:maxlen - len(ellipsis) - 10] + ellipsis + s[-10:]
 
     starttime = time.time()
-    # Open unbuffered stdout
-    sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
+    # Open stdout
+    sys.stdout = os.fdopen(sys.stdout.fileno(), 'w')
     # Convert form fields to regular dictionary with unicode values;
     # assume that the input is encoded in UTF-8. Note that this does
     # not handle list values resulting form multiple occurrences of a
@@ -115,7 +115,7 @@ def main():
     # Decode \r\n as \n, since a bare \n in parameters seems to get
     # encoded as \r\n.
     form = dict((field,
-                 form_raw.getvalue(field).decode("utf-8").replace('\r\n', '\n'))
+                 form_raw.getvalue(field).replace('\r\n', '\n'))
                  for field in form_raw.keys())
     # Configure logging
     loglevel = logging.DEBUG if "debug" in form else LOG_LEVEL
@@ -145,7 +145,7 @@ def main():
     remote_user = cgi.os.environ.get('REMOTE_USER')
     if remote_user:
         logging.info('Auth-domain: %s', remote_user.partition('@')[2])
-        logging.info('Auth-user: %s', md5.new(remote_user).hexdigest())
+        logging.info('Auth-user: %s', md5(remote_user.encode('utf-8')).hexdigest())
     logging.debug('Env: %s', cgi.os.environ)
     try:
         result = ke.make_download_file(
@@ -192,17 +192,17 @@ def print_header(obj):
             ``text/plain``, not an attachment.
     """
     charset = obj.get("download_charset")
-    print ("Content-Type: "
+    print("Content-Type: "
            + (obj.get("download_content_type", "text/plain")
               if "ERROR" not in obj
               else "text/plain")
            + (("; charset=" + charset) if charset else ""))
     if "ERROR" not in obj:
         # Default filename 
-        print make_content_disposition_attachment(
-            obj.get("download_filename", "korp_kwic"))
-        print "Content-Length: " + str(len(obj["download_content"]))
-    print
+        print(make_content_disposition_attachment(
+            obj.get("download_filename", "korp_kwic")))
+        print("Content-Length: " + str(len(obj["download_content"])))
+    print()
 
 
 def make_content_disposition_attachment(filename):
@@ -227,7 +227,7 @@ def make_content_disposition_attachment(filename):
 
     .. _Stackoverflow discussion: http://stackoverflow.com/questions/93551/how-to-encode-the-filename-parameter-of-content-disposition-header-in-http
     """
-    filename = urllib.quote(filename)
+    filename = urllib.parse.quote(filename)
     return (("Content-Disposition: attachment; "
              + ("filename*=UTF-8''{filename}; " if "%" in filename else "")
              + "filename={filename}")
@@ -243,12 +243,13 @@ def print_object(obj):
     """
     if "ERROR" in obj:
         error = obj["ERROR"]
-        print "Error when trying to download results:"
-        print error["type"] + ": " + error["value"]
+        print("Error when trying to download results:")
+        print(error["type"] + ": " + error["value"])
         if "traceback" in error:
-            print error["traceback"]
+            print(error["traceback"])
     else:
-        print obj["download_content"],
+        sys.stdout.flush()
+        sys.stdout.buffer.write(obj["download_content"])
 
 
 if __name__ == "__main__":
