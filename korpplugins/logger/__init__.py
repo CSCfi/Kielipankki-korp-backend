@@ -185,9 +185,12 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
                            pid=os.getpid()))
         logdir = os.path.split(logfile)[0]
         os.makedirs(logdir, exist_ok=True)
-        handler = logging.FileHandler(logfile)
-        handler.setFormatter(TruncatingLogFormatter(pluginconf.LOG_FORMAT))
-        self._logger.addHandler(handler)
+        logfile_handler = logging.FileHandler(logfile)
+        logfile_handler.setFormatter(TruncatingLogFormatter(pluginconf.LOG_FORMAT))
+        self._logger.addHandler(logfile_handler)
+        syslog_handler = SysLogHandler(address='/dev/log')
+        syslog_handler.setFormatter(TruncatingLogFormatter(pluginconf.LOG_FORMAT))
+        logger.addHandler(syslog_handler)
         # Storage for request-specific data, such as start times
         self._logdata = dict()
 
