@@ -9,6 +9,8 @@ Sample configuration for the auth WSGI script.
 # For log levels
 import logging
 
+LOG_USING_NATIVE_PYTHON = True
+LOG_USING_SYSLOG = False
 
 # Host and port for the WSGI server
 WSGI_HOST = "localhost"
@@ -24,3 +26,4 @@ DBNAME = "korp_auth"
 # Log file and level
 LOG_FILE = "/v/korp/log/korp-auth.log"
 LOG_LEVEL = logging.INFO    # in non-logging version, WARNING
+LOG_FORMAT = "[auth.py %(levelname)s %(process)d @ %(asctime)s] %(message)s"

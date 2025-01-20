@@ -64,15 +64,15 @@ def auth():
     # DEBUG, else INFO. Note that logging.INFO needs to be set explicitly to
     # cancel the effect of a possible previous debugging argument.
     debugging = args.get("debug", "").lower() in ["1", "true", "yes"]
-    logging.getLogger().setLevel(
+    _logger.setLevel(
         logging.DEBUG if debugging else config.LOG_LEVEL)
     args_without_personal_data = {
         key: value for key, value in args.items() if key != "remote_user"
     }
     if debugging:
-        logging.info("Arguments: %s", args)
+        _logger.info("Arguments: %s", args)
     else:
-        logging.info("Arguments: %s", args_without_personal_data)
+        _logger.info("Arguments: %s", args_without_personal_data)
     authenticated, corpora = _get_permitted_resources(
         *(args.get(key, "") for key in [
             "remote_user", "affiliation", "entitlement"]))
@@ -85,12 +85,12 @@ def auth():
     )
     # First we log the result without personal information
     if not debugging:
-        logging.info("Result: %s", result)
+        _logger.info("Result: %s", result)
     # Then we add the validated username
     result["permitted_resources"]["username"] = args.get("remote_user")
     # Only log it for debugging
     if debugging:
-        logging.info("Result: %s", result)
+        _logger.info("Result: %s", result)
     return Response(json.dumps(result), mimetype="application/json")
 
 
@@ -120,7 +120,7 @@ def _get_permitted_resources(username, affiliation, entitlement):
     Shibboleth and entitlement contains LBR REMS IDs (URNs) as a
     semicolon separated list.
     """
-    logging.debug("Username: %s", username)
+    _logger.debug("Username: %s", username)
     if not username:
         return False, []
 
@@ -144,8 +144,8 @@ def _get_permitted_resources(username, affiliation, entitlement):
     if academic and clarin_fi:
         top_domain = "fi"
 
-    logging.debug("Is-Academic: %s", academic)
-    logging.debug("Entitlement: %s", entitlement)
+    _logger.debug("Is-Academic: %s", academic)
+    _logger.debug("Entitlement: %s", entitlement)
 
     # We can grant ACA status to people locally
     if not academic:
@@ -177,11 +177,11 @@ def _get_permitted_resources(username, affiliation, entitlement):
 
     # Finally fill in entitlement values
     sql = sql % entitlement
-    logging.debug("SQL: %r", sql)
+    _logger.debug("SQL: %r", sql)
 
     cursor.execute(sql)
     corpora = [corpus.upper() for corpus, in cursor]
-    logging.debug("Corpora: %s", corpora)
+    _logger.debug("Corpora: %s", corpora)
 
     return True, corpora
 
@@ -191,11 +191,17 @@ def _get_permitted_resources(username, affiliation, entitlement):
 # Logging in this way may result in mixed lines if multiple instances
 # of the auth application are run simultaneously. However, it might
 # suffice to run a single instance at a time.
-logging.basicConfig(
-    filename=config.LOG_FILE,
-    format=("[auth.py %(levelname)s %(process)d @ %(asctime)s] %(message)s"),
-    level=config.LOG_LEVEL)
-
+_logger = logging.getLogger(__name__)
+_logger.setLevel(config.LOG_LEVEL)
+if config.LOG_USING_NATIVE_PYTHON:
+    logfile_handler = logging.FileHandler(config.LOG_FILE)
+    logfile_handler.setFormatter(logging.Formatter(config.LOG_FORMAT))
+    _logger.addHandler(logfile_handler)
+if config.LOG_USING_SYSLOG:
+    syslog_handler = SysLogHandler(address='/dev/log',
+                                   facility=logging.handlers.SysLogHandler.LOG_LOCAL1)
+    syslog_handler.setFormatter(logging.Formatter(config.LOG_FORMAT))
+    _logger.addHandler(syslog_handler)
 
 if __name__ == "__main__":
     if len(sys.argv) == 2 and sys.argv[1] == "dev":
