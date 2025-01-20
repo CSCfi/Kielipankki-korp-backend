@@ -178,19 +178,22 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
         self._logger = logging.getLogger(__name__)
         self._logger.setLevel(pluginconf.LOG_LEVEL)
         tm = time.localtime()
-        logfile = (os.path.join(pluginconf.LOG_BASEDIR,
-                                pluginconf.LOG_FILENAME_FORMAT)
-                   .format(year=tm.tm_year, mon=tm.tm_mon, mday=tm.tm_mday,
-                           hour=tm.tm_hour, min=tm.tm_min, sec=tm.tm_sec,
-                           pid=os.getpid()))
-        logdir = os.path.split(logfile)[0]
-        os.makedirs(logdir, exist_ok=True)
-        logfile_handler = logging.FileHandler(logfile)
-        logfile_handler.setFormatter(TruncatingLogFormatter(pluginconf.LOG_FORMAT))
-        self._logger.addHandler(logfile_handler)
-        syslog_handler = SysLogHandler(address='/dev/log')
-        syslog_handler.setFormatter(TruncatingLogFormatter(pluginconf.LOG_FORMAT))
-        logger.addHandler(syslog_handler)
+        if pluginconf.LOG_USING_NATIVE_PYTHON:
+            logfile = (os.path.join(pluginconf.LOG_BASEDIR,
+                                    pluginconf.LOG_FILENAME_FORMAT)
+                       .format(year=tm.tm_year, mon=tm.tm_mon, mday=tm.tm_mday,
+                               hour=tm.tm_hour, min=tm.tm_min, sec=tm.tm_sec,
+                               pid=os.getpid()))
+            logdir = os.path.split(logfile)[0]
+            os.makedirs(logdir, exist_ok=True)
+            logfile_handler = logging.FileHandler(logfile)
+            logfile_handler.setFormatter(TruncatingLogFormatter(pluginconf.LOG_FORMAT))
+            self._logger.addHandler(logfile_handler)
+        if pluginconf.LOG_USING_SYSLOG:
+            syslog_handler = SysLogHandler(address='/dev/log',
+                                           facility=logging.handlers.SysLogHandler.LOG_LOCAL0)
+            syslog_handler.setFormatter(TruncatingLogFormatter(pluginconf.LOG_FORMAT))
+            logger.addHandler(syslog_handler)
         # Storage for request-specific data, such as start times
         self._logdata = dict()
 
