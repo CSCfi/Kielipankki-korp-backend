@@ -8,6 +8,11 @@ Configuration module for korpplugins.logger.
 
 import logging
 
+# Do we write to logfiles from Python?
+LOG_USING_NATIVE_PYTHON = True
+
+# Do we log using syslog?
+LOG_USING_SYSLOG = False
 
 # Base directory for log files
 LOG_BASEDIR = "/v/korp/log/korp-py"
