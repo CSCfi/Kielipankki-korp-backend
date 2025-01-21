@@ -198,8 +198,8 @@ if config.LOG_USING_NATIVE_PYTHON:
     logfile_handler.setFormatter(logging.Formatter(config.LOG_FORMAT))
     _logger.addHandler(logfile_handler)
 if config.LOG_USING_SYSLOG:
-    syslog_handler = SysLogHandler(address='/dev/log',
-                                   facility=logging.handlers.SysLogHandler.LOG_LOCAL0)
+    syslog_handler = logging.handlers.SysLogHandler(address='/dev/log',
+                                                    facility=logging.handlers.SysLogHandler.LOG_LOCAL0)
     syslog_handler.setFormatter(logging.Formatter(config.LOG_FORMAT))
     _logger.addHandler(syslog_handler)
 
