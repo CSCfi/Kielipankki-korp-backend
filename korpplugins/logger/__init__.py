@@ -190,10 +190,10 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
             logfile_handler.setFormatter(TruncatingLogFormatter(pluginconf.LOG_FORMAT))
             self._logger.addHandler(logfile_handler)
         if pluginconf.LOG_USING_SYSLOG:
-            syslog_handler = SysLogHandler(address='/dev/log',
-                                           facility=logging.handlers.SysLogHandler.LOG_LOCAL0)
+            syslog_handler = logging.handlers.SysLogHandler(address='/dev/log',
+                                                            facility=logging.handlers.SysLogHandler.LOG_LOCAL0)
             syslog_handler.setFormatter(TruncatingLogFormatter(pluginconf.LOG_FORMAT))
-            logger.addHandler(syslog_handler)
+            self._logger.addHandler(syslog_handler)
         # Storage for request-specific data, such as start times
         self._logdata = dict()
 
