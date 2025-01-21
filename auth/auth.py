@@ -199,7 +199,7 @@ if config.LOG_USING_NATIVE_PYTHON:
     _logger.addHandler(logfile_handler)
 if config.LOG_USING_SYSLOG:
     syslog_handler = SysLogHandler(address='/dev/log',
-                                   facility=logging.handlers.SysLogHandler.LOG_LOCAL1)
+                                   facility=logging.handlers.SysLogHandler.LOG_LOCAL0)
     syslog_handler.setFormatter(logging.Formatter(config.LOG_FORMAT))
     syslog_handler.ident = "korp-auth.py"
     _logger.addHandler(syslog_handler)
