@@ -196,7 +196,6 @@ class KorpLogger(korppluginlib.KorpCallbackPlugin):
             syslog_handler = logging.handlers.SysLogHandler(address='/dev/log',
                                                             facility=logging.handlers.SysLogHandler.LOG_LOCAL0)
             syslog_handler.setFormatter(TruncatingLogFormatter(pluginconf.LOG_FORMAT))
-            syslog_handler.ident = 'korp.py'
             self._logger.addHandler(syslog_handler)
         # Storage for request-specific data, such as start times
         self._logdata = dict()
