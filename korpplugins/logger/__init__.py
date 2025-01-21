@@ -31,6 +31,9 @@ import korppluginlib
 # See config.py.template for more information on the configuration variables
 
 pluginconf = korppluginlib.get_plugin_config(
+    # Which facilities to use
+    LOG_USING_NATIVE_PYTHON = True,
+    LOG_USING_SYSLOG = False,
     # Base directory for log files
     LOG_BASEDIR = "/v/korp/log/korp-py",
     # Log filename format string (for str.format())
