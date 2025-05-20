@@ -1,0 +1,42 @@
+id: opus_opensubtitles2011_fipl_fi
+title: OpenSubtitles2011
+description: OpenSubtitles 2011
+alias:
+- opus
+- opus_fipl
+lang: fin
+linked_to:
+- opus_opensubtitles2011_fipl_pl
+metadata_urn: urn:nbn:fi:lb-2015102201
+urn: urn_placeholder
+licence:
+  name: CC BY 4.0 (PUB)
+  description: Creative Commons Attribution
+  urn: urn:nbn:fi:lb-2021120223
+cite_id: Opus-Korp
+mode:
+- name: parallel
+  folder: other.opus.fipl
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes: []

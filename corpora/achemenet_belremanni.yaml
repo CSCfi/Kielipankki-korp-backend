@@ -1,0 +1,280 @@
+id: achemenet_belremanni
+title: Jursa, Bēl-rēmanni (Achemenet)
+description: 'Jursa, Das Archiv des Bēl-rēmanni (Achemenet)<br/><br/>The texts are
+  originally published in Jursa, Michael. 1999. Das Archiv des Bēl-rēmanni. Uitgaven
+  van het Nederlands Historisch-Archaeologisch Instituut te Istanbul 86. Istanbul:
+  Nederlands Historisch-Archaeologisch Instituut.'
+alias:
+- achemenet_korp
+shortname: achemenet-2020-12-korp
+metadata_urn: urn:nbn:fi:lb-2023062101
+urn: urn:nbn:fi:lb-2023062102
+licence:
+  name: CC BY 4.0
+  description: Creative Commons Attribution 4.0 International
+  urn: urn:nbn:fi:lb-2025020601
+iprholder:
+  name: Achemenet-CNRS
+  url: http://www.achemenet.com/
+mode:
+- name: other_languages
+  folder: cuneiform.achemenet
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- lemma: baseform
+- autolemma:
+    label:
+      eng: autolemma
+      fin: autolemma
+      swe: autolemma
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 9
+- autopos:
+    label:
+      eng: autopos
+      fin: autopos
+      swe: autopos
+    extended_component: structServiceAutocomplete
+    order: 10
+- msd:
+    label:
+      eng: msd
+      fin: morfologinen analyysi
+      swe: msd
+    order: 5
+- translation:
+    label:
+      eng: translation (base form)
+      fin: merkitys (lemma)
+      swe: oracc_lemmatrans
+    order: 6
+- sense:
+    label:
+      eng: translation (sense)
+      fin: merkitys (sananmuoto)
+      swe: oracc_sense
+    order: 7
+    stats_cqp: cqpPlainWordAttr
+    stats_stringify: stringifyPlainWordAttr
+- transcription:
+    label:
+      eng: transcription
+      fin: transkriptio
+      swe: oracc_transcription
+    order: 2
+- pos:
+    label:
+      eng: part of speech
+      fin: sanaluokka
+      swe: ordklass
+    extended_component: structServiceSelect
+    order: 3
+- oraccpos:
+    label:
+      eng: part of speech subcategory
+      fin: tarkempi sanaluokka
+      swe: oracc_pos_subcategory
+    extended_component: structServiceAutocomplete
+    order: 4
+- normname:
+    label:
+      eng: standardized
+      fin: standardoitu kirjoitusasu
+      swe: oracc_standardized
+    order: 1
+- lang:
+    label:
+      eng: language/dialect
+      fin: kielimuoto
+      swe: oracc_lang
+    extended_component: structServiceSelect
+    order: 8
+struct_attributes:
+- text_cdlinumber:
+    label:
+      eng: CDLI number
+      fin: CDLI-tunniste
+      swe: oracc_cdlinumber
+    order: 0
+- text_provenience:
+    label:
+      eng: provenance
+      fin: alue
+      swe: oracc_provenance
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: structServiceAutocomplete
+    order: 10
+- text_language:
+    label:
+      eng: text languages
+      fin: tekstin kielet
+      swe: oracc_textlang
+    extended_component: structServiceAutocomplete
+    order: 14
+- text_genre:
+    label:
+      eng: genre
+      fin: tekstin tyylilaji
+      swe: oracc_genre
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: structServiceSelect
+    order: 12
+- text_period:
+    label:
+      eng: period
+      fin: aikakausi
+      swe: oracc_period
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: structServiceSelect
+    order: 7
+- text_subgenre:
+    label:
+      eng: subgenre
+      fin: tekstin tyylin alalaji
+      swe: oracc_subgenre
+    extended_component: structServiceAutocomplete
+    order: 13
+- text_museumno:
+    label:
+      eng: museum number
+      fin: museonumero
+      swe: oracc_museumno
+    order: 5
+- text_datebce:
+    label:
+      eng: date BCE
+      fin: päiväys BCE
+      swe: oracc_datebce
+    extended_component: structServiceAutocomplete
+    order: 9
+- text_primarypub:
+    label:
+      eng: primary publication
+      fin: julkaisu
+      swe: oracc_primarypubno
+    order: 2
+- paragraph_id:
+    label:
+      eng: paragraph_id
+      fin: kappaleen tunniste
+      swe: paragraph_id
+    display_type: hidden
+    order: 17
+- text_cdlilink:
+    label:
+      eng: CDLI link
+      fin: CDLI-linkki
+      swe: cdli_link
+    type: urlPattern
+    pattern: <a href="<%= val %>" class="exturl sidebar_link" target="_blank"><span
+      rel="localize[cdli_link]"></span></a>
+    hide_extended: true
+    hide_statistics: true
+    order: 1
+    sidebar_hide_label: true
+    url_opts:
+      hideUrl: true
+      newWindow: true
+- text_url:
+    label:
+      eng: link to original
+      fin: linkki alkuperäiseen
+      swe: länk till originalet
+    type: urlPattern
+    pattern: <a href="<%= val %>" class="exturl sidebar_link" target="_blank"><span
+      rel="localize[link_to_original]"></span></a>
+    hide_extended: true
+    hide_statistics: true
+    order: 3
+    sidebar_hide_label: true
+    url_opts:
+      hideUrl: true
+      newWindow: true
+- text_date:
+    label:
+      eng: date
+      fin: päiväys
+      swe: datum
+    order: 8
+- text_archive:
+    label:
+      eng: archive
+      fin: arkisto
+      swe: archive
+    extended_component: structServiceSelect
+    order: 11
+- text_empty:
+    label:
+      eng: text is empty
+      fin: teksti on tyhjä
+      swe: text_is_empty
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      n: 'no'
+      y: 'yes'
+    translation:
+      'no':
+        en: 'no'
+        fi: ei
+        sv: nej
+      unknown:
+        en: unknown
+        fi: ei tiedossa
+        sv: okänd
+      'yes':
+        en: 'yes'
+        fi: kyllä
+        sv: ja
+    order: 15
+- text_id:
+    label:
+      eng: text id
+      fin: tekstin tunniste
+      swe: textidentifierare
+    display_type: hidden
+    order: 16
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 18
+group_page_urn: urn:nbn:fi:lb-2023062103

@@ -1,0 +1,106 @@
+label:
+  eng: function
+  fin: lauseenjäsen
+  swe: satsdel
+opts:
+  is: '='
+  is_not: '!='
+extended_component: datasetSelect
+dataset:
+  advl: advl
+  advl:p: advl:p
+  advl:v: advl:v
+  advmod: advmod
+  amod: amod
+  analysoimaton: analysoimaton
+  compl:o: compl:o
+  compl:q: compl:q
+  compl:s: compl:s
+  compl:x: compl:x
+  infobj: infobj
+  infsubj: infsubj
+  irrall: irrall
+  jälkiosa: jälkiosa
+  lauseyhd: lauseyhd
+  lkeyhd: lkeyhd
+  muu: muu
+  neg:prt: neg:prt
+  nmod: nmod
+  npobj: npobj
+  npsubj: npsubj
+  nummod: nummod
+  osma: osma
+  pmod: pmod
+  pred: pred
+  pred2: pred2
+  pred3: pred3
+  pred:ref: pred:ref
+  pred:toisto: pred:toisto
+  sanayhd_lkeyhd: sanayhd_lkeyhd
+  subj:nonfin: subj:nonfin
+  subj:stat: subj:stat
+translation:
+  advl:
+    fi: 'adverbiaali: muu'
+  advl:p:
+    fi: 'adverbiaali: predikatiivi-'
+  advl:v:
+    fi: 'adverbiaali: infiniittinen'
+  advmod:
+    fi: 'määrite: adverbin'
+  amod:
+    fi: 'määrite: adjektiivin'
+  analysoimaton:
+    fi: 'muu: ei analysoitu'
+  compl:o:
+    fi: 'predikatiivi: objektin'
+  compl:q:
+    fi: 'predikatiivi: määränilmaus'
+  compl:s:
+    fi: 'predikatiivi: subjektin'
+  compl:x:
+    fi: 'predikatiivi: pakko, määrä, tarvis'
+  infobj:
+    fi: infinitiiviobjekti
+  infsubj:
+    fi: infinitiivisubjekti
+  irrall:
+    fi: 'muu: irrallinen'
+  jälkiosa:
+    fi: yhtymän jälkiosa
+  lauseyhd:
+    fi: yhdistää lauseita
+  lkeyhd:
+    fi: yhdistää lauseenosia
+  muu:
+    fi: 'muu: erikoistapaukset'
+  neg:prt:
+    fi: partikkeli ”ei”
+  nmod:
+    fi: 'määrite: substantiivin'
+  npobj:
+    fi: nominiobjekti
+  npsubj:
+    fi: nominisubjekti
+  nummod:
+    fi: 'määrite: numeraalin'
+  osma:
+    fi: 'adverbiaali: osma'
+  pmod:
+    fi: 'määrite: adposition'
+  pred:
+    fi: predikaatti
+  pred2:
+    fi: predikaatin toinen osa
+  pred3:
+    fi: predikaatin kolmas osa
+  pred:ref:
+    fi: 'predikaatti: referatiivirakenteen'
+  pred:toisto:
+    fi: predikaatin toisto
+  sanayhd_lkeyhd:
+    fi: yhdistää sananosia
+  subj:nonfin:
+    fi: 'nominisubjekti: infiniittirakenteen'
+  subj:stat:
+    fi: 'nominisubjekti: statusrakenteen'

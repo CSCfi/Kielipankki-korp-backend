@@ -1,0 +1,400 @@
+id: opensub_fi_2017
+title: OpenSubtitles 2017
+description: Opensubtitles.org-sivuston jakamat elokuvien ja tv-ohjelmien suomenkieliset
+  tekstitykset
+lang: fin
+metadata_urn: urn:nbn:fi:lb-2018060403
+urn: urn:nbn:fi:lb-2018060404
+licence:
+  name: CC BY 4.0 (PUB)
+  description: Creative Commons Attribution
+  urn: urn:nbn:fi:lb-2021120223
+mode:
+- name: default
+  folder: other
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes:
+- ref: ref
+- lemma: baseform_ordered
+- lemmacomp: baseform_compound_ordered
+- pos: pos_klk_ordered
+- msd: msd_ordered
+- dephead: dephead
+- deprel: deprel_tdt_ordered
+- lemma_ud1: baseform_ud1
+- lemmacomp_ud1: baseform_compound_ud1_ordered
+- pos_ud1: pos_ud_fi_ud1
+- msd_ud1: msd_ud1
+- dephead_ud1: dephead_ud1
+- deprel_ud1: deprel_ud_fi_ud1
+- lex:
+    label:
+      eng: lemgram
+      fin: lemgrammi
+      swe: lemgram
+    type: set
+    display_type: hidden
+    order: 21
+struct_attributes:
+- text_country:
+    label:
+      eng: country
+      fin: alkuperämaa
+      swe: opensub_text_country
+    type: set
+    opts:
+      is: contains
+      is_not: not contains
+    extended_component: datasetSelect
+    dataset:
+    - Afghanistan
+    - Algeria
+    - Angola
+    - Argentina
+    - Aruba
+    - Australia
+    - Austria
+    - Bahamas
+    - Belarus
+    - Belgium
+    - Bolivia
+    - Bosnia and Herzegovina
+    - Botswana
+    - Brazil
+    - Bulgaria
+    - Burkina Faso
+    - Cambodia
+    - Cameroon
+    - Canada
+    - Chile
+    - China
+    - Colombia
+    - Croatia
+    - Cuba
+    - Cyprus
+    - Czechoslovakia
+    - Czech Republic
+    - Denmark
+    - Dominican Republic
+    - Ecuador
+    - Egypt
+    - Estonia
+    - Faroe Islands
+    - Federal Republic of Yugoslavia
+    - Finland
+    - France
+    - Georgia
+    - Germany
+    - Ghana
+    - Greece
+    - Hong Kong
+    - Hungary
+    - Iceland
+    - India
+    - Indonesia
+    - Iran
+    - Iraq
+    - Ireland
+    - Isle Of Man
+    - Israel
+    - Italy
+    - Jamaica
+    - Japan
+    - Kazakhstan
+    - Latvia
+    - Lebanon
+    - Liberia
+    - Libya
+    - Liechtenstein
+    - Lithuania
+    - Luxembourg
+    - Macao
+    - Malaysia
+    - Malta
+    - Mexico
+    - Moldova
+    - Monaco
+    - Mongolia
+    - Morocco
+    - Namibia
+    - Netherlands
+    - New Zealand
+    - North Korea
+    - Norway
+    - Palestine
+    - Panama
+    - Paraguay
+    - Peru
+    - Philippines
+    - Poland
+    - Portugal
+    - Puerto Rico
+    - Qatar
+    - Republic of Macedonia
+    - Romania
+    - Russia
+    - Rwanda
+    - Saudi Arabia
+    - Serbia
+    - Singapore
+    - Slovakia
+    - Slovenia
+    - South Africa
+    - South Korea
+    - Soviet Union
+    - Spain
+    - Sri Lanka
+    - Sweden
+    - Switzerland
+    - Taiwan
+    - Tanzania
+    - Thailand
+    - Tunisia
+    - Turkey
+    - UK
+    - Ukraine
+    - United Arab Emirates
+    - Uruguay
+    - USA
+    - Venezuela
+    - West Germany
+    - Yugoslavia
+    - Zambia
+    - _
+    order: 1
+- text_lang_orig:
+    label:
+      eng: original language
+      fin: alkuperäiskieli
+      swe: opensub_text_lang_orig
+    type: set
+    opts:
+      is: contains
+      is_not: not contains
+    extended_component: datasetSelect
+    dataset:
+    - Abkhazian
+    - Aboriginal
+    - Acholi
+    - Afrikaans
+    - Albanian
+    - Algonquin
+    - American Sign Language
+    - Amharic
+    - Ancient (to 1453)
+    - Apache languages
+    - Arabic
+    - Aramaic
+    - Arapaho
+    - Armenian
+    - Assamese
+    - Assyrian Neo-Aramaic
+    - Athapascan languages
+    - Awadhi
+    - Azerbaijani
+    - Bambara
+    - Basque
+    - Belarusian
+    - Bengali
+    - Berber languages
+    - Bhojpuri
+    - Bosnian
+    - Brazilian Sign Language
+    - Breton
+    - British Sign Language
+    - Bulgarian
+    - Burmese
+    - Cantonese
+    - Catalan
+    - Chechen
+    - Chinese
+    - Cornish
+    - Corsican
+    - Cree
+    - Croatian
+    - Czech
+    - Danish
+    - Dari
+    - Dutch
+    - Egyptian (Ancient)
+    - English
+    - Esperanto
+    - Estonian
+    - Ewe
+    - Faroese
+    - Filipino
+    - Finnish
+    - Flemish
+    - French
+    - Gallegan
+    - Georgian
+    - German
+    - Greek
+    - Greenlandic
+    - Gujarati
+    - Hakka
+    - Hawaiian
+    - Hebrew
+    - Hindi
+    - Hmong
+    - Hokkien
+    - Hungarian
+    - Icelandic
+    - Indian Sign Language
+    - Indonesian
+    - Inuktitut
+    - Irish
+    - Italian
+    - Japanese
+    - Japanese Sign Language
+    - Kabyle
+    - Kazakh
+    - Khmer
+    - Kirundi
+    - Klingon
+    - Korean
+    - Korean Sign Language
+    - Kurdish
+    - Lao
+    - Latin
+    - Latvian
+    - Lingala
+    - Lithuanian
+    - Luxembourgish
+    - Macedonian
+    - Malay
+    - Malayalam
+    - Maltese
+    - Mandarin
+    - Maori
+    - Mapudungun
+    - Marathi
+    - Maya
+    - Mende
+    - Min Nan
+    - Mohawk
+    - Mongolian
+    - Navajo
+    - Neapolitan
+    - Nepali
+    - Norse
+    - North American Indian
+    - Norwegian
+    - Nyanja
+    - Occitan
+    - Old
+    - Old English
+    - Panjabi
+    - Papiamento
+    - Pawnee
+    - Persian
+    - Polish
+    - Polynesian
+    - Portuguese
+    - Pushto
+    - Quechua
+    - Quenya
+    - Romanian
+    - Romany
+    - Russian
+    - Saami
+    - Sanskrit
+    - Scots
+    - Scottish Gaelic
+    - Serbian
+    - Serbo-Croatian
+    - Shanghainese
+    - Sicilian
+    - Sign Languages
+    - Sindarin
+    - Sinhalese
+    - Sioux
+    - Slovak
+    - Slovenian
+    - Somali
+    - Southern Sotho
+    - Spanish
+    - Spanish Sign Language
+    - Swahili
+    - Swedish
+    - Swiss German
+    - Syriac
+    - Tagalog
+    - Tamil
+    - Tatar
+    - Thai
+    - Tibetan
+    - Tigrigna
+    - Tok Pisin
+    - Tonga
+    - Turkish
+    - Ukrainian
+    - Ungwatsi
+    - Urdu
+    - Vietnamese
+    - Washoe
+    - Welsh
+    - Wolof
+    - Xhosa
+    - Yiddish
+    - Zulu
+    - _
+    order: 2
+- text_genre:
+    label:
+      eng: genre
+      fin: lajityyppi
+      swe: opensub_text_genre
+    type: set
+    opts:
+      is: contains
+      is_not: not contains
+    extended_component: datasetSelect
+    dataset:
+    - Action
+    - Adult
+    - Adventure
+    - Animation
+    - Biography
+    - Comedy
+    - Crime
+    - Documentary
+    - Drama
+    - Family
+    - Fantasy
+    - Film-Noir
+    - Game-Show
+    - History
+    - Horror
+    - Music
+    - Musical
+    - Mystery
+    - News
+    - Reality-TV
+    - Romance
+    - Sci-Fi
+    - Short
+    - Sport
+    - Talk-Show
+    - Thriller
+    - War
+    - Western
+    - _
+    order: 3
+- text_year:
+    label:
+      eng: year
+      fin: vuosi
+      swe: år
+    order: 4

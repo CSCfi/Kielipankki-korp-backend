@@ -1,0 +1,73 @@
+id: mulcold_de
+title: MULCOLD saksa
+description: Multilingual Corpus of Legal Documents, saksankielinen osa
+lang: deu
+linked_to:
+- mulcold_fi
+- mulcold_en
+- mulcold_sv
+- mulcold_ru
+metadata_urn: urn:nbn:fi:lb-201405278
+urn: urn:nbn:fi:lb-201405277
+licence:
+  name: CC BY-ND (PUB)
+  description: Creative Commons Attribution-NoDerivatives
+  urn: urn:nbn:fi:lb-2021120231
+cite_id: MULCOLD
+homepage_url: https://mustikka.uta.fi/
+mode:
+- name: other_languages
+  folder: german.legal
+- name: parallel
+  folder: german.legal
+  changes:
+    title: MULCOLD – Multilingual Corpus of Legal Documents (saksa)
+    description: 'Monikielinen juridisten tekstien korpus: suomi–venäjä, suomi–ruotsi–englanti–venäjä,
+      suomi–ruotsi–englanti–saksa, suomi–saksa'
+    context:
+    - label:
+        eng: 1 align
+        fin: 1 align
+        swe: 1 align
+      value: 1 align
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes: []
+struct_attributes:
+- align_text_code:
+    label:
+      eng: text id
+      fin: tekstin tunniste
+      swe: textidentifierare
+- align_text_author: text_author
+- align_text_title:
+    label:
+      eng: title
+      fin: otsikko
+      swe: titel
+- align_text_typeoftext:
+    label:
+      eng: text type
+      fin: tekstin tyyppi
+      swe: texttyp
+- align_text_genre: mikhailov_text_genre
+- align_text_period: year
+- align_text_publisher: text_publisher
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 1
+hide: true

@@ -1,0 +1,77 @@
+id: semfinlex_kho_fi_2018
+title: KHO:n päätöksiä
+description: Korkeimman hallinto-oikeuden päätöksiä vuosilta 1987–2018.
+lang: fin
+metadata_urn: urn:nbn:fi:lb-2019042607
+urn: urn:nbn:fi:lb-2019042608
+licence:
+  name: CC BY (PUB)
+  description: Creative Commons Attribution
+  urn: urn:nbn:fi:lb-2021120223
+cite_id: semfinlex
+mode:
+- name: default
+  folder: legal.semfinlex
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- lemma: baseform
+- lemmacomp: baseform_compound
+- pos: pos_klk
+- msd: msd
+- dephead: dephead
+- deprel: deprel_tdt
+- ref: ref
+- lex:
+    label:
+      eng: lemgram
+      fin: lemgrammi
+      swe: lemgram
+    type: set
+    display_type: hidden
+    order: 6
+struct_attributes:
+- text_url:
+    label:
+      eng: URL
+      fin: URL
+      swe: URL
+    type: urlPattern
+    display_type: hidden
+    pattern: <a href="<%= val %>" class="exturl sidebar_link" target="_blank"><span
+      rel="localize[URL]"></span></a>
+    hide_compare: true
+    hide_extended: true
+    hide_statistics: true
+    order: 1
+    sidebar_hide_label: true
+    url_opts:
+      hideUrl: true
+      inLinkSection: true
+      newWindow: true
+- text_keywords:
+    label:
+      eng: keywords
+      fin: avainsanat
+      swe: keywords
+    order: 2

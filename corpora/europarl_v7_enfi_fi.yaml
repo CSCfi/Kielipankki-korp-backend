@@ -1,0 +1,204 @@
+id: europarl_v7_enfi_fi
+title: EuroParl suomi–englanti
+description: EuroParl suomi–englanti-rinnakkaiskorpus (EuroParl v7)
+alias:
+- europarl
+- europarl_v7
+lang: fin
+linked_to:
+- europarl_v7_enfi_en
+metadata_urn: urn:nbn:fi:lb-2015042001
+urn: urn:nbn:fi:lb-2015042002
+licence:
+  name: CC BY
+  urn: urn:nbn:fi:lb-2023110701
+cite_id: HeKo-Europarl
+mode:
+- name: parallel
+  folder: parliament.europarl
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes: []
+struct_attributes:
+- text_title:
+    label:
+      eng: title
+      fin: otsikko
+      swe: titel
+    extended_component: structServiceAutocomplete
+    order: 1
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 5
+- sentence_type:
+    label:
+      eng: type of sentence
+      fin: virkkeen tyyppi
+      swe: meningens typ
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      meta: meta
+      speech: speech
+    translation:
+      meta:
+        fi: meta
+      speech:
+        fi: puhe
+    order: 6
+- sentence_line:
+    label:
+      eng: sentence_line
+      fin: rivinumero
+      swe: sentence_line
+    order: 7
+- text_filename:
+    label:
+      eng: file name
+      fin: tiedoston nimi
+      swe: filnamn
+    order: 2
+- chapter_title:
+    label:
+      eng: chapter_title
+      fin: luvun otsikko
+      swe: chapter_title
+    order: 3
+- chapter_id:
+    label:
+      eng: chapter id
+      fin: luvun tunniste
+      swe: chapter_id
+    display_type: hidden
+    order: 4
+- speaker_id:
+    label:
+      eng: speech_speakerid
+      fin: puheenvuoron tunniste
+      swe: speech_speakerid
+    display_type: hidden
+- speaker_name:
+    label:
+      eng: speech_speakername
+      fin: puhuja
+      swe: speech_speakername
+- speaker_aff:
+    label:
+      eng: speaker_affiliation
+      fin: yhteys
+      swe: speaker_affiliation
+    extended_component: datasetSelect
+    dataset:
+      und: und
+- speaker_lang:
+    label:
+      eng: speech_language
+      fin: alkuperäiskieli
+      swe: speech_language
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      BG: bg
+      CS: cs
+      DA: da
+      DE: de
+      EL: el
+      EN: en
+      ES: es
+      ET: et
+      EU: eu
+      FI: fi
+      FR: fr
+      GA: ga
+      HU: hu
+      IT: it
+      LT: lt
+      LV: lv
+      MT: mt
+      NL: nl
+      PL: pl
+      PT: pt
+      RO: ro
+      SK: sk
+      SL: sl
+      SV: sv
+      und: und
+    translation:
+      bg:
+        fi: bulgaria
+      cs:
+        fi: tšekki
+      da:
+        fi: tanska
+      de:
+        fi: saksa
+      el:
+        fi: kreikka
+      en:
+        fi: englanti
+      es:
+        fi: espanja
+      et:
+        fi: viro
+      eu:
+        fi: baski
+      fi:
+        fi: suomi
+      fr:
+        fi: ranska
+      ga:
+        fi: iiri
+      hu:
+        fi: unkari
+      it:
+        fi: italia
+      lt:
+        fi: liettua
+      lv:
+        fi: latvia
+      mt:
+        fi: malta
+      nl:
+        fi: hollanti
+      pl:
+        fi: puola
+      pt:
+        fi: portugali
+      ro:
+        fi: romania
+      sk:
+        fi: slovakki
+      sl:
+        fi: sloveeni
+      sv:
+        fi: ruotsi
+      und:
+        fi: tuntematon

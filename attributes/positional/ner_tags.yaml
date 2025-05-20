@@ -1,0 +1,162 @@
+label:
+  eng: name classification
+  fin: nimiluokitus
+  swe: namnklassificering
+opts:
+  is: '='
+  is_not: '!='
+extended_component: datasetSelect
+dataset:
+  /?EnamexLocGpl[/]?: EnamexLocGpl
+  /?EnamexLocPpl[/]?: EnamexLocPpl
+  /?EnamexLocStr[/]?: EnamexLocStr
+  /?EnamexLocXxx[/]?: EnamexLocXxx
+  /?EnamexOrgAth[/]?: EnamexOrgAth
+  /?EnamexOrgClt[/]?: EnamexOrgClt
+  /?EnamexOrgCrp[/]?: EnamexOrgCrp
+  /?EnamexOrgEdu[/]?: EnamexOrgEdu
+  /?EnamexOrgPlt[/]?: EnamexOrgPlt
+  /?EnamexOrgTvr[/]?: EnamexOrgTvr
+  /?EnamexPrsHum[/]?: EnamexPrsHum
+  /?EnamexPrsTit[/]?: EnamexPrsTit
+  /?NumexMsrCur[/]?: NumexMsrCur
+  /?NumexMsrXxx[/]?: NumexMsrXxx
+  /?TimexTmeDat[/]?: TimexTmeDat
+  _: _
+translation:
+  /EnamexLocGpl:
+    en: 'location: geographical'
+    fi: 'paikka: maantieteellinen'
+  /EnamexLocPpl:
+    en: 'location: geopolitical'
+    fi: 'paikka: geopoliittinen'
+  /EnamexLocStr:
+    en: 'placa: street'
+    fi: 'paikka: katu tai tie'
+  /EnamexLocXxx:
+    en: 'location: other'
+    fi: 'paikka: muu'
+  /EnamexOrgAth:
+    en: 'organization: sports'
+    fi: 'organisaatio: urheilu'
+  /EnamexOrgClt:
+    en: 'organization: arts and culture'
+    fi: 'organisaatio: taide ja musiikki'
+  /EnamexOrgCrp:
+    en: 'organization: company or association'
+    fi: 'organisaatio: yritys tai yhdistys'
+  /EnamexOrgEdu:
+    en: 'organization: education'
+    fi: 'organisaatio: koulutus'
+  /EnamexOrgPlt:
+    en: 'organization: political'
+    fi: 'organisaatio: poliittinen'
+  /EnamexOrgTvr:
+    en: 'organization: tv or radio'
+    fi: 'organisaatio: tv ja radio'
+  /EnamexPrsHum:
+    fi: 'henkilö: henkilönimi'
+  /EnamexPrsTit:
+    en: 'person: titlt'
+    fi: 'henkilö: arvonimi'
+  /NumexMsrCur:
+    en: 'number: currency'
+    fi: 'numero: rahayksikkö'
+  /NumexMsrXxx:
+    en: 'number: unit'
+    fi: 'numero: muu yksikkö'
+  /TimexTmeDat:
+    en: 'time: date or time'
+    fi: 'aika: ajanmääre'
+  EnamexLocGpl:
+    en: 'location: geographical'
+    fi: 'paikka: maantieteellinen'
+  EnamexLocGpl/:
+    en: 'location: geographical'
+    fi: 'paikka: maantieteellinen'
+  EnamexLocPpl:
+    en: 'location: geopolitical'
+    fi: 'paikka: geopoliittinen'
+  EnamexLocPpl/:
+    en: 'location: geopolitical'
+    fi: 'paikka: geopoliittinen'
+  EnamexLocStr:
+    en: 'placa: street'
+    fi: 'paikka: katu tai tie'
+  EnamexLocStr/:
+    en: 'placa: street'
+    fi: 'paikka: katu tai tie'
+  EnamexLocXxx:
+    en: 'location: other'
+    fi: 'paikka: muu'
+  EnamexLocXxx/:
+    en: 'location: other'
+    fi: 'paikka: muu'
+  EnamexOrgAth:
+    en: 'organization: sports'
+    fi: 'organisaatio: urheilu'
+  EnamexOrgAth/:
+    en: 'organization: sports'
+    fi: 'organisaatio: urheilu'
+  EnamexOrgClt:
+    en: 'organization: arts and culture'
+    fi: 'organisaatio: taide ja musiikki'
+  EnamexOrgClt/:
+    en: 'organization: arts and culture'
+    fi: 'organisaatio: taide ja musiikki'
+  EnamexOrgCrp:
+    en: 'organization: company or association'
+    fi: 'organisaatio: yritys tai yhdistys'
+  EnamexOrgCrp/:
+    en: 'organization: company or association'
+    fi: 'organisaatio: yritys tai yhdistys'
+  EnamexOrgEdu:
+    en: 'organization: education'
+    fi: 'organisaatio: koulutus'
+  EnamexOrgEdu/:
+    en: 'organization: education'
+    fi: 'organisaatio: koulutus'
+  EnamexOrgPlt:
+    en: 'organization: political'
+    fi: 'organisaatio: poliittinen'
+  EnamexOrgPlt/:
+    en: 'organization: political'
+    fi: 'organisaatio: poliittinen'
+  EnamexOrgTvr:
+    en: 'organization: tv or radio'
+    fi: 'organisaatio: tv ja radio'
+  EnamexOrgTvr/:
+    en: 'organization: tv or radio'
+    fi: 'organisaatio: tv ja radio'
+  EnamexPrsHum:
+    en: 'person: person name'
+    fi: 'henkilö: henkilönimi'
+  EnamexPrsHum/:
+    fi: 'henkilö: henkilönimi'
+  EnamexPrsTit:
+    en: 'person: titlt'
+    fi: 'henkilö: arvonimi'
+  EnamexPrsTit/:
+    en: 'person: titlt'
+    fi: 'henkilö: arvonimi'
+  NumexMsrCur:
+    en: 'number: currency'
+    fi: 'numero: rahayksikkö'
+  NumexMsrCur/:
+    en: 'number: currency'
+    fi: 'numero: rahayksikkö'
+  NumexMsrXxx:
+    en: 'number: unit'
+    fi: 'numero: muu yksikkö'
+  NumexMsrXxx/:
+    en: 'number: unit'
+    fi: 'numero: muu yksikkö'
+  TimexTmeDat:
+    en: 'time: date or time'
+    fi: 'aika: ajanmääre'
+  TimexTmeDat/:
+    en: 'time: date or time'
+    fi: 'aika: ajanmääre'
+  _:
+    en: unidentified
+    fi: tunnistamaton

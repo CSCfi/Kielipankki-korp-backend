@@ -1,0 +1,42 @@
+id: opus_dgt_fihu_fi
+title: DGT
+description: DGT – A collection of EU Translation Memories provided by the JRC
+alias:
+- opus
+- opus_fihu
+lang: fin
+linked_to:
+- opus_dgt_fihu_hu
+metadata_urn: urn:nbn:fi:lb-2015102201
+urn: urn_placeholder
+licence:
+  name: CC BY 4.0 (PUB)
+  description: Creative Commons Attribution
+  urn: urn:nbn:fi:lb-2021120223
+cite_id: Opus-Korp
+mode:
+- name: parallel
+  folder: other.opus.fihu
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes: []

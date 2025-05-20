@@ -1,0 +1,151 @@
+id: skn
+title: SKN – Suomen kielen näytteitä
+description: SKN – Suomen kielen näytteitä
+alias:
+- murre
+metadata_urn: urn:nbn:fi:lb-201407141
+urn: urn:nbn:fi:lb-201407141
+licence:
+  name: CC BY 4.0 (PUB)
+  description: Creative Commons Attribution
+  urn: urn:nbn:fi:lb-2021120223
+cite_id: SKN-korp
+mode:
+- name: default
+  folder: spoken
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- original: origword
+- normalized:
+    label:
+      eng: murre_normalized
+      fin: tarkkeeton sananmuoto
+      swe: murre_normalized
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+- comment:
+    label:
+      eng: word_comment
+      fin: kommentti
+      swe: word_comment
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+- lemma: baseform
+- lemmacomp: baseform_compound
+- pos: pos_klk
+- msd: msd
+- dephead: dephead
+- deprel: deprel_tdt
+- ref: ref
+- lex:
+    label:
+      eng: lemgram
+      fin: lemgrammi
+      swe: lemgram
+    type: set
+    display_type: hidden
+    order: 6
+- ne_name: ne_name
+- ne_ex: ne_ex
+- ne_type: ne_type_fi
+- ne_subtype: ne_subtype_fi
+- ne_fulltype: ne_fulltype_fi
+- ne_placename: ne_placename
+- ne_placename_source: ne_placename_source
+- nertag: ner_rawtag
+- nerbio: ner_bio
+struct_attributes:
+- text_title:
+    label:
+      eng: title
+      fin: otsikko
+      swe: titel
+    extended_component: structServiceAutocomplete
+    order: 1
+- text_date:
+    label:
+      eng: date
+      fin: päiväys
+      swe: datum
+    order: 2
+- text_editor:
+    label:
+      eng: murre_editor
+      fin: kirjoittaja
+      swe: murre_editor
+    order: 3
+- text_parish:
+    label:
+      eng: murre_parish
+      fin: paikkakunta
+      swe: murre_parish
+    order: 4
+- text_dialect_region:
+    label:
+      eng: murre_dialect_region
+      fin: murrealue
+      swe: murre_dialect_region
+    order: 5
+- text_dialect_group:
+    label:
+      eng: murre_dialect_group
+      fin: murreryhmä
+      swe: murre_dialect_group
+    order: 6
+- text_name:
+    label:
+      eng: file name
+      fin: tiedoston nimi
+      swe: filnamn
+    order: 7
+- paragraph_speaker:
+    label:
+      eng: murre_speaker
+      fin: puhuja
+      swe: murre_speaker
+    order: 8
+- paragraph_sex:
+    label:
+      eng: murre_sex
+      fin: sukupuoli
+      swe: murre_sex
+    order: 9
+- paragraph_role:
+    label:
+      eng: murre_role
+      fin: rooli
+      swe: murre_role
+    order: 10

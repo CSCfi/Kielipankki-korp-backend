@@ -1,0 +1,670 @@
+label:
+  eng: Finnish
+  fin: Suomi
+  swe: Finska
+folders:
+  academic:
+    title: Akateemisia tekstejä
+    description: Akateemisia tekstejä sisältäviä aineistoja
+    subfolders:
+      ethesis:
+        title: E-thesis (suomi)
+        description: Helsingin yliopiston suomenkielisen E-thesiksen Korp-versio<br/>Helsingin
+          yliopiston digitaaliset väitöskirjat ja opinnäytteet<br/><br/>Aineisto kattaa
+          ajanjakson 1.1.1999–30.9.2016
+        subfolders:
+          matheses:
+            title: Pro gradu -tutkielmat
+            description: 'Helsingin yliopiston suomenkielisen E-thesiksen Korp-versio:
+              Pro gradu -tutkielmat'
+          phdtheses:
+            title: Väitöskirjat
+            description: 'Helsingin yliopiston suomenkielisen E-thesiksen Korp-versio:
+              Väitöskirjat'
+  cmc:
+    title: Tietokonevälitteistä viestintää
+    description: Tietokonevälitteistä viestintää sisältäviä aineistoja (computer-mediated
+      communication corpora)
+    subfolders:
+      suomi24:
+        title: Suomi24 2016H2
+        description: <a href='http://keskustelu.suomi24.fi' target='_blank'>Suomi24-keskustelupalvelun</a>
+          keskustelut 1.1.2001–24.9.2016.<br/><br/><strong>Huomaa</strong>, että aineisto
+          ei ole kattava mainitulta aikaväliltä. <strong>Käytä ensisijaisesti uudempaa
+          ja selvästi kattavampaa <a href='http://urn.fi/urn:nbn:fi:lb-2019021101'
+          target='_blank'>Suomi24 2017H2 -aineistoa</a></strong>, jollet tarvitse
+          vertailukelpoisuutta tähän aineistoon perustuvan tutkimuksen kanssa.<br/><br/>Aineistossa
+          näkyy kaikkien keskustelujen sisältö enintään kappaletasolla.<br/>Aineisto
+          on jaettu useaan osakorpukseen suuren kokonsa vuoksi.<br/>Tutkijat voivat
+          myös ladata käyttöönsä <a href='http://urn.fi/urn:nbn:fi:lb-201412171' target='_blank'
+          title='Kuvailutiedot'>koko Suomi24-aineiston</a> Kielipankin <a href='http://urn.fi/urn:nbn:fi:lb-2015040801'
+          target='_blank'>latauspalvelusta</a> (<a href='http://urn.fi/urn:nbn:fi:lb-20150304151'
+          target='_blank'>lisenssi</a>).<br/><br/>(Tämä aineisto näkyi ennen Suomi24
+          2017H2 -version julkaisemista Korpissa nimellä <i>Suomi24</i>.)
+      suomi24_accruing:
+        title: Suomi24 2001–2023 (julkaisuehdokas)
+        description: Suomi24 virkkeet -korpus 2001–2023, Korp-versio<br/><br/><a href='http://keskustelu.suomi24.fi'
+          target='_blank'>Suomi24-keskustelupalvelun</a> keskustelut vuosilta 2001–2023
+          (1.1.2001–31.12.2023).<br/>Aineistossa näkyy kaikkien keskustelujen sisältö
+          enintään kappaletasolla.<br/>Aineisto on jaettu osakorpuksiin vuosittain.<br/>Tutkijat
+          voivat myös ladata käyttöönsä <a href='http://urn.fi/urn:nbn:fi:lb-2025032001'
+          target='_blank' title='Kuvailutiedot'>koko Suomi24 2001–2023 -aineiston</a>
+          Kielipankin <a href='http://urn.fi/urn:nbn:fi:lb-2025032002' target='_blank'>latauspalvelusta</a>
+          (<a href='http://urn.fi/urn:nbn:fi:lb-2022020822' target='_blank'>lisenssi</a>).<br/><br/>Tämä
+          kokoelma sisältää seuraavat aineistot:<br/><a href='http://urn.fi/urn:nbn:fi:lb-2020021803'
+          target='_blank' title='Kuvailutiedot'><i>Suomi24 virkkeet -korpus 2001–2017,
+          Korp-versio 1.3</i></a><br/><a href='http://urn.fi/urn:nbn:fi:lb-2021101521'
+          target='_blank' title='Kuvailutiedot'><i>Suomi24 virkkeet -korpus 2018–2020,
+          Korp-versio 1.1</i></a><br/><a href='http://urn.fi/urn:nbn:fi:lb-2024030601'
+          target='_blank' title='Kuvailutiedot'><i>Suomi24 virkkeet -korpus 2021–2023,
+          Korp-versio</i></a><br/><br/><i>2025-04-07:</i> Kokoelmaan on lisätty vuosien
+          2021–2023 keskustelut (<a href='http://urn.fi/urn:nbn:fi:lb-2024030601'
+          target='_blank' title='Kuvailutiedot'><i>Suomi24 virkkeet -korpus 2021–2023,
+          Korp-versio</i></a>). Lisäksi koko aineistoon on merkitty <a href='http://urn.fi/urn:nbn:fi:lb-2024021401'
+          target='_blank' title='kuvailutiedot'>FiNER 1.6 -nimientunnistimella</a>
+          tunnistetut nimet ja <a href='http://urn.fi/urn:nbn:fi:lb-2024040301' target='_blank'
+          title='kuvailutiedot'>HeLI-OTS 2.0 -kielentunnistimella</a> tunnistetut
+          virkkeiden kielet. Vuosien 2001–2020 aineistoissa on myös poistettu ylimääräisiä
+          välilyöntejä aihealueista, otsikoista ja kirjoittajien nimimerkeistä. Näiden
+          lisäysten ja muutosten vuoksi vanhempien osien versionumeroita on kasvatettu.
+          <a href='http://urn.fi/urn:nbn:fi:lb-2025040201' target='_blank'>Tarkempia
+          tietoja muutoksista.</a><br/><br/><span rel="localize[$locKey]"><strong>Huomaa</strong>,
+          että korpus on julkaisuehdokas, joten siihen voi vielä tulla muutoksia.</span>
+  easytoread:
+    title: Selkokieliaineistoja
+    description: Selkokieliaineistoja<br/><br/><strong>Huomaa</strong>, että selkokieliset
+      lehdet ovat edelleen osa aineistoa <i>1990- ja 2000-luvun suomalaisia aikakaus-
+      ja sanomalehtiä</i>. Niistä tulevat hakutulokset näkyvät kuitenkin vain yhteen
+      kertaan, vaikka ne olisi valittu sekä osana selkokieliaineistoja että osana
+      muita lehtiä.
+    subfolders:
+      lehdet:
+        title: Selkokielisiä lehtiä
+        description: ''
+      ylenews_fi_selko:
+        title: Ylen suomenkielisen uutisarkiston selkouutiset
+        description: 'Ylen suomenkielisen uutisarkiston selkouutiset<br/><br/>Kansiossa
+          on kaksi korpusta, jotka sisältävät samat virkkeet mutta joilla on erilaiset
+          käyttöehdot ja ominaisuudet: kaikille avoimen korpuksen virkkeet on sekoitettu
+          kunkin tekstin sisällä eikä se tue laajennettua kontekstia, kun taas tutkijoiden
+          käytettävissä olevan korpuksen virkkeet ovat alkuperäisessä järjestyksessä
+          ja se tukee laajennettua kontekstia.<br/><br/>Huomaa, että selkouutiset
+          ovat myös osana laajempaa Ylen suomenkielinen uutisarkisto -aineistoa.'
+  historical:
+    title: Historiallisia aineistoja
+    description: Historiallisia aineistoja
+    subfolders:
+      agricola:
+        title: Agricola
+        description: Mikael Agricolan teosten morfosyntaktinen tietokanta
+      vks:
+        title: Vanhan kirjasuomen korpus
+        description: ''
+      vns:
+        title: Varhaisnykysuomen korpus
+        description: ''
+  learner:
+    title: Oppijansuomen aineistoja
+    description: Suomenoppijoiden kieltä sisältäviä aineistoja (suomea toisena tai
+      vieraana kielenä)
+    subfolders:
+      las2:
+        title: LAS2 – Edistyneiden suomenoppijoiden korpus [RES]
+        description: ''
+  legal:
+    title: Juridisia aineistoja
+    description: Juridisia aineistoja
+    subfolders:
+      semfinlex:
+        title: Semfinlex
+        description: 'Valikoima Eduskunnan alkuperäisiä säädöksiä (1917–2018 sekä
+          muutamia varhaisempia), KKO:n päätöksiä (1980–2018) ja KHO:n päätöksiä (1987–2018).<br/><br/>2019-09-02:
+          Huomaa, että aineiston <strong>dependenssijäsennykset ja -relaatiot poikkeavat
+          merkittävästi</strong> aiemmin samalla jäsentimellä jäsennettyjen aineistojen
+          jäsennyksistä. Selvitämme asiaa. <strong>Jos tarvitset dependenssijäsennystietoja,
+          käytä toistaiseksi muita aineistoja.</strong>'
+  literary:
+    title: Kirjallisuusaineistoja
+    description: Kirjallisuusaineistoja
+    subfolders:
+      ceal:
+        title: CEAL
+        description: Englantilaisen ja amerikkalaisen kirjallisuuden klassikoita suomeksi<br/>Classics
+          of English and American Literature in Finnish<br/><br/><strong>Huomaa</strong>,
+          että korpukset CEAL-o ja CEAL-s sisältävät samat tekstit, mutta CEAL-s:ssä
+          kappaleet on sekoitettu kunkin teoksen sisällä, kun taas CEAL-o:ssa kappaleet
+          ovat alkuperäisessä järjestyksessä. Hakuja varten kannattaa valita vain
+          toinen korpus. CEAL-o vaatii aina henkilökohtaisen käyttöluvan.
+      ftc_literary:
+        title: 'Suomen kielen tekstikokoelma (SKTP/FTC): kirjallisuus [RES]'
+        description: 'Suomen kielen tekstikokoelman kirjallisuus: Lemmie-palvelussa
+          olleet osakorpukset<br/><br/><strong>Huomaa</strong>, että Suomen kielen
+          tekstikokoelman lehdet ovat korpusvalikon kansiossa <i>Lehti- ja uutisaineistoja</i>.'
+      kaannossuomi:
+        title: Käännössuomen korpus [RES]
+        description: 'Käännössuomen korpus on koostettu vuonna 1999 nykyisessä Itä-Suomen
+          yliopistossa (silloisessa Joensuun yliopistossa sen kansainvälisen viestinnän
+          laitoksella) Suomen Akatemian professori Anna Maurasen johtamassa tutkimushankkeessa
+          Käännössuomi ja kääntämisen universaalit.<br/><br/>Korpus sisältää kaksi
+          osaa: aluperin suomeksi kirjoitettua kieltä (alkusuomi) ja eri kielistä
+          käännettyä kieltä (käännössuomi). Seuraavat tekstilajit ovat edustettuina
+          aineistoissa: akateemiset tekstit, kaunokirjallisuus, lastenkirjallisuus,
+          biografia, populaarikirjallisuus, viihdekirjallisuus, dekkarikirjallisuus
+          ja tietokirjallisuus. Alkusuomen aineiston laajuus on yhteensä 5 465 293
+          sanaa ja käännössuomen aineiston 7 135 969 sanaa.'
+      skk:
+        title: Suomalaisen kirjallisuuden klassikoita
+        description: ''
+  manual:
+    title: Käsin annotoituja aineistoja
+    description: Käsin annotoituja aineistoja
+  news:
+    title: Lehti- ja uutisaineistoja
+    description: Sanoma- ja aikakauslehtiaineistoja sekä muita uutisaineistoja
+    subfolders:
+      ftc_news:
+        title: 'Suomen kielen tekstikokoelma (SKTP/FTC): lehdet [RES]'
+        description: 'Suomen kielen tekstikokoelman lehdet: Lemmie-palvelussa olleet
+          osakorpukset<br/><br/><strong>Huomaa</strong>, että Suomen kielen tekstikokoelman
+          kirjallisuus on korpusvalikon kansiossa <i>Kirjallisuusaineistoja</i>.'
+        subfolders:
+          ftc_aamu:
+            title: Aamulehti 1995, 1999 [RES]
+            description: 'Suomen kielen tekstikokoelma: lehdet: Aamulehti 1995, 1999'
+          ftc_demari:
+            title: Demari 1995, 1997–2000 [RES]
+            description: 'Suomen kielen tekstikokoelma: lehdet: Demari 1995, 1997–2000'
+          ftc_hasa:
+            title: Hämeen Sanomat 1999–2000 [RES]
+            description: 'Suomen kielen tekstikokoelma: lehdet: Hämeen Sanomat 1999–2000'
+          ftc_hs1995:
+            title: Helsingin Sanomat 1995 [RES]
+            description: 'Suomen kielen tekstikokoelma: lehdet: Helsingin Sanomat
+              1995'
+          ftc_hysa:
+            title: Hyvinkään Sanomat 1994, 1997 [RES]
+            description: 'Suomen kielen tekstikokoelma: lehdet: Hyvinkään Sanomat
+              1994, 1997'
+          ftc_karj:
+            title: Karjalainen 1991–95, 1997–99 [RES]
+            description: 'Suomen kielen tekstikokoelma: lehdet: Karjalainen 1991–95,
+              1997–99'
+          ftc_tusa:
+            title: Turun Sanomat 1998–1999 [RES]
+            description: 'Suomen kielen tekstikokoelma: lehdet: Turun Sanomat 1998–1999'
+      kal:
+        title: Kotuksen aikakauslehtikorpus
+        description: Kotimaisten kielten keskuksen aikakauslehtikorpus
+        subfolders:
+          kal_perus:
+            title: Kotuksen aikakauslehtikorpus, tarkistamaton [ACA]
+            description: Kotimaisten kielten keskuksen aikakauslehtikorpus, OCR tarkistamaton
+          kal_ydin:
+            title: Kotuksen aikakauslehtikorpus, tarkistettu [ACA]
+            description: Kotimaisten kielten keskuksen aikakauslehtikorpus, OCR tarkistettu
+      klk_fi:
+        title: Kansalliskirjaston lehtikokoelman (KLK) suomenkieliset lehdet
+        description: Kansalliskirjaston sanoma- ja aikakauslehtikokoelma, Kielipankki-versio,
+          suomenkieliset lehdet<br/><br/><strong>Huomaa</strong>, että aineistosta
+          on Korpissa uusi, huomattavasti laajempi <a href="http://urn.fi/urn:nbn:fi:lb-202009152"
+          target="_blank">versio 2</a>. Tämä versio sisältää kuitenkin nimiannotaatiot,
+          jollaiset toistaiseksi puuttuvat uudesta versiosta.
+        subfolders:
+          fi_1820:
+            title: 1820-luku
+            description: ''
+          fi_1830:
+            title: 1830-luku
+            description: ''
+          fi_1840:
+            title: 1840-luku
+            description: ''
+          fi_1850:
+            title: 1850-luku
+            description: ''
+          fi_1860:
+            title: 1860-luku
+            description: ''
+          fi_1870:
+            title: 1870-luku
+            description: ''
+          fi_1880:
+            title: 1880-luku
+            description: ''
+          fi_1890:
+            title: 1890-luku
+            description: ''
+          fi_1900:
+            title: 1900-luku
+            description: ''
+          fi_1910:
+            title: 1910-luku
+            description: ''
+          fi_1920:
+            title: 1920-luku
+            description: ''
+          fi_1930:
+            title: 1930-luku
+            description: ''
+          fi_1940:
+            title: 1940-luku
+            description: ''
+          fi_1950:
+            title: 1950-luku
+            description: ''
+          fi_1960:
+            title: 1960-luku
+            description: ''
+          fi_1970:
+            title: 1970-luku
+            description: ''
+          fi_1980:
+            title: 1980-luku
+            description: ''
+          fi_1990:
+            title: 1990-luku
+            description: ''
+          fi_2000:
+            title: 2000-luku
+            description: ''
+      klk_fi_v2:
+        title: Kansalliskirjaston lehtikokoelman (KLK) suomenkieliset lehdet, versio
+          2
+        description: 'Kansalliskirjaston sanoma- ja aikakauslehtikokoelman suomenkielinen
+          osakorpus versio 2, Korp (klk-fi-v2-korp)<br/><br/>Tämä aineisto sisältää
+          <a href="https://digi.kansalliskirjasto.fi/" target="_blank">Kansalliskirjaston
+          lehtikokoelman</a> sanoma- ja aikakauslehtiä vuosilta 1771–2021. Aineistossa
+          on yli neljä kertaa niin paljon saneita kuin <a href="http://urn.fi/urn:nbn:fi:lb-2016050302"
+          target="_blank">aineiston aiemmassa versiossa</a>, joka myös on yhä käytettävissä
+          Korpissa. Paljon uutta aineistoa on määrällisesti etenkin vuosilta 1911–1945,
+          suhteellisesti myös vuosilta 1946–2000 ja kokonaan uutena vuosilta 2001–2021.<br/><br/><strong>Huomaa</strong>,
+          että aineiston suuren koon vuoksi Korp-haut voivat olla hitaita, joten kannattaa
+          ainakin ensin kokeilla hakuja pienehköllä osalla aineistoa.<br/><br/>Vuoteen
+          1911 asti aineisto sisältää virkkeet alkuperäisessä järjestyksessä sekä
+          kappalekontekstin, kun taas vuodesta 1912 alkaen virkkeet on sekoitettu
+          kunkin tekstin (lehden sivun) sisällä eikä kappalekontekstia ole saatavilla.<br/><br/>Aineiston
+          virkkeiden kieli on tunnistettu <a href="http://urn.fi/urn:nbn:fi:lb-2022092201"
+          target="_blank">HeLI-OTS-kielentunnistimella</a>. Aineisto sisältää seuraavista
+          lähdeaineistoista ne tekstit (lehden sivut), joilla vähintään yksi virke
+          on tunnistettu suomeksi: <a href="http://urn.fi/urn:nbn:fi:lb-2016050302"
+          target="_blank">Kansalliskirjaston lehtikokoelman suomenkielinen osakorpus
+          (versio 1)</a>; <a href="http://urn.fi/urn:nbn:fi:lb-2016050301" target="_blank">Kansalliskirjaston
+          lehtikokoelman ruotsinkielinen osakorpus (versio 1)</a>; sekä Kansalliskirjaston
+          vuoden 2013 jälkeen tuottama aineisto, jota ei ole aiemmin ollut saatavilla
+          Kielipankissa.<br/><br/>Huomaa, että toistaiseksi tästä aineistosta puuttuvat
+          nimiannotaatiot, jollaiset ovat aiemmassa versiossa.<br/><br/>Aineistossa
+          olevat linkit sivun kuviin ja PDF-tiedostoihin vievät <a href="https://digi.kansalliskirjasto.fi"
+          target="_blank">Kansalliskirjaston digitaalisten aineistojen verkkosivuille</a>.
+          Useimmille vuotta 1939 uudemmille lehdille sivun kuvien ja PDF-tiedostojen
+          käyttö on sallittu vain tutkimustarkoituksiin ja edellyttää kirjautumista
+          ja käyttölupalomakkeen täyttämistä Kansalliskirjaston palvelussa.'
+        subfolders:
+          fi_1770:
+            title: 1770-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1770-luvulta (versio 2)
+          fi_1780:
+            title: 1780-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1780-luvulta (versio 2)
+          fi_1790:
+            title: 1790-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1790-luvulta (versio 2)
+          fi_1800:
+            title: 1800-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1800-luvulta (versio 2)
+          fi_1810:
+            title: 1810-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1810-luvulta (versio 2)
+          fi_1820:
+            title: 1820-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1820-luvulta (versio 2)
+          fi_1830:
+            title: 1830-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1830-luvulta (versio 2)
+          fi_1840:
+            title: 1840-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1840-luvulta (versio 2)
+          fi_1850:
+            title: 1850-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1850-luvulta (versio 2)
+          fi_1860:
+            title: 1860-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1860-luvulta (versio 2)
+          fi_1870:
+            title: 1870-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1870-luvulta (versio 2)
+          fi_1880:
+            title: 1880-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1880-luvulta (versio 2)
+          fi_1890:
+            title: 1890-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1890-luvulta (versio 2)
+          fi_1900:
+            title: 1900-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1900-luvulta (versio 2)
+          fi_1910:
+            title: 1910-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1910-luvulta (versio 2)
+          fi_1920:
+            title: 1920-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1920-luvulta (versio 2)
+          fi_1930:
+            title: 1930-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1930-luvulta (versio 2)
+          fi_1940:
+            title: 1940-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1940-luvulta (versio 2)
+          fi_1950:
+            title: 1950-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1950-luvulta (versio 2)
+          fi_1960:
+            title: 1960-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1960-luvulta (versio 2)
+          fi_1970:
+            title: 1970-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1970-luvulta (versio 2)
+          fi_1980:
+            title: 1980-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1980-luvulta (versio 2)
+          fi_1990:
+            title: 1990-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              1990-luvulta (versio 2)
+          fi_2000:
+            title: 2000-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              2000-luvulta (versio 2)
+          fi_2010:
+            title: 2010-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              2010-luvulta (versio 2)
+          fi_2020:
+            title: 2020-luku
+            description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä
+              2020-luvulta (versio 2)
+      lehdet:
+        title: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+        description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+        subfolders:
+          muut_lehdet:
+            title: Muita lehtiä
+            description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+            subfolders:
+              a:
+                title: A
+                description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+                  (A-alkuiset)
+              bcd:
+                title: B, C, D
+                description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+                  (B-, C- ja D-alkuiset)
+              e:
+                title: E
+                description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+                  (E-alkuiset)
+              f:
+                title: F
+                description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+                  (F-alkuiset)
+              h:
+                title: H
+                description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+                  (H-alkuiset)
+              ij:
+                title: I, J
+                description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+                  (I- ja J-alkuiset)
+              k:
+                title: K
+                description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+                  (K-alkuiset)
+              l:
+                title: L
+                description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+                  (L-alkuiset)
+              m:
+                title: M
+                description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+                  (M-alkuiset)
+              'no':
+                title: N, O
+                description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+                  (N- ja O-alkuiset)
+              p:
+                title: P
+                description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+                  (P-alkuiset)
+              r:
+                title: R
+                description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+                  (R-alkuiset)
+              s:
+                title: S
+                description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+                  (S-alkuiset)
+              t:
+                title: T
+                description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+                  (T-alkuiset)
+              u:
+                title: U
+                description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+                  (U-alkuiset)
+              vw:
+                title: V, W
+                description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+                  (V- ja W-alkuiset)
+              y:
+                title: Y
+                description: 1990- ja 2000-luvun suomalaisia aikakaus- ja sanomalehtiä
+                  (Y-alkuiset)
+          tiedelehdet:
+            title: Tiedelehtiä
+            description: 1990- ja 2000-luvun suomalaisia tiedelehtiä
+            subfolders:
+              ag:
+                title: A–G
+                description: 1990- ja 2000-luvun suomalaisia tiedelehtiä (A–G-alkuiset)
+              hk:
+                title: H–K
+                description: 1990- ja 2000-luvun suomalaisia tiedelehtiä (H–K-alkuiset)
+              lp:
+                title: L–P
+                description: 1990- ja 2000-luvun suomalaisia tiedelehtiä (L–P-alkuiset)
+              rs:
+                title: R–S
+                description: 1990- ja 2000-luvun suomalaisia tiedelehtiä (R–S-alkuiset)
+              ty:
+                title: T–Y
+                description: 1990- ja 2000-luvun suomalaisia tiedelehtiä (T–Y-alkuiset)
+      stt:
+        title: STT:n uutisarkisto 1992–2018
+        description: STT:n uutisarkisto 1992–2018, Kielipankki-versio
+      ylenews_fi:
+        title: Ylen suomenkielinen uutisarkisto
+        description: 'Ylen suomenkielinen uutisarkisto<br/><br/>Kansiossa on kaksi
+          korpusta, jotka sisältävät samat virkkeet mutta joilla on erilaiset käyttöehdot
+          ja ominaisuudet: kaikille avoimen korpuksen virkkeet on sekoitettu kunkin
+          tekstin sisällä eikä se tue laajennettua kontekstia, kun taas tutkijoiden
+          käytettävissä olevan korpuksen virkkeet ovat alkuperäisessä järjestyksessä
+          ja se tukee laajennettua kontekstia.<br/><br/>Huomaa, että korpus sisältää
+          selkouutiset, jotka ovat Korpissa myös erillisenä aineistonaan.'
+        subfolders:
+          a:
+            title: Ylen suomenkielinen uutisarkisto 2011–2021 (tutkijoille) [ACA]
+            description: 'Ylen suomenkielinen uutisarkisto 2011–2021, Korp<br/>Tutkijoiden
+              käytettävissä oleva versio: virkkeet alkuperäisessä järjestyksessä ja
+              tuki laajennetulle kontekstille.<br/><br/>Aineisto on jaettu osakorpuksiin
+              vuosittain, ja tekstit kunkin vuoden sisällä on järjestetty muokkausajankohdan
+              mukaan.<br/><br/>Tämä kokoelma sisältää aineistot <a href=''http://urn.fi/urn:nbn:fi:lb-2019121003''
+              target=''_blank'' title=''Kuvailutiedot''><i>Ylen suomenkielinen uutisarkisto
+              2011-2018, Korp</i></a> ja <a href=''http://urn.fi/urn:nbn:fi:lb-2022031701''
+              target=''_blank'' title=''Kuvailutiedot''><i>Ylen suomenkielinen uutisarkisto
+              2019-2021, Korp</i></a>.<br/><br/>Huomaa, että korpus sisältää selkouutiset,
+              jotka ovat Korpissa myös erillisenä aineistonaan.'
+          s:
+            title: Ylen suomenkielinen uutisarkisto 2011–2021 (kaikille)
+            description: 'Ylen suomenkielinen uutisarkisto 2011–2021, sekoitettu,
+              Korp<br/>Kaikille avoin versio: virkkeet sekoitettuina kunkin tekstin
+              sisällä ja ilman laajennetun kontekstin tukea.<br/><br/>Aineisto on
+              jaettu osakorpuksiin vuosittain, ja tekstit kunkin vuoden sisällä on
+              järjestetty muokkausajankohdan mukaan.<br/><br/>Tämä kokoelma sisältää
+              aineistot <a href=''http://urn.fi/urn:nbn:fi:lb-2019121004'' target=''_blank''
+              title=''Kuvailutiedot''><i>Ylen suomenkielinen uutisarkisto 2011-2018,
+              sekoitettu, Korp</i></a> ja <a href=''http://urn.fi/urn:nbn:fi:lb-2022032201''
+              target=''_blank'' title=''Kuvailutiedot''><i>Ylen suomenkielinen uutisarkisto
+              2019-2021, sekoitettu, Korp</i></a>.<br/><br/>Huomaa, että korpus sisältää
+              selkouutiset, jotka ovat Korpissa myös erillisenä aineistonaan.'
+  other:
+    title: Muita aineistoja
+    description: Muita aineistoja
+    subfolders:
+      kotus_ns_presidentti:
+        title: Tasavallan presidenttien uudenvuodenpuheet
+        description: Tasavallan presidenttien uudenvuodenpuheiden kokoelmassa on kaikki
+          tasavallan presidenttien pitämät uudenvuodenpuheet vuosilta 1935–2007. Muutaman
+          kerran puheen on pitänyt joku muu kuin presidentti. Nämäkin puheet sisältyvät
+          aineistoon.<br/>Kokoelma on järjestetty presidenteittäin ja vuosittain.
+          Kokoelma koostuu lehtileikkeistä, konekirjoitusliuskoista, kirjojen sivuista,
+          lehdistötiedotteista ja verkkoteksteistä. Aineistoa on hankittu arkistoista,
+          kirjoista ja Internetistä.
+  parliament:
+    title: Parlamenttiaineistoja
+    description: Parlamenttiaineistoja
+  spoken:
+    title: Puheaineistoja
+    description: Litteroitua puhuttua kieltä sisältäviä aineistoja
+    subfolders:
+      la_murre:
+        title: Lauseopin arkiston murrekorpus
+        description: Lauseopin arkiston murrekorpus edustaa kaikkia nykyisen Suomen
+          alueella puhuttuja suomen kielen murteita sekä lisäksi niitä murteita, joita
+          puhuttiin Neuvostoliitolle viime sotien yhteydessä luovutetuilla alueilla
+          ennen alueiden luovuttamista. Puhujat ovat syntyneet vuosina 1860–1910 (suurin
+          osa 1880-luvulla) ja haastattelut on tehty 1950–1970-luvuilla, jolloin puhujat
+          ovat olleet keskimäärin 80-vuotiaita.<br/>Yhdestä pitäjänmurteesta on yleensä
+          valittu käsiteltäväksi yksi noin tunnin laajuinen äänite. Murreaineisto
+          on litteroitu sekä koodattu morfologisesti ja syntaktisesti. Tässä on saatavilla
+          korpuksen versio, jossa litteraatit on karkeasti kohdistettu alkuperäisiin
+          äänitteisiin.
+        subfolders:
+          lam_HÄM:
+            title: Hämäläismurteet
+            description: 'Lauseopin arkiston murrekorpus: Hämäläismurteet'
+            subfolders:
+              lam_HämE:
+                title: Etelä-Häme
+                description: 'Lauseopin arkiston murrekorpus: Etelä-Häme'
+              lam_HämK:
+                title: Kaakkois-Häme
+                description: 'Lauseopin arkiston murrekorpus: Kaakkois-Häme'
+              lam_HämP:
+                title: Pohjois-Häme
+                description: 'Lauseopin arkiston murrekorpus: Pohjois-Häme'
+              lam_Kym:
+                title: Kymenlaakso
+                description: 'Lauseopin arkiston murrekorpus: Kymenlaakso'
+              lam_SatP:
+                title: Pohjois-Satakunta
+                description: 'Lauseopin arkiston murrekorpus: Pohjois-Satakunta'
+          lam_KAA:
+            title: Kaakkoismurteet
+            description: 'Lauseopin arkiston murrekorpus: Kaakkoismurteet'
+            subfolders:
+              lam_KarE:
+                title: Etelä-Karjala
+                description: 'Lauseopin arkiston murrekorpus: Etelä-Karjala'
+              lam_KarK:
+                title: Keski-Karjala
+                description: 'Lauseopin arkiston murrekorpus: Keski-Karjala'
+          lam_LOU:
+            title: Lounaismurteet
+            description: 'Lauseopin arkiston murrekorpus: Lounaismurteet'
+            subfolders:
+              lam_VarE:
+                title: Eteläinen Varsinais-Suomi
+                description: 'Lauseopin arkiston murrekorpus: Eteläinen Varsinais-Suomi'
+              lam_VarP:
+                title: Pohjoinen Varsinais-Suomi
+                description: 'Lauseopin arkiston murrekorpus: Pohjoinen Varsinais-Suomi'
+          lam_LVÄ:
+            title: Lounaiset välimurteet
+            description: 'Lauseopin arkiston murrekorpus: Lounaiset välimurteet'
+            subfolders:
+              lam_SatE:
+                title: Etelä-Satakunta
+                description: 'Lauseopin arkiston murrekorpus: Etelä-Satakunta'
+              lam_SatL:
+                title: Länsi-Satakunta
+                description: 'Lauseopin arkiston murrekorpus: Länsi-Satakunta'
+              lam_VarU:
+                title: Länsi-Uusimaa
+                description: 'Lauseopin arkiston murrekorpus: Länsi-Uusimaa'
+              lam_VarY:
+                title: Varsinais-Suomen ylämaa
+                description: 'Lauseopin arkiston murrekorpus: Varsinais-Suomen ylämaa'
+          lam_POH:
+            title: Pohjalaismurteet
+            description: 'Lauseopin arkiston murrekorpus: Pohjalaismurteet'
+            subfolders:
+              lam_LänP:
+                title: Länsipohja
+                description: 'Lauseopin arkiston murrekorpus: Länsipohja'
+              lam_PerP:
+                title: Peräpohjola
+                description: 'Lauseopin arkiston murrekorpus: Peräpohjola'
+              lam_PohE:
+                title: Etelä-Pohjanmaa
+                description: 'Lauseopin arkiston murrekorpus: Etelä-Pohjanmaa'
+              lam_PohK:
+                title: Keski-Pohjanmaa
+                description: 'Lauseopin arkiston murrekorpus: Keski-Pohjanmaa'
+              lam_PohP:
+                title: Pohjois-Pohjanmaa
+                description: 'Lauseopin arkiston murrekorpus: Pohjois-Pohjanmaa'
+          lam_SAV:
+            title: Savolaismurteet
+            description: 'Lauseopin arkiston murrekorpus: Savolaismurteet'
+            subfolders:
+              lam_Kai:
+                title: Kainuu
+                description: 'Lauseopin arkiston murrekorpus: Kainuu'
+              lam_KarP:
+                title: Pohjois-Karjala
+                description: 'Lauseopin arkiston murrekorpus: Pohjois-Karjala'
+              lam_KesE:
+                title: Eteläinen Keski-Suomi
+                description: 'Lauseopin arkiston murrekorpus: Eteläinen Keski-Suomi'
+              lam_KesL:
+                title: Läntinen Keski-Suomi
+                description: 'Lauseopin arkiston murrekorpus: Läntinen Keski-Suomi'
+              lam_KesP:
+                title: Pohjoinen Keski-Suomi
+                description: 'Lauseopin arkiston murrekorpus: Pohjoinen Keski-Suomi'
+              lam_SavE:
+                title: Etelä-Savo
+                description: 'Lauseopin arkiston murrekorpus: Etelä-Savo'
+              lam_SavP:
+                title: Pohjois-Savo
+                description: 'Lauseopin arkiston murrekorpus: Pohjois-Savo'

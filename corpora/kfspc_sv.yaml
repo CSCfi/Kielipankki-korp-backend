@@ -1,0 +1,69 @@
+id: kfspc_sv
+title: Kotus Finnish-Swedish Parallel Corpus (ruotsi)
+description: KFSPC (ruotsi)
+lang: swe
+linked_to:
+- kfspc_fi
+metadata_urn: urn:nbn:fi:lb-201406036
+urn: urn:nbn:fi:lb-201406035
+licence:
+  name: CC BY (PUB)
+  description: Creative Commons Attribution
+  urn: urn:nbn:fi:lb-2021120223
+cite_id: kfspc-korp
+mode:
+- name: parallel
+- name: swedish
+  folder: other
+  changes:
+    title: KFSPC svenska
+    description: Kotus Finnish-Swedish Parallel Corpus, svenskspråkiga delen
+    cite_id: kfspc-korp-sv
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes: []
+struct_attributes:
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 5
+- text_distributor:
+    label:
+      eng: text_distributor
+      fin: text_distributor
+      swe: text_distributor
+    display_type: hidden
+    order: 1
+- text_h_title2:
+    label:
+      eng: title
+      fin: otsikko
+      swe: titel
+    extended_component: structServiceAutocomplete
+    order: 2
+- text_pubdate2:
+    label:
+      eng: publication date
+      fin: julkaisuajankohta
+      swe: publikationsdatum
+    order: 3
+- text_publisher:
+    label:
+      eng: publisher
+      fin: julkaisija
+      swe: utgivare
+    order: 4
+hide: true

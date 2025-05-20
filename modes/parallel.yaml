@@ -1,0 +1,92 @@
+label:
+  eng: Parallel
+  fin: Rinnakkaistekstit
+  swe: Parallella
+folders:
+  legal:
+    title: Juridisia aineistoja / Juridiska korpusar / Legal texts
+    description: Juridisia aineistoja<br/>Juridiska korpusar<br/>Legal texts
+    subfolders:
+      jrc:
+        title: HeKo-JRC-Acquis
+        description: Helsinki Korp JRC-Acquis -aineistokokoelma
+  literary:
+    title: Kirjallisuusaineistoja / Litteraturkorpusar / Literary texts
+    description: Kirjallisuusaineistoja<br/>Litteraturkorpusar<br/>Literary texts
+    subfolders:
+      ceal:
+        title: CEAL
+        description: Englantilaisen ja amerikkalaisen kirjallisuuden klassikoita Kersti
+          Juvan suomentamina, englanti–suomi-rinnakkaiskorpus<br/>Classics of English
+          and American Literature as translated by Kersti Juva, English–Finnish parallel
+          corpus
+      parfin_parrus:
+        title: ParFin, ParRus
+        description: ''
+  other:
+    title: Muita aineistoja / Andra korpusar / Other corpora
+    description: Muita aineistoja<br/>Andra korpusar<br/>Other corpora
+    subfolders:
+      opus:
+        title: OPUS
+        description: OPUS – an open source parallel corpus
+        subfolders:
+          csfi:
+            title: OPUS Finnish–Czech
+            description: ''
+          dafi:
+            title: OPUS Finnish–Danish
+            description: ''
+          defi:
+            title: OPUS Finnish–German
+            description: ''
+          elfi:
+            title: OPUS Finnish–Greek
+            description: ''
+          enfi:
+            title: OPUS Finnish–English
+            description: ''
+          esfi:
+            title: OPUS Finnish–Spanish
+            description: ''
+          etfi:
+            title: OPUS Finnish–Estonian
+            description: ''
+          fifr:
+            title: OPUS Finnish–French
+            description: ''
+          fihu:
+            title: OPUS Finnish–Hungarian
+            description: ''
+          fiit:
+            title: OPUS Finnish–Italian
+            description: ''
+          finl:
+            title: OPUS Finnish–Dutch
+            description: ''
+          fipl:
+            title: OPUS Finnish–Polish
+            description: ''
+          fipt:
+            title: OPUS Finnish–Portuguese
+            description: ''
+          firu:
+            title: OPUS Finnish–Russian
+            description: ''
+          fisv:
+            title: OPUS Finnish–Swedish
+            description: ''
+          fitrl:
+            title: OPUS Finnish–Turkish
+            description: ''
+      uspenskij_4bat:
+        title: Uspenskij 4 battles
+        description: Parallel Corpus of the book 'Four Battles', written by L. Uspenskij
+  parliament:
+    title: Parlamenttiaineistoja / Parlamentariska korpusar / Parliamentary texts
+    description: Parlamenttiaineistoja<br/>Parlamentariska korpusar<br/>Parliamentary
+      texts
+    subfolders:
+      europarl:
+        title: HeKo-EuroParl 7
+        description: Helsinki Korp EuroParl v7 -aineistokokoelma

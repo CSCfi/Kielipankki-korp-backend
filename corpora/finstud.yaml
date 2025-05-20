@@ -1,0 +1,80 @@
+id: finstud
+title: Finstud 86
+description: Finstud 86
+metadata_urn: urn:nbn:fi:lb-20140730158
+urn: urn:nbn:fi:lb-2016090610
+licence:
+  name: CLARIN RES +PLAN +NC +PRIV 2.1
+  urn: urn:nbn:fi:lb-2016041802
+  category: RES
+licence_type: RES
+limited_access: true
+cite_id: FinStud86
+mode:
+- name: default
+  folder: other
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes:
+- code:
+    label:
+      eng: studentsvenska_code
+      fin: syntaktinen funktio
+      swe: syntaktisk funktion
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+- properties:
+    label:
+      eng: studentsvenska_properties
+      fin: lausetyyppi
+      swe: satstyp
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+struct_attributes:
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 4
+- text_textnumber:
+    label:
+      eng: studentsvenska_textnumber
+      fin: tekstin numero
+      swe: textnummer
+    order: 1
+- text_gradeexam:
+    label:
+      eng: studentsvenska_gradeexam
+      fin: koearvosana
+      swe: betyg i poäng (examensnämnden)
+    order: 2
+- text_subject:
+    label:
+      eng: studentsvenska_subject
+      fin: aineen vaihe
+      swe: uppsatsämne
+    order: 3

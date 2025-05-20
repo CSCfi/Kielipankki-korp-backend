@@ -1,0 +1,24 @@
+id: opus_opensub2013enfi_en
+title: Opensubtitles 2013 EN
+description: Opensubtitles 2013 EN
+lang: eng
+linked_to:
+- opus_opensub2013enfi_fi
+metadata_urn: urn:nbn:fi:lb-2015102201
+urn: urn_placeholder
+mode:
+- name: parallel
+context:
+- label:
+    eng: 1 align
+    fin: 1 align
+    swe: 1 align
+  value: 1 align
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes: []
+hide: true

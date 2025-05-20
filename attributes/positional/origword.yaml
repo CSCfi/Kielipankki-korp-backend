@@ -1,0 +1,12 @@
+label:
+  eng: word_orig
+  fin: alkuperäinen sana
+  swe: word_orig
+opts:
+  contains: _=
+  ends_with: '&='
+  is: '='
+  is_not: '!='
+  matches: '*='
+  matches_not: '!*='
+  starts_with: ^=

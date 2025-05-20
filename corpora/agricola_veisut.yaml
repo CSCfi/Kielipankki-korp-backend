@@ -1,0 +1,303 @@
+id: agricola_veisut
+title: 'Agricola: Weisut'
+description: 'Mikael Agricolan teosten morfosyntaktinen tietokanta: Weisut ia Ennustoxet
+  Mosesen Laista ia Prophetista Wloshaetut'
+alias:
+- agricola_korp
+shortname: agricola-v1-1-korp
+metadata_urn: urn:nbn:fi:lb-2019121804
+urn: urn:nbn:fi:lb-2019121803
+licence:
+  name: CC BY-ND 4.0 (PUB)
+  description: Creative Commons Attribution-NoDerivatives 4.0
+  urn: urn:nbn:fi:lb-2021120231
+cite_id: agricola-v1-1-korp
+homepage_url: http://www.utu.fi/fi/yksikot/hum/yksikot/suomi-sgr/palvelut-yhteistyo/arkistot/Sivut/home.aspx
+iprholder:
+  name: Turun yliopisto; Kotimaisten kielten keskus
+mode:
+- name: default
+  folder: historical.agricola
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes:
+- lemma: baseform
+- pos:
+    label:
+      eng: part of speech
+      fin: sanaluokka
+      swe: ordklass
+    order: 4
+- nrm:
+    label:
+      eng: normalized_lemma
+      fin: normalisoitu perusmuoto
+      swe: normalized_lemma
+- type:
+    label:
+      eng: language
+      fin: kieli
+      swe: språk
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      ? ''
+      : fin
+      gre: gre
+      heb: heb
+      lat: lat
+      swe: swe
+    translation:
+      deu:
+        en: German
+        fi: saksa
+        sv: tyska
+      dut:
+        en: Dutch
+        fi: hollanti
+        sv: nederländska
+      ell:
+        en: Greek
+        fi: kreikka
+        sv: grekiska
+      eng:
+        en: English
+        fi: englanti
+        sv: engelska
+      est:
+        en: Estonian
+        fi: viro
+        sv: estniska
+      fin:
+        en: Finnish
+        fi: suomi
+        sv: finska
+      fra:
+        en: French
+        fi: ranska
+        sv: franska
+      fre:
+        en: French
+        fi: ranska
+        sv: franska
+      ger:
+        en: German
+        fi: saksa
+        sv: tyska
+      gre:
+        en: Greek
+        fi: kreikka
+        sv: grekiska
+      heb:
+        en: Hebrew
+        fi: heprea
+        sv: hebreiska
+      hun:
+        en: Hungarian
+        fi: unkari
+        sv: ungerska
+      izh:
+        fi: inkeroinen
+      kca:
+        fi: hanti
+      kpv:
+        en: Komi-Zyrian
+        fi: komisyrjääni
+        sv: komi
+      lat:
+        en: Latin
+        fi: latina
+        sv: latin
+      mdf:
+        en: Moksha
+        fi: mokša
+        sv: moksja
+      mns:
+        fi: mansi
+      mrj:
+        fi: länsimari
+      myv:
+        en: Erzya
+        fi: ersä
+        sv: erzia
+      nld:
+        en: Dutch
+        fi: hollanti
+        sv: nederländska
+      nor:
+        en: Norwegian
+        fi: norja
+        sv: norska
+      rus:
+        en: Russian
+        fi: venäjä
+        sv: ryska
+      sel:
+        fi: selkuppi
+      sjd:
+        fi: kiltinänsaame
+      sms:
+        fi: koltansaame
+      spa:
+        en: Spanish
+        fi: espanja
+        sv: spanska
+      swe:
+        en: Swedish
+        fi: ruotsi
+        sv: svenska
+      vep:
+        fi: vepsä
+      xxx:
+        en: unidentified
+        fi: tunnistamaton
+        sv: oidentifierat
+      yrk:
+        fi: tundranenetsi
+- mrp: msd
+- fun:
+    label:
+      eng: function
+      fin: lauseenjäsen
+      swe: satsdel
+- com: hidden
+- tunit:
+    label:
+      eng: comp_tense
+      fin: liittotempus
+      swe: comp_tense
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      f: f
+      p pl: ppl
+      p: p
+      pl: pl
+    translation:
+      f:
+        fi: futuuri
+      p:
+        fi: perfekti
+      pl:
+        fi: pluskvamperfekti
+      ppl:
+        fi: perfekti tai pluskvamperfekti
+struct_attributes:
+- text_title:
+    label:
+      eng: text title
+      fin: tekstin otsikko
+      swe: text_title
+    order: 1
+- text_dateto:
+    display_type: hidden
+    order: 2
+- text_datefrom:
+    display_type: hidden
+    order: 3
+- text_timeto:
+    display_type: hidden
+    order: 4
+- text_timefrom:
+    display_type: hidden
+    order: 5
+- text_date_orig:
+    label:
+      eng: text_date
+      fin: päivämäärä
+      swe: text_date
+    order: 6
+- div_id: hidden
+- paragraph_id:
+    display_type: hidden
+    order: 7
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 8
+- sentence_type:
+    display_type: hidden
+    order: 9
+- sentence_biblia:
+    label:
+      eng: bible_index
+      fin: raamatunkohta
+      swe: bible_index
+    order: 10
+- sentence_loc:
+    label:
+      eng: location
+      fin: sijainti
+      swe: plats
+    order: 11
+- clause_id:
+    display_type: hidden
+    order: 12
+- clause_loc:
+    display_type: hidden
+    order: 13
+- clause_biblia:
+    display_type: hidden
+    order: 14
+- clause_type:
+    label:
+      eng: clause_type
+      fin: lauseen tyyppi
+      swe: clause_type
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      affdecl: affdecl
+      affint: affint
+      affopt: affopt
+      muu: muu
+      negdecl: negdecl
+      negint: negint
+      negopt: negopt
+    translation:
+      affdecl:
+        fi: myönteinen väitelause
+      affint:
+        fi: myönteinen kysymyslause
+      affopt:
+        fi: myönteinen imperatiivilause
+      muu:
+        fi: muu
+      negdecl:
+        fi: kielteinen väitelause
+      negint:
+        fi: kielteinen kysymyslause
+      negopt:
+        fi: kielteinen imperatiivilause
+    order: 15
+- clause_depth:
+    label:
+      eng: clause_depth
+      fin: lauseen upotustaso
+      swe: clause_depth
+    order: 16
+- clause_partnum:
+    label:
+      eng: clause_partnum
+      fin: lauseen osan numero
+      swe: clause_partnum
+    order: 17

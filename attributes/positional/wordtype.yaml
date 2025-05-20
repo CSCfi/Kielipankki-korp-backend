@@ -1,0 +1,30 @@
+label:
+  eng: type
+  fin: tyyppi
+  swe: typ
+opts:
+  is: '='
+  is_not: '!='
+extended_component: datasetSelect
+dataset:
+  comment: comment
+  from: from
+  subject: subject
+  text: text
+  to: to
+translation:
+  comment:
+    fi: transkriboijan kommentti
+    sv: lärares komment
+  from:
+    fi: lähettäjä
+    sv: ansändare
+  subject:
+    fi: aihe
+    sv: subjekt
+  text:
+    fi: leipäteksti
+    sv: text
+  to:
+    fi: vastaanottaja
+    sv: adressat

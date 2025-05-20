@@ -1,0 +1,449 @@
+id: fstc_soder_b
+title: Söderströms 1997–1999 B (FSTC)
+description: 'Finlandssvensk textkorpus (UHLCS): litteratur: Söderströms 1997–1999
+  B'
+alias:
+- fstc
+metadata_urn: urn:nbn:fi:lb-2016050213
+urn: urn:nbn:fi:lb-2016112318
+licence:
+  name: CLARIN RES +PLAN +NC +LOC +ND 2.1
+  urn: urn:nbn:fi:lb-20150304123
+  category: RES
+licence_type: RES
+limited_access: true
+cite_id: fstc-korp
+mode:
+- name: swedish
+  folder: literary.fstc_literary.fstc_soder
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- lemma:
+    label:
+      eng: base form
+      fin: perusmuoto
+      swe: grundform
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 1
+    stats_cqp: cqpPlainWordAttr
+    stats_stringify: stringifyPlainWordAttr
+- lemmacomp:
+    label:
+      eng: baseform (compound boundaries)
+      fin: perusmuoto (yhdyssanarajat)
+      swe: grundform (sammansättningsgränser)
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 2
+- pos:
+    label:
+      eng: part of speech
+      fin: sanaluokka
+      swe: ordklass
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+    - A
+    - ABBR
+    - ADV
+    - ADV/PREP
+    - A/N
+    - CC
+    - CLB
+    - DEF
+    - DER/-het
+    - DER/-nde
+    - DET
+    - GEN
+    - INDEF
+    - INFMARK
+    - INTERJ
+    - N
+    - NOM
+    - NUM
+    - PRB
+    - PREP
+    - PREPADV
+    - PRON
+    - SC
+    - UTRNEU
+    - V
+    order: 3
+- msd:
+    label:
+      eng: msd
+      fin: morfologinen analyysi
+      swe: msd
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    pattern: <%= val.replace(/\|/g, '|<wbr>') %>
+    order: 5
+- id: id_hidden
+- lex:
+    label:
+      eng: lemgram
+      fin: lemgrammi
+      swe: lemgram
+    type: set
+    display_type: hidden
+    order: 4
+struct_attributes:
+- text_title:
+    label:
+      eng: title
+      fin: otsikko
+      swe: titel
+    extended_component: structServiceAutocomplete
+    order: 1
+- text_creator:
+    label:
+      eng: author
+      fin: tekijä
+      swe: författare
+    extended_component: structServiceAutocomplete
+    order: 2
+- text_publisher:
+    label:
+      eng: publisher
+      fin: julkaisija
+      swe: utgivare
+    extended_component: structServiceAutocomplete
+    order: 3
+- text_wordcount:
+    label:
+      eng: text word count
+      fin: tekstin sanamäärä
+      swe: antal ord i text
+    order: 4
+- text_lemmie_id:
+    label:
+      eng: lemmie_text_id
+      fin: tekstin tunniste Lemmiessä
+      swe: textidentifierare i Lemmie
+    order: 5
+- text_lang:
+    label:
+      eng: language
+      fin: kieli
+      swe: språk
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - fin
+    - eng
+    - swe
+    translation:
+      deu:
+        en: German
+        fi: saksa
+        sv: tyska
+      dut:
+        en: Dutch
+        fi: hollanti
+        sv: nederländska
+      ell:
+        en: Greek
+        fi: kreikka
+        sv: grekiska
+      eng:
+        en: English
+        fi: englanti
+        sv: engelska
+      est:
+        en: Estonian
+        fi: viro
+        sv: estniska
+      fin:
+        en: Finnish
+        fi: suomi
+        sv: finska
+      fra:
+        en: French
+        fi: ranska
+        sv: franska
+      fre:
+        en: French
+        fi: ranska
+        sv: franska
+      ger:
+        en: German
+        fi: saksa
+        sv: tyska
+      gre:
+        en: Greek
+        fi: kreikka
+        sv: grekiska
+      heb:
+        en: Hebrew
+        fi: heprea
+        sv: hebreiska
+      hun:
+        en: Hungarian
+        fi: unkari
+        sv: ungerska
+      izh:
+        fi: inkeroinen
+      kca:
+        fi: hanti
+      kpv:
+        en: Komi-Zyrian
+        fi: komisyrjääni
+        sv: komi
+      lat:
+        en: Latin
+        fi: latina
+        sv: latin
+      mdf:
+        en: Moksha
+        fi: mokša
+        sv: moksja
+      mns:
+        fi: mansi
+      mrj:
+        fi: länsimari
+      myv:
+        en: Erzya
+        fi: ersä
+        sv: erzia
+      nld:
+        en: Dutch
+        fi: hollanti
+        sv: nederländska
+      nor:
+        en: Norwegian
+        fi: norja
+        sv: norska
+      rus:
+        en: Russian
+        fi: venäjä
+        sv: ryska
+      sel:
+        fi: selkuppi
+      sjd:
+        fi: kiltinänsaame
+      sms:
+        fi: koltansaame
+      spa:
+        en: Spanish
+        fi: espanja
+        sv: spanska
+      swe:
+        en: Swedish
+        fi: ruotsi
+        sv: svenska
+      vep:
+        fi: vepsä
+      xxx:
+        en: unidentified
+        fi: tunnistamaton
+        sv: oidentifierat
+      yrk:
+        fi: tundranenetsi
+    order: 6
+- text_date:
+    label:
+      eng: date
+      fin: päiväys
+      swe: datum
+    order: 7
+- text_filename:
+    label:
+      eng: file name
+      fin: tiedoston nimi
+      swe: filnamn
+    order: 8
+- text_rights:
+    label:
+      eng: access_rights_cat
+      fin: käyttöoikeusluokka
+      swe: åtkomsträttighetskategori
+    order: 9
+- text_contributor:
+    label:
+      eng: contributor
+      fin: avustaja
+      swe: bidragsgivare
+    order: 10
+- text_source:
+    label:
+      eng: source
+      fin: lähde
+      swe: källa
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+    - FISC Litteratur
+    - FISC Myndighet
+    - FISC Sakprosa
+    - FISC Tidning
+    - Finska Notisbyrån
+    - Hufvudstadsbladet
+    - Jakobstads Tidning
+    - Söderströms förlag
+    order: 11
+- text_lemmie_corpus:
+    label:
+      eng: lemmie_corpus
+      fin: korpuksen tunniste Lemmiessä
+      swe: korpusidentifierare i Lemmie
+    order: 12
+- text_subject:
+    label:
+      eng: subject
+      fin: aihe
+      swe: ämne
+    order: 13
+- paragraph_type:
+    label:
+      eng: paragraph type
+      fin: kappaleen tyyppi
+      swe: styckets typ
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+      title: title
+      author: author
+      bibl: bibl
+      body: body
+      byline: byline
+      caption: caption
+      closer: closer
+      date: date
+      div|div0|div1|div2|div3: div
+      emph: emph
+      entry: entry
+      footer: footer
+      group: group
+      head: head
+      header: header
+      hi: hi
+      item: item
+      l: l
+      list: list
+      note: note
+      omit: omit
+      opener: opener
+      p: p
+      q: q
+      quote: quote
+      resp: resp
+      rs: rs
+      signed: signed
+    translation:
+      name:
+        fi: nimi
+      author:
+        fi: tekijä
+      byline:
+        fi: kirjoittaja (byline)
+      caption:
+        fi: kuvateksti
+      closer:
+        fi: lopetus
+      date:
+        fi: päiväys
+      empty:
+        en: empty
+        fi: tyhjä
+      head:
+        fi: otsikko
+      heading:
+        en: heading
+        fi: otsikko
+      hi:
+        fi: korostus
+      interviewee:
+        fi: haastateltava
+      interviewer:
+        fi: haastattelija
+      noninterviewee:
+        fi: ei-haastateltava (analysoimaton)
+      num:
+        fi: numero
+      opener:
+        fi: aloitus
+      p:
+        fi: kappale
+      paragraph:
+        en: paragraph
+        fi: kappale
+      paragraph/heading:
+        en: paragraph or heading
+        fi: kappale tai otsikko
+      q:
+        fi: teksti lainausmerkeissä
+      quote:
+        fi: lainaus
+      rs:
+        fi: nimi tai muu viittaus
+      sentence:
+        en: sentence
+        fi: virke
+      signed:
+        fi: allekirjoitus
+    order: 14
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 15
+- sentence_within:
+    label:
+      eng: enclosing_elems
+      fin: sisältävät elementit
+      swe: innehållande element
+    order: 16
+lbr_id: urn:nbn:fi:lb-2016050212

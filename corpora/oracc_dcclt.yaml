@@ -1,0 +1,588 @@
+id: oracc_dcclt
+title: Digital Corpus of Cuneiform Lexical Texts (Oracc 2019)
+description: 'DCCLT: Digital Corpus of Cuneiform Lexical Texts<br/>Part of Oracc –
+  Open Richly Annotated Cuneiform Corpus, Korp Version, May 2019'
+alias:
+- oracc_2019_05
+metadata_urn: urn:nbn:fi:lb-2019060601
+urn: urn:nbn:fi:lb-2019060602
+licence:
+  name: CC BY-SA 3.0 (PUB)
+  description: Creative Commons Attribution-ShareAlike
+  url: https://creativecommons.org/licenses/by-sa/3.0/
+cite_id: oracc-korp-2019-05
+iprholder:
+  name: Open Richly Annotated Cuneiform Corpus Project
+  url: http://oracc.museum.upenn.edu/doc/about/licensing/index.html
+mode:
+- name: other_languages
+  folder: cuneiform.oracc
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- lemma:
+    label:
+      eng: base form
+      fin: perusmuoto
+      swe: grundform
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 1
+    stats_cqp: cqpPlainWordAttr
+    stats_stringify: stringifyPlainWordAttr
+- ltrans:
+    label:
+      eng: translation (base form)
+      fin: merkitys (lemma)
+      swe: oracc_lemmatrans
+- transcription:
+    label:
+      eng: transcription
+      fin: transkriptio
+      swe: oracc_transcription
+- sense:
+    label:
+      eng: translation (sense)
+      fin: merkitys (sananmuoto)
+      swe: oracc_sense
+    stats_cqp: cqpPlainWordAttr
+    stats_stringify: stringifyPlainWordAttr
+- pos:
+    label:
+      eng: part of speech
+      fin: sanaluokka
+      swe: ordklass
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - adjective
+    - adverb
+    - commonnoun
+    - conjunction
+    - interjection
+    - miscellaneousundetermined
+    - number
+    - particle
+    - prepositionpostposition
+    - pronoun
+    - propernoun
+    - verb
+    translation:
+      adjective:
+        en: adjective
+        fi: adjektiivi
+      adverb:
+        en: adverb
+        fi: adverbi
+      common noun:
+        en: common noun
+      commonnoun:
+        en: common noun
+        fi: substantiivi
+      conjunction:
+        en: conjunction
+        fi: konjunktio
+      interjection:
+        en: interjection
+        fi: interjektio
+      miscellaneous/undetermined:
+        en: miscellaneous/undetermined
+      miscellaneousundetermined:
+        en: miscellaneous/undetermined
+        fi: sekalainen/määrittelemätön
+      number:
+        en: number
+        fi: numero
+      particle:
+        en: particle
+        fi: partikkeli
+      preposition/postposition:
+        en: preposition/postposition
+      prepositionpostposition:
+        en: preposition/postposition
+        fi: pre-/postpositio
+      pronoun:
+        en: pronoun
+        fi: pronomini
+      proper noun:
+        en: proper noun
+      propernoun:
+        en: proper noun
+        fi: erisnimi
+      subcategory:
+        en: part of speech (detailed)
+        fi: tarkempi sanaluokka
+      verb:
+        en: verb
+        fi: verbi
+    order: 2
+- possub:
+    label:
+      eng: part of speech subcategory
+      fin: tarkempi sanaluokka
+      swe: oracc_pos_subcategory
+- standard:
+    label:
+      eng: standardized
+      fin: standardoitu kirjoitusasu
+      swe: oracc_standardized
+- lang:
+    label:
+      eng: language/dialect
+      fin: kielimuoto
+      swe: oracc_lang
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - Akkadian
+    - Aramaic
+    - Cuneiform
+    - EarlyAkkadian
+    - Eblaite
+    - Elamite
+    - Greek
+    - Hittite
+    - Hurrian
+    - LateBabylonian
+    - MiddleAssyrian
+    - MiddleBabylonian
+    - MiddleBabylonianperipheral
+    - Neo-Assyrian
+    - Neo-Babylonian
+    - OldAkkadian
+    - OldAssyrian
+    - OldBabylonian
+    - OldPersian
+    - Proto-cuneiform
+    - StandardBabylonian
+    - Sumerian
+    - SumerianEmesal
+    - Ugaritic
+    - Urartian
+    translation:
+      Akkadian:
+        en: Akkadian
+        fi: akkadi
+      Aramaic:
+        en: Aramaic
+        fi: aramaea
+      Cuneiform:
+        en: Cuneiform
+        fi: nuolenpäät
+      EarlyAkkadian:
+        en: Early Akkadian
+        fi: varhainen akkadi
+      Eblaite:
+        en: Eblaite
+        fi: ebla
+      Elamite:
+        en: Elamite
+        fi: elami
+      Greek:
+        en: Greek
+        fi: kreikka
+      Hittite:
+        en: Hittite
+        fi: heetti
+      Hurrian:
+        en: Hurrian
+        fi: hurri
+      LateBabylonian:
+        en: Late Babylonian
+        fi: myöhäisbabylonia
+      MiddleAssyrian:
+        en: Middle Assyrian
+        fi: keskiassyria
+      MiddleBabylonian:
+        en: Middle Babylonian
+        fi: keskibabylonia
+      MiddleBabylonianperipheral:
+        en: Middle Babylonian peripheral
+        fi: keskibabylonia (periferia)
+      Neo-Assyrian:
+        en: Neo-Assyrian
+        fi: uusassyria
+      Neo-Babylonian:
+        en: Neo-Babylonian
+        fi: uusbabylonia
+      OldAkkadian:
+        en: Old Akkadian
+        fi: muinaisakkadi
+      OldAssyrian:
+        en: Old Assyrian
+        fi: muinaisassyria
+      OldBabylonian:
+        en: Old Babylonian
+        fi: muinaisbabylonia
+      OldPersian:
+        en: Old Persian
+        fi: muinaispersia
+      Proto-cuneiform:
+        en: Proto-cuneiform
+        fi: protonuolenpäät
+      StandardBabylonian:
+        en: Standard Babylonian
+        fi: standardibabylonia
+      Sumerian:
+        en: Sumerian
+        fi: sumeri
+      SumerianEmesal:
+        en: Sumerian Emesal
+        fi: sumeri (emesal)
+      Ugaritic:
+        en: Ugaritic
+        fi: ugarit
+      Urartian:
+        en: Urartian
+        fi: urartu
+- url:
+    label:
+      eng: link to Oracc
+      fin: Linkki Oracciin
+      swe: oracc_url
+    type: urlPattern
+    pattern: <a href="<%= val %>" class="exturl sidebar_link" target="_blank"><%=
+      val %></a>
+    url_opts:
+      newWindow: true
+struct_attributes:
+- text_cdlinumber:
+    label:
+      eng: CDLI number
+      fin: CDLI-tunniste
+      swe: oracc_cdlinumber
+    order: 1
+- text_provenance:
+    label:
+      eng: provenance
+      fin: alue
+      swe: oracc_provenance
+    order: 2
+- text_language:
+    label:
+      eng: text languages
+      fin: tekstin kielet
+      swe: oracc_textlang
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - Akkadian
+    - AkkadianAramaic
+    - AkkadianAramaicLuwian
+    - AkkadianEgyptian
+    - AkkadianOldPersian
+    - AkkadianOldPersianElamite
+    - AkkadianOldPersianElamiteEgyptian
+    - AkkadianUrartian
+    - Aramaic
+    - Eblaite
+    - Elamite
+    - Hittite
+    - Neo-Assyrian
+    - Neo-Babylonian
+    - OldPersian
+    - OldPersianElamite
+    - Sumerian
+    - SumerianAkkadian
+    - Uncertainorunspecified
+    - Urartian
+    translation:
+      Akkadian:
+        en: Akkadian
+        fi: akkadi
+      AkkadianAramaic:
+        en: Akkadian, Aramaic
+        fi: akkadi, aramea
+      AkkadianAramaicLuwian:
+        en: Akkadian, Aramaic, Luwian
+        fi: akkadi, aramea, luuvi
+      AkkadianEgyptian:
+        en: Akkadian, Egyptian
+        fi: akkadi, egypti
+      AkkadianOldPersian:
+        en: Akkadian, Old Persian
+        fi: akkadi, muinaispersia
+      AkkadianOldPersianElamite:
+        en: Akkadian, Old Persian, Elamite
+        fi: akkadi, muinaispersia, elami
+      AkkadianOldPersianElamiteEgyptian:
+        en: Akkadian, Old Persian, Elamite, Egyptian
+        fi: akkadi, muinaispersia, elami, egypti
+      AkkadianUrartian:
+        en: Akkadian, Urartian
+        fi: akkadi, urartu
+      Aramaic:
+        en: Aramaic
+        fi: aramea
+      Eblaite:
+        en: Eblaite
+        fi: ebla
+      Elamite:
+        en: Elamite
+        fi: elami
+      Hittite:
+        en: Hittite
+        fi: heetti
+      Neo-Assyrian:
+        en: Neo-Assyrian
+        fi: uusassyria
+      Neo-Babylonian:
+        en: Neo-Babylonian
+        fi: uusbabylonia
+      OldPersian:
+        en: Old Persian
+        fi: muinaispersia
+      OldPersianElamite:
+        en: Old Persian, Elamite
+        fi: muinaispersia, elami
+      Sumerian:
+        en: Sumerian
+        fi: sumeri
+      SumerianAkkadian:
+        en: Sumerian, Akkadian
+        fi: sumeri, akkadi
+      Uncertainorunspecified:
+        en: Uncertain or unspecified
+        fi: määrittelemätön
+      Urartian:
+        en: Urartian
+        fi: urartu
+    order: 3
+- text_genre:
+    label:
+      eng: genre
+      fin: tekstin tyylilaji
+      swe: oracc_genre
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - administrativerecord
+    - astrologicalastronomical
+    - grantdecreegift
+    - legaltransaction
+    - letter
+    - lexical
+    - literary
+    - miscellaneous
+    - omendivination
+    - prayerritualincantation
+    - royalinscription
+    - scholarly
+    - school
+    - uncertainorunspecified
+    translation:
+      administrativerecord:
+        en: administrative record
+        fi: hallinnollinen
+      astrologicalastronomical:
+        en: astrological/astronomical
+        fi: astrologinen/astronominen
+      grantdecreegift:
+        en: grant/decree/gift
+        fi: lahjoitus/määräys
+      legaltransaction:
+        en: legal transaction
+        fi: laki
+      letter:
+        en: letter
+        fi: kirje
+      lexical:
+        en: lexical
+        fi: leksikaalinen
+      literary:
+        en: literary
+        fi: kaunokirjallinen
+      miscellaneous:
+        en: miscellaneous
+        fi: sekalainen
+      omendivination:
+        en: omen/divination
+        fi: enteet
+      prayerritualincantation:
+        en: prayer/ritual/incantation
+        fi: rukoukset/rituaalit
+      royalinscription:
+        en: royal inscription
+        fi: kuninkaallinen
+      scholarly:
+        en: scholarly
+        fi: tieteellinen
+      school:
+        en: school
+        fi: koulutekstit
+      uncertainorunspecified:
+        en: uncertain or unspecified
+        fi: määrittelemätön
+    order: 4
+- text_period:
+    label:
+      eng: period
+      fin: aikakausi
+      swe: oracc_period
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - Achaemenid
+    - Archaic
+    - EarlyDynastic
+    - Ebla
+    - FirstMillennium
+    - Hellenistic
+    - LagašII
+    - LateBabylonian
+    - MiddleAssyrian
+    - MiddleBabylonian
+    - MiddleHittite
+    - NeoAssyrian
+    - Neo-Assyrian
+    - NeoBabylonian
+    - Neo-Babylonian
+    - OldAkkadian
+    - OldAssyrian
+    - OldBabylonian
+    - Parthian
+    - StandardBabylonian
+    - Uncertainorunspecified
+    - Urartian
+    - UrIII
+    - UrukIII
+    - UrukIV
+    translation:
+      Achaemenid:
+        en: Achaemenid
+        fi: persialainen
+      Archaic:
+        en: Archaic
+        fi: arkaainen
+      EarlyDynastic:
+        en: Early Dynastic
+        fi: varhaisdynastinen
+      Ebla:
+        en: Ebla
+        fi: Ebla
+      FirstMillennium:
+        en: First Millennium
+        fi: ensimmäinen vuosituhat
+      Hellenistic:
+        en: Hellenistic
+        fi: hellenistinen
+      LagašII:
+        en: Lagaš II
+        fi: Lagaš II
+      LateBabylonian:
+        en: Late Babylonian
+        fi: myöhäisbabylonialainen
+      MiddleAssyrian:
+        en: Middle Assyrian
+        fi: keskiassyrialainen
+      MiddleBabylonian:
+        en: Middle Babylonian
+        fi: keskibabylonialainen
+      MiddleHittite:
+        en: Middle Hittite
+        fi: keskiheettiläinen
+      Neo-Assyrian:
+        en: Neo-Assyrian
+        fi: uusassyrialainen
+      Neo-Babylonian:
+        en: Neo-Babylonian
+        fi: uusbabylonialainen
+      NeoAssyrian:
+        en: Neo Assyrian
+        fi: uusassyrialainen
+      NeoBabylonian:
+        en: Neo Babylonian
+        fi: uusbabylonialainen
+      OldAkkadian:
+        en: Old Akkadian
+        fi: muinaisakkadilainen
+      OldAssyrian:
+        en: Old Assyrian
+        fi: muinaisassyrialainen
+      OldBabylonian:
+        en: Old Babylonian
+        fi: muinaisbabylonialainen
+      Parthian:
+        en: Parthian
+        fi: parthialainen
+      StandardBabylonian:
+        en: Standard Babylonian
+        fi: standardibabylonia
+      Uncertainorunspecified:
+        en: Uncertain or unspecified
+        fi: määrittelemätön/tuntematon
+      UrIII:
+        en: Ur III
+        fi: Ur III
+      Urartian:
+        en: Urartian
+        fi: urartu
+      UrukIII:
+        en: Uruk III
+        fi: Uruk III
+      UrukIV:
+        en: Uruk IV
+        fi: Uruk IV
+    order: 5
+- text_subgenre:
+    label:
+      eng: subgenre
+      fin: tekstin tyylin alalaji
+      swe: oracc_subgenre
+    order: 6
+- sentence_line:
+    label:
+      eng: line
+      fin: rivinumero
+      swe: oracc_line
+    order: 8
+- sentence_translation:
+    label:
+      eng: translation
+      fin: virkkeen käännös
+      swe: oracc_sent_translation
+    order: 9
+- paragraph_id:
+    label:
+      eng: paragraph_id
+      fin: kappaleen tunniste
+      swe: paragraph_id
+    display_type: hidden
+    order: 7
+infopage_url: https://www.kielipankki.fi/corpora/oracc/

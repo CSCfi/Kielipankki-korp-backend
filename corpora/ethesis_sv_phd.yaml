@@ -1,0 +1,98 @@
+id: ethesis_sv_phd
+title: 'E-thesis: Doktorsavhandlingar'
+description: 'Helsingfors universitets svenska E-thesis, Korp-version: Doktorsavhandlingar
+  (2000–2016)'
+shortname: e-thesis-sv
+metadata_urn: urn:nbn:fi:lb-2016102810
+urn: urn:nbn:fi:lb-2016102801
+licence:
+  name: CC BY (PUB)
+  description: Creative Commons Attribution
+  urn: urn:nbn:fi:lb-2021120223
+homepage:
+  name: Digitala avhandlingar vid Helsingfors universitet
+  url: https://ethesis.helsinki.fi/sv/
+mode:
+- name: swedish
+  folder: academic.ethesis
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes: []
+struct_attributes:
+- text_title:
+    label:
+      eng: text title
+      fin: tekstin otsikko
+      swe: text_title
+    order: 1
+- text_date_orig:
+    label:
+      eng: original date
+      fin: alkuperäinen päivämäärä
+      swe: original_date
+    order: 2
+- text_year:
+    label:
+      eng: year
+      fin: vuosi
+      swe: år
+    order: 3
+- text_keywords:
+    label:
+      eng: keywords
+      fin: avainsanat
+      swe: text_keywords
+    extended_component: structServiceAutocomplete
+    order: 4
+- text_faculty:
+    label:
+      eng: faculty
+      fin: tiedekunta
+      swe: text_faculty
+    extended_component: structServiceAutocomplete
+    order: 5
+- text_subject:
+    label:
+      eng: subject
+      fin: oppiaine
+      swe: text_subject
+    extended_component: structServiceAutocomplete
+    order: 6
+- text_type:
+    label:
+      eng: thesis type
+      fin: tutkielman tyyppi
+      swe: text_dissertationtype
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: structServiceSelect
+    order: 7
+- text_url:
+    label:
+      eng: Download from E-thesis
+      fin: Lataa työ E-thesiksestä
+      swe: text_abslink
+    type: urlPattern
+    display_type: hidden
+    pattern: <a href="<%= val %>" class="exturl sidebar_link" target="_blank"><span
+      rel="localize[text_abslink]"></span></a>
+    hide_compare: true
+    hide_extended: true
+    hide_statistics: true
+    order: 8
+    sidebar_hide_label: true
+    url_opts:
+      hideUrl: true
+      inLinkSection: true
+      newWindow: true

@@ -1,0 +1,78 @@
+id: wanca_2016_nio
+title: 'Wanca 2016: Nganasan (ня”)'
+description: 'A collection of web corpora in small Uralic languages: Nganasan (ня”)'
+lang: nio
+metadata_urn: urn:nbn:fi:lb-2019052401
+licence:
+  name: CC BY (PUB)
+  description: Creative Commons Attribution
+  urn: urn:nbn:fi:lb-2021120223
+cite_id: wanca2016-korp
+mode:
+- name: other_languages
+  folder: uralic.wanca_2016
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- spaces:
+    label:
+      eng: whitespace related to token
+      fin: saneeseen liittyvät tyhjämerkit
+      swe: whitespace_related_to_token
+    dataset:
+      SpaceAfter=No: SpaceAfter=No
+      ? 'SpacesAfter=
+
+
+        '
+      : 'SpacesAfter=
+
+
+        '
+      SpacesAfter= : SpacesAfter= 
+      SpacesAfter=  : SpacesAfter=  
+      SpacesAfter=　s: SpacesAfter=　s
+      SpacesAfter=ss: SpacesAfter=ss
+      SpacesBefore=s: SpacesBefore=s
+      SpacesBefore=s|SpaceAfter=No: SpacesBefore=s|SpaceAfter=No
+      _: _
+- ref: ref
+struct_attributes:
+- text_url:
+    label:
+      eng: URL
+      fin: URL
+      swe: URL
+    type: urlPattern
+    display_type: hidden
+    pattern: <a href="<%= val %>" class="exturl sidebar_link" target="_blank"><span
+      rel="localize[URL]"></span></a>
+    hide_compare: true
+    hide_extended: true
+    hide_statistics: true
+    order: 1
+    sidebar_hide_label: true
+    url_opts:
+      hideUrl: true
+      inLinkSection: true
+      newWindow: true

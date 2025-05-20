@@ -1,0 +1,57 @@
+label:
+  eng: name category (Omorfi)
+  fin: nimen tyyppi (Omorfi)
+  swe: namnkategori (Omorfi)
+type: set
+opts:
+  is: contains
+  is_not: not contains
+extended_component: datasetSelect
+dataset:
+- ARTWORK
+- CULTGRP
+- FIRST
+- GEO
+- LAST
+- MISC
+- ORG
+- PRODUCT
+- _
+translation:
+  ? ''
+  : en: not a name
+    sv: inget namn
+  ARTWORK:
+    en: artwork
+    fi: taideteos
+    sv: konstverk
+  CULTGRP:
+    en: culture group
+    fi: kulttuuriryhmä
+    sv: kulturgrupp
+  FIRST:
+    en: first name
+    fi: etunimi
+    sv: förnamn
+  GEO:
+    en: geographical name
+    fi: maantieteellinen nimi
+    sv: geographical name
+  LAST:
+    en: last name
+    fi: sukunimi
+    sv: efternamn
+  MISC:
+    en: other name
+    fi: muu nimi
+    sv: annat namn
+  ORG:
+    en: organization
+    fi: organisaatio
+    sv: organisation
+  PRODUCT:
+    en: product
+    fi: tuote
+    sv: produkt
+  _:
+    fi: ei nimi

@@ -1,0 +1,316 @@
+id: pabivus_koi_2019
+title: 'Pabivus: Komi-Permyak (2019)'
+description: 'Parallel Bible verses for Uralic languages: Komi-Permyak'
+lang: koi-2019
+linked_to:
+- pabivus_fin_1938
+- pabivus_kca_2013
+- pabivus_kca_2017
+- pabivus_kca_2018
+- pabivus_koi_1996
+- pabivus_kpv_1995
+- pabivus_kpv_1997
+- pabivus_kpv_2008
+- pabivus_krl_2011
+- pabivus_mdf_1995
+- pabivus_mdf_2016
+- pabivus_mns_2000
+- pabivus_myv_1821
+- pabivus_myv_1910
+- pabivus_myv_1995
+- pabivus_myv_1996
+- pabivus_myv_1998
+- pabivus_myv_2006
+- pabivus_myv_2011
+- pabivus_myv_2020
+- pabivus_olo_2003
+- pabivus_rus_1876
+- pabivus_udm_1997
+- pabivus_vep_2013
+metadata_urn: urn:nbn:fi:lb-2020021121
+licence:
+  name: CC BY-NC (PUB)
+  description: Creative Commons Attribution-NonCommercial
+  urn: urn:nbn:fi:lb-2021120227
+mode:
+- name: parallel
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- ref: ref
+- lemma:
+    label:
+      eng: base form
+      fin: perusmuoto
+      swe: grundform
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 1
+    stats_cqp: cqpPlainWordAttr
+    stats_stringify: stringifyPlainWordAttr
+- lemmacomp:
+    label:
+      eng: baseform (compound boundaries)
+      fin: perusmuoto (yhdyssanarajat)
+      swe: grundform (sammansättningsgränser)
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 2
+- pos:
+    label:
+      eng: part of speech
+      fin: sanaluokka
+      swe: ordklass
+    display_type: select
+    extended_component: datasetSelect
+    dataset:
+      A: A
+      Ad: Ad
+      Adn: Adn
+      Adp: Adp
+      Adv: Adv
+      C: C
+      CC: CC
+      CLB: CLB
+      CS: CS
+      Card: Card
+      Coll: Coll
+      Der: NOT_DEFINED
+      Descr: Descr
+      Det: Det
+      Err/Dial: Err_Dial
+      Hom: Hom
+      Hom1: Hom1
+      Hom2: Hom2
+      IV: IV
+      Interj: Interj
+      N: N
+      Num: Num
+      Ord: Ord
+      PUNCT: PUNCT
+      Pcle: Pcle
+      Pl: Pl
+      Po: Po
+      Prc: Prc
+      Pron: Pron
+      Qnt: Qnt
+      SP: SP
+      Sg: Sg
+      Temp: Temp
+      V: V
+      _: NOT_DEFINED
+    translation:
+      A:
+        en: adjective
+        fi: adjective
+        sv: adjective
+      Ad:
+        en: adverb (Ad)
+        fi: adverb (Ad)
+        sv: adverb (Ad)
+      Adn:
+        en: adjective (Adn)
+        fi: adjective (Adn)
+        sv: adjective (Adn)
+      Adp:
+        en: adposition
+        fi: adposition
+        sv: adposition
+      Adv:
+        en: adverb
+        fi: adverb
+        sv: adverb
+      C:
+        en: conjunction
+        fi: conjunction
+        sv: conjunction
+      CC:
+        en: coordinating conjunction
+        fi: coordinating conjunction
+        sv: coordinating conjunction
+      CLB:
+        en: punctuation (CLB)
+        fi: punctuation (CLB)
+        sv: punctuation (CLB)
+      CS:
+        en: subordinationg conjunction
+        fi: subordinationg conjunction
+        sv: subordinationg conjunction
+      Card:
+        en: cardinal number
+        fi: cardinal number
+        sv: cardinal number
+      Coll:
+        en: collective nominal
+        fi: collective nominal
+        sv: collective nominal
+      Der:
+        en: ''
+        fi: ''
+        sv: ''
+      Descr:
+        en: Descr
+        fi: Descr
+        sv: Descr
+      Det:
+        en: determiner
+        fi: determiner
+        sv: determiner
+      Err_Dial:
+        en: Err/Dial
+        fi: Err/Dial
+        sv: Err/Dial
+      Hom:
+        en: homonyme (Hom)
+        fi: homonyme (Hom)
+        sv: homonyme (Hom)
+      Hom1:
+        en: homonyme (Hom1)
+        fi: homonyme (Hom1)
+        sv: homonyme (Hom1)
+      Hom2:
+        en: homonyme (Hom2)
+        fi: homonyme (Hom2)
+        sv: homonyme (Hom2)
+      IV:
+        en: intransitive verb
+        fi: intransitive verb
+        sv: intransitive verb
+      Interj:
+        en: interjection
+        fi: interjection
+        sv: interjection
+      N:
+        en: noun
+        fi: noun
+        sv: noun
+      NOT_DEFINED:
+        en: undefined
+        fi: undefined
+        sv: undefined
+      Num:
+        en: numeral
+        fi: numeral
+        sv: numeral
+      Ord:
+        en: ordinal adjective
+        fi: ordinal adjective
+        sv: ordinal adjective
+      PUNCT:
+        en: punctuation
+        fi: punctuation
+        sv: punctuation
+      Pcle:
+        en: particle
+        fi: particle
+        sv: particle
+      Pl:
+        en: plural
+        fi: plural
+        sv: plural
+      Po:
+        en: adposition (Po)
+        fi: adposition (Po)
+        sv: adposition (Po)
+      Prc:
+        en: participe
+        fi: participe
+        sv: participe
+      Pron:
+        en: pronoun
+        fi: pronoun
+        sv: pronoun
+      Qnt:
+        en: adverb (Qnt)
+        fi: adverb (Qnt)
+        sv: adverb (Qnt)
+      SP:
+        en: singular/plural
+        fi: singular/plural
+        sv: singular/plural
+      Sg:
+        en: singular
+        fi: singular
+        sv: singular
+      Temp:
+        en: adverb (Temp)
+        fi: adverb (Temp)
+        sv: adverb (Temp)
+      V:
+        en: verb
+        fi: verb
+        sv: verb
+    order: 3
+- msd:
+    label:
+      eng: msd
+      fin: morfologinen analyysi
+      swe: msd
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    pattern: <%= val.replace(/\|/g, '|<wbr>') %>
+    order: 4
+struct_attributes:
+- text_id:
+    label:
+      eng: text id
+      fin: tekstin tunniste
+      swe: textidentifierare
+    order: 1
+- text_iso_lang:
+    label:
+      eng: ISO 639 code
+      fin: ISO 639 -koodi
+      swe: ISO 639 -kod
+    order: 2
+- chapter_id:
+    label:
+      eng: chapter
+      fin: luku
+      swe: kapitel
+    order: 3
+- sentence_id:
+    label:
+      eng: verse
+      fin: jae
+      swe: vers
+    order: 4
+hide: true

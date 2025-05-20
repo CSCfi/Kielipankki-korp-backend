@@ -1,0 +1,654 @@
+id: elfa
+title: ELFA
+description: ELFA – The Corpus of English as a Lingua Franca in Academic Settings
+  (anonymised transcriptions), preliminary Korp version<br>The ELFA corpus contains
+  1 million words of transcribed spoken academic ELF (approximately 131 hours of recorded
+  speech). The recordings were made at the University of Tampere, the University of
+  Helsinki, Tampere University of Technology, and Helsinki University of Technology.
+metadata_urn: urn:nbn:fi:lb-2016061302
+urn: urn:nbn:fi:lb-2016061301
+licence:
+  name: CC BY (PUB)
+  description: Creative Commons Attribution
+  urn: urn:nbn:fi:lb-2021120223
+cite_id: ELFA-korp
+iprholder:
+  name: Professor Anna Mauranen, University of Helsinki
+mode:
+- name: other_languages
+  folder: english.spoken
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- type:
+    label:
+      eng: token type
+      fin: token_type
+      swe: token_type
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+      backchannel: backchannel
+      clicking his tongue: clicking tongue
+      cough: cough
+      foreign.*|repeats the question in russian: foreign
+      gasp: gasp
+      hesitation: hesitation
+      humming: humming
+      imitates barking: imitates barking
+      inaudibly through the microphone: inaudibly through the microphone
+      incident: incident
+      laugh: laugh
+      makes an attacking noise: makes an attacking noise
+      mode_shift: mode shift
+      name.*|(company|village) name|ethnic group|book title|.*e-mail address: name
+      'null': unspecified
+      overlap_begin: overlap begin
+      overlap_end: overlap end
+      pause: pause
+      pronounces the name: pronounces the name
+      pronounces the sound: pronounces the sound
+      sigh.*: sigh
+      unclear: unclear
+      voice_shift: voice shift
+      word: word
+- subtype:
+    label:
+      eng: token subtype
+      fin: token_subtype
+      swe: token_subtype
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+      anonymized_name: anonymized name
+      begin: begin
+      end: end
+      foreign: foreign
+      'null': unspecified
+      overlap: overlap
+      sic: sic
+      unclear: unclear
+      unfinished: unfinished
+- mode:
+    label:
+      eng: type of action
+      fin: action_type
+      swe: action_type
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+      'null': unspecified
+      reading_aloud: reading aloud
+      speaking: speaking
+      writing_on_blackboard: writing on blackboard
+- voice:
+    label:
+      eng: speaking mode
+      fin: speaking_mode
+      swe: speaking_mode
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+      Finnish_pronunciation: Finnish pronunciation
+      Finnish_spelling: Finnish spelling
+      Italian_pronunciation: Italian pronunciation
+      imitating_stress: imitating stress
+      laugh: laugh
+      mock_accent: mock accent
+      mutter: mutter
+      normal: normal
+      'null': unspecified
+      spelling: spelling
+      whisp: whisp
+- tags:
+    label:
+      eng: enclosing_elements
+      fin: enclosing_elements
+      swe: enclosing_elements
+    type: set
+    display_type: hidden
+- synch_id:
+    label:
+      eng: synchronized segment id
+      fin: synch_id
+      swe: synch_id
+    is_struct_attr: true
+- synch_speaker_id:
+    label:
+      eng: other speaker
+      fin: other_speaker_id
+      swe: other_speaker_id
+    is_struct_attr: true
+- synch_content:
+    label:
+      eng: other speaker content
+      fin: other_speaker_content
+      swe: other_speaker_content
+    is_struct_attr: true
+struct_attributes:
+- text_id:
+    label:
+      eng: text id
+      fin: tekstin tunniste
+      swe: textidentifierare
+    order: 1
+- text_domain:
+    label:
+      eng: academic domain
+      fin: academic_domain
+      swe: academic_domain
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - behavioural_sciences
+    - economics_and_administration
+    - humanities
+    - medicine
+    - natural_sciences
+    - other
+    - social_sciences
+    - technology
+    translation:
+      behavioural_sciences:
+        en: behavioural sciences
+      economics_and_administration:
+        en: economics and administration
+      humanities:
+        en: humanities
+      medicine:
+        en: medicine
+      natural_sciences:
+        en: natural sciences
+      other:
+        en: other
+      social_sciences:
+        en: social sciences
+      technology:
+        en: technology
+    order: 2
+- text_discipline:
+    label:
+      eng: academic discipline
+      fin: academic_discipline
+      swe: academic_discipline
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+    - accounting
+    - automation engineering
+    - biology
+    - cell biology
+    - cultural studies
+    - economics
+    - education
+    - forestry
+    - forest products chemistry
+    - genetics
+    - haematology
+    - history of science & technology
+    - industrial engineering and management
+    - information sciences
+    - information technology
+    - internal medicine
+    - international relations
+    - journalism and mass communication
+    - management studies
+    - materials engineering
+    - mathematics
+    - multidisciplinary
+    - neurology
+    - other
+    - philosophy
+    - physics
+    - political history
+    - political science
+    - public health
+    - regional studies
+    - Russian studies
+    - Slavonic philology
+    - social history
+    - social policy
+    - social policy and social work
+    - sociology
+    - Swedish philology
+    - translation studies
+    - virology
+    - women's studies
+    order: 3
+- text_event_type:
+    label:
+      eng: event type
+      fin: event_type
+      swe: event_type
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+    - conference discussion
+    - conference presentation
+    - doctoral defence discussion
+    - doctoral defence presentation
+    - ISSS seminar discussion
+    - lecture
+    - lecture discussion
+    - panel discussion
+    - post-graduate seminar discussion
+    - post-graduate seminar presentation
+    - presentation
+    - seminar discussion
+    - seminar presentation
+    order: 4
+- text_event_purpose:
+    label:
+      eng: event purpose
+      fin: event_purpose
+      swe: event_purpose
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - discuss
+    - inform
+    translation:
+      discuss:
+        en: discuss
+      inform:
+        en: inform
+    order: 5
+- text_event_num:
+    label:
+      eng: event number
+      fin: event_num
+      swe: event_num
+    order: 6
+- text_event_part:
+    label:
+      eng: event part
+      fin: event_part
+      swe: event_part
+    order: 7
+- text_title:
+    label:
+      eng: title
+      fin: otsikko
+      swe: titel
+    order: 8
+- text_notes:
+    label:
+      eng: notes
+      fin: notes
+      swe: anteckningar
+    order: 9
+- text_preparedness:
+    label:
+      eng: preparedness
+      fin: preparedness
+      swe: preparedness
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - 'true'
+    - 'false'
+    translation:
+      'false':
+        en: unprepared
+      'true':
+        en: prepared
+    order: 10
+- text_interaction_degree:
+    label:
+      eng: degree of interaction
+      fin: interaction_degree
+      swe: interaction_degree
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - complete
+    - partial
+    - none
+    translation:
+      complete:
+        en: complete
+      none:
+        en: none
+      partial:
+        en: partial
+    order: 11
+- text_duration_minsec:
+    label:
+      eng: recording duration
+      fin: recording_duration
+      swe: recording_duration
+    order: 12
+- text_recording_type:
+    label:
+      eng: recording type
+      fin: recording_type
+      swe: recording_type
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+    - conference
+    - university degree programme
+    order: 13
+- text_num_speakers:
+    label:
+      eng: number of speakers
+      fin: num_speakers
+      swe: num_speakers
+    order: 14
+- text_num_participants:
+    label:
+      eng: number of participants
+      fin: num_participants
+      swe: num_participants
+    order: 15
+- text_date:
+    label:
+      eng: date
+      fin: päiväys
+      swe: datum
+    order: 16
+- text_publisher:
+    display_type: hidden
+    order: 17
+- paragraph_speaker_type:
+    label:
+      eng: speaker identification
+      fin: speaker_identification
+      swe: speaker_identification
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - identified
+    - several
+    - unidentified
+    translation:
+      identified:
+        en: single, identified speaker
+      several:
+        en: several simultaneous speakers
+      unidentified:
+        en: unidentified speaker
+    order: 18
+- paragraph_speaker_l1:
+    label:
+      eng: speaker's first language
+      fin: speaker_l1
+      swe: speaker_l1
+    type: set
+    opts:
+      is: contains
+      is_not: not contains
+    extended_component: datasetSelect
+    dataset:
+      ada-GH: ada-GH
+      aka-GH: aka-GH
+      aka.*: aka
+      amh: amh
+      ara: ara
+      ben: ben
+      ber: ber
+      bul: bul
+      cat: cat
+      ces: ces
+      cym: cym
+      dag-GH: dag-GH
+      dan: dan
+      deu-AT: deu-AT
+      deu-CH: deu-CH
+      deu.*: deu
+      ell: ell
+      eng-AU: eng-AU
+      eng-BD: eng-BD
+      eng-CA: eng-CA
+      eng-CM: eng-CM
+      eng-GB: eng-GB
+      eng-GH: eng-GH
+      eng-HK: eng-HK
+      eng-IE: eng-IE
+      eng-IN: eng-IN
+      eng-JM: eng-JM
+      eng-LB: eng-LB
+      eng-NG: eng-NG
+      eng-NZ: eng-NZ
+      eng-TT: eng-TT
+      eng-US: eng-US
+      eng.*: eng
+      est: est
+      fas: fas
+      fin: fin
+      fra-BE: fra-BE
+      fra.*: fra
+      hau-NG: hau-NG
+      hay: hay
+      heb: heb
+      hin: hin
+      hrv: hrv
+      hun: hun
+      ibo: ibo
+      isl: isl
+      ita: ita
+      jpn: jpn
+      kik-KE: kik-KE
+      kik.*: kik
+      lav: lav
+      lit: lit
+      nep: nep
+      nld-BE: nld-BE
+      nld.*: nld
+      nor: nor
+      orm-ET: orm-ET
+      pol: pol
+      por-BR: por-BR
+      por.*: por
+      qaa: qaa
+      ron: ron
+      rus: rus
+      slk: slk
+      som: som
+      spa-AR: spa-AR
+      spa-CO: spa-CO
+      spa-MX: spa-MX
+      spa.*: spa
+      swe-FI: swe-FI
+      swe.*: swe
+      swh-KE: swh-KE
+      swh-TZ: swh-TZ
+      swh.*: swh
+      tur: tur
+      twi-GH: twi-GH
+      twi.*: twi
+      und-CA: und-CA
+      und-GH: und-GH
+      und-TZ: und-TZ
+      und.*: und
+      urd-PK: urd-PK
+      uzb: uzb
+      yor: yor
+      zho: zho
+    order: 19
+- paragraph_speaker_role:
+    label:
+      eng: academic role
+      fin: academic_role
+      swe: academic_role
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - junior staff
+    - junior staff and research student
+    - masters student
+    - other
+    - research student
+    - senior staff
+    - undergraduate
+    - unknown
+    translation:
+      junior staff and research student:
+        en: junior staff and research student
+      junior staff:
+        en: junior staff
+      masters student:
+        en: masters student
+      other:
+        en: other
+      research student:
+        en: research student
+      senior staff:
+        en: senior staff
+      undergraduate:
+        en: undergraduate
+      unknown:
+        en: unknown
+    order: 20
+- paragraph_speaker_age:
+    label:
+      eng: age
+      fin: ikä
+      swe: ålder
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - 17-23
+    - 24-30
+    - 31-50
+    - 51-over
+    - unknown
+    translation:
+      17-23:
+        en: 17–23
+      24-30:
+        en: 24–30
+      31-50:
+        en: 31–50
+      51-over:
+        en: over 51
+      unknown:
+        en: unknown
+    order: 21
+- paragraph_speaker_sex:
+    label:
+      eng: gender
+      fin: gender
+      swe: kön
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      female: female
+      male: male
+      unknown|null: unknown
+    translation:
+      female:
+        en: female
+        fi: nainen
+        sv: kvinna
+      male:
+        en: male
+        fi: mies
+        sv: man
+      other:
+        en: other
+        fi: muu
+        sv: annat
+      unknown:
+        en: unknown
+        fi: tuntematon
+        sv: okänd
+    order: 22
+- paragraph_speaker_id:
+    label:
+      eng: speaker id
+      fin: speaker_id
+      swe: speaker_id
+    order: 23
+- paragraph_type:
+    label:
+      eng: speech event type
+      fin: speech_event_type
+      swe: speech_event_type
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - utterance
+    - incident
+    - pause
+    translation:
+      incident:
+        en: incident
+      pause:
+        en: pause
+      utterance:
+        en: utterance
+    order: 24
+- paragraph_id:
+    label:
+      eng: turn id
+      fin: turn_id
+      swe: turn_id
+    order: 25
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 26
+ignore_between_tokens_c_q_p: '[type != "word"]*'

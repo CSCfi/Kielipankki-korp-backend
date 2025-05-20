@@ -1,0 +1,23 @@
+label:
+  eng: named entity
+  fin: nimen päätyyppi
+  swe: uttryck
+is_struct_attr: true
+extended_component: datasetSelect
+dataset:
+- ENAMEX
+- TIMEX
+- NUMEX
+translation:
+  ENAMEX:
+    en: name expression
+    fi: nimi-ilmaus
+    sv: namnuttryck
+  NUMEX:
+    en: numerical expression
+    fi: numeroilmaus
+    sv: numeriskt uttryck
+  TIMEX:
+    en: time expression
+    fi: ajanilmaus
+    sv: tidsuttryck

@@ -1,0 +1,146 @@
+id: reittidemo
+title: Reitti A-siipeen
+description: Kahdenkeskisen videoidun keskustelun ”Reitti A-siipeen” yleiskielistetty
+  litteraatti. Keskustelussa selvitetään reittiä tiettyyn Helsingin yliopiston Metsätalossa
+  sijaitsevaan huoneeseen. Vapaasti käytettäväksi tarkoitettu näyteaineisto.
+metadata_urn: urn:nbn:fi:lb-2014101401
+urn: urn:nbn:fi:lb-100110012817
+licence:
+  name: CC ZERO (CC0) (PUB)
+  description: Public Domain Dedication
+  urn: urn:nbn:fi:lb-2021120221
+cite_id: Reittidemo-korp
+mode:
+- name: default
+  folder: spoken
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- spoken: spoken
+- lemma: baseform
+- lemmacomp: baseform_compound
+- pos: pos_klk
+- msd: msd
+- dephead: dephead
+- deprel: deprel_tdt
+- ref: ref
+- lex:
+    label:
+      eng: lemgram
+      fin: lemgrammi
+      swe: lemgram
+    type: set
+    display_type: hidden
+    order: 6
+struct_attributes:
+- text_author:
+    label:
+      eng: author
+      fin: tekijä
+      swe: författare
+    extended_component: structServiceAutocomplete
+    order: 1
+- text_title:
+    label:
+      eng: title
+      fin: otsikko
+      swe: titel
+    extended_component: structServiceAutocomplete
+    order: 2
+- text_year:
+    label:
+      eng: year published
+      fin: julkaisuvuosi
+      swe: year_published
+    extended_component: structServiceAutocomplete
+    order: 3
+- paragraph_id:
+    label:
+      eng: paragraph_id
+      fin: kappaleen tunniste
+      swe: paragraph_id
+    display_type: hidden
+    order: 4
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 5
+- utterance_id:
+    label:
+      eng: utterance number
+      fin: puhunnoksen numero
+      swe: yttrandets nummer
+- utterance_participant:
+    label:
+      eng: speaker
+      fin: puhuja
+      swe: talare
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    escape: false
+    dataset:
+    - ML
+    - TA
+- utterance_begin_time:
+    label:
+      eng: utterance begin time
+      fin: puhunnoksen alkuaika
+      swe: yttrandets starttid
+- utterance_end_time:
+    label:
+      eng: utterance end time
+      fin: puhunnoksen loppuaika
+      swe: yttrandets sluttid
+- utterance_duration:
+    label:
+      eng: utterance duration
+      fin: puhunnoksen kesto
+      swe: yttrandets längd
+custom_attributes:
+- video:
+    type: urlPattern
+    display_type: hidden
+    pattern: <a href="<%= val %>" class="exturl sidebar_link" target="_blank"><%=
+      val %></a>
+    custom_type: struct
+    hide_compare: true
+    hide_extended: true
+    hide_statistics: true
+    sidebar_component:
+      name: videoPlayer
+      options:
+        baseURL: /media/
+        endTime: '@utterance_end_time'
+        ext: mp4
+        file: reitti_a-siipeen
+        path: reittidemo/
+        startTime: '@utterance_begin_time'
+    url_opts:
+      hideUrl: true
+      inLinkSection: true
+      newWindow: true

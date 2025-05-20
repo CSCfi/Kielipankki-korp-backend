@@ -1,0 +1,1021 @@
+id: lam_kark
+title: Karkku (LA-murre)
+description: 'Lauseopin arkiston murrekorpus: Karkku'
+alias:
+- la_murre
+- la_murre_karkku
+metadata_urn: urn:nbn:fi:lb-2014052716
+urn: urn:nbn:fi:lb-2014052715
+licence:
+  name: CC BY-ND 4.0 (PUB)
+  description: Creative Commons Attribution-NoDerivatives 4.0
+  urn: urn:nbn:fi:lb-2021120231
+cite_id: LA-murre-korp
+mode:
+- name: default
+  folder: spoken.la_murre.lam_HÄM.lam_SatP
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: clause
+    fin: clause
+    swe: clause
+  value: clause
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- cleanword:
+    label:
+      eng: cleanword
+      fin: sananmuoto ilman tarkkeita
+      swe: cleanword
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 1
+- lemma:
+    label:
+      eng: base form
+      fin: perusmuoto
+      swe: grundform
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 2
+    stats_cqp: cqpPlainWordAttr
+    stats_stringify: stringifyPlainWordAttr
+- pos:
+    label:
+      eng: part of speech
+      fin: sanaluokka
+      swe: ordklass
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      a: a
+      a:pron: a:pron
+      a:pron:dem: a:pron:dem
+      a:pron:int: a:pron:int
+      a:pron:rel: a:pron:rel
+      adv: adv
+      adv:pron: adv:pron
+      adv:pron:dem: adv:pron:dem
+      adv:pron:int: adv:pron:int
+      adv:pron:rel: adv:pron:rel
+      adv:q: adv:q
+      cnj:coord: cnj:coord
+      cnj:rel: cnj:rel
+      cnj:sub: cnj:sub
+      intj: intj
+      muu: muu
+      n: n
+      n:prop: n:prop
+      n:prop:pname: n:prop:pname
+      neg: neg
+      num:card: num:card
+      num:murto: num:murto
+      num:ord: num:ord
+      num:ord_pron: num:ord_pron
+      p:post: p:post
+      p:pre: p:pre
+      pron: pron
+      pron:dem: pron:dem
+      pron:int: pron:int
+      pron:pers: pron:pers
+      pron:pers12: pron:pers12
+      pron:ref: pron:ref
+      pron:rel: pron:rel
+      punct: punct
+      q: q
+      v: v
+    translation:
+      UNK:
+        fi: tuntematon
+      a:
+        fi: adjektiivi
+      a:pron:
+        fi: 'adjektiivi: muu pronominaalinen'
+      a:pron:dem:
+        fi: 'adjektiivi: demonstratiivinen'
+      a:pron:int:
+        fi: 'adjektiivi: interrogatiivinen'
+      a:pron:rel:
+        fi: 'adjektiivi: relatiivinen'
+      adv:
+        fi: adverbi
+      adv:pron:
+        fi: 'adverbi: muu pronominaalinen'
+      adv:pron:dem:
+        fi: 'adverbi: demonstratiivinen'
+      adv:pron:int:
+        fi: 'adverbi: interrogatiivinen'
+      adv:pron:rel:
+        fi: 'adverbi: relatiivinen'
+      adv:q:
+        fi: 'adverbi: paljon-tyyppi'
+      cnj:
+        fi: konjunktio
+      cnj:coord:
+        fi: 'konjunktio: rinnastus-'
+      cnj:rel:
+        fi: 'konjunktio: relatiivi-'
+      cnj:sub:
+        fi: 'konjunktio: alistus-'
+      intj:
+        fi: interjektio
+      muu:
+        fi: muu
+      n:
+        fi: 'substantiivi: ei erisnimi'
+      n:prop:
+        fi: 'substantiivi: erisnimi, ei henkilön-'
+      n:prop:any:
+        fi: 'substantiivi: erisnimi'
+      n:prop:pname:
+        fi: 'substantiivi: henkilönnimi'
+      neg:
+        fi: kieltosana ”ei”, ”älä”
+      num:
+        fi: numeraali
+      num:card:
+        fi: 'numeraali: perusluku'
+      num:murto:
+        fi: 'numeraali: murtoluku'
+      num:ord:
+        fi: 'numeraali: järjestysluku'
+      num:ord_pron:
+        fi: pronomini/numeraali ”toinen”
+      p:post:
+        fi: postpositio
+      p:pre:
+        fi: prepositio
+      pron:
+        fi: pronomini ”se”, ”ne”
+      pron:any:
+        fi: pronomini
+      pron:dem:
+        fi: 'pronomini: demonstratiivi-'
+      pron:int:
+        fi: 'pronomini: interrogatiivi-'
+      pron:pers:
+        fi: pronomini ”hän”, ”he”
+      pron:pers12:
+        fi: 'pronomini: 1. tai 2. persoona'
+      pron:ref:
+        fi: 'pronomini: refleksiivi-'
+      pron:rel:
+        fi: 'pronomini: relatiivi-'
+      punct:
+        fi: välimerkki
+      q:
+        fi: 'pronomini: kvanttori-'
+      v:
+        fi: verbi
+    order: 3
+- msd:
+    label:
+      eng: msd
+      fin: morfologinen analyysi
+      swe: msd
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    pattern: <%= val.replace(/\|/g, '|<wbr>') %>
+    order: 4
+- func:
+    label:
+      eng: function
+      fin: lauseenjäsen
+      swe: satsdel
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      advl: advl
+      advl:p: advl:p
+      advl:v: advl:v
+      advmod: advmod
+      amod: amod
+      analysoimaton: analysoimaton
+      compl:o: compl:o
+      compl:q: compl:q
+      compl:s: compl:s
+      compl:x: compl:x
+      infobj: infobj
+      infsubj: infsubj
+      irrall: irrall
+      jälkiosa: jälkiosa
+      lauseyhd: lauseyhd
+      lkeyhd: lkeyhd
+      muu: muu
+      neg:prt: neg:prt
+      nmod: nmod
+      npobj: npobj
+      npsubj: npsubj
+      nummod: nummod
+      osma: osma
+      pmod: pmod
+      pred: pred
+      pred2: pred2
+      pred3: pred3
+      pred:ref: pred:ref
+      pred:toisto: pred:toisto
+      sanayhd_lkeyhd: sanayhd_lkeyhd
+      subj:nonfin: subj:nonfin
+      subj:stat: subj:stat
+    translation:
+      advl:
+        fi: 'adverbiaali: muu'
+      advl:p:
+        fi: 'adverbiaali: predikatiivi-'
+      advl:v:
+        fi: 'adverbiaali: infiniittinen'
+      advmod:
+        fi: 'määrite: adverbin'
+      amod:
+        fi: 'määrite: adjektiivin'
+      analysoimaton:
+        fi: 'muu: ei analysoitu'
+      compl:o:
+        fi: 'predikatiivi: objektin'
+      compl:q:
+        fi: 'predikatiivi: määränilmaus'
+      compl:s:
+        fi: 'predikatiivi: subjektin'
+      compl:x:
+        fi: 'predikatiivi: pakko, määrä, tarvis'
+      infobj:
+        fi: infinitiiviobjekti
+      infsubj:
+        fi: infinitiivisubjekti
+      irrall:
+        fi: 'muu: irrallinen'
+      jälkiosa:
+        fi: yhtymän jälkiosa
+      lauseyhd:
+        fi: yhdistää lauseita
+      lkeyhd:
+        fi: yhdistää lauseenosia
+      muu:
+        fi: 'muu: erikoistapaukset'
+      neg:prt:
+        fi: partikkeli ”ei”
+      nmod:
+        fi: 'määrite: substantiivin'
+      npobj:
+        fi: nominiobjekti
+      npsubj:
+        fi: nominisubjekti
+      nummod:
+        fi: 'määrite: numeraalin'
+      osma:
+        fi: 'adverbiaali: osma'
+      pmod:
+        fi: 'määrite: adposition'
+      pred:
+        fi: predikaatti
+      pred2:
+        fi: predikaatin toinen osa
+      pred3:
+        fi: predikaatin kolmas osa
+      pred:ref:
+        fi: 'predikaatti: referatiivirakenteen'
+      pred:toisto:
+        fi: predikaatin toisto
+      sanayhd_lkeyhd:
+        fi: yhdistää sananosia
+      subj:nonfin:
+        fi: 'nominisubjekti: infiniittirakenteen'
+      subj:stat:
+        fi: 'nominisubjekti: statusrakenteen'
+    order: 5
+- cow:
+    label:
+      eng: cowla
+      fin: yhdyssana
+      swe: cowla
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      ? ''
+      : noncw
+      cw: cw
+      cw1: cw1
+      cw2: cw2
+    translation:
+      cw:
+        fi: yhdyssana
+      cw1:
+        fi: yhdyssanan alkuosa
+      cw2:
+        fi: yhdyssanan jälkiosa
+      noncw:
+        fi: ei yhdyssana
+    order: 6
+- note:
+    label:
+      eng: note
+      fin: huomio
+      swe: note
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 7
+- lex: lemgram_hidden
+- clause_clnum:
+    label:
+      eng: clause_clnum
+      fin: lauseen lausemäärä
+      swe: clause_clnum
+    is_struct_attr: true
+    order: 8
+- clause_num:
+    label:
+      eng: clause_num
+      fin: lauseen numero virkkeessä
+      swe: clause_num
+    is_struct_attr: true
+    order: 9
+- clause_hier:
+    label:
+      eng: clause_hier
+      fin: lauseen alisteisuus
+      swe: clause_hier
+    is_struct_attr: true
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - irrall
+    - main
+    - sub1
+    - sub2
+    - sub3
+    - sub4
+    - sub5
+    - muu
+    translation:
+      irrall:
+        fi: irrallinen lause
+      main:
+        fi: päälause
+      muu:
+        fi: muu
+      sub1:
+        fi: alisteinen lause taso 1
+      sub2:
+        fi: alisteinen lause taso 2
+      sub3:
+        fi: alisteinen lause taso 3
+      sub4:
+        fi: alisteinen lause taso 4
+      sub5:
+        fi: alisteinen lause taso 5
+    order: 10
+- clause_type:
+    label:
+      eng: clause_type
+      fin: lauseen tyyppi
+      swe: clause_type
+    is_struct_attr: true
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - affdecl
+    - negdecl
+    - affint
+    - negint
+    - affopt
+    - negopt
+    - muu
+    translation:
+      affdecl:
+        fi: myönteinen väitelause
+      affint:
+        fi: myönteinen kysymyslause
+      affopt:
+        fi: myönteinen imperatiivilause
+      muu:
+        fi: muu
+      negdecl:
+        fi: kielteinen väitelause
+      negint:
+        fi: kielteinen kysymyslause
+      negopt:
+        fi: kielteinen imperatiivilause
+    order: 11
+- clause_hallnum:
+    label:
+      eng: clause_hallnum
+      fin: hallitsevan lauseen numero
+      swe: clause_hallnum
+    is_struct_attr: true
+    order: 12
+- clause_ora:
+    label:
+      eng: clause_ora
+      fin: esitystapa
+      swe: clause_ora
+    is_struct_attr: true
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      ? ''
+      : other
+      dir: dir
+    translation:
+      dir:
+        fi: suora esitys
+      other:
+        fi: muu kuin suora esitys
+    order: 13
+- clause_depth:
+    label:
+      eng: clause_depth
+      fin: lauseen upotustaso
+      swe: clause_depth
+    is_struct_attr: true
+    order: 14
+- clause_partnum:
+    label:
+      eng: clause_partnum
+      fin: lauseen osan numero
+      swe: clause_partnum
+    is_struct_attr: true
+    order: 15
+struct_attributes:
+- text_header:
+    label:
+      eng: text_header
+      fin: tekstin otsikko
+      swe: text_header
+    order: 4
+- text_info:
+    label:
+      eng: text_info
+      fin: tekstin tietoja
+      swe: text_info
+    order: 5
+- text_dialect_region:
+    label:
+      eng: dialect_region
+      fin: murrealue
+      swe: dialect_region
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - LOU
+    - LVÄ
+    - HÄM
+    - POH
+    - SAV
+    - KAA
+    translation:
+      HÄM:
+        fi: Hämäläismurteet
+      KAA:
+        fi: Kaakkoismurteet
+      LOU:
+        fi: Lounaismurteet
+      LVÄ:
+        fi: Lounaiset välimurteet
+      POH:
+        fi: Pohjalaismurteet
+      SAV:
+        fi: Savolaismurteet
+    order: 1
+- text_dialect_group:
+    label:
+      eng: dialect_group
+      fin: murreryhmä
+      swe: dialect_group
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - VarE
+    - VarP
+    - SatE
+    - SatL
+    - VarY
+    - VarU
+    - HämE
+    - HämK
+    - HämP
+    - SatP
+    - Kym
+    - PohE
+    - PohK
+    - PohP
+    - LänP
+    - PerP
+    - KesE
+    - KesL
+    - KesP
+    - SavE
+    - SavP
+    - KarP
+    - Kai
+    - KarE
+    - KarK
+    translation:
+      HämE:
+        fi: Etelä-Häme
+      HämK:
+        fi: Kaakkois-Häme
+      HämP:
+        fi: Pohjois-Häme
+      Kai:
+        fi: Kainuu
+      KarE:
+        fi: Etelä-Karjala
+      KarK:
+        fi: Keski-Karjala
+      KarP:
+        fi: Pohjois-Karjala
+      KesE:
+        fi: Eteläinen Keski-Suomi
+      KesL:
+        fi: Läntinen Keski-Suomi
+      KesP:
+        fi: Pohjoinen Keski-Suomi
+      Kym:
+        fi: Kymenlaakso
+      LänP:
+        fi: Länsipohja
+      PerP:
+        fi: Peräpohjola
+      PohE:
+        fi: Etelä-Pohjanmaa
+      PohK:
+        fi: Keski-Pohjanmaa
+      PohP:
+        fi: Pohjois-Pohjanmaa
+      SatE:
+        fi: Etelä-Satakunta
+      SatL:
+        fi: Länsi-Satakunta
+      SatP:
+        fi: Pohjois-Satakunta
+      SavE:
+        fi: Etelä-Savo
+      SavP:
+        fi: Pohjois-Savo
+      VarE:
+        fi: Eteläinen Varsinais-Suomi
+      VarP:
+        fi: Pohjoinen Varsinais-Suomi
+      VarU:
+        fi: Länsi-Uusimaa
+      VarY:
+        fi: Varsinais-Suomen ylämaa
+    order: 2
+- text_parish:
+    label:
+      eng: parish
+      fin: paikkakunta
+      swe: parish
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+    - Karuna
+    - Kisko
+    - Muurla
+    - Muurla/Halikko
+    - Paimio
+    - Perniö
+    - Uskela
+    - Eura
+    - Eurajoki
+    - Kalanti
+    - Karjala Tl
+    - Kustavi
+    - Lappi Tl
+    - Luvia
+    - Masku
+    - Pyhämaa
+    - Rauma
+    - Rymättylä
+    - Taivassalo
+    - Velkua
+    - Kokemäki
+    - Loimaa
+    - Vampula
+    - Ahlainen
+    - Merikarvia
+    - Noormarkku
+    - Pori
+    - Koski Tl
+    - Pöytyä
+    - Somero
+    - Säkylä
+    - Tarvasjoki
+    - Sammatti
+    - Vihti
+    - Hattula
+    - Hausjärvi
+    - Nurmijärvi
+    - Renko
+    - Sääksmäki
+    - Tammela
+    - Askola
+    - Asikkala
+    - Lammi
+    - Juupajoki
+    - Kuru
+    - Luopioinen
+    - Pirkkala
+    - Pohjaslahti
+    - Vesilahti
+    - Ikaalinen
+    - Kankaanpää
+    - Karkku
+    - Kihniö
+    - Punkalaidun
+    - Suodenniemi
+    - Iitti
+    - Lapinjärvi
+    - Suursaari
+    - Vehkalahti
+    - Isojoki
+    - Kauhava
+    - Kurikka
+    - Laihia
+    - Nurmo
+    - Peräseinäjoki
+    - Ylihärmä
+    - Haapajärvi
+    - Haapavesi
+    - Himanka
+    - Kestilä
+    - Lestijärvi
+    - Pyhäjoki
+    - Toholampi
+    - Veteli
+    - Ylivieska
+    - Hailuoto
+    - Paavola
+    - Temmes
+    - Yli-Ii
+    - Ylikiiminki
+    - Alatornio
+    - Muonio
+    - Kemi
+    - Rovaniemi
+    - Salla
+    - Sodankylä
+    - Joutsa
+    - Jämsä
+    - Sysmä
+    - Lappajärvi
+    - Pihlajavesi
+    - Soini
+    - Konginkangas
+    - Laukaa
+    - Multia
+    - Pihtipudas
+    - Enonkoski
+    - Mikkeli
+    - Mäntyharju
+    - Punkaharju
+    - Haukivuori
+    - Lapinlahti
+    - Leppävirta
+    - Nilsiä
+    - Rantasalmi
+    - Rautalampi
+    - Riistavesi
+    - Tervo
+    - Vieremä
+    - Ilomantsi
+    - Juuka
+    - Kiihtelysvaara
+    - Kitee
+    - Kontiolahti
+    - Liperi
+    - Posio
+    - Sotkamo
+    - Suomussalmi
+    - Antrea
+    - Koivisto
+    - Lappee
+    - Luumäki
+    - Muolaa
+    - Nuijamaa
+    - Ruokolahti
+    - Savitaipale
+    - Seiskari
+    - Taipalsaari
+    - Lumivaara
+    - Parikkala
+    - Rautu
+    - Räisälä
+    - Sortavala
+    order: 3
+- text_parish_title:
+    label:
+      eng: text title
+      fin: tekstin otsikko
+      swe: text_title
+    order: 6
+- text_filename:
+    label:
+      eng: file name
+      fin: tiedoston nimi
+      swe: filnamn
+    display_type: hidden
+    order: 7
+- text_date:
+    label:
+      eng: date
+      fin: päiväys
+      swe: datum
+    order: 8
+- text_session_descr:
+    label:
+      eng: interview_descr
+      fin: haastattelun kuvaus
+      swe: interview_descr
+    order: 9
+- text_content_descr:
+    label:
+      eng: subject
+      fin: aihe
+      swe: ämne
+    order: 10
+- text_source_id:
+    label:
+      eng: original_source
+      fin: alkuperäislähde
+      swe: original_source
+    order: 11
+- paragraph_type:
+    label:
+      eng: paragraph type
+      fin: kappaleen tyyppi
+      swe: styckets typ
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      interviewee: interviewee
+      interviewer: interviewer
+      noninterviewee: noninterviewee
+    translation:
+      name:
+        fi: nimi
+      author:
+        fi: tekijä
+      byline:
+        fi: kirjoittaja (byline)
+      caption:
+        fi: kuvateksti
+      closer:
+        fi: lopetus
+      date:
+        fi: päiväys
+      empty:
+        en: empty
+        fi: tyhjä
+      head:
+        fi: otsikko
+      heading:
+        en: heading
+        fi: otsikko
+      hi:
+        fi: korostus
+      interviewee:
+        fi: haastateltava
+      interviewer:
+        fi: haastattelija
+      noninterviewee:
+        fi: ei-haastateltava (analysoimaton)
+      num:
+        fi: numero
+      opener:
+        fi: aloitus
+      p:
+        fi: kappale
+      paragraph:
+        en: paragraph
+        fi: kappale
+      paragraph/heading:
+        en: paragraph or heading
+        fi: kappale tai otsikko
+      q:
+        fi: teksti lainausmerkeissä
+      quote:
+        fi: lainaus
+      rs:
+        fi: nimi tai muu viittaus
+      sentence:
+        en: sentence
+        fi: virke
+      signed:
+        fi: allekirjoitus
+    order: 12
+- paragraph_id:
+    label:
+      eng: paragraph_id
+      fin: kappaleen tunniste
+      swe: paragraph_id
+    order: 13
+- paragraph_speaker:
+    label:
+      eng: speaker
+      fin: puhuja
+      swe: talare
+    order: 14
+- paragraph_speaker_name:
+    label:
+      eng: name of speaker
+      fin: puhujan nimi
+      swe: talarens namn
+    display_type: hidden
+    order: 15
+- paragraph_speaker_age:
+    label:
+      eng: speaker_age
+      fin: puhujan ikä
+      swe: speaker_age
+    order: 16
+- paragraph_speaker_sex:
+    label:
+      eng: speaker_sex
+      fin: puhujan sukupuoli
+      swe: speaker_sex
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      ? ''
+      : unknown
+      female: female
+      male: male
+    translation:
+      female:
+        en: female
+        fi: nainen
+        sv: kvinna
+      male:
+        en: male
+        fi: mies
+        sv: man
+      other:
+        en: other
+        fi: muu
+        sv: annat
+      unknown:
+        en: unknown
+        fi: tuntematon
+        sv: okänd
+    order: 17
+- paragraph_speaker_birthdate:
+    label:
+      eng: speaker_birthdate
+      fin: puhujan syntymäaika
+      swe: speaker_birthdate
+    order: 18
+- paragraph_speaker_descr:
+    label:
+      eng: speaker_descr
+      fin: puhujan kuvaus
+      swe: speaker_descr
+    order: 19
+- paragraph_begin_time:
+    label:
+      eng: speech_begin_time
+      fin: puheenvuoron alkuaika
+      swe: speech_begin_time
+    order: 20
+- paragraph_duration:
+    label:
+      eng: speech_duration
+      fin: puheenvuoron kesto
+      swe: speech_duration
+    order: 21
+- sentence_clnum:
+    label:
+      eng: sentence_clnum
+      fin: virkkeen lausemäärä
+      swe: sentence_clnum
+    order: 22
+- sentence_num:
+    label:
+      eng: sentence number
+      fin: virkkeen numero
+      swe: sentence_num
+    order: 23
+- sentence_wnum:
+    label:
+      eng: sentence_wnum
+      fin: virkkeen sanamäärä
+      swe: sentence_wnum
+    order: 24
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 25
+- sentence_begin_time:
+    label:
+      eng: sentence_begin_time
+      fin: virkkeen alkuaika
+      swe: sentence_begin_time
+    order: 26
+- sentence_duration:
+    label:
+      eng: sentence_duration
+      fin: virkkeen kesto
+      swe: sentence_duration
+    order: 27
+custom_attributes:
+- sentence_fulltext_link:
+    display_type: hidden
+    pattern: <a href="<%= funcs.makeLaMurreFulltextUrl({struct_attrs, pos_attrs, tokens})
+      %>" class="exturl sidebar_link" target="_blank"><span rel="localize[show_fulltext]"></span></a>
+    custom_type: struct
+    hide_compare: true
+    hide_extended: true
+    hide_statistics: true
+    url_opts:
+      hideUrl: true
+      inLinkSection: true
+      newWindow: true
+ignore_between_tokens_c_q_p: '[pos="punct"]*'
+infopage_url: https://www.kielipankki.fi/aineistot/la-murre/
+sidebar_display_order:
+  pos_attributes:
+  - cleanword
+  - lemma
+  - pos
+  - msd
+  - func
+  - cow
+  - note
+  - {}
+  struct_attributes:
+  - text_dialect_region
+  - text_dialect_group
+  - text_parish
+  - {}
+  - {}
+  - {}

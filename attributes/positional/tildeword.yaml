@@ -1,0 +1,12 @@
+label:
+  eng: word_tilde
+  fin: korjausmerkintä
+  swe: word_tilde
+opts:
+  contains: _=
+  ends_with: '&='
+  is: '='
+  is_not: '!='
+  matches: '*='
+  matches_not: '!*='
+  starts_with: ^=

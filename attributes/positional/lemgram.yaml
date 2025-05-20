@@ -1,0 +1,16 @@
+label:
+  eng: lemgram
+  fin: lemgrammi
+  swe: lemgram
+type: set
+opts:
+  is: contains
+  is_not: not contains
+extended_template: '<autoc model=''model'' placeholder=''placeholder'' type=''lemgram''
+  typeahead-close-callback=''checkForError(valueSelected)'' text-in-field=''textInField''/><span
+  ng-if=''valueError'' style=''color: red; position: relative; top: 3px; margin-left:
+  6px''>{{''choose_lemgram'' | loc:lang}}</span>'
+external_search: https://spraakbanken.gu.se/karp/#?mode=DEFAULT&search=extended||and|lemgram|equals|<%=
+  val.replace(/:\d+/, '') %>
+internal_search: true
+order: 2

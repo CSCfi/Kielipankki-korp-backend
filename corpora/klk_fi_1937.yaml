@@ -1,0 +1,298 @@
+id: klk_fi_1937
+title: KLK suomi 1937
+description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä vuodelta
+  1937
+metadata_urn: urn:nbn:fi:lb-2016050302
+urn: urn:nbn:fi:lb-201405275
+licence:
+  name: CC BY (PUB)
+  description: Creative Commons Attribution
+  urn: urn:nbn:fi:lb-2021120223
+cite_id: KLK-fi
+mode:
+- name: default
+  folder: news.klk_fi.fi_1930
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes:
+- lemma: baseform
+- lemmacomp: baseform_compound
+- pos: pos_klk
+- msd: msd
+- dephead: dephead
+- deprel: deprel_tdt
+- ref: ref
+- lex:
+    label:
+      eng: lemgram
+      fin: lemgrammi
+      swe: lemgram
+    type: set
+    display_type: hidden
+    order: 6
+- ocr:
+    label:
+      eng: OCR
+      fin: OCR
+      swe: OCR
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+- ne_name: ne_name
+- ne_ex: ne_ex
+- ne_type: ne_type_fi
+- ne_subtype: ne_subtype_fi
+- ne_fulltype: ne_fulltype_fi
+- ne_placename: ne_placename
+- ne_placename_source: ne_placename_source
+- nertag: ner_rawtag
+- nerbio: ner_bio
+struct_attributes:
+- text_label:
+    label:
+      eng: label
+      fin: lehti
+      swe: tidning/tidskrift
+    order: 1
+- text_publ_title:
+    label:
+      eng: publication
+      fin: julkaisu
+      swe: publikation
+    extended_component: structServiceAutocomplete
+    order: 2
+- text_publ_id:
+    label:
+      eng: ISSN
+      fin: ISSN
+      swe: ISSN
+    order: 3
+- text_issue_date:
+    label:
+      eng: issue date
+      fin: lehden numeron päiväys
+      swe: issue_date
+    order: 4
+- text_issue_no:
+    label:
+      eng: issue number
+      fin: numero
+      swe: nummer
+    order: 5
+- text_issue_title:
+    label:
+      eng: issue name
+      fin: numeron nimi
+      swe: numrets namn
+    extended_component: structServiceAutocomplete
+    order: 6
+- text_elec_date:
+    label:
+      eng: digitization date
+      fin: digitointipäivä
+      swe: digitaliseringsdatum
+    order: 7
+- text_language:
+    label:
+      eng: language
+      fin: kieli
+      swe: språk
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    escape: false
+    dataset:
+      et: est
+      fi: fin
+      sv: swe
+    translation:
+      deu:
+        en: German
+        fi: saksa
+        sv: tyska
+      dut:
+        en: Dutch
+        fi: hollanti
+        sv: nederländska
+      ell:
+        en: Greek
+        fi: kreikka
+        sv: grekiska
+      eng:
+        en: English
+        fi: englanti
+        sv: engelska
+      est:
+        en: Estonian
+        fi: viro
+        sv: estniska
+      fin:
+        en: Finnish
+        fi: suomi
+        sv: finska
+      fra:
+        en: French
+        fi: ranska
+        sv: franska
+      fre:
+        en: French
+        fi: ranska
+        sv: franska
+      ger:
+        en: German
+        fi: saksa
+        sv: tyska
+      gre:
+        en: Greek
+        fi: kreikka
+        sv: grekiska
+      heb:
+        en: Hebrew
+        fi: heprea
+        sv: hebreiska
+      hun:
+        en: Hungarian
+        fi: unkari
+        sv: ungerska
+      izh:
+        fi: inkeroinen
+      kca:
+        fi: hanti
+      kpv:
+        en: Komi-Zyrian
+        fi: komisyrjääni
+        sv: komi
+      lat:
+        en: Latin
+        fi: latina
+        sv: latin
+      mdf:
+        en: Moksha
+        fi: mokša
+        sv: moksja
+      mns:
+        fi: mansi
+      mrj:
+        fi: länsimari
+      myv:
+        en: Erzya
+        fi: ersä
+        sv: erzia
+      nld:
+        en: Dutch
+        fi: hollanti
+        sv: nederländska
+      nor:
+        en: Norwegian
+        fi: norja
+        sv: norska
+      rus:
+        en: Russian
+        fi: venäjä
+        sv: ryska
+      sel:
+        fi: selkuppi
+      sjd:
+        fi: kiltinänsaame
+      sms:
+        fi: koltansaame
+      spa:
+        en: Spanish
+        fi: espanja
+        sv: spanska
+      swe:
+        en: Swedish
+        fi: ruotsi
+        sv: svenska
+      vep:
+        fi: vepsä
+      xxx:
+        en: unidentified
+        fi: tunnistamaton
+        sv: oidentifierat
+      yrk:
+        fi: tundranenetsi
+    order: 8
+- text_page_no:
+    label:
+      eng: page number
+      fin: sivunumero
+      swe: sidonummer
+    order: 9
+- text_sentcount:
+    label:
+      eng: sentence count
+      fin: virkemäärä
+      swe: antal satser
+    display_type: hidden
+    order: 10
+- text_tokencount:
+    label:
+      eng: token count
+      fin: sanemäärä
+      swe: antal token
+    display_type: hidden
+    order: 11
+- text_img_url:
+    label:
+      eng: image URL
+      fin: linkki kuvaan
+      swe: länk till bilden
+    type: url
+    display_type: hidden
+    order: 12
+- text_publ_type:
+    label:
+      eng: type of publication
+      fin: julkaisutyyppi
+      swe: publikationstyp
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    escape: false
+    dataset:
+      aikakausi: journal
+      sanomalehti: newspaper
+    translation:
+      journal:
+        en: journal
+        fi: aikakauslehti
+        sv: tidskrift
+      newspaper:
+        en: newspaper
+        fi: sanomalehti
+        sv: tidning
+    order: 13
+- paragraph_id:
+    label:
+      eng: paragraph_id
+      fin: kappaleen tunniste
+      swe: paragraph_id
+    display_type: hidden
+    order: 14
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 15
+default_filters:
+- text_publ_title

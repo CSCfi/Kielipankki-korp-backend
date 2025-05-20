@@ -1,0 +1,13 @@
+label:
+  eng: id
+  fin: id
+  swe: id
+display_type: hidden
+opts:
+  contains: _=
+  ends_with: '&='
+  is: '='
+  is_not: '!='
+  matches: '*='
+  matches_not: '!*='
+  starts_with: ^=

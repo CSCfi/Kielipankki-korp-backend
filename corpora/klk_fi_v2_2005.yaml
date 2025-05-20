@@ -1,0 +1,406 @@
+id: klk_fi_v2_2005
+title: 'KLK suomi v2: 2005'
+description: Kansalliskirjaston suomenkielisiä sanoma- ja aikakauslehtiä vuodelta
+  2005 (versio 2)
+alias:
+- klk_fi_v2_korp
+metadata_urn: urn:nbn:fi:lb-202009152
+urn: urn:nbn:fi:lb-202009151
+licence:
+  name: CC BY 4.0 (PUB)
+  urn: urn:nbn:fi:lb-2023032704
+mode:
+- name: default
+  folder: news.klk_fi_v2.fi_2000
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes:
+- lemma: baseform
+- lemmacomp: baseform_compound
+- pos: pos_klk
+- msd: msd
+- dephead: dephead
+- deprel: deprel_tdt
+- ref: ref
+- lex:
+    label:
+      eng: lemgram
+      fin: lemgrammi
+      swe: lemgram
+    type: set
+    display_type: hidden
+    order: 10
+- hyph:
+    label:
+      eng: word divided into lines
+      fin: sana jaettuna riville
+      swe: word_divided_into_lines
+    order: 6
+- ocr:
+    label:
+      eng: OCR word confidence
+      fin: sanan tunnistamisen luotettavuus
+      swe: ocr_word_confidence
+    order: 7
+- cc:
+    label:
+      eng: OCR character confidence
+      fin: merkkien tunnistamisen luotettavuus
+      swe: ocr_char_confidence
+    order: 8
+- vpos:
+    label:
+      eng: vertical position
+      fin: kohta pystysuunnassa
+      swe: vertical_position
+    order: 9
+struct_attributes:
+- text_label:
+    label:
+      eng: label
+      fin: lehti
+      swe: tidning/tidskrift
+    order: 1
+- text_publ_title:
+    label:
+      eng: publication
+      fin: julkaisu
+      swe: publikation
+    extended_component: structServiceAutocomplete
+    order: 2
+- text_publ_id:
+    label:
+      eng: ISSN
+      fin: ISSN
+      swe: ISSN
+    order: 3
+- text_issue_date:
+    label:
+      eng: issue date
+      fin: lehden numeron päiväys
+      swe: issue_date
+    order: 4
+- text_issue_no:
+    label:
+      eng: issue number
+      fin: numero
+      swe: nummer
+    order: 5
+- text_issue_title:
+    label:
+      eng: issue name
+      fin: numeron nimi
+      swe: numrets namn
+    extended_component: structServiceAutocomplete
+    order: 6
+- text_elec_date:
+    label:
+      eng: digitization date
+      fin: digitointipäivä
+      swe: digitaliseringsdatum
+    order: 7
+- text_language:
+    label:
+      eng: language
+      fin: kieli
+      swe: språk
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    escape: false
+    dataset:
+      et: est
+      fi: fin
+      sv: swe
+    translation:
+      deu:
+        en: German
+        fi: saksa
+        sv: tyska
+      dut:
+        en: Dutch
+        fi: hollanti
+        sv: nederländska
+      ell:
+        en: Greek
+        fi: kreikka
+        sv: grekiska
+      eng:
+        en: English
+        fi: englanti
+        sv: engelska
+      est:
+        en: Estonian
+        fi: viro
+        sv: estniska
+      fin:
+        en: Finnish
+        fi: suomi
+        sv: finska
+      fra:
+        en: French
+        fi: ranska
+        sv: franska
+      fre:
+        en: French
+        fi: ranska
+        sv: franska
+      ger:
+        en: German
+        fi: saksa
+        sv: tyska
+      gre:
+        en: Greek
+        fi: kreikka
+        sv: grekiska
+      heb:
+        en: Hebrew
+        fi: heprea
+        sv: hebreiska
+      hun:
+        en: Hungarian
+        fi: unkari
+        sv: ungerska
+      izh:
+        fi: inkeroinen
+      kca:
+        fi: hanti
+      kpv:
+        en: Komi-Zyrian
+        fi: komisyrjääni
+        sv: komi
+      lat:
+        en: Latin
+        fi: latina
+        sv: latin
+      mdf:
+        en: Moksha
+        fi: mokša
+        sv: moksja
+      mns:
+        fi: mansi
+      mrj:
+        fi: länsimari
+      myv:
+        en: Erzya
+        fi: ersä
+        sv: erzia
+      nld:
+        en: Dutch
+        fi: hollanti
+        sv: nederländska
+      nor:
+        en: Norwegian
+        fi: norja
+        sv: norska
+      rus:
+        en: Russian
+        fi: venäjä
+        sv: ryska
+      sel:
+        fi: selkuppi
+      sjd:
+        fi: kiltinänsaame
+      sms:
+        fi: koltansaame
+      spa:
+        en: Spanish
+        fi: espanja
+        sv: spanska
+      swe:
+        en: Swedish
+        fi: ruotsi
+        sv: svenska
+      vep:
+        fi: vepsä
+      xxx:
+        en: unidentified
+        fi: tunnistamaton
+        sv: oidentifierat
+      yrk:
+        fi: tundranenetsi
+    order: 8
+- text_page_no:
+    label:
+      eng: page number
+      fin: sivunumero
+      swe: sidonummer
+    order: 9
+- text_sentcount:
+    label:
+      eng: sentence count
+      fin: virkemäärä
+      swe: antal satser
+    display_type: hidden
+    order: 10
+- text_tokencount:
+    label:
+      eng: token count
+      fin: sanemäärä
+      swe: antal token
+    display_type: hidden
+    order: 11
+- text_img_url:
+    label:
+      eng: image URL
+      fin: linkki kuvaan
+      swe: länk till bilden
+    type: url
+    display_type: hidden
+    order: 12
+- text_publ_type:
+    label:
+      eng: type of publication
+      fin: julkaisutyyppi
+      swe: publikationstyp
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    escape: false
+    dataset:
+      aikakausi: journal
+      sanomalehti: newspaper
+    translation:
+      journal:
+        en: journal
+        fi: aikakauslehti
+        sv: tidskrift
+      newspaper:
+        en: newspaper
+        fi: sanomalehti
+        sv: tidning
+    order: 13
+- paragraph_id:
+    label:
+      eng: paragraph_id
+      fin: kappaleen tunniste
+      swe: paragraph_id
+    display_type: hidden
+    order: 20
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 21
+- text_date:
+    label:
+      eng: date (ISO)
+      fin: päiväys (ISO)
+      swe: date_iso
+    order: 14
+- text_filename_orig:
+    label:
+      eng: original filename
+      fin: alkuperäinen tiedostonnimi
+      swe: filename_orig
+    order: 15
+- text_filename_metadata:
+    label:
+      eng: metadata filename
+      fin: kuvailutietojen tiedostonnimi
+      swe: filename_metadata
+    order: 16
+- text_version_added:
+    label:
+      eng: added in version
+      fin: lisätty versiossa
+      swe: added_in_version
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - KLK-fi-2014
+    - KLK-sv-2014
+    - KLK-2021
+    order: 17
+- text_binding_id:
+    display_type: hidden
+    order: 18
+- text_sum_lang:
+    label:
+      eng: identified languages in text sentences (ISO 639-3)
+      fin: tekstin virkkeiden tunnistetut kielet (ISO 639-3)
+      swe: identifierade språk i textens meningar (ISO 639-3)
+    type: set
+    opts:
+      contains: incontains_contains
+      ends_with: ends_with_contains
+      is: contains
+      is_not: not contains
+      matches: regexp_contains
+      matches_not: not_regexp_contains
+      starts_with: starts_with_contains
+    pattern: '<span data-key="<%= key %>"><%= funcs.makeLinkISO639_3(val.split(":")[0])
+      + ": " + val.split(":")[1] %></span>'
+    order: 19
+- sentence_lang:
+    label:
+      eng: sentence language (identified, ISO 639-3)
+      fin: virkkeen kieli (tunnistettu, ISO 639-3)
+      swe: meningens språk (identifierad, ISO 639-3)
+    opts:
+      is: '='
+      is_not: '!='
+    pattern: <%= funcs.makeLinkISO639_3(val) %>
+    extended_component: structServiceSelect
+    order: 22
+- sentence_lang_conf:
+    label:
+      eng: sentence language identification confidence
+      fin: virkkeen kielentunnistuksen luotettavuus
+      swe: meningens språkidentifieringskonfidens
+    order: 23
+custom_attributes:
+- text_page_image_url:
+    display_type: hidden
+    pattern: <a href="<%= funcs.makeKlkPageImageUrl({struct_attrs, pos_attrs, tokens},
+      0) %>" class="exturl sidebar_link" target="_blank"><span rel="localize[show_page_image]"></span></a>
+    custom_type: struct
+    hide_compare: true
+    hide_extended: true
+    hide_statistics: true
+    url_opts:
+      hideUrl: true
+      inLinkSection: true
+      newWindow: true
+- text_page_image_context_url:
+    display_type: hidden
+    pattern: <a href="<%= funcs.makeKlkPageImageUrl({struct_attrs, pos_attrs, tokens},
+      2) %>" class="exturl sidebar_link" target="_blank"><span rel="localize[show_page_image_context]"></span></a>
+    custom_type: struct
+    hide_compare: true
+    hide_extended: true
+    hide_statistics: true
+    url_opts:
+      hideUrl: true
+      inLinkSection: true
+      newWindow: true
+- text_download_pdf_url:
+    display_type: hidden
+    pattern: <a href="<%= funcs.makeKlkUrlBase({struct_attrs, pos_attrs, tokens})
+      %>/pdf" class="exturl sidebar_link" target="_blank"><span rel="localize[download_publ_pdf]"></span></a>
+    custom_type: struct
+    hide_compare: true
+    hide_extended: true
+    hide_statistics: true
+    url_opts:
+      hideUrl: true
+      inLinkSection: true
+      newWindow: true
+default_filters:
+- text_publ_title

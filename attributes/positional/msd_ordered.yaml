@@ -1,0 +1,14 @@
+label:
+  eng: msd
+  fin: morfologinen analyysi
+  swe: msd
+opts:
+  contains: _=
+  ends_with: '&='
+  is: '='
+  is_not: '!='
+  matches: '*='
+  matches_not: '!*='
+  starts_with: ^=
+pattern: <%= val.replace(/\|/g, '|<wbr>') %>
+order: 14

@@ -1,0 +1,15 @@
+label:
+  eng: base form
+  fin: perusmuoto
+  swe: grundform
+type: set
+opts:
+  contains: _=
+  ends_with: '&='
+  is: '='
+  is_not: '!='
+  matches: '*='
+  matches_not: '!*='
+  starts_with: ^=
+extended_template: <input ng-model='model' >
+order: 1

@@ -1,0 +1,315 @@
+id: skvr
+title: SKVR
+description: SKS:n Suomen Kansan Vanhat Runot -korpus
+metadata_urn: urn:nbn:fi:lb-2014052712
+urn: urn:nbn:fi:lb-2014052711
+licence:
+  name: CC BY-NC (PUB)
+  description: Creative Commons Attribution-NonCommercial
+  urn: urn:nbn:fi:lb-2021120227
+cite_id: SKVR
+homepage_url: http://dbgw.finlit.fi/skvr/
+mode:
+- name: default
+  folder: literary
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- cleanword:
+    label:
+      eng: cleanword
+      fin: sananmuoto ilman tarkkeita
+      swe: cleanword
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+- normalized:
+    label:
+      eng: normalized
+      fin: normalisoitu sanamuoto
+      swe: normalized
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+struct_attributes:
+- text_id:
+    label:
+      eng: skvr_item_id
+      fin: skvr_item_id
+      swe: skvr_item_id
+    display_type: hidden
+    order: 1
+- text_osa:
+    label:
+      eng: skvr_item_osa
+      fin: osan numero
+      swe: skvr_item_osa
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 2
+- text_loc:
+    label:
+      eng: skvr_item_loc
+      fin: paikkakunta/pitäjä
+      swe: skvr_item_loc
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 3
+- text_inf:
+    label:
+      eng: skvr_item_inf
+      fin: muut tiedot
+      swe: skvr_item_inf
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 4
+- text_tmp:
+    label:
+      eng: skvr_item_tmp
+      fin: keruuaika
+      swe: skvr_item_tmp
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 5
+- text_col:
+    label:
+      eng: skvr_item_col
+      fin: kerääjä / tekstin kirjoittaja
+      swe: skvr_item_col
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 6
+- text_idn:
+    label:
+      eng: skvr_item_idn
+      fin: SKVR-numero
+      swe: skvr_item_idn
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 7
+- text_nro:
+    label:
+      eng: skvr_item_nro
+      fin: toisinnon tunnus
+      swe: skvr_item_nro
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 8
+- text_sgn:
+    label:
+      eng: skvr_item_sgn
+      fin: kokoelma- ja yksikkönumero / julkaisuviite
+      swe: skvr_item_sgn
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 9
+- text_p_code1:
+    label:
+      eng: skvr_item_p_code1
+      fin: alue
+      swe: skvr_item_p_code1
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 10
+- text_p_code2:
+    label:
+      eng: skvr_item_p_code2
+      fin: paikkakunta
+      swe: skvr_item_p_code2
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 11
+- text_k_code:
+    label:
+      eng: skvr_item_k_code
+      fin: kerääjän koko nimi
+      swe: skvr_item_k_code
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 12
+- text_y_code:
+    label:
+      eng: skvr_item_y_code
+      fin: vuosiluku
+      swe: skvr_item_y_code
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 13
+- text_refs:
+    label:
+      eng: skvr_item_refs
+      fin: tiedoissa oleva alaviite
+      swe: skvr_item_refs
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 14
+- text_cpt:
+    label:
+      eng: skvr_item_cpt
+      fin: otsikko
+      swe: skvr_item_cpt
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 15
+- paragraph_id:
+    display_type: hidden
+    order: 16
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 17
+- sentence_type:
+    label:
+      eng: type of sentence
+      fin: virkkeen tyyppi
+      swe: meningens typ
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      caption: caption
+      comment: comment
+      editor_commentary: editor
+      verse: verse
+    translation:
+      caption:
+        fi: otsikko
+      comment:
+        fi: suorasanainen osuus
+      editor:
+        fi: toimittajan kommentti
+      verse:
+        fi: runosäe
+    order: 18
+- sentence_refs:
+    label:
+      eng: sentence_refs
+      fin: alaviite
+      swe: sentence_refs
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 19

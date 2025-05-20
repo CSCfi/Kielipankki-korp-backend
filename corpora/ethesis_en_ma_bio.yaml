@@ -1,0 +1,1606 @@
+id: ethesis_en_ma_bio
+title: 'E-thesis: Master’s theses: Biological and Environmental Sciences'
+description: 'The University of Helsinki''s English E-thesis 1999-2016, Korp version
+  1.1: Master’s theses: Faculty of Biological and Environmental Sciences (2006–2015)'
+shortname: e-thesis-en-korp-v1-1
+metadata_urn: urn:nbn:fi:lb-2020031301
+urn: urn:nbn:fi:lb-2020031302
+licence:
+  name: CC BY (PUB)
+  description: Creative Commons Attribution
+  urn: urn:nbn:fi:lb-2021120223
+cite_id: e-thesis-en-korp-v1-1
+homepage:
+  name: Digital dissertations and theses at the University of Helsinki
+  url: https://ethesis.helsinki.fi/en/
+mode:
+- name: other_languages
+  folder: english.academic.ethesis.matheses
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes:
+- ref: ref
+- lemma:
+    label:
+      eng: base form
+      fin: perusmuoto
+      swe: grundform
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 1
+    stats_cqp: cqpPlainWordAttr
+    stats_stringify: stringifyPlainWordAttr
+- lemmacomp:
+    label:
+      eng: baseform (compound boundaries)
+      fin: perusmuoto (yhdyssanarajat)
+      swe: grundform (sammansättningsgränser)
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 2
+- pos:
+    label:
+      eng: part of speech
+      fin: sanaluokka
+      swe: ordklass
+    extended_component: datasetSelect
+    dataset:
+      ADJ: A
+      ADP: Adp
+      ADV: Adv
+      AUX: Aux
+      CCONJ: CC
+      DET: DT
+      INTJ: Interj
+      NOUN: N
+      NUM: Num
+      PART: PL
+      PRON: Pron
+      PROPN: Prop
+      PUNCT: Punct
+      SCONJ: CS
+      SYM: Symb
+      VERB: V
+      X: Other
+    translation:
+      byu_z':
+        en: word possibly missing an apostrophe
+      A:
+        en: adjective
+        fi: adjektiivi
+        sv: adjektiv
+      AB:
+        en: adverb
+        fi: adverbi
+        sv: adverb
+      ABBR:
+        fi: lyhenne
+      ADJ:
+        en: adjective
+        fi: adjektiivi
+      ADP:
+        en: adposition
+        fi: adpositio
+      ADV:
+        en: adverb
+        fi: adverbi
+        sv: adverb
+      AN:
+        fi: adjektiivi tai substantiivi
+      Abbr:
+        en: abbreviation
+        fi: lyhenne
+      AdA:
+        fi: ad-adjektiivi
+      Adj:
+        fi: adjektiivi
+      AdjNoun:
+        fi: adjektiivi/substantiivi
+      Adp:
+        en: adposition
+        fi: adpositio
+        sv: adposition
+      Adv:
+        en: adverb
+        fi: adverbi
+        sv: adverb
+      AgPrc:
+        fi: agenttipartisiippi
+      Art:
+        fi: artikkeli
+      Aux:
+        en: auxiliary verb
+        fi: apuverbi
+      C:
+        en: conjunction
+        fi: konjunktio
+        sv: konjunktion
+      CC:
+        en: coordinating conjunction
+        fi: rinnastuskonjunktio
+        sv: samordnande konjunktion
+      CCONJ:
+        en: coordinating conjunction
+        fi: rinnastuskonjunktio
+      CS:
+        en: subordinating conjunction
+        fi: alistuskonjunktio
+        sv: underordnande konjunktion
+      Cmpr:
+        fi: vertailukonjunktio
+      Code:
+        fi: koodi
+      CompPart:
+        fi: yhdyssanan osa
+      Con:
+        en: conjunction
+        fi: konjunktio
+      Conj:
+        fi: konjunktio
+      D:
+        fi: johdos
+      DET:
+        en: determiner
+        fi: determineri
+        sv: determinerare
+      DL:
+        en: punctuation
+        fi: välimerkki
+        sv: interpunktion
+      DT:
+        en: determiner
+        fi: determineri
+        sv: determinerare
+      DaUs:
+        fi: adjektiivin -us-johdos
+      DaUus:
+        fi: adjektiivin -uus-johdos
+      DnInen:
+        fi: substantiivin -inen-johdos
+      DnLlinen:
+        fi: substantiivin -llinen-johdos
+      DnTon:
+        fi: substantiivin -ton-johdos
+      DvMa:
+        fi: verbin -ma-johdos
+      DvTta:
+        fi: verbin -tta-johdos
+      E:
+        en: e
+        fi: e
+        sv: e
+      EN:
+        fi: partisiipin perfekti
+      EX:
+        fi: there (is/are)
+      Foreign:
+        en: foreign word
+        fi: vierassana
+        sv: utländskt ord
+      Forgn:
+        fi: vierassana
+      Gerund:
+        fi: gerundi
+      HA:
+        en: interrogative/relative adverb
+        fi: kysymys- tai relatiiviadverbi
+        sv: frågande/relativt adverb
+      HD:
+        en: interrogative/relative determiner
+        fi: kysymys- tai relatiividetermineri
+        sv: frågande/relativ determinerare
+      HP:
+        en: interrogative/relative pronoun
+        fi: kysymys- tai relatiivipronomini
+        sv: frågande/relativt pronomen
+      HS:
+        en: interrogative/relative possessive
+        fi: kysymys- tai relatiivipossessiivipronomini
+        sv: frågande/relativt possesivt pronomen
+      Heur:
+        fi: heuristinen
+      IE:
+        en: infinitive marker
+        fi: infinitiivin merkitsin
+        sv: infinitivmärke
+      IN:
+        en: interjection
+        fi: interjektio
+        sv: interjektion
+      INFMARK:
+        fi: infinitiivin merkitsin
+      ING:
+        fi: -ing
+      INTJ:
+        en: interjection
+        fi: interjektio
+      Interj:
+        en: interjection
+        fi: interjektio
+        sv: interjektion
+      JJ:
+        en: adjective
+        fi: adjektiivi
+        sv: adjektiv
+      KN:
+        en: conjunction
+        fi: konjunktio
+        sv: konjunktion
+      MAD:
+        en: punctuation
+        fi: välimerkki
+        sv: interpunktion
+      MID:
+        en: punctuation
+        fi: välimerkki
+        sv: interpunktion
+      MID|MAD|PAD:
+        en: punctuation
+        sv: interpunktion
+      N:
+        en: noun
+        fi: substantiivi
+        sv: substantiv
+      NEG-PART:
+        fi: kieltopartikkeli
+      NN:
+        en: noun
+        fi: substantiivi
+        sv: substantiv
+      NOUN:
+        en: noun
+        fi: substantiivi
+      NUM:
+        en: numeral
+        fi: numeraali
+        sv: numeral
+      NegPrc:
+        fi: kieltopartisiippi
+      NonTWOL:
+        fi: tunnistamaton
+      Noun:
+        fi: substantiivi
+      NounNoun:
+        fi: substantiivi/substantiivi
+      Num:
+        en: numeral
+        fi: numeraali
+        sv: numeral
+      Numeral:
+        fi: numeraali
+      Other:
+        en: other
+        fi: muu
+      P:
+        fi: P
+      PAD:
+        en: punctuation
+        fi: välimerkki
+        sv: interpunktion
+      PART:
+        en: particle
+        fi: partikkeli
+      PC:
+        en: participle
+        fi: partisiippi
+        sv: particip
+      PL:
+        en: particle
+        fi: partikkeli
+        sv: partikel
+      PM:
+        en: proper noun
+        fi: erisnimi
+        sv: egennamn
+      PN:
+        en: pronoun
+        fi: pronomini
+        sv: pronomen
+      POST:
+        en: postposition
+        fi: postpositio
+      PP:
+        en: preposition
+        fi: prepositio
+        sv: preposition
+      PREP:
+        en: preposition
+        fi: prepositio
+        sv: preposition
+      PRON:
+        en: pronoun
+        fi: pronomini
+        sv: pronomen
+      PROPN:
+        en: proper noun
+        fi: erisnimi
+      PS:
+        en: possessive
+        fi: possessiivipronomini
+        sv: possessivt pronomen
+      PUNCT:
+        en: punctuation mark
+        fi: välimerkki
+      Part:
+        fi: partisiippi
+      Particle:
+        fi: partikkeli
+      Pcp1:
+        fi: 1. partisiippi
+      Pcp2:
+        fi: 2. partisiippi
+      Post:
+        fi: postpositio
+      Pp:
+        fi: adpositio
+      Predicative:
+        fi: predikatiivi
+      Prep:
+        fi: prepositio
+      Preposition:
+        fi: prepositio
+      PrfPrc:
+        fi: partisiipin perfekti
+      Pron:
+        en: pronoun
+        fi: pronomini
+        sv: pronomen
+      Prop:
+        fi: erisnimi
+      PrsPrc:
+        fi: partisiipin preesens
+      Pun:
+        en: punctuation
+        fi: välimerkki
+      Punct:
+        en: punctuation
+        fi: välimerkki
+        sv: interpunktion
+      REL:
+        fi: relatiivipronomini
+      RG:
+        en: cardinal number
+        fi: perusluku
+        sv: grundtal
+      RO:
+        en: ordinal number
+        fi: järjestysluku
+        sv: ordningstal
+      ReflPron:
+        fi: refleksiivipronomini
+      Rel:
+        fi: relatiivipronomini
+      SCONJ:
+        en: subordinating conjunction
+        fi: alistuskonjunktio
+      SN:
+        en: subjunction
+        fi: alistuskonjunktio
+        sv: subjunktion
+      SYM:
+        en: symbol
+        fi: symboli
+      Symb:
+        en: symbol
+        fi: symboli
+        sv: symbol
+      TrunCo:
+        fi: yhdyssanan osa
+      UNK:
+        fi: tuntematon
+      UNKNOWN:
+        en: unknown
+        fi: analysoimaton
+        sv: oanalyserat
+      UO:
+        en: foreign word
+        fi: vierassana
+        sv: utländskt ord
+      Unknown:
+        en: unknown
+        fi: tunnistamaton
+      Unkwn:
+        fi: tunnistamaton
+      V:
+        en: verb
+        fi: verbi
+        sv: verb
+      VB:
+        en: verb
+        fi: verbi
+        sv: verb
+      VERB:
+        en: verb
+        fi: verbi
+      Verb:
+        fi: verbi
+      X:
+        en: other
+        fi: muu
+      '[NON-TWOL]':
+        fi: tunnistamaton
+      _:
+        en: '[empty]'
+        fi: '[tyhjä]'
+        sv: '[tom]'
+      a:
+        fi: adjektiivi
+      a:pron:
+        fi: 'adjektiivi: muu pronominaalinen'
+      a:pron:dem:
+        fi: 'adjektiivi: demonstratiivinen'
+      a:pron:int:
+        fi: 'adjektiivi: interrogatiivinen'
+      a:pron:rel:
+        fi: 'adjektiivi: relatiivinen'
+      adv:
+        fi: adverbi
+      adv:pron:
+        fi: 'adverbi: muu pronominaalinen'
+      adv:pron:dem:
+        fi: 'adverbi: demonstratiivinen'
+      adv:pron:int:
+        fi: 'adverbi: interrogatiivinen'
+      adv:pron:rel:
+        fi: 'adverbi: relatiivinen'
+      adv:q:
+        fi: 'adverbi: paljon-tyyppi'
+      byu_1:
+        en: non-verbal communication
+      byu_GAP:
+        en: deleted
+      byu_a:
+        en: non-standard article “ze”
+      byu_appge:
+        en: possessive pronoun, pre-nominal
+      byu_at:
+        en: article
+      byu_at1:
+        en: singular article
+      byu_bcl:
+        en: before-clause marker
+      byu_c:
+        en: conjunction “cept”
+      byu_cc:
+        en: coordinating conjunction
+      byu_ccb:
+        en: adversative coordinating conjunction
+      byu_cs:
+        en: subordinating conjunction
+      byu_csa:
+        en: as (as conjunction)
+      byu_csn:
+        en: than (as conjunction)
+      byu_cst:
+        en: that (as conjunction)
+      byu_csw:
+        en: whether (as conjunction)
+      byu_d:
+        en: “an-other”
+      byu_da:
+        en: after-determiner or post-determiner capable of pronominal function
+      byu_da1:
+        en: singular after-determiner
+      byu_da2:
+        en: plural after-determiner
+      byu_dar:
+        en: comparative after-determiner
+      byu_dat:
+        en: superlative after-determiner
+      byu_db:
+        en: before determiner or pre-determiner capable of pronominal function
+      byu_db2:
+        en: plural before-determiner
+      byu_dd:
+        en: determiner (capable of pronominal function)
+      byu_dd1:
+        en: singular determiner
+      byu_dd2:
+        en: plural determiner
+      byu_ddq:
+        en: wh-determiner
+      byu_ddqge:
+        en: wh-determiner, genitive
+      byu_ddqv:
+        en: wh-ever determiner
+      byu_ex:
+        en: existential there
+      byu_f:
+        en: foreign article or preposition
+      byu_fo:
+        en: formula
+      byu_fu:
+        en: unclassified word
+      byu_fw:
+        en: foreign word
+      byu_ge:
+        en: germanic genitive marker
+      byu_i:
+        en: non-standard preposition “uv”
+      byu_if:
+        en: for (as preposition)
+      byu_ii:
+        en: general preposition
+      byu_io:
+        en: of (as preposition)
+      byu_iw:
+        en: with, without (as prepositions)
+      byu_j:
+        en: other adjective
+      byu_jj:
+        en: general adjective
+      byu_jjr:
+        en: general comparative adjective
+      byu_jjt:
+        en: general superlative adjective
+      byu_jk:
+        en: catenative adjective
+      byu_m#:
+        en: number with unit
+      byu_m$:
+        en: number with currency symbol
+      byu_m:
+        en: other number
+      byu_m1:
+        en: number (“million”, “billion”)
+      byu_mc:
+        en: cardinal number, neutral for number
+      byu_mc1:
+        en: singular cardinal number
+      byu_mc2:
+        en: plural cardinal number
+      byu_mcge:
+        en: genitive cardinal number, neutral for number
+      byu_mcmc:
+        en: hyphenated number
+      byu_md:
+        en: ordinal number
+      byu_mf:
+        en: fraction,neutral for number
+      byu_n:
+        en: other noun
+      byu_nd1:
+        en: singular noun of direction
+      byu_nn:
+        en: common noun, neutral for number
+      byu_nn1:
+        en: singular common noun
+      byu_nn2:
+        en: plural common noun
+      byu_nna:
+        en: following noun of title
+      byu_nnb:
+        en: preceding noun of title
+      byu_nnl1:
+        en: singular locative noun
+      byu_nnl2:
+        en: plural locative noun
+      byu_nno:
+        en: numeral noun, neutral for number
+      byu_nno2:
+        en: numeral noun, plural
+      byu_nnt1:
+        en: temporal noun, singular
+      byu_nnt2:
+        en: temporal noun, plural
+      byu_nnu:
+        en: unit of measurement, neutral for number
+      byu_nnu1:
+        en: singular unit of measurement
+      byu_nnu2:
+        en: plural unit of measurement
+      byu_np:
+        en: proper noun, neutral for number
+      byu_np1:
+        en: singular proper noun
+      byu_np2:
+        en: plural proper noun
+      byu_npd1:
+        en: singular weekday noun
+      byu_npd2:
+        en: plural weekday noun
+      byu_npm1:
+        en: singular month noun
+      byu_npm2:
+        en: plural month noun
+      byu_npx:
+        en: other proper noun
+      byu_null:
+        en: word containing symbols
+      byu_p:
+        en: other pronoun
+      byu_pn:
+        en: indefinite pronoun, neutral for number
+      byu_pn1:
+        en: indefinite pronoun, singular
+      byu_pnqo:
+        en: objective wh-pronoun
+      byu_pnqs:
+        en: subjective wh-pronoun
+      byu_pnqv:
+        en: wh-ever pronoun
+      byu_pnx1:
+        en: reflexive indefinite pronoun
+      byu_ppge:
+        en: nominal possessive personal pronoun
+      byu_pph1:
+        en: 3rd person singular neuter personal pronoun
+      byu_ppho1:
+        en: 3rd person singular objective personal pronoun
+      byu_ppho2:
+        en: 3rd person plural objective personal pronoun
+      byu_pphs1:
+        en: 3rd person singular subjective personal pronoun
+      byu_pphs2:
+        en: 3rd person plural subjective personal pronoun
+      byu_ppio1:
+        en: 1st person singular objective personal pronoun
+      byu_ppio2:
+        en: 1st person plural objective personal pronoun
+      byu_ppis1:
+        en: 1st person singular subjective personal pronoun
+      byu_ppis2:
+        en: 1st person plural subjective personal pronoun
+      byu_ppx1:
+        en: singular reflexive personal pronoun
+      byu_ppx2:
+        en: plural reflexive personal pronoun
+      byu_ppy:
+        en: 2nd person personal pronoun
+      byu_ra:
+        en: adverb, after nominal head
+      byu_rex:
+        en: adverb introducing appositional constructions
+      byu_rg:
+        en: degree adverb
+      byu_rgq:
+        en: wh- degree adverb
+      byu_rgqv:
+        en: wh-ever degree adverb
+      byu_rgr:
+        en: comparative degree adverb
+      byu_rgt:
+        en: superlative degree adverb
+      byu_rl:
+        en: locative adverb
+      byu_rp:
+        en: prepositional adverb, particle
+      byu_rpk:
+        en: prepositional adverb, catenative
+      byu_rr:
+        en: general adverb
+      byu_rrq:
+        en: wh- general adverb
+      byu_rrqv:
+        en: wh-ever general adverb
+      byu_rrr:
+        en: comparative general adverb
+      byu_rrt:
+        en: superlative general adverb
+      byu_rt:
+        en: quasi-nominal adverb of time
+      byu_to:
+        en: infinitive marker
+      byu_u:
+        en: 'interjection: “bam”, “dang”, “hmm”, “whew”, “yup”'
+      byu_uh:
+        en: interjection
+      byu_v:
+        en: other verb form
+      byu_vb0:
+        en: be, base form (finite i.e. imperative, subjunctive)
+      byu_vbdr:
+        en: were
+      byu_vbdz:
+        en: was
+      byu_vbg:
+        en: being
+      byu_vbi:
+        en: be, infinitive
+      byu_vbm:
+        en: am
+      byu_vbn:
+        en: been
+      byu_vbr:
+        en: are
+      byu_vbz:
+        en: is
+      byu_vd:
+        en: don, dons
+      byu_vd0:
+        en: do, base form (finite)
+      byu_vdd:
+        en: did
+      byu_vdg:
+        en: doing
+      byu_vdi:
+        en: do, infinitive
+      byu_vdn:
+        en: done
+      byu_vdz:
+        en: does
+      byu_vh0:
+        en: have, base form (finite)
+      byu_vhd:
+        en: had (past tense)
+      byu_vhg:
+        en: having
+      byu_vhi:
+        en: have, infinitive
+      byu_vhn:
+        en: had (past participle)
+      byu_vhz:
+        en: has
+      byu_vm:
+        en: modal auxiliary
+      byu_vmk:
+        en: modal catenative
+      byu_vv0:
+        en: base form of lexical verb
+      byu_vvd:
+        en: past tense of lexical verb
+      byu_vvg:
+        en: -ing participle of lexical verb
+      byu_vvgk:
+        en: -ing participle catenative
+      byu_vvi:
+        en: infinitive
+      byu_vvn:
+        en: past participle of lexical verb
+      byu_vvnk:
+        en: past participle catenative
+      byu_vvz:
+        en: -s form of lexical verb
+      byu_x:
+        en: other word (x)
+      byu_xx:
+        en: not, n't
+      byu_xxy:
+        en: no or not with hyphen
+      byu_y0:
+        en: punctuation (literal)
+      byu_z:
+        en: other word (z)
+      byu_zz:
+        en: other word (zz)
+      byu_zz1:
+        en: singular letter of the alphabet
+      byu_zz2:
+        en: plural letter of the alphabet
+      byu_zzc:
+        en: transcript metainformation @(...)
+      byu_zzq:
+        en: transcript metainformation @!...
+      cnj:
+        fi: konjunktio
+      cnj:coord:
+        fi: 'konjunktio: rinnastus-'
+      cnj:rel:
+        fi: 'konjunktio: relatiivi-'
+      cnj:sub:
+        fi: 'konjunktio: alistus-'
+      intj:
+        fi: interjektio
+      muu:
+        fi: muu
+      n:
+        fi: 'substantiivi: ei erisnimi'
+      n:prop:
+        fi: 'substantiivi: erisnimi, ei henkilön-'
+      n:prop:any:
+        fi: 'substantiivi: erisnimi'
+      n:prop:pname:
+        fi: 'substantiivi: henkilönnimi'
+      neg:
+        fi: kieltosana ”ei”, ”älä”
+      'null':
+        fi: tyhjä
+      num:
+        fi: numeraali
+      num:card:
+        fi: 'numeraali: perusluku'
+      num:murto:
+        fi: 'numeraali: murtoluku'
+      num:ord:
+        fi: 'numeraali: järjestysluku'
+      num:ord_pron:
+        fi: pronomini/numeraali ”toinen”
+      orig:
+        en: part of speech (original)
+        fi: sanaluokka (siivoamaton)
+      p:post:
+        fi: postpositio
+      p:pre:
+        fi: prepositio
+      pron:
+        fi: pronomini ”se”, ”ne”
+      pron:any:
+        fi: pronomini
+      pron:dem:
+        fi: 'pronomini: demonstratiivi-'
+      pron:int:
+        fi: 'pronomini: interrogatiivi-'
+      pron:pers:
+        fi: pronomini ”hän”, ”he”
+      pron:pers12:
+        fi: 'pronomini: 1. tai 2. persoona'
+      pron:ref:
+        fi: 'pronomini: refleksiivi-'
+      pron:rel:
+        fi: 'pronomini: relatiivi-'
+      pun:
+        fi: välimerkki
+      punct:
+        fi: välimerkki
+      q:
+        fi: 'pronomini: kvanttori-'
+      v:
+        fi: verbi
+    order: 3
+- xpos:
+    label:
+      eng: ''
+      fin: ''
+      swe: ''
+    display_type: hidden
+- msd:
+    label:
+      eng: msd
+      fin: morfologinen analyysi
+      swe: msd
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    pattern: <%= val.replace(/\|/g, '|<wbr>') %>
+    order: 4
+- dephead: other_languages_dephead
+- deprel:
+    label:
+      eng: dependency relation
+      fin: dependenssisuhde
+      swe: dependensrelation
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      acl: acl
+      acl:relcl: acl:relcl
+      advcl: advcl
+      advmod: advmod
+      amod: amod
+      appos: appos
+      aux: aux
+      aux:pass: aux:pass
+      case: case
+      cc: cc
+      cc:preconj: cc:preconj
+      ccomp: ccomp
+      compound: compound
+      compound:nn: compound:nn
+      compound:prt: compound:prt
+      conj: conj
+      cop: cop
+      cop:own: cop:own
+      csubj: csubj
+      csubj:cop: csubj:cop
+      dep: dep
+      det: det
+      discourse: discourse
+      fixed: fixed
+      flat: flat
+      flat:foreign: flat:foreign
+      flat:name: flat:name
+      goeswith: goeswith
+      mark: mark
+      nmod: nmod
+      nmod:gobj: nmod:gobj
+      nmod:gsubj: nmod:gsubj
+      nmod:poss: nmod:poss
+      nsubj: nsubj
+      nsubj:cop: nsubj:cop
+      nummod: nummod
+      obj: obj
+      obl: obl
+      orphan: orphan
+      parataxis: parataxis
+      punct: punct
+      root: root
+      vocative: vocative
+      xcomp: xcomp
+      xcomp:ds: xcomp:ds
+    translation:
+      name:
+        en: multi-word named entity
+        fi: monisanainen nimi
+      ++:
+        en: Coordinating conjunction
+        fi: Rinnastuskonjunktio
+        sv: Samordnande konjunktion
+      +A:
+        en: Conjunctional adverbial
+        fi: Konjunktiivinen adverbi
+        sv: Konjuktionellt adverb
+      +F:
+        en: Coordination at main clause level
+        fi: Rinnastus päälauseen tasolla
+        sv: Koordination på huvudsatsnivå
+      AA:
+        en: Other adverbial
+        fi: Muu adverbiaali
+        sv: Annat adverbial
+      AG:
+        en: Agent
+        fi: Agentti
+        sv: Agent
+      AN:
+        en: Apposition
+        fi: Appositio
+        sv: Apposition
+      AT:
+        en: Nominal (adjectival) pre-modifier
+        fi: Nominietumäärite (adjektiivi)
+        sv: Framförställt attribut
+      CA:
+        en: Contrastive adverbial
+        fi: Kontrastiivinen adverbiaali
+        sv: Kontrastivt adverbial
+      CJ:
+        en: Conjunct (in coordinate structure)
+        fi: Konjunkti rinnastusrakenteessa
+        sv: Samordnat led
+      DB:
+        en: Doubled function
+        fi: Kaksoisfunktio
+        sv: Dubbel funktion
+      DT:
+        en: Determiner
+        fi: Determineri
+        sv: Determinerare, bestämningsord
+      EF:
+        en: Relative clause in cleft
+        fi: Relatiivisivulause
+        sv: Relativ bisats
+      EO:
+        en: Logical object
+        fi: Looginen objekti
+        sv: Egentligt objekt
+      ES:
+        en: Logical subject
+        fi: Looginen subjekti
+        sv: Egentligt subjekt
+      ET:
+        en: Other nominal post-modifier
+        fi: Muu nominaalijälkimäärite
+        sv: Efterställd bestämning
+      FO:
+        en: Dummy object
+        fi: Muodollinen objekti
+        sv: Formellt objekt
+      FP:
+        en: Free subjective predicative complement
+        fi: Vapaa subjektiivinen predikatiivi
+        sv: Fritt subjektivt predikativ (predikatsfyllnad)
+      FS:
+        en: Dummy subject
+        fi: Muodollinen subjekti
+        sv: Formellt subjekt
+      FV:
+        en: Finite predicate verb
+        fi: Finiittinen predikaattiverbi
+        sv: Finit verb, predikatsverb
+      HD:
+        en: Head
+        fi: Pää
+        sv: Huvud
+      I?:
+        en: Question mark
+        fi: Kysymysmerkki
+        sv: Frågetecken
+      IC:
+        en: Quotation mark
+        fi: Lainausmerkki
+        sv: Citattecken
+      IF:
+        en: Infinitive verb phrase minus infinitive marker
+        fi: Infinitiivilauseke, ilman infinitiivin merkitsintä
+        sv: Infinitivfras, utom infinitivmärke
+      IG:
+        en: Other punctuation mark
+        fi: Muu välimerkki
+        sv: Övrig interpunktion
+      IK:
+        en: Comma
+        fi: Pilkku
+        sv: Kommatecken
+      IM:
+        en: Infinitive marker
+        fi: Infinitiivin merkitsin
+        sv: Infinitivmärke
+      IO:
+        en: Indirect object
+        fi: Epäsuora objekti
+        sv: Indirekt objekt (dativobjekt)
+      IP:
+        en: Period
+        fi: Piste
+        sv: Punkt
+      IQ:
+        en: Colon
+        fi: Kaksoispiste
+        sv: Kolon
+      IR:
+        en: Parenthesis
+        fi: Sulje
+        sv: Parentes
+      IS:
+        en: Semicolon
+        fi: Puolipiste
+        sv: Semikolon
+      IT:
+        en: Dash
+        fi: Ajatusviiva tai yhdysmerkki
+        sv: Divis, bindestreck
+      IU:
+        en: Exclamation mark
+        fi: Huutomerkki
+        sv: Utropstecken
+      IV:
+        en: Nonfinite verb
+        fi: Ei-finiittinen verbi
+        sv: Infinit verb
+      JC:
+        en: Second quotation mark
+        fi: Toinen lainausmerkki
+        sv: Citattecken 2
+      JG:
+        en: Second (other) punctuation mark
+        fi: Toinen (muu) välimerkki
+        sv: Övrig interpunktion 2
+      JR:
+        en: Second parenthesis
+        fi: Toinen sulje
+        sv: Parentes 2
+      JT:
+        en: Second dash
+        fi: Toinen ajatusviiva tai yhdysmerkki
+        sv: Divis 2, bindestreck 2
+      KA:
+        en: Comparative adverbial
+        fi: Vertailuadverbiaali
+        sv: Komparativt adverbial
+      MA:
+        en: Attitude adverbial
+        fi: Lauseadverbiaali
+        sv: Satsadverbial
+      MS:
+        en: Macrosyntagm
+        fi: Makrosyntagma
+        sv: Makrosyntagm
+      NA:
+        en: Negation adverbial
+        fi: Kieltoadverbiaali
+        sv: Negerande adverbial
+      OA:
+        en: Object adverbial
+        fi: Objektiadverbiaali (prepositio-objekti)
+        sv: Objektsadverbial (prepositionsobjekt)
+      OO:
+        en: Direct object
+        fi: Suora objekti (akkusatiiviobjekti)
+        sv: Direkt objekt (ackusativobjekt)
+      OP:
+        en: Object predicative
+        fi: Objektipredikatiivi
+        sv: Objektspredikativ (objektiv predikatsfyllnad)
+      PA:
+        en: Complement of preposition
+        fi: Preposition komplementti
+        sv: Prepositions komplement
+      PL:
+        en: Verb particle
+        fi: Verbin partikkeli
+        sv: Verbpartikel
+      PR:
+        en: Preposition
+        fi: Prepositio
+        sv: Preposition
+      PT:
+        en: Predicative attribute
+        fi: Predikatiiviattribuutti
+        sv: Predikativt attribut
+      RA:
+        en: Place adverbial
+        fi: Paikan adverbiaali
+        sv: Platsadverbial
+      ROOT:
+        en: Root
+        fi: pää
+        sv: Rot
+      SP:
+        en: Subjective predicative complement
+        fi: Subjektiivipredikatiivi
+        sv: Subjektspredikativ (subjektiv predikatsfyllnad)
+      SS:
+        en: Other subject
+        fi: Muu subjekti
+        sv: Subjekt (övrigt subjekt)
+      TA:
+        en: Time adverbial
+        fi: Ajan adverbiaali
+        sv: Tidsadverbial
+      TT:
+        en: Address phrase
+        fi: Puhuttelufraasi
+        sv: Tilltalsfras
+      UA:
+        en: Subordinate clause minus subordinating conjunction
+        fi: Sivulause, ilman alistuskonjunktiota
+        sv: Underordnad sats (bisats), utom subjunktion
+      UK:
+        en: Subordinating conjunction
+        fi: Alistuskonjunktio
+        sv: Subjunktion
+      VA:
+        en: Notifying adverbial
+        fi: Korrelatiiviadverbiaali
+        sv: Korrelativt adverbial
+      VG:
+        en: Verb group
+        fi: Verbiryhmä
+        sv: Verbgrupp
+      VO:
+        en: Infinitive object complement
+        fi: Infinitiiviobjekti
+        sv: Objekt med infinitiv
+      VS:
+        en: Infinitive subject complement
+        fi: Infinitiivisubjekti
+        sv: Subjekt med infinitiv
+      XA:
+        en: Expressions like 'så att säga' (so to speak)
+        fi: Ilmaukset kuten ”så att säga” (niin sanotusti)
+        sv: Uttryck som ”så att säga”
+      XF:
+        en: Fundament phrase
+        fi: Fundamenttilauseke
+        sv: Fundamentsfras
+      XT:
+        en: Expressions like 'så kallad' (so called)
+        fi: Ilmaukset kuten ”så kallad” (niin sanottu)
+        sv: Uttryck som ”så kallad”
+      XX:
+        en: Unclassifiable grammatical function
+        fi: Luokittelematon kieliopillinen funktio
+        sv: Oklassificerbar satsfunktion
+      YY:
+        en: Interjection phrase
+        fi: Huudahdus
+        sv: Interjektionsfras
+      _:
+        en: unspecified
+        fi: muu
+      acl:
+        fi: clausal modifier of noun (adjectival clause)
+      acl:relcl:
+        en: 'clausal modifier of noun (adjectival clause): relative clause modifier'
+        fi: 'clausal modifier of noun (adjectival clause): relative clause modifier'
+        sv: 'clausal modifier of noun (adjectival clause): relative clause modifier'
+      acomp:
+        en: adjectival complement
+        fi: adjektiivikomplementti
+      adpos:
+        en: adposition
+        fi: adpositio
+      advcl:
+        en: adverbial clause modifier
+        fi: adverbiaalinen lauseenmääre
+      advl:
+        en: adverbial
+        fi: adverbiaali
+      advmod:
+        en: adverb modifier
+        fi: adverbimääre
+      amod:
+        en: adjectival modifier
+        fi: adjektiivimääre
+      appos:
+        en: apposition
+        fi: appositio
+      arg:
+        en: argument
+        fi: argumentti
+      attr:
+        en: attribute
+        fi: attribuutti
+      aux:
+        en: auxiliary verb
+        fi: apuverbi
+      aux:pass:
+        en: 'auxiliary: passive'
+        fi: 'auxiliary: passive'
+        sv: 'auxiliary: passive'
+      auxpass:
+        en: passive auxiliary
+        fi: passiivin apuverbi
+      case:
+        en: case marking
+        fi: case marking
+        sv: case marking
+      cc:
+        en: coordinating conjunction
+        fi: rinnastuskonjunktio
+      cc:preconj:
+        en: 'coordinating conjunction: preconjuction'
+        fi: 'coordinating conjunction: preconjuction'
+        sv: 'coordinating conjunction: preconjuction'
+      ccomp:
+        en: clausal complement
+        fi: lausekomplementti
+      clf:
+        en: classifier
+        fi: classifier
+        sv: classifier
+      comp:
+        en: complement
+        fi: komplementti
+      compar:
+        en: comparative
+        fi: komparatiivi
+      comparator:
+        en: comparative conjunction
+        fi: vertailukonjunktio
+      complm:
+        en: complementizer
+        fi: komplementoija
+      compound:
+        en: compound
+        fi: sanaliitto
+      compound:nn:
+        en: 'compound: noun'
+        fi: 'compound: noun'
+        sv: 'compound: noun'
+      compound:prt:
+        en: 'compound: phrasal verb particle'
+        fi: 'compound: phrasal verb particle'
+        sv: 'compound: phrasal verb particle'
+      conj:
+        en: coordination
+        fi: rinnastus
+      conjunct:
+        en: conjunct
+        fi: konjunkti
+      cop:
+        en: copula
+        fi: kopula
+      cop:own:
+        fi: kopula (omistus)
+      cop_own:
+        en: copula (own)
+      csubj:
+        en: clausal subject
+        fi: lausesubjekti
+      csubj-cop:
+        en: clausal copular subject
+        fi: kopulan lausesubjekti
+      csubj:cop:
+        en: 'clausal subject: copular'
+        fi: 'clausal subject: copular'
+        sv: 'clausal subject: copular'
+      dep:
+        en: dependent
+        fi: dependentti
+      det:
+        en: determiner
+        fi: determineri
+      discourse:
+        en: discourse element
+        fi: diskurssielementti
+      dislocated:
+        en: dislocated elements
+        fi: dislocated elements
+        sv: dislocated elements
+      dobj:
+        en: direct object
+        fi: suora objekti
+      ellipsis:
+        en: ellipsis of a head word
+        fi: pääsanan ellipsi
+      expl:
+        en: expletive
+        fi: expletive
+        sv: expletive
+      fixed:
+        fi: kiinteä monisanainen ilmaus
+      fixed_mwe:
+        en: fixed multiword expression
+      flat:
+        fi: puolikiinteä monisanainen ilmaus
+      flat:foreign:
+        fi: puolikiinteä monisanainen ilmaus (vierasperäinen)
+      flat:name:
+        fi: puolikiinteä monisanainen ilmaus (nimi)
+      flat_mwe:
+        en: flat multiword expression
+      flat_mwe_foreign:
+        en: flat multiword expression (foreign)
+      flat_mwe_name:
+        en: flat multiword expression (name)
+      gobj:
+        en: genitive object (of a noun)
+        fi: genetiiviobjekti (substantiivin)
+      goeswith:
+        en: goes with
+        fi: irrallinen yhdysosa
+      gsubj:
+        en: genitive subject (of a noun)
+        fi: genetiivisubjekti (substantiivin)
+      iccomp:
+        en: infinite clausal complement
+        fi: infiniittinen lausekomplementti
+      idiom:
+        en: idiom
+        fi: idiomi
+      infmod:
+        en: infinitive modifier
+        fi: infinitiivimääre
+      intj:
+        en: interjection
+        fi: interjektio
+      iobj:
+        en: indirect object
+        fi: indirect object
+        sv: indirect object
+      list:
+        en: list
+        fi: list
+        sv: list
+      main:
+        en: main verb
+        fi: pääverbi
+      mark:
+        en: marker
+        fi: merkitsin
+      mod:
+        en: modifier
+        fi: määre
+      modal:
+        en: modal verb
+        fi: modaaliverbi
+      mwe:
+        en: multi-word expression
+        fi: monisanainen ilmaus
+      neg:
+        en: negation marker
+        fi: kieltosana
+      nmod:
+        en: nominal modifier
+        fi: nominal modifier
+        sv: nominal modifier
+      nmod:gobj:
+        en: 'nominal modifier: genitive object'
+        fi: 'nominal modifier: genitive object'
+        sv: 'nominal modifier: genitive object'
+      nmod:gsubj:
+        en: 'nominal modifier: genitive subject'
+        fi: 'nominal modifier: genitive subject'
+        sv: 'nominal modifier: genitive subject'
+      nmod:poss:
+        en: 'nominal modifier: possessive'
+        fi: 'nominal modifier: possessive'
+        sv: 'nominal modifier: possessive'
+      nn:
+        en: noun compound modifier
+        fi: yhdyssubstantiivimääre
+      nommod:
+        en: nominal modifier
+        fi: nominaalimääre
+      nommod-own:
+        en: nominal modifier (owner in a possessive clause)
+        fi: 'nominaalimääre: omistaja'
+      nsubj:
+        en: nominal subject
+        fi: nominaalisubjekti
+      nsubj-cop:
+        en: nominal copular subject
+        fi: kopulan nominaalisubjekti
+      nsubj:cop:
+        en: 'nominal subject: copular'
+        fi: 'nominal subject: copular'
+        sv: 'nominal subject: copular'
+      num:
+        en: numeral modifier
+        fi: numeraalimääre
+      number:
+        en: numerical expression
+        fi: numeroilmaus
+      nummod:
+        en: numeric modifier
+        fi: numeric modifier
+        sv: numeric modifier
+      obj:
+        en: object
+        fi: objekti
+      obl:
+        en: oblique nominal
+        fi: oblique nominal
+      orphan:
+        en: orphan
+        fi: orphan
+      parataxis:
+        en: parataxis
+        fi: parataksi
+      partmod:
+        en: participal modifier
+        fi: partisiippimääre
+      phrm:
+        en: phrase marker
+        fi: lausekemerkitsin
+      phrv:
+        en: phrasal verb
+        fi: fraasiverbi
+      poss:
+        en: genitive modifier
+        fi: genetiivimääre
+      preconj:
+        en: preconjunction
+        fi: prekonjunktio
+      prt:
+        en: phrasal particle
+        fi: fraasipartikkeli
+      punct:
+        en: punctuation
+        fi: välimerkki
+      quantmod:
+        en: quantification modifier
+        fi: kvanttorimääre
+      rcmod:
+        en: relative clause modifier
+        fi: relatiivilausemääre
+      rel:
+        en: relativizer, relative word
+        fi: relatiivisana
+      remnant:
+        en: ellipsis remnant
+        fi: ellipsin jäännös
+      reparandum:
+        en: overriden disfluency
+        fi: overriden disfluency
+        sv: overriden disfluency
+      root:
+        en: root
+        fi: root
+        sv: root
+      scomp:
+        en: subject complement
+        fi: subjektin komplementti
+      subj:
+        en: subject
+        fi: subjekti
+      voc:
+        en: vocative
+        fi: vokatiivi
+      vocative:
+        en: vocative
+        fi: vocative
+        sv: vocative
+      xcomp:
+        en: open clausal complement
+        fi: avoin lausekomplementti
+      xcomp:ds:
+        en: clausal complement (different subject)
+        fi: lausekomplementti (eri subjekti)
+      xsubj:
+        en: external subject
+        fi: ulkoinen subjekti
+      xsubj-cop:
+        en: external copular subject
+        fi: kopulan ulkoinen subjekti
+    order: 5
+- deps:
+    label:
+      eng: ''
+      fin: ''
+      swe: ''
+    display_type: hidden
+- misc:
+    label:
+      eng: ''
+      fin: ''
+      swe: ''
+    display_type: hidden
+struct_attributes:
+- text_title:
+    label:
+      eng: text title
+      fin: tekstin otsikko
+      swe: text_title
+    order: 1
+- text_date_orig:
+    label:
+      eng: original date
+      fin: alkuperäinen päivämäärä
+      swe: original_date
+    order: 2
+- text_year:
+    label:
+      eng: year
+      fin: vuosi
+      swe: år
+    order: 3
+- text_keywords:
+    label:
+      eng: keywords
+      fin: avainsanat
+      swe: text_keywords
+    extended_component: structServiceAutocomplete
+    order: 4
+- text_faculty:
+    label:
+      eng: faculty
+      fin: tiedekunta
+      swe: text_faculty
+    extended_component: structServiceAutocomplete
+    order: 5
+- text_subject:
+    label:
+      eng: subject
+      fin: oppiaine
+      swe: text_subject
+    extended_component: structServiceAutocomplete
+    order: 6
+- text_type:
+    label:
+      eng: thesis type
+      fin: tutkielman tyyppi
+      swe: text_dissertationtype
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: structServiceSelect
+    order: 7
+- text_url:
+    label:
+      eng: Download from E-thesis
+      fin: Lataa työ E-thesiksestä
+      swe: text_abslink
+    type: urlPattern
+    display_type: hidden
+    pattern: <a href="<%= val %>" class="exturl sidebar_link" target="_blank"><span
+      rel="localize[text_abslink]"></span></a>
+    hide_compare: true
+    hide_extended: true
+    hide_statistics: true
+    order: 8
+    sidebar_hide_label: true
+    url_opts:
+      hideUrl: true
+      inLinkSection: true
+      newWindow: true

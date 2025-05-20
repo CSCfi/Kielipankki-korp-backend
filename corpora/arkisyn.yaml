@@ -1,0 +1,144 @@
+id: arkisyn
+title: Arkisyn
+description: Arkisyn
+metadata_urn: urn:nbn:fi:lb-2017022801
+urn: urn:nbn:fi:lb-2017022702
+licence:
+  name: CC BY-ND (PUB)
+  description: Creative Commons Attribution-NoDerivatives
+  urn: urn:nbn:fi:lb-2021120231
+cite_id: ArkiSyn-korp
+mode:
+- name: default
+  folder: spoken
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes:
+- lemma: baseform
+- pos:
+    label:
+      eng: part of speech
+      fin: sanaluokka
+      swe: ordklass
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      UNK: UNK
+      a: a
+      adv: adv
+      cnj: cnj
+      intj: intj
+      n: n
+      n:prop: n:prop:any
+      neg: neg
+      num: num
+      p:post: p:post
+      p:pre: p:pre
+      pron: pron:any
+      v: v
+    translation:
+      UNK:
+        fi: tuntematon
+      a:
+        fi: adjektiivi
+      a:pron:
+        fi: 'adjektiivi: muu pronominaalinen'
+      a:pron:dem:
+        fi: 'adjektiivi: demonstratiivinen'
+      a:pron:int:
+        fi: 'adjektiivi: interrogatiivinen'
+      a:pron:rel:
+        fi: 'adjektiivi: relatiivinen'
+      adv:
+        fi: adverbi
+      adv:pron:
+        fi: 'adverbi: muu pronominaalinen'
+      adv:pron:dem:
+        fi: 'adverbi: demonstratiivinen'
+      adv:pron:int:
+        fi: 'adverbi: interrogatiivinen'
+      adv:pron:rel:
+        fi: 'adverbi: relatiivinen'
+      adv:q:
+        fi: 'adverbi: paljon-tyyppi'
+      cnj:
+        fi: konjunktio
+      cnj:coord:
+        fi: 'konjunktio: rinnastus-'
+      cnj:rel:
+        fi: 'konjunktio: relatiivi-'
+      cnj:sub:
+        fi: 'konjunktio: alistus-'
+      intj:
+        fi: interjektio
+      muu:
+        fi: muu
+      n:
+        fi: 'substantiivi: ei erisnimi'
+      n:prop:
+        fi: 'substantiivi: erisnimi, ei henkilön-'
+      n:prop:any:
+        fi: 'substantiivi: erisnimi'
+      n:prop:pname:
+        fi: 'substantiivi: henkilönnimi'
+      neg:
+        fi: kieltosana ”ei”, ”älä”
+      num:
+        fi: numeraali
+      num:card:
+        fi: 'numeraali: perusluku'
+      num:murto:
+        fi: 'numeraali: murtoluku'
+      num:ord:
+        fi: 'numeraali: järjestysluku'
+      num:ord_pron:
+        fi: pronomini/numeraali ”toinen”
+      p:post:
+        fi: postpositio
+      p:pre:
+        fi: prepositio
+      pron:
+        fi: pronomini ”se”, ”ne”
+      pron:any:
+        fi: pronomini
+      pron:dem:
+        fi: 'pronomini: demonstratiivi-'
+      pron:int:
+        fi: 'pronomini: interrogatiivi-'
+      pron:pers:
+        fi: pronomini ”hän”, ”he”
+      pron:pers12:
+        fi: 'pronomini: 1. tai 2. persoona'
+      pron:ref:
+        fi: 'pronomini: refleksiivi-'
+      pron:rel:
+        fi: 'pronomini: relatiivi-'
+      punct:
+        fi: välimerkki
+      q:
+        fi: 'pronomini: kvanttori-'
+      v:
+        fi: verbi
+    order: 4
+- fun: func_la
+- mrp: msd
+- origword: origword
+struct_attributes:
+- text_filename:
+    label:
+      eng: file name
+      fin: tiedoston nimi
+      swe: filnamn
+    order: 1

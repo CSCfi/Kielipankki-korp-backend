@@ -1,0 +1,8 @@
+label:
+  eng: ambiguous_lemma
+  fin: monitulkintainen perusmuoto
+  swe: flertydig grundform
+type: set
+opts:
+  is: contains
+  is_not: not contains

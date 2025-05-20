@@ -1,0 +1,14 @@
+label:
+  eng: msd (UD1)
+  fin: morfologinen analyysi (UD1)
+  swe: msd (UD1)
+opts:
+  contains: _=
+  ends_with: '&='
+  is: '='
+  is_not: '!='
+  matches: '*='
+  matches_not: '!*='
+  starts_with: ^=
+pattern: <%= val.replace(/\|/g, '|<wbr>') %>
+order: 19

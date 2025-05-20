@@ -1,0 +1,13 @@
+label:
+  eng: final part
+  fin: loppuosa
+  swe: efterled
+type: set
+opts:
+  is: contains
+  is_not: not contains
+extended_template: <autoc model='model' placeholder='placeholder' type='lemgram' variant='affix'
+  text-in-field='textInField'/>
+external_search: https://spraakbanken.gu.se/karp/#?mode=DEFAULT&search=extended||and|lemgram|equals|<%=
+  val.replace(/:\d+/, '') %>
+internal_search: true

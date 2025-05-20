@@ -1,0 +1,122 @@
+id: vnsk_asetus
+title: Asetuksia
+description: Asetuksia
+metadata_urn: urn:nbn:fi:lb-20140730147
+urn: urn:nbn:fi:lb-2016081203
+licence:
+  name: EUPL v. 1.2
+  description: Euroopan unionin yleinen lisenssi v. 1.2 (EUPL)
+  urn: urn:nbn:fi:lb-2024082108
+cite_id: VNSK
+homepage:
+  name: Kokoelman etusivu
+  no_label: true
+  url: http://kaino.kotus.fi/korpus/1800/meta/1800_coll_rdf.xml
+mode:
+- name: default
+  folder: historical.vns
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes: []
+struct_attributes:
+- text_title:
+    label:
+      eng: title
+      fin: otsikko
+      swe: titel
+    extended_component: structServiceAutocomplete
+    order: 1
+- text_distributor:
+    label:
+      eng: text_distributor
+      fin: text_distributor
+      swe: text_distributor
+    display_type: hidden
+    order: 2
+- text_source:
+    label:
+      eng: text_source
+      fin: lähdelinkki
+      swe: text_source
+    order: 3
+- article_id:
+    label:
+      eng: article_id
+      fin: artiklan tunniste
+      swe: article_id
+- paragraph_id:
+    label:
+      eng: lawparagraph_id
+      fin: pykälän tunniste
+      swe: lawparagraph_id
+    order: 4
+- sentence_type:
+    label:
+      eng: type of sentence
+      fin: virkkeen tyyppi
+      swe: meningens typ
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      head: head
+      opening: opening
+      p: p
+    translation:
+      dateline:
+        fi: päiväys
+      head:
+        fi: otsikko
+      heading:
+        fi: otsikko
+      opening:
+        fi: aloitus
+      p:
+        fi: kappale
+      sentence:
+        fi: virke
+      signed:
+        fi: allekirjoitus
+    order: 5
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 6
+- hi_rend:
+    label:
+      eng: hi_rend
+      fin: korostus
+      swe: hi_rend
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      bold: bold
+    translation:
+      bold:
+        fi: lihavoitu

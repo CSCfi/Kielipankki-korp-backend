@@ -1,0 +1,48 @@
+id: besercorp
+title: BeserCorp
+description: The Corpus of Beserman Udmurt
+metadata_urn: urn:nbn:fi:lb-2015081401
+cite_id: BeserCorp
+mode:
+- name: other_languages
+  folder: uralic
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes:
+- msd:
+    label:
+      eng: msd
+      fin: morfologinen analyysi
+      swe: msd
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    pattern: <%= val.replace(/\|/g, '|<wbr>') %>
+    order: 2
+- gloss:
+    label:
+      eng: gloss (Russian)
+      fin: glossaus (venäjä)
+      swe: gloss_ru
+- lex:
+    label:
+      eng: lexeme
+      fin: lekseemi
+      swe: lex
+    order: 1
+struct_attributes: []

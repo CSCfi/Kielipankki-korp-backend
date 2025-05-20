@@ -1,0 +1,12 @@
+label:
+  eng: spoken form
+  fin: puhemuoto
+  swe: spoken
+opts:
+  contains: _=
+  ends_with: '&='
+  is: '='
+  is_not: '!='
+  matches: '*='
+  matches_not: '!*='
+  starts_with: ^=

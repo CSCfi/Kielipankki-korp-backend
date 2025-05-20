@@ -1,0 +1,401 @@
+label:
+  eng: Other languages
+  fin: Muut kielet
+  swe: Andra språk
+folders:
+  cuneiform:
+    title: Cuneiform / Nuolenpääkirjoitus
+    description: Transliterated cuneiform texts<br/>Translitteroituja nuolenpääkirjoitustekstejä
+    subfolders:
+      achemenet:
+        title: Achemenet
+        description: Achemenet Babylonian texts – Kielipankki version 2020-12, Korp<br/><br/><a
+          href="http://www.achemenet.com/" target="_blank">The Achemenet project</a>
+          provides transliterations and translations of documents written in the Achaemenid
+          Persian Empire (550–330 BCE).<br/>The Korp version of Achemenet contains
+          the Babylonian cuneiform texts available in Achemenet in December 2020.<br/>The
+          texts have been automatically lemmatized at the <a href="https://www.helsinki.fi/en/researchgroups/ancient-near-eastern-empires">Centre
+          of Excellence in Ancient Near Eastern Empires</a> (University of Helsinki),
+          funded by the Research Council of Finland.<br/><br/>More information about
+          the corpus is available at <a href="https://doi.org/10.5281/zenodo.14223709"
+          target="_blank">https://doi.org/10.5281/zenodo.14223709</a>.
+      balt:
+        title: BALT
+        description: 'BALT: Babylonian Administrative and Legal Texts – Kielipankki
+          version 2025-02, Korp<br/><br/>The corpus contains Babylonian cuneiform
+          texts from the Neo-Babylonian, Persian, and Hellenistic periods (c. 626–93
+          BCE).<br/>More than half of the transliterated texts are legacy data of
+          the late János Everling. The other texts have been transliterated and translated
+          by Johannes Hackl, Bojana Janković, Michael Jursa, Yuval Levavi, Martina
+          Schmidl and Caroline Waerzeggers.<br/>The texts have been automatically
+          lemmatized at the <a href="https://www.helsinki.fi/en/researchgroups/ancient-near-eastern-empires">Centre
+          of Excellence in Ancient Near Eastern Empires</a> (University of Helsinki),
+          funded by the Research Council of Finland.<br/><br/>More information about
+          the corpus is available at <a href="https://doi.org/10.5281/zenodo.14186072"
+          target="_blank">https://doi.org/10.5281/zenodo.14186072</a>.'
+      oracc:
+        title: Oracc 2019
+        description: Oracc – Open Richly Annotated Cuneiform Corpus, Korp Version,
+          May 2019
+      oracc2021:
+        title: Oracc 2021
+        description: Oracc – Open Richly Annotated Cuneiform Corpus, Korp Version,
+          June 2021<br/><br/>Note that the subcorpora CAMS, CTIJ, DCCLT and HBTIN
+          contain less data than their counterparts in <a href="http://urn.fi/urn:nbn:fi:lb-2019060601"
+          target="_blank">Oracc, Korp version, May 2019</a>. This version is based
+          on the JSON data that was available in <a href="http://oracc.museum.upenn.edu/"
+          target="_blank">Oracc</a> in June 2021.<br/>A list of Oracc texts included
+          in this Korp version is <a href="http://urn.fi/urn:nbn:fi:lb-2024092401"
+          target="_blank">here</a> (the CDLI number and lemmatization status of each
+          text in Oracc).
+  english:
+    title: English / Englanti
+    description: Texts in English<br/>Englanninkielisiä tekstejä
+    subfolders:
+      academic:
+        title: Academic texts / Akateemisia tekstejä
+        description: Corpora containing academic texts<br/>Akateemisia tekstejä sisältäviä
+          aineistoja
+        subfolders:
+          ethesis:
+            title: E-thesis (English)
+            description: The University of Helsinki’s English E-thesis 1999-2016,
+              Korp version 1.1<br/><br/>Corpus of University of Helsinki theses and
+              dissertations<br/><a href='https://ethesis.helsinki.fi/en/'>https://ethesis.helsinki.fi/</a>
+            subfolders:
+              matheses:
+                title: Master’s theses
+                description: 'The University of Helsinki’s English E-thesis 1999-2016,
+                  Korp version 1.1: Master’s theses'
+              phdtheses:
+                title: Doctoral dissertations
+                description: 'The University of Helsinki’s English E-thesis 1999-2016,
+                  Korp version 1.1: Doctoral dissertations'
+      cmc:
+        title: Computer-mediated communications corpora / Tietokonevälitteistä viestintää
+        description: Corpora containing computer-mediated communications<br/>Tietokonevälitteistä
+          viestintää sisätläviä aineistoja
+        subfolders:
+          glowbe:
+            title: 'GloWbE: Global Web-based English [ACA-Fi]'
+            description: 'GloWbE: Global Web-based English – Kielipankki Korp version
+              2017H1<br/><br/>The GloWbE corpus contains about 1.8 billion words on
+              1.8 million Web pages of English from the United States, Great Britain,
+              Australia, India and 16 other countries, collected in 2013. About 60%
+              of the text is from blogs.<br/><br/><strong>Note:</strong> To follow
+              the US Fair Use Law, every 200 words, ten words have been removed and
+              replaced with “@” (<a href=''https://www.corpusdata.org/limitations.asp''
+              target=''_blank''>more information</a>).'
+            subfolders:
+              glowbe_au:
+                title: 'GloWbE: Australia [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: Australia – Kielipankki
+                  Korp version 2017H1'
+              glowbe_bd:
+                title: 'GloWbE: Bangladesh [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: Bangladesh – Kielipankki
+                  Korp version 2017H1'
+              glowbe_ca:
+                title: 'GloWbE: Canada [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: Canada – Kielipankki
+                  Korp version 2017H1'
+              glowbe_gb:
+                title: 'GloWbE: Great Britain [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: Great Britain – Kielipankki
+                  Korp version 2017H1'
+              glowbe_gh:
+                title: 'GloWbE: Ghana [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: Ghana – Kielipankki
+                  Korp version 2017H1'
+              glowbe_hk:
+                title: 'GloWbE: Hong Kong [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: Hong Kong – Kielipankki
+                  Korp version 2017H1'
+              glowbe_ie:
+                title: 'GloWbE: Ireland [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: Ireland – Kielipankki
+                  Korp version 2017H1'
+              glowbe_in:
+                title: 'GloWbE: India [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: India – Kielipankki
+                  Korp version 2017H1'
+              glowbe_jm:
+                title: 'GloWbE: Jamaica [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: Jamaica – Kielipankki
+                  Korp version 2017H1'
+              glowbe_ke:
+                title: 'GloWbE: Kenya [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: Kenya – Kielipankki
+                  Korp version 2017H1'
+              glowbe_lk:
+                title: 'GloWbE: Sri Lanka [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: Sri Lanka – Kielipankki
+                  Korp version 2017H1'
+              glowbe_my:
+                title: 'GloWbE: Malaysia [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: Malaysia – Kielipankki
+                  Korp version 2017H1'
+              glowbe_ng:
+                title: 'GloWbE: Nigeria [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: Nigeria – Kielipankki
+                  Korp version 2017H1'
+              glowbe_nz:
+                title: 'GloWbE: New Zealand [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: New Zealand – Kielipankki
+                  Korp version 2017H1'
+              glowbe_ph:
+                title: 'GloWbE: Philippines [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: Philippines – Kielipankki
+                  Korp version 2017H1'
+              glowbe_pk:
+                title: 'GloWbE: Pakistan [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: Pakistan – Kielipankki
+                  Korp version 2017H1'
+              glowbe_sg:
+                title: 'GloWbE: Singapore [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: Singapore – Kielipankki
+                  Korp version 2017H1'
+              glowbe_tz:
+                title: 'GloWbE: Tanzania [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: Tanzania – Kielipankki
+                  Korp version 2017H1'
+              glowbe_us:
+                title: 'GloWbE: United States [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: United States – Kielipankki
+                  Korp version 2017H1'
+              glowbe_za:
+                title: 'GloWbE: South Africa [ACA-Fi]'
+                description: 'GloWbE: Global Web-based English: South Africa – Kielipankki
+                  Korp version 2017H1'
+      historical:
+        title: Historical corpora / Historiallisia aineistoja
+        description: Historical corpora<br/>Historiallisia aineistoja
+        subfolders:
+          coha:
+            title: 'COHA: Corpus of Historical American English [ACA-Fi]'
+            description: 'COHA: Corpus of Historical American English – Kielipankki
+              Korp version 2017H1<br/><br/>The COHA corpus contains about 400 million
+              words in 107,000 texts of US English from the years 1810–2009. Each
+              decade has roughly the same balance of fiction, popular magazine, newspaper,
+              and non-fiction books.<br/><br/><strong>Note:</strong> To follow the
+              US Fair Use Law, every 200 words, ten words have been removed and replaced
+              with “@” (<a href=''https://www.corpusdata.org/limitations.asp'' target=''_blank''>more
+              information</a>).'
+            subfolders:
+              coha_1810s:
+                title: 'COHA: 1810s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1810s –
+                  Kielipankki Korp version 2017H1'
+              coha_1820s:
+                title: 'COHA: 1820s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1820s –
+                  Kielipankki Korp version 2017H1'
+              coha_1830s:
+                title: 'COHA: 1830s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1830s –
+                  Kielipankki Korp version 2017H1'
+              coha_1840s:
+                title: 'COHA: 1840s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1840s –
+                  Kielipankki Korp version 2017H1'
+              coha_1850s:
+                title: 'COHA: 1850s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1850s –
+                  Kielipankki Korp version 2017H1'
+              coha_1860s:
+                title: 'COHA: 1860s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1860s –
+                  Kielipankki Korp version 2017H1'
+              coha_1870s:
+                title: 'COHA: 1870s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1870s –
+                  Kielipankki Korp version 2017H1'
+              coha_1880s:
+                title: 'COHA: 1880s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1880s –
+                  Kielipankki Korp version 2017H1'
+              coha_1890s:
+                title: 'COHA: 1890s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1890s –
+                  Kielipankki Korp version 2017H1'
+              coha_1900s:
+                title: 'COHA: 1900s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1900s –
+                  Kielipankki Korp version 2017H1'
+              coha_1910s:
+                title: 'COHA: 1910s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1910s –
+                  Kielipankki Korp version 2017H1'
+              coha_1920s:
+                title: 'COHA: 1920s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1920s –
+                  Kielipankki Korp version 2017H1'
+              coha_1930s:
+                title: 'COHA: 1930s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1930s –
+                  Kielipankki Korp version 2017H1'
+              coha_1940s:
+                title: 'COHA: 1940s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1940s –
+                  Kielipankki Korp version 2017H1'
+              coha_1950s:
+                title: 'COHA: 1950s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1950s –
+                  Kielipankki Korp version 2017H1'
+              coha_1960s:
+                title: 'COHA: 1960s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1960s –
+                  Kielipankki Korp version 2017H1'
+              coha_1970s:
+                title: 'COHA: 1970s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1970s –
+                  Kielipankki Korp version 2017H1'
+              coha_1980s:
+                title: 'COHA: 1980s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1980s –
+                  Kielipankki Korp version 2017H1'
+              coha_1990s:
+                title: 'COHA: 1990s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 1990s –
+                  Kielipankki Korp version 2017H1'
+              coha_2000s:
+                title: 'COHA: 2000s [ACA-Fi]'
+                description: 'COHA: Corpus of Historical American English: 2000s –
+                  Kielipankki Korp version 2017H1'
+          scotscorr:
+            title: ScotsCorr [ACA]
+            description: 'Helsinki Corpus of Scottish Correspondence (1540–1750)<br/><br/>The
+              corpus comprises circa 0.5 million tokens (417,709 words) of early Scottish
+              correspondence by male and female writers dating from the period 1540–1750.
+              The corpus consists of transcripts of original letter manuscripts, which
+              reproduce the text disallowing any modernisation, normalisation or emendation.
+              Language-external variables such as date, region, gender, addressee,
+              hand and script type have been coded into the database. The writers
+              originate from fifteen different regions of Scotland; these can be grouped
+              to represent the areas of North, North-East, Central, South-East, and
+              South-West. In addition, there are two categories of informants that
+              have not been defined by geographical origin: representatives of the
+              court and professional people such as members of the clergy. The proportion
+              of female informants in the corpus is 21 per cent.<br/><br/><strong>Please
+              note</strong> that the Korp version of the corpus is in test use and
+              may change without notification, although the corpus data itself should
+              be stable.<br/><br/><a href=''https://www.kielipankki.fi/corpora/scotscorr/''
+              target=''_blank''>ScotsCorr information page with links to documentation</a>.'
+      learner:
+        title: Learner corpora / Oppijankielen aineistoja
+        description: Corpora of texts by learners of English (English as a second
+          or foreign language)<br/>Englanninoppijoiden kieltä sisältäviä aineistoja
+          (englantia toisena tai vieraana kielenä)
+      legal:
+        title: Legal texts / Juridisia aineistoja
+        description: Legal texts<br/>Juridisia aineistoja
+      reference:
+        title: Reference corpora / Referenssiaineistoja
+        description: Reference corpora<br/>Referenssiaineistoja
+        subfolders:
+          coca:
+            title: 'COCA: Corpus of Contemporary American English [ACA-Fi]'
+            description: 'COCA: Corpus of Contemporary American English – Kielipankki
+              Korp version 2017H1<br/><br/>The COCA corpus contains about 520 million
+              words in 220,000 texts of US English from the years 1990–2015. The corpus
+              is evenly divided into spoken, fiction, magazine, newspaper and academic
+              genres.<br/><br/><strong>Note</strong> that a newer, extended version
+              of the corpus, <a href="http://urn.fi/urn:nbn:fi:lb-2022111501" target="_blank">COCA
+              2020</a>, is also available in Korp.<br/><br/><strong>Note:</strong>
+              To follow the US Fair Use Law, every 200 words, ten words have been
+              removed and replaced with “@” (<a href=''https://www.corpusdata.org/limitations.asp''
+              target=''_blank''>more information</a>).'
+          coca2020:
+            title: 'COCA 2020: Corpus of Contemporary American English [ACA-Fi]'
+            description: 'COCA: Corpus of Contemporary American English – Kielipankki
+              Korp version 2020<br/><br/>The COCA corpus contains about 1,000 million
+              words in 485,000 texts of US English from the years 1990–2019. The corpus
+              is evenly divided into the following genres: spoken, fiction, magazine,
+              newspaper, academic, blogs, other web and TV / movies (<a href=''https://www.corpusdata.org/coca2020.asp''
+              target=''_blank''>more information</a>).<br/><br/>Note that the metadata
+              for individual texts are partly different and somewhat more concise
+              than in the older <a href="http://urn.fi/urn:nbn:fi:lb-2017061922" target="_blank">COCA
+              version 2017H1</a>.<br/><br/><strong>Note:</strong> To follow the US
+              Fair Use Law, every 200 words, ten words have been removed and replaced
+              with “@” (<a href=''https://www.corpusdata.org/limitations.asp'' target=''_blank''>more
+              information</a>).'
+      spoken:
+        title: Spoken language / Puheaineistoja
+        description: Corpora of transliterated spoken language<br/>Litteroitua puhuttua
+          kieltä sisältäviä aineistoja
+  french:
+    title: Français / Ranska / French
+    description: Textes en français<br/>Ranskankielisiä tekstejä<br/>Texts in French
+    subfolders:
+      academic:
+        title: Textes académiques / Akateemisia tekstejä / Academic texts
+        description: Textes académiques<br/>Akateemisia tekstejä<br/>Academic texts
+  german:
+    title: Deutsch / Saksa / German
+    description: Texte auf Deutsch<br/>Saksankielisiä tekstejä<br/>Texts in German
+    subfolders:
+      academic:
+        title: Akademische Texte / Akateemisia tekstejä / Academic texts
+        description: Akademische Texte<br/>Akateemisia tekstejä<br/>Academic texts
+      legal:
+        title: Juristische Texte / Juridisia tekstejä / Legal texts
+        description: Juristische Texte<br/>Juridisia tekstejä<br/>Legal texts
+  russian:
+    title: Русский / Venäjä / Russian
+    description: Tексты по-русски<br/>Venäjänkielisiä tekstejä<br/>Texts in Russian
+    subfolders:
+      academic:
+        title: Академические тексты / Akateemisia tekstejä / Academic texts
+        description: Академическиe тексты<br/>Akateemisia tekstejä<br/>Academic texts
+      legal:
+        title: Юридические тексты / Juridisia tekstejä / Legal texts
+        description: Юридические тексты<br/>Juridisia tekstejä<br/>Legal texts
+      literary:
+        title: Художественные тексты / Kirjallisuutta / Literary texts
+        description: Художественные тексты<br/>Kirjallisuutta<br/>Literary texts
+  spanish:
+    title: Español / Espanja / Spanish
+    description: Textos on español<br/>Espanjankielisiä tekstejä<br/>Texts in Spanish
+    subfolders:
+      academic:
+        title: Textos académicos / Akateemisia tekstejä / Academic texts
+        description: Textos académicos<br/>Akateemisia tekstejä<br/>Academic texts
+  swahili:
+    title: Swahili
+    description: Texts in Swahili<br/>Swahilihinkielisiä tekstejä
+    subfolders:
+      hcs2:
+        title: Helsinki Corpus of Swahili 2.0 (HCS 2.0) [ACA]
+        description: Helsinki Corpus of Swahili 2.0 (HCS 2.0) Annotated Version<br/><br><a
+          href="https://www.kielipankki.fi/corpora/hcs2/" target="_blank">Corpus information
+          page, including descriptions of annotation feature values (tags)</a>
+        subfolders:
+          hcs2_new:
+            title: 'HCS 2.0: New material [ACA]'
+            description: 'Helsinki Corpus of Swahili 2.0 (HCS 2.0) Annotated Version:
+              Material after 2003, new to HCS 2.0'
+          hcs2_old:
+            title: 'HCS 2.0: Old material [ACA]'
+            description: 'Helsinki Corpus of Swahili 2.0 (HCS 2.0) Annotated Version:
+              Material up to 2003, mostly from HCS 1.0'
+  uralic:
+    title: Uralic languages / Uralilaisia kieliä
+    description: Corpora in Uralic languages<br/>Uralilaisten kielten aineistoja
+    subfolders:
+      erme_v2:
+        title: ERME version 2
+        description: 'ERME: Erzya and Moksha Extended Corpora version 2'
+      fennougrica:
+        title: Fenno-Ugrica
+        description: ''
+      sust:
+        title: SUS-kenttätyö (näyte)
+        description: Suomalais-Ugrilaisen Seuran kenttätyökorpus (näyte)
+      uralic_ud_v213:
+        title: Uralic UD v2.13
+        description: 'The corpus contains Universal Dependencies version 2.13 for
+          the following Uralic languages: Erzya, Estonian, Finnish, Hungarian, Karelian,
+          Komi-Permyak, Komi-Zyrian, Livvi, Moksha, North Sami, Skolt Sami and Veps.'
+      wanca_2016:
+        title: Wanca 2016
+        description: A collection of web corpora in small Uralic languages

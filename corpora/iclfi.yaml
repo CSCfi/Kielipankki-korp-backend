@@ -1,0 +1,223 @@
+id: iclfi
+title: ICLFI – Kansainvälinen oppijansuomen korpus
+description: ICLFI – International Corpus of Learner Finnish – Kansainvälinen oppijansuomen
+  korpus
+metadata_urn: urn:nbn:fi:lb-20140730163
+urn: urn:nbn:fi:lb-20140730163
+licence:
+  name: CLARIN RES +PLAN +NC +INF +PRIV +DEP 2.1
+  urn: urn:nbn:fi:lb-2015050501
+  category: RES
+licence_type: RES
+limited_access: true
+cite_id: ICLFI
+homepage_url: http://www.oulu.fi/suomitoisenakielena/node/16078
+mode:
+- name: default
+  folder: learner
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- lemma: baseform
+- msd: msd
+struct_attributes:
+- text_place:
+    label:
+      eng: collection place
+      fin: paikka
+      swe: iclfi_place
+    order: 1
+- text_year:
+    label:
+      eng: collection year
+      fin: keräysvuosi
+      swe: iclfi_year
+    order: 2
+- text_medium:
+    label:
+      eng: medium
+      fin: medium
+      swe: iclfi_medium
+    order: 3
+- text_code:
+    label:
+      eng: code
+      fin: koodi
+      swe: iclfi_code
+    order: 4
+- text_dob:
+    label:
+      eng: year of birth
+      fin: syntymävuosi
+      swe: iclfi_dob
+    order: 5
+- text_sex:
+    label:
+      eng: sex
+      fin: sukupuoli
+      swe: iclfi_sex
+    order: 6
+- text_pob:
+    label:
+      eng: place of birth
+      fin: syntymäpaikka
+      swe: iclfi_pob
+    order: 7
+- text_infloc:
+    label:
+      eng: place of residence
+      fin: asuinpaikka
+      swe: iclfi_infloc
+    order: 8
+- text_inflang:
+    label:
+      eng: mother tongue
+      fin: äidinkieli
+      swe: iclfi_inflang
+    order: 9
+- text_infmotherlang:
+    label:
+      eng: mother's mother tongue
+      fin: äidin äidinkieli
+      swe: iclfi_infmotherlang
+    order: 10
+- text_inffatherlang:
+    label:
+      eng: father's mother tongue
+      fin: isän äidinkieli
+      swe: iclfi_inffatherlang
+    order: 11
+- text_finnishathome:
+    label:
+      eng: finnish spoken at home
+      fin: puhutaanko kotona suomea
+      swe: iclfi_finnishathome
+    order: 12
+- text_taugthfinnish:
+    label:
+      eng: relatives taught Finnish
+      fin: läheiset opettaneet suomea
+      swe: iclfi_taugthfinnish
+    order: 13
+- text_teacherlang:
+    label:
+      eng: teacher's mother tongue
+      fin: opettajan äidinkieli
+      swe: iclfi_teacherlang
+    order: 14
+- text_beentofinland:
+    label:
+      eng: been to Finland
+      fin: ollut Suomessa
+      swe: iclfi_beentofinland
+    order: 15
+- text_book:
+    label:
+      eng: book
+      fin: oppikirja
+      swe: iclfi_book
+    order: 16
+- text_levelhour:
+    label:
+      eng: level (by hours)
+      fin: taso tuntimäärän mukaan
+      swe: iclfi_levelhour
+    order: 17
+- text_levelcefrone:
+    label:
+      eng: iclfi_levelcefrone
+      fin: taso CEFR:n mukaan (1. arvioija)
+      swe: iclfi_levelcefrone
+    order: 18
+- text_levelcefrtwo:
+    label:
+      eng: iclfi_levelcefrtwo
+      fin: taso CEFR:n mukaan (2. arvioija)
+      swe: iclfi_levelcefrtwo
+    order: 19
+- text_otherlangs:
+    label:
+      eng: other languages studied
+      fin: muut opiskellut kielet
+      swe: iclfi_otherlangs
+    order: 20
+- text_levelcefrthree:
+    label:
+      eng: iclfi_levelcefrthree
+      fin: taso CEFR:n mukaan (3. arvioija)
+      swe: iclfi_levelcefrthree
+    order: 21
+- text_levelcefrfour:
+    label:
+      eng: iclfi_levelcefrfour
+      fin: taso CEFR:n mukaan (4. arvioija)
+      swe: iclfi_levelcefrfour
+    order: 22
+- text_cefrlevel:
+    label:
+      eng: iclfi_cefrlevel
+      fin: taso CEFR:n mukaan
+      swe: iclfi_cefrlevel
+    order: 23
+- text_texttype:
+    label:
+      eng: text type
+      fin: tekstityyppi
+      swe: iclfi_texttype
+    order: 24
+- text_exercise:
+    label:
+      eng: exercise
+      fin: tehtävänanto
+      swe: iclfi_exercise
+    order: 25
+- text_examtype:
+    label:
+      eng: exam/writing test
+      fin: tentti/kirjoituskoe
+      swe: iclfi_examtype
+    order: 26
+- text_limitedtime:
+    label:
+      eng: limited time
+      fin: rajattu aika
+      swe: iclfi_limitedtime
+    order: 27
+- text_wherewritten:
+    label:
+      eng: where written
+      fin: kirjoituspaikka
+      swe: iclfi_wherewritten
+    order: 28
+- text_aids:
+    label:
+      eng: writing aids
+      fin: apuvälineet
+      swe: iclfi_aids
+    order: 29
+- text_filename:
+    label:
+      eng: file name
+      fin: tiedostonimi
+      swe: iclfi_filename
+    order: 30

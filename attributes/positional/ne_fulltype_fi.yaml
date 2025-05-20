@@ -1,0 +1,160 @@
+label:
+  eng: named entity full type
+  fin: nimen koko tyyppi
+  swe: namnentitets hela typ
+is_struct_attr: true
+extended_component: datasetSelect
+dataset:
+- EnamexEvtXxx
+- EnamexProXxx
+- EnamexPrsAnm
+- EnamexPrsHum
+- EnamexPrsMyt
+- EnamexPrsTit
+- EnamexLocXxx
+- EnamexLocGpl
+- EnamexLocPpl
+- EnamexLocStr
+- EnamexLocFnc
+- EnamexLocAst
+- EnamexOrgAth
+- EnamexOrgClt
+- EnamexOrgCrp
+- EnamexOrgEdu
+- EnamexOrgFin
+- EnamexOrgPlt
+- EnamexOrgTvr
+- NumexMsrCur
+- NumexMsrXxx
+- TimexTmeDat
+- TimexTmeHrm
+translation:
+  EnamexEvtXxx:
+    en: event
+    fi: tapahtuma
+    sv: händelse
+  EnamexLocAst:
+    en: astronomical
+    fi: tähtitieteellinen
+    sv: astronomisk
+  EnamexLocFnc:
+    en: facility
+    fi: fasiliteetti
+    sv: facilitetsentitet
+  EnamexLocGpl:
+    en: geographical
+    fi: maantieteellinen
+    sv: geografisk
+  EnamexLocPpl:
+    en: geopolitical
+    fi: geopoliittinen
+    sv: geopolitisk
+  EnamexLocStr:
+    en: street or road
+    fi: katu tai tie
+    sv: gata eller väg
+  EnamexLocXxx:
+    en: other location
+    fi: muu paikka
+    sv: annan plats
+  EnamexOrgAth:
+    en: sports club
+    fi: urheiluseura tai joukkue
+    sv: idrottsklubb
+  EnamexOrgClt:
+    en: cultural organization
+    fi: kulttuuriorganisaatio
+    sv: kulturorganisation
+  EnamexOrgCrp:
+    en: company or society
+    fi: yritys tai yhdistys
+    sv: bolag eller förening
+  EnamexOrgEdu:
+    en: educational institution
+    fi: oppilaitos
+    sv: utbildningsinstitution
+  EnamexOrgFin:
+    en: financial organization
+    fi: finanssiorganisaatio
+    sv: finansiell organisation
+  EnamexOrgPlt:
+    en: political party
+    fi: puolue
+    sv: parti
+  EnamexOrgTvr:
+    en: mass media
+    fi: media
+    sv: massmedia
+  EnamexProXxx:
+    en: product
+    fi: tuote
+    sv: produkt
+  EnamexPrsAnm:
+    en: animal
+    fi: eläin
+    sv: djur
+  EnamexPrsHum:
+    en: person
+    fi: henkilö
+    sv: person
+  EnamexPrsMyt:
+    en: mythical
+    fi: myyttinen olento
+    sv: mytisk
+  EnamexPrsTit:
+    en: title
+    fi: titteli
+    sv: titel
+  NumexMsrCur:
+    en: money expression
+    fi: rahailmaus
+    sv: pengar
+  NumexMsrXxx:
+    en: other numeric expression
+    fi: muu numeroilmaus
+    sv: annat numeriskt uttryck
+  TimexTmeDat:
+    en: temporal expression
+    fi: ajanilmaus
+    sv: tidsuttryck
+  TimexTmeHrm:
+    en: time
+    fi: kellonaika
+    sv: klockslag
+  omorfi_:
+    en: not a name
+    sv: inget namn
+  omorfi_ARTWORK:
+    en: artwork
+    fi: taideteos
+    sv: konstverk
+  omorfi_CULTGRP:
+    en: culture group
+    fi: kulttuuriryhmä
+    sv: kulturgrupp
+  omorfi_FIRST:
+    en: first name
+    fi: etunimi
+    sv: förnamn
+  omorfi_GEO:
+    en: geographical name
+    fi: maantieteellinen nimi
+    sv: geographical name
+  omorfi_LAST:
+    en: last name
+    fi: sukunimi
+    sv: efternamn
+  omorfi_MISC:
+    en: other name
+    fi: muu nimi
+    sv: annat namn
+  omorfi_ORG:
+    en: organization
+    fi: organisaatio
+    sv: organisation
+  omorfi_PRODUCT:
+    en: product
+    fi: tuote
+    sv: produkt
+  omorfi__:
+    fi: ei nimi

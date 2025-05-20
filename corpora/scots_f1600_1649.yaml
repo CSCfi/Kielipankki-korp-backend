@@ -1,0 +1,285 @@
+id: scots_f1600_1649
+title: 'ScotsCorr: Female 1600–1649'
+description: 'Helsinki Corpus of Scottish Correspondence: Female 1600–1649'
+alias:
+- scotscorr
+metadata_urn: urn:nbn:fi:lb-201411071
+urn: urn:nbn:fi:lb-2016121607
+licence:
+  name: CLARIN ACA +NC 2.1
+  description: CLARIN ACA (Academic) End-User License 2.1, Non-commercial
+  urn: urn:nbn:fi:lb-2016051203
+  category: ACA
+licence_type: ACA
+limited_access: true
+cite_id: ScotsCorr
+iprholder:
+  name: Anneli Meurman-Solin
+mode:
+- name: other_languages
+  folder: english.historical.scotscorr
+context:
+- label:
+    eng: 3 line/1 sentence
+    fin: 3 line/1 sentence
+    swe: 3 line/1 sentence
+  value: 3 line/1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes:
+- word: scotscorr_word
+- comment:
+    label:
+      eng: word-related comment
+      fin: sanaan liittyvä kommentti
+      swe: word_related_comment
+struct_attributes:
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 21
+- text_from:
+    label:
+      eng: writer
+      fin: kirjoittaja
+      swe: writer
+    order: 1
+- text_to:
+    label:
+      eng: addressee
+      fin: vastaanottaja
+      swe: addressee
+    order: 2
+- text_year:
+    label:
+      eng: year
+      fin: vuosi
+      swe: år
+    order: 3
+- text_date:
+    label:
+      eng: date
+      fin: päiväys
+      swe: datum
+    order: 4
+- text_fraser:
+    label:
+      eng: description
+      fin: kuvaus
+      swe: scotscorr_fraser
+    order: 5
+- text_lcinf:
+    label:
+      eng: writer's origin (region)
+      fin: kirjoittajan paikkatiedot
+      swe: scotscorr_lcinf
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+      Aberdeenshire: "\x02    Aberdeenshire"
+      Aberdeenshire|Angus: "\x02North-East"
+      Angus: "\x02    Angus"
+      Argyllshire: "\x05    Argyllshire"
+      Argyllshire|Ayrshire|South-West: "\x05South-West"
+      Ayrshire: "\x05    Ayrshire"
+      Borders: "\x04    Borders"
+      Court: "\x06Court"
+      East Lothian: "\x04    East Lothian"
+      Fife: "\x04    Fife"
+      Fife|Lothian|East Lothian|Stirlingshire|Borders: "\x04South-East"
+      Invernessshire: "\x01    Invernessshire"
+      Lanarkshire: "\x03    Lanarkshire"
+      Lothian: "\x04    Lothian"
+      Moray: "\x01    Moray"
+      Moray|Invernessshire|Sutherland|Ross: "\x01North"
+      Perthshire: "\x03    Perthshire"
+      Perthshire|Lanarkshire: "\x03Central"
+      Professional: "\aProfessional"
+      Ross: "\x01    Ross"
+      South-West: "\x05    South-West"
+      Stirlingshire: "\x04    Stirlingshire"
+      Sutherland: "\x01    Sutherland"
+      unlocalised: "\bunlocalised"
+    order: 6
+- text_largeregion:
+    label:
+      eng: larger region
+      fin: alue
+      swe: scotscorr_largeregion
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+      Central: "\x03Central"
+      Court: "\x06Court"
+      North: "\x01North"
+      North-East: "\x02North-East"
+      Professional: "\aProfessional"
+      South-East: "\x04South-East"
+      South-West: "\x05South-West"
+      Unlocalised: "\bUnlocalised"
+    order: 7
+- text_lclet:
+    label:
+      eng: place of writing
+      fin: kirjeen paikkatiedot
+      swe: scotscorr_lclet
+    order: 8
+- text_wgr:
+    label:
+      eng: gender/rank of writer
+      fin: lähettäjän sukupuoli/asema
+      swe: scotscorr_srg
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+    - female
+    - male
+    - royal
+    - unspecified
+    order: 9
+- text_agr:
+    label:
+      eng: gender/rank of addressee
+      fin: vastaanottajan sukupuoli/asema
+      swe: scotscorr_arg
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+    - female
+    - male
+    - royal
+    - unspecified
+    order: 10
+- text_lettertype:
+    label:
+      eng: hand (primary)
+      fin: omakätisyys
+      swe: scotscorr_hand
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+    - autograph
+    - information unavailable
+    - non-autograph
+    order: 11
+- text_scripttype:
+    label:
+      eng: script type (primary)
+      fin: käsiala
+      swe: scotscorr_scripttype
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+    - information unavailable
+    - initial and final formulae and signature
+    - italic
+    - letter-closing formula
+    - letter-closing formula and signature
+    - non-secretary
+    - secretary
+    - signature
+    - signatures
+    - signature and insertion
+    - the letter-closing formula and the signature
+    - the signature
+    - unspecified
+    order: 12
+- text_lettertype2:
+    label:
+      eng: hand (secondary)
+      fin: omakätisyys (toissijainen)
+      swe: scotscorr_hand2
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+    - autograph
+    - information unavailable
+    - non-autograph
+    order: 13
+- text_scripttype2:
+    label:
+      eng: script type (secondary)
+      fin: käsiala (toissijainen)
+      swe: scotscorr_scripttype2
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: false
+    dataset:
+    - copy
+    - information unavailable
+    - non-secretary
+    - secretary
+    order: 14
+- text_wc:
+    label:
+      eng: number of words
+      fin: sanamäärä
+      swe: num_words
+    order: 15
+- text_id:
+    label:
+      eng: text id
+      fin: tekstin tunniste
+      swe: textidentifierare
+    order: 16
+- text_fn:
+    label:
+      eng: file name
+      fin: tiedoston nimi
+      swe: filnamn
+    order: 17
+- text_ms:
+    label:
+      eng: NLS/NRS catalogue number
+      fin: NLS/NRS-tunniste
+      swe: scotscorr_ms
+    order: 18
+- text_bi:
+    label:
+      eng: previous editions
+      fin: aiempi julkaisu
+      swe: scotscorr_bi
+    order: 19
+- text_st:
+    label:
+      eng: transcription information
+      fin: transkription tiedot
+      swe: scotscorr_st
+    order: 20
+ignore_between_tokens_c_q_p: '[word="[^a-zA-Z0-9]+|\{.*"]*'
+lbr_id: urn:nbn:fi:lb-2016110710

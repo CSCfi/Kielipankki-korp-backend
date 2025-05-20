@@ -1,0 +1,94 @@
+id: vks_lpetri
+title: Laurentius Petri 1644–1670
+description: Laurentius Petrin saarnoja 1644–1670
+metadata_urn: urn:nbn:fi:lb-201407165
+urn: urn:nbn:fi:lb-201407166
+licence:
+  name: EUPL v. 1.2
+  description: Euroopan unionin yleinen lisenssi v. 1.2 (EUPL)
+  urn: urn:nbn:fi:lb-2024082106
+cite_id: VKS
+homepage:
+  name: Kokoelman etusivu
+  no_label: true
+  url: http://kaino.kotus.fi/korpus/vks/meta/vks_coll_rdf.xml
+mode:
+- name: default
+  folder: historical.vks
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes:
+- word_orig: origword
+- word_completed: complword
+- word_tilde: tildeword
+struct_attributes:
+- text_year:
+    label:
+      eng: vks_text_year
+      fin: vuosi
+      swe: vks_text_year
+    order: 1
+- text_title:
+    label:
+      eng: vks_text_title
+      fin: otsikko
+      swe: vks_text_title
+    order: 2
+- sentence_type:
+    label:
+      eng: vks_sentence_type
+      fin: virkkeen tyyppi
+      swe: vks_sentence_type
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - sentence
+    - heading
+    translation:
+      dateline:
+        fi: päiväys
+      head:
+        fi: otsikko
+      heading:
+        fi: otsikko
+      opening:
+        fi: aloitus
+      p:
+        fi: kappale
+      sentence:
+        fi: virke
+      signed:
+        fi: allekirjoitus
+    order: 3
+- sentence_code:
+    label:
+      eng: vks_sentence_code
+      fin: lähdekoodi
+      swe: vks_sentence_code
+    order: 4
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 5
+- sentence_c_ref:
+    label:
+      eng: vks_sentence_cRef
+      fin: ristiviittaus
+      swe: vks_sentence_cRef
+    order: 6
+- span_page: vks_span_page

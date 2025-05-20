@@ -1,0 +1,171 @@
+id: yoaineet
+title: Ylioppilasaineet
+description: Ylioppilaskokelaiden äidinkielen (suomen) esseitä vuosilta 1994, 1999
+  ja 2004
+alias:
+- ylioppilasaineet
+- yo_aineet
+metadata_urn: urn:nbn:fi:lb-2017030301
+urn: urn:nbn:fi:lb-2019032801
+licence:
+  name: CLARIN RES +NC +PRIV 2.1
+  urn: urn:nbn:fi:lb-2017030601
+  category: RES
+licence_type: RES
+limited_access: true
+cite_id: ylioppilasaineet
+mode:
+- name: default
+  folder: other
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- namecat_omorfi: namecat_omorfi
+- lemma: baseform
+- lemmacomp: baseform_compound
+- pos: pos_klk
+- msd: msd
+- dephead: dephead
+- deprel: deprel_tdt
+- ref: ref
+- lex:
+    label:
+      eng: lemgram
+      fin: lemgrammi
+      swe: lemgram
+    type: set
+    display_type: hidden
+    order: 6
+- ne_name: ne_name
+- ne_ex: ne_ex
+- ne_type: ne_type_fi
+- ne_subtype: ne_subtype_fi
+- ne_fulltype: ne_fulltype_fi
+- ne_placename: ne_placename
+- ne_placename_source: ne_placename_source
+- nertag: ner_rawtag
+- nerbio: ner_bio
+struct_attributes:
+- text_id:
+    display_type: hidden
+    order: 1
+- text_year:
+    label:
+      eng: year
+      fin: vuosi
+      swe: år
+    order: 2
+- text_author:
+    label:
+      eng: author
+      fin: tekijä
+      swe: författare
+    order: 3
+- text_author_name_type:
+    label:
+      eng: type of author name
+      fin: tekijän nimen tyyppi
+      swe: författarnamnets typ
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      candidate id: candidate_id
+    translation:
+      candidate_id:
+        en: candidate id
+        fi: kokelaan tunniste
+        sv: abiturientsignum
+    order: 4
+- text_author_sex:
+    label:
+      eng: sex
+      fin: sukupuoli
+      swe: kön
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      f: female
+      m: male
+      u: unknown
+      x: other
+    translation:
+      female:
+        en: female
+        fi: nainen
+        sv: kvinna
+      male:
+        en: male
+        fi: mies
+        sv: man
+      other:
+        en: other
+        fi: muu
+        sv: annat
+      unknown:
+        en: unknown
+        fi: tuntematon
+        sv: okänd
+    order: 5
+- text_title:
+    label:
+      eng: title
+      fin: otsikko
+      swe: titel
+    extended_component: structServiceAutocomplete
+    order: 6
+- text_topic_num:
+    label:
+      eng: text number
+      fin: tekstin numero
+      swe: text nummer
+    order: 7
+- text_grade_teacher:
+    label:
+      eng: grade, teacher
+      fin: koearvosana, opettaja
+      swe: vitsord, lärare
+    order: 8
+- text_grade_censor:
+    label:
+      eng: grade, censor
+      fin: koearvosana, sensori
+      swe: vitsord, censor
+    order: 9
+- paragraph_id:
+    label:
+      eng: paragraph_id
+      fin: kappaleen tunniste
+      swe: paragraph_id
+    display_type: hidden
+    order: 10
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 11

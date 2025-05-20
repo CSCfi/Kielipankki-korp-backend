@@ -1,0 +1,172 @@
+label:
+  eng: Swedish
+  fin: Ruotsi
+  swe: Svenska
+folders:
+  academic:
+    title: Akademiska texter
+    description: Korpusar av akademiska texter
+    subfolders:
+      ethesis:
+        title: E-thesis (svenska)
+        description: Helsingfors universitets svenska E-thesis, Korp-version
+  historical:
+    title: Historiska korpusar
+    description: Historiska korpusar
+  learner:
+    title: Svenskstuderandes språk
+    description: Korpusar av svenskstuderandes språk (svenska som andra eller främmande
+      språk)
+  legal:
+    title: Juridiska korpusar
+    description: Juridiska korpusar
+    subfolders:
+      semfinlex:
+        title: Semfinlex
+        description: Innehåller ett urval av ursprungliga författningar av Riksdagen
+          (1920–2018), avgöranden av Högsta domstolen (1980–) och avgöranden av Högsta
+          förvaltningsdomstolen (2001–).
+  literary:
+    title: Litteraturkorpusar
+    description: Litteraturkorpusar
+    subfolders:
+      fstc_literary:
+        title: 'Finlandssvensk textkorpus (UHLCS) (FISC/FSTC): litteratur [RES]'
+        description: 'Finlandssvensk textcorpus (UHLCS): litteratur: delkorpusar som
+          var i Lemmie-servicen, morfosyntaktiskt analyserade med SWECG<br/><br/><strong>Observera</strong>
+          att delkorpusar av FSTC finns också under <i>Tidnings-, tidskrifts- och
+          nyhetskorpusar</i> och <i>Andra korpusar</i>.'
+        subfolders:
+          fstc_fisc:
+            title: FISC Litteratur och Sakprosa [RES]
+            description: 'Finlandssvensk textkorpus (UHLCS): litteratur: FISC – En
+              finlandssvensk textkorpus: Litteratur och Sakprosa<br/><br/><strong>Observera</strong>
+              att delkorpusar av FISC finns också under <i>Litteraturkorpusar</i>
+              och <i>Andra korpusar</i>.'
+          fstc_soder:
+            title: Söderströms 1997–1999 [RES]
+            description: 'Finlandssvensk textkorpus (UHLCS): litteratur: Söderströms
+              1997–1999'
+  news:
+    title: Tidnings-, tidskrifts- och nyhetskorpusar
+    description: Tidnings-, tidskrifts- och nyhetskorpusar
+    subfolders:
+      fstc_news:
+        title: 'Finlandssvensk textkorpus (UHLCS) (FISC/FSTC): tidningar och nyheter
+          [RES]'
+        description: 'Finlandssvensk textcorpus (UHLCS): tidningar och nyheter: delkorpusar
+          som var i Lemmie-servicen, morfosyntaktiskt analyserade med SWECG<br/><br/><strong>Observera</strong>
+          att delkorpusar av FSTC finns också under <i>Litteraturkorpusar</i> och
+          <i>Andra korpusar</i>.'
+        subfolders:
+          fstc_fnb:
+            title: Finska Notisbyrån 1999–2000 [RES]
+            description: 'Finlandssvensk textkorpus (UHLCS): tidningar och nyheter:
+              Finska Notisbyrån 1999–2000'
+          fstc_hbl:
+            title: Hufvudstadsbladet 1998–1999 [RES]
+            description: 'Finlandssvensk textkorpus (UHLCS): tidningar och nyheter:
+              Hufvudstadsbladet 1998–1999'
+          fstc_jt:
+            title: Jakobstads Tidning 1999–2000 [RES]
+            description: 'Finlandssvensk textkorpus (UHLCS): tidningar och nyheter:
+              Jakobstads Tidning 1999–2000'
+      klk_sv:
+        title: Nationalbibliotekets svenskspråkiga tidningar och tidskrifter
+        description: Svenskspråkiga tidningar och tidskrifter i Nationalbibliotekets
+          digitala samlingar, Kielipankki-version
+        subfolders:
+          sv_1770:
+            title: 1770-talet
+            description: ''
+          sv_1780:
+            title: 1780-talet
+            description: ''
+          sv_1790:
+            title: 1790-talet
+            description: ''
+          sv_1800:
+            title: 1800-talet
+            description: ''
+          sv_1810:
+            title: 1810-talet
+            description: ''
+          sv_1820:
+            title: 1820-talet
+            description: ''
+          sv_1830:
+            title: 1830-talet
+            description: ''
+          sv_1840:
+            title: 1840-talet
+            description: ''
+          sv_1850:
+            title: 1850-talet
+            description: ''
+          sv_1860:
+            title: 1860-talet
+            description: ''
+          sv_1870:
+            title: 1870-talet
+            description: ''
+          sv_1880:
+            title: 1880-talet
+            description: ''
+          sv_1890:
+            title: 1890-talet
+            description: ''
+          sv_1900:
+            title: 1900-talet
+            description: ''
+          sv_1910:
+            title: 1910-talet
+            description: ''
+          sv_1920:
+            title: 1920-talet
+            description: ''
+          sv_1930:
+            title: 1930-talet
+            description: ''
+          sv_1940:
+            title: 1940-talet
+            description: ''
+      ylenews_sv:
+        title: Yle svenska webbartiklar
+        description: 'Yle svenska webbartiklar<br/><br/>Mappen innehåller två korpusar
+          med samma meningar men med olika tillgänglighet och egenskaper: den ena
+          korpusen är öppen för alla och har meningarna i en blandad ordning inom
+          varje text och utan utökad kontextvisning, medan den andra korpusen är tillgänglig
+          för forskare och har meningarna i den ursprungliga ordningen och stöd för
+          utökad kontextvisning.'
+        subfolders:
+          a:
+            title: Yle svenska webbartiklar 2012–2018 (för forskare) [ACA]
+            description: 'Yle svenska webbartiklar 2012–2018, Korp<br/>Variant tillgänglig
+              för forskare: meningarna i den ursprungliga ordningen och stöd för utökad
+              kontextvisning<br/><br/>Korpusen är indelad i delkorpusar enligt år,
+              och artiklarna är ordnade enligt redigeringsdatumet.'
+          s:
+            title: Yle svenska webbartiklar 2012–2018 (för alla)
+            description: 'Yle svenska webbartiklar 2012–2018, blandad, Korp<br/>Variant
+              öppen för alla: meningarna i en blandad ordning inom varje text och
+              ingen utökad kontextvisning<br/><br/>Korpusen är indelad i delkorpusar
+              enligt år, och artiklarna är ordnade enligt redigeringsdatumet.'
+  other:
+    title: Andra korpusar
+    description: Andra korpusar
+    subfolders:
+      fstc_other:
+        title: 'Finlandssvensk textkorpus (UHLCS) (FISC/FSTC): myndighetstexter [RES]'
+        description: 'Finlandssvensk textcorpus (UHLCS): myndighetstexter: delkorpus
+          som var i Lemmie-servicen, morfosyntaktiskt analyserad med SWECG<br/><br/><strong>Observera</strong>
+          att delkorpusar av FSTC finns också under <i>Litteraturkorpusar</i> och
+          <i>Tidnings-, tidskrifts- och nyhetskorpusar</i>.'
+      studex:
+        title: Studex (beeta) [RES]
+        description: Studentexamensprovsvar i modersmål och litteratur (svenska).<br/><b>Currently,
+          this resource is only available for internal use within the research project.</b><br/><br/><span
+          rel="localize[$locKey]"><strong>Huomaa</strong>, että korpus on beetatestivaiheessa,
+          joten siihen voi tulla muutoksia ilman ilmoitusta.</span>
+  reference:
+    title: Referenskorpusar
+    description: Referenskorpusar

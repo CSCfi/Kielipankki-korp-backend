@@ -1,0 +1,5 @@
+label:
+  eng: place name
+  fin: paikannimi
+  swe: platsnamn
+is_struct_attr: true

@@ -1,0 +1,94 @@
+id: topling_en
+title: Topling (English)
+description: Topling – Paths in Second Language Acquisition, English subcorpus
+alias:
+- topling_en
+metadata_urn: urn:nbn:fi:lb-2016111803
+urn: urn:nbn:fi:lb-2016112901
+licence:
+  name: CLARIN RES +NC +DEP 2.1
+  urn: urn:nbn:fi:lb-2016112308
+  category: RES
+licence_type: RES
+limited_access: true
+cite_id: topling-en
+homepage_url: https://www.jyu.fi/topling
+mode:
+- name: other_languages
+  folder: english.learner
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- type: wordtype
+struct_attributes:
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 4
+- text_id:
+    label:
+      eng: text id
+      fin: tekstin tunniste
+      swe: textidentifierare
+    order: 1
+- text_student:
+    label:
+      eng: text_studentno
+      fin: opiskelija
+      swe: student id
+    order: 2
+- file_edulevel:
+    label:
+      eng: file_edulevel
+      fin: aineiston tyyppi
+      swe: kursnivå
+- text_year:
+    label:
+      eng: year
+      fin: vuosi
+      swe: år
+    order: 3
+- file_round:
+    label:
+      eng: file_round
+      fin: kierros
+      swe: runda
+- file_levelops:
+    label:
+      eng: file_levelops
+      fin: taso
+      swe: CEFR-nivå
+- file_exercise:
+    label:
+      eng: file_exercise
+      fin: harjoitus
+      swe: harjoitus
+- file_filetype:
+    label:
+      eng: file_filetype
+      fin: tiedoston tyyppi
+      swe: filtyp
+lbr_id: urn:nbn:fi:lb-20140730168

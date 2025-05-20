@@ -1,0 +1,34 @@
+id: opus_opensubtitles_fisv_sv
+title: OpenSubtitles
+description: OpenSubtitles
+lang: swe
+linked_to:
+- opus_opensubtitles_fisv_fi
+metadata_urn: urn:nbn:fi:lb-2015102201
+urn: urn_placeholder
+mode:
+- name: parallel
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes: []
+hide: true

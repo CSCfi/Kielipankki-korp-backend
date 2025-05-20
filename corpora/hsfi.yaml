@@ -1,0 +1,101 @@
+id: hsfi
+title: HS.fi
+description: HS.fi-uutiskommenttiaineisto
+metadata_urn: urn:nbn:fi:lb-2014052718
+urn: urn:nbn:fi:lb-2014052717
+licence:
+  name: CLARIN ACA +NC +anonymisointi 2.1
+  description: Vain ei-kaupalliseen tutkimuskäyttöön. Nimimerkit tulee anonymisoida
+    korpukseen viittaavissa julkaisuissa.
+  urn: urn:nbn:fi:lb-20150304140
+  category: ACA
+licence_type: ACA
+limited_access: true
+cite_id: HS.fi
+mode:
+- name: default
+  folder: cmc
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- lemma: baseform
+- lemmacomp: baseform_compound
+- pos: pos_klk
+- msd: msd
+- dephead: dephead
+- deprel: deprel_tdt
+- ref: ref
+- lex:
+    label:
+      eng: lemgram
+      fin: lemgrammi
+      swe: lemgram
+    type: set
+    display_type: hidden
+    order: 6
+struct_attributes:
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 7
+- text_id:
+    label:
+      eng: text id
+      fin: tekstin tunniste
+      swe: textidentifierare
+    order: 1
+- text_time:
+    label:
+      eng: time
+      fin: kellonaika
+      swe: tid
+    order: 2
+- text_date:
+    label:
+      eng: text_date
+      fin: päivämäärä
+      swe: text_date
+    order: 3
+- text_fulldate:
+    label:
+      eng: timestamp
+      fin: aikaleima
+      swe: timestamp
+    display_type: hidden
+    order: 4
+- text_publicnick:
+    label:
+      eng: text_publicnick
+      fin: kirjoittaja
+      swe: text_publicnick
+    order: 5
+- text_title:
+    label:
+      eng: title
+      fin: otsikko
+      swe: titel
+    extended_component: structServiceAutocomplete
+    order: 6

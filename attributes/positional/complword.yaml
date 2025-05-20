@@ -1,0 +1,12 @@
+label:
+  eng: word_completed
+  fin: täydennetty sana
+  swe: word_completed
+opts:
+  contains: _=
+  ends_with: '&='
+  is: '='
+  is_not: '!='
+  matches: '*='
+  matches_not: '!*='
+  starts_with: ^=

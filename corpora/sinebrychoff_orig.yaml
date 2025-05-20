@@ -1,0 +1,67 @@
+id: sinebrychoff_orig
+title: Paul Sinebrychoffs brevsamling
+description: Paul Sinebrychoffs brevsamling
+metadata_urn: urn:nbn:fi:lb-201407303
+licence:
+  name: CC BY 3.0 (PUB)
+  description: Creative Commons Attribution 3.0
+  url: https://creativecommons.org/licenses/by/3.0/
+cite_id: sinebrychoff-sv
+mode:
+- name: swedish
+  folder: historical
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes: []
+struct_attributes:
+- text_url:
+    label:
+      eng: URL of original
+      fin: alkuperäisteksti
+      swe: original_url
+    type: url
+    order: 1
+- text_date:
+    label:
+      eng: date
+      fin: päiväys
+      swe: datum
+    order: 2
+- text_sender:
+    label:
+      eng: topling_from
+      fin: lähettäjä
+      swe: ansändare
+    order: 3
+- text_receiver:
+    label:
+      eng: topling_to
+      fin: vastaanottaja
+      swe: adressat
+    order: 4
+- text_id:
+    label:
+      eng: text id
+      fin: tekstin tunniste
+      swe: textidentifierare
+    order: 5

@@ -1,0 +1,15 @@
+label:
+  eng: base form
+  fin: perusmuoto
+  swe: grundform
+opts:
+  contains: _=
+  ends_with: '&='
+  is: '='
+  is_not: '!='
+  matches: '*='
+  matches_not: '!*='
+  starts_with: ^=
+order: 11
+stats_cqp: cqpPlainWordAttr
+stats_stringify: stringifyPlainWordAttr

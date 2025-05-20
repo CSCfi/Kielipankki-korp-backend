@@ -1,0 +1,255 @@
+id: hc
+title: Helsinki Corpus TEI XML Edition (2011)
+description: Helsinki Corpus TEI XML Edition (2011), Korp Version<br/><br/>The Helsinki
+  Corpus of English Texts is a structured multi-genre diachronic corpus, which includes
+  periodically organized text samples from Old, Middle and Early Modern English. Each
+  sample is preceded by a list of parameter codes giving information on the text and
+  its author. The Corpus is useful particularly in the study of the change of linguistic
+  features in long diachrony. It can be used as a diagnostic corpus giving general
+  information of the occurrence of forms, structures and lexemes in different periods
+  of English. This information can be supplemented by evidence yielded by more special
+  and focused historical corpora.<br/><br/><strong>Note</strong> that this version
+  of the corpus is based on the Helsinki Corpus TEI XML Edition of 2011, so it does
+  not contain word-level annotations.
+metadata_urn: urn:nbn:fi:lb-2017083001
+licence:
+  name: CLARIN ACA +NC +DEP 2.1
+  description: CLARIN ACA (Academic) End-User License 2.1, Non-commercial, No redistribution,
+    Redeposit
+  urn: urn:nbn:fi:lb-2019061301
+  category: ACA
+licence_type: ACA
+limited_access: true
+cite_id: HC-TEI-XML
+homepage_url: http://www.helsinki.fi/varieng/CoRD/corpora/HelsinkiCorpus/HC_XML.html
+mode:
+- name: other_languages
+  folder: english.historical
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- page:
+    label:
+      eng: page number
+      fin: sivunumero
+      swe: sidonummer
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+- note:
+    label:
+      eng: note
+      fin: huomio
+      swe: note
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+- unit:
+    label:
+      eng: unit
+      fin: yksikkö
+      swe: unit
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+- type:
+    label:
+      eng: type
+      fin: tyyppi
+      swe: typ
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+- supplement:
+    label:
+      eng: supplement
+      fin: täydennys
+      swe: supplement
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+struct_attributes:
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 23
+- text_date:
+    label:
+      eng: date
+      fin: päiväys
+      swe: datum
+    order: 1
+- text_title:
+    label:
+      eng: title
+      fin: otsikko
+      swe: titel
+    order: 2
+- text_xmlid:
+    label:
+      eng: XML id
+      fin: XML-tunniste
+      swe: hc_xmlid
+    order: 3
+- text_id:
+    label:
+      eng: HC text id
+      fin: tekstitunniste
+      swe: hc_textid
+    order: 4
+- text_source:
+    label:
+      eng: source
+      fin: lähde
+      swe: källa
+    order: 5
+- text_lang:
+    label:
+      eng: language
+      fin: kieli
+      swe: språk
+    order: 6
+- text_langid:
+    label:
+      eng: HC language id
+      fin: kielitunniste
+      swe: hc_lang_id
+    order: 7
+- text_contemporaneity:
+    label:
+      eng: contemporaneity
+      fin: käsikirjoituksen ajallinen suhde kirjoittajaan
+      swe: hc_contemporaneity
+    order: 8
+- text_form:
+    label:
+      eng: form
+      fin: muoto
+      swe: hc_form
+    order: 9
+- text_texttype:
+    label:
+      eng: genre
+      fin: genre
+      swe: hc_texttype
+    order: 10
+- text_foreignorig:
+    label:
+      eng: foreign origin
+      fin: suhde alkuperäiskieliseen tekstiin
+      swe: hc_foreignorig
+    order: 11
+- text_foreignlang:
+    label:
+      eng: foreign language
+      fin: alkuperäiskieli
+      swe: hc_foreignlang
+    order: 12
+- text_spoken:
+    label:
+      eng: spoken language
+      fin: puhekielisyys
+      swe: hc_spoken
+    order: 13
+- text_authorsex:
+    label:
+      eng: author's sex
+      fin: kirjoittajan sukupuoli
+      swe: hc_authorsex
+    order: 14
+- text_author:
+    label:
+      eng: author
+      fin: kirjoittaja
+      swe: hc_author
+    order: 15
+- text_authorage:
+    label:
+      eng: auhtor's age
+      fin: kirjoittajan ikä
+      swe: hc_authorage
+    order: 16
+- text_socialrank:
+    label:
+      eng: auhtor's social rank
+      fin: sosiaalinen status
+      swe: hc_socialrank
+    order: 17
+- text_audience:
+    label:
+      eng: audience
+      fin: kohdeyleisö
+      swe: hc_audience
+    order: 18
+- text_partrel:
+    label:
+      eng: participant's relation to the author
+      fin: osallisen suhde kirjoittajaan
+      swe: hc_partrel
+    order: 19
+- text_interaction:
+    label:
+      eng: interaction
+      fin: interaktiivisuus
+      swe: hc_interaction
+    order: 20
+- text_setting:
+    label:
+      eng: setting
+      fin: muodollisuus
+      swe: hc_setting
+    order: 21
+- text_proto:
+    label:
+      eng: prototypical category
+      fin: prototyyppinen tekstikategoria
+      swe: hc_proto
+    order: 22

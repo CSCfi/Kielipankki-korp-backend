@@ -1,0 +1,384 @@
+id: sks_kivi_fi
+title: Aleksis Kivi (SKS)
+description: Aleksis Kiven painetut teokset, kirjeet ja muu tunnettu tuotanto. Toimittaneet
+  Sakari Katajamäki, Ossi Kokko ja Elina Kela. <a href='http://www.edith.fi/kivikorpus/index.htm'>Infosivu</a>
+metadata_urn: urn:nbn:fi:lb-201405274
+urn: urn:nbn:fi:lb-201405273
+licence:
+  name: CC BY-NC (PUB)
+  description: Creative Commons Attribution-NonCommercial
+  urn: urn:nbn:fi:lb-2021120227
+cite_id: Kivi
+homepage_url: http://www.edith.fi/kivikorpus/index.htm
+mode:
+- name: default
+  folder: literary
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- sketchyword:
+    label:
+      eng: sketchyword
+      fin: sanamuoto luonnoksessa
+      swe: sketchyword
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+- clean_note:
+    label:
+      eng: clean_note
+      fin: huomautus sanamuodosta
+      swe: clean_note
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+- sketchy_note:
+    label:
+      eng: sketchy_note
+      fin: huomautus luonnoksesta
+      swe: sketchy_note
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+- other_note:
+    label:
+      eng: other_note
+      fin: muu huomautus
+      swe: other_note
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+- wtype:
+    label:
+      eng: wtype
+      fin: sanan tyyppi
+      swe: wtype
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+- lemma: baseform
+- lemmacomp: baseform_compound
+- pos: pos_klk
+- msd: msd
+- dephead: dephead
+- deprel: deprel_tdt
+- ref: ref
+- lex:
+    label:
+      eng: lemgram
+      fin: lemgrammi
+      swe: lemgram
+    type: set
+    display_type: hidden
+    order: 6
+- ne_name: ne_name
+- ne_ex: ne_ex
+- ne_type: ne_type_fi
+- ne_subtype: ne_subtype_fi
+- ne_fulltype: ne_fulltype_fi
+- ne_placename: ne_placename
+- ne_placename_source: ne_placename_source
+- nertag: ner_rawtag
+- nerbio: ner_bio
+struct_attributes:
+- text_idno:
+    label:
+      eng: kivi_text_idno
+      fin: teoksen/tekstin tunniste
+      swe: kivi_text_idno
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 1
+- text_author:
+    label:
+      eng: kivi_text_author
+      fin: tekijä
+      swe: kivi_text_author
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 2
+- text_title:
+    label:
+      eng: kivi_text_title
+      fin: teoksen/tekstin nimi
+      swe: kivi_text_title
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 3
+- text_byline:
+    label:
+      eng: kivi_text_byline
+      fin: alaotsikko
+      swe: kivi_text_byline
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 4
+- text_settlement:
+    label:
+      eng: kivi_text_settlement
+      fin: paikkakunta
+      swe: kivi_text_settlement
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 5
+- text_repository:
+    label:
+      eng: kivi_text_repository
+      fin: säilytyspaikka
+      swe: kivi_text_repository
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 6
+- text_publisher:
+    label:
+      eng: kivi_text_publisher
+      fin: kustantaja
+      swe: kivi_text_publisher
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 7
+- text_distributor:
+    label:
+      eng: kivi_text_distributor
+      fin: levittäjä
+      swe: kivi_text_distributor
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 8
+- text_bibl:
+    label:
+      eng: kivi_text_bibl
+      fin: ''
+      swe: kivi_text_bibl
+    display_type: hidden
+    order: 9
+- text_bibl_type:
+    label:
+      eng: kivi_text_bibl_type
+      fin: ''
+      swe: kivi_text_bibl_type
+    display_type: hidden
+    order: 10
+- text_lang:
+    label:
+      eng: kivi_text_lang
+      fin: teoksen kieli
+      swe: kivi_text_lang
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 11
+- text_note:
+    label:
+      eng: kivi_text_note
+      fin: huomautus
+      swe: kivi_text_note
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 12
+- text_date:
+    label:
+      eng: kivi_text_date
+      fin: kivi_text_date
+      swe: kivi_text_date
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 13
+- section_id:
+    label:
+      eng: section_id
+      fin: section_id
+      swe: section_id
+    display_type: hidden
+- section_type:
+    label:
+      eng: section_type
+      fin: tekstin tyyppi
+      swe: section_type
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+- section_subtype:
+    label:
+      eng: section_subtype
+      fin: osion tyyppi
+      swe: section_subtype
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+- paragraph_id:
+    label:
+      eng: paragraph_id
+      fin: kappaleen tunniste
+      swe: paragraph_id
+    display_type: hidden
+    order: 14
+- paragraph_type:
+    label:
+      eng: paragraph type
+      fin: kappaleen tyyppi
+      swe: styckets typ
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 15
+- paragraph_speaker:
+    label:
+      eng: paragraph_speaker
+      fin: repliikin puhuja
+      swe: paragraph_speaker
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 16
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 17
+- sentence_type:
+    label:
+      eng: type of sentence
+      fin: virkkeen tyyppi
+      swe: meningens typ
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 18

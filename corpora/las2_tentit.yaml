@@ -1,0 +1,331 @@
+id: las2_tentit
+title: LAS2 (tentit)
+description: Edistyneiden suomenoppijoiden korpus (tentit)
+alias:
+- las2
+metadata_urn: urn:nbn:fi:lb-201407167
+urn: urn:nbn:fi:lb-2015050504
+licence:
+  name: CLARIN RES +PLAN +NC +LOC +ND 2.1
+  urn: urn:nbn:fi:lb-20150304111
+  category: RES
+licence_type: RES
+limited_access: true
+cite_id: LAS2
+homepage_url: http://www.utu.fi/fi/yksikot/hum/yksikot/suomi-sgr/tutkimus/tutkimushankkeet/las2/Sivut/home.aspx
+mode:
+- name: default
+  folder: learner.las2
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- lemma:
+    label:
+      eng: base form
+      fin: perusmuoto
+      swe: grundform
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 1
+    stats_cqp: cqpPlainWordAttr
+    stats_stringify: stringifyPlainWordAttr
+- pos:
+    label:
+      eng: part of speech
+      fin: sanaluokka
+      swe: ordklass
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      UNK: UNK
+      a: a
+      adv: adv
+      cnj: cnj
+      intj: intj
+      n: n
+      n:prop: n:prop:any
+      neg: neg
+      num: num
+      p:post: p:post
+      p:pre: p:pre
+      pron: pron:any
+      v: v
+    translation:
+      UNK:
+        fi: tuntematon
+      a:
+        fi: adjektiivi
+      a:pron:
+        fi: 'adjektiivi: muu pronominaalinen'
+      a:pron:dem:
+        fi: 'adjektiivi: demonstratiivinen'
+      a:pron:int:
+        fi: 'adjektiivi: interrogatiivinen'
+      a:pron:rel:
+        fi: 'adjektiivi: relatiivinen'
+      adv:
+        fi: adverbi
+      adv:pron:
+        fi: 'adverbi: muu pronominaalinen'
+      adv:pron:dem:
+        fi: 'adverbi: demonstratiivinen'
+      adv:pron:int:
+        fi: 'adverbi: interrogatiivinen'
+      adv:pron:rel:
+        fi: 'adverbi: relatiivinen'
+      adv:q:
+        fi: 'adverbi: paljon-tyyppi'
+      cnj:
+        fi: konjunktio
+      cnj:coord:
+        fi: 'konjunktio: rinnastus-'
+      cnj:rel:
+        fi: 'konjunktio: relatiivi-'
+      cnj:sub:
+        fi: 'konjunktio: alistus-'
+      intj:
+        fi: interjektio
+      muu:
+        fi: muu
+      n:
+        fi: 'substantiivi: ei erisnimi'
+      n:prop:
+        fi: 'substantiivi: erisnimi, ei henkilön-'
+      n:prop:any:
+        fi: 'substantiivi: erisnimi'
+      n:prop:pname:
+        fi: 'substantiivi: henkilönnimi'
+      neg:
+        fi: kieltosana ”ei”, ”älä”
+      num:
+        fi: numeraali
+      num:card:
+        fi: 'numeraali: perusluku'
+      num:murto:
+        fi: 'numeraali: murtoluku'
+      num:ord:
+        fi: 'numeraali: järjestysluku'
+      num:ord_pron:
+        fi: pronomini/numeraali ”toinen”
+      p:post:
+        fi: postpositio
+      p:pre:
+        fi: prepositio
+      pron:
+        fi: pronomini ”se”, ”ne”
+      pron:any:
+        fi: pronomini
+      pron:dem:
+        fi: 'pronomini: demonstratiivi-'
+      pron:int:
+        fi: 'pronomini: interrogatiivi-'
+      pron:pers:
+        fi: pronomini ”hän”, ”he”
+      pron:pers12:
+        fi: 'pronomini: 1. tai 2. persoona'
+      pron:ref:
+        fi: 'pronomini: refleksiivi-'
+      pron:rel:
+        fi: 'pronomini: relatiivi-'
+      punct:
+        fi: välimerkki
+      q:
+        fi: 'pronomini: kvanttori-'
+      v:
+        fi: verbi
+    order: 2
+- msd:
+    label:
+      eng: msd
+      fin: morfologinen analyysi
+      swe: msd
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    pattern: <%= val.replace(/\|/g, '|<wbr>') %>
+    order: 4
+- fun: func_la
+- com:
+    label:
+      eng: note
+      fin: huomio
+      swe: note
+- lex:
+    label:
+      eng: lemgram
+      fin: lemgrammi
+      swe: lemgram
+    type: set
+    display_type: hidden
+    order: 3
+struct_attributes:
+- text_dateto:
+    label:
+      eng: text_date
+      fin: päivämäärä
+      swe: text_date
+    order: 1
+- text_datefrom:
+    label:
+      eng: datefrom
+      fin: datefrom
+      swe: datefrom
+    display_type: hidden
+    order: 2
+- text_num:
+    label:
+      eng: exam_num
+      fin: tentti
+      swe: exam_num
+    order: 3
+- text_inf:
+    label:
+      eng: text_inf
+      fin: informantti
+      swe: text_inf
+    order: 4
+- text_tt:
+    label:
+      eng: text_tt
+      fin: tekstilaji
+      swe: text_tt
+    order: 5
+- text_te:
+    label:
+      eng: text_te
+      fin: tunniste informantin tekstien joukossa
+      swe: text_te
+    order: 6
+- text_lo:
+    label:
+      eng: text_lo
+      fin: ajallinen etäisyys informantin 1. tekstistä (kk)
+      swe: text_lo
+    order: 7
+- text_l1:
+    label:
+      eng: text_l1
+      fin: informantin ensikieli
+      swe: text_l1
+    order: 8
+- text_alin_cefr:
+    label:
+      eng: text_alin_cefr
+      fin: alin (CEFR)
+      swe: text_alin_cefr
+    order: 9
+- text_ylin_cefr:
+    label:
+      eng: text_ylin_cefr
+      fin: ylin (CEFR)
+      swe: text_ylin_cefr
+    order: 10
+- text_tekstin_cefr:
+    label:
+      eng: text_tekstin_cefr
+      fin: tekstin taso (CEFR)
+      swe: text_tekstin_cefr
+    order: 11
+- div_id: hidden
+- div_question:
+    label:
+      eng: div_question
+      fin: kysymys/tehtävänanto
+      swe: div_question
+- paragraph_id:
+    display_type: hidden
+    order: 12
+- paragraph_type:
+    display_type: hidden
+    order: 13
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 14
+- sentence_type:
+    display_type: hidden
+    order: 15
+- clause_id:
+    display_type: hidden
+    order: 16
+- clause_type:
+    label:
+      eng: clause_type
+      fin: lauseen tyyppi
+      swe: clause_type
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      affdecl: affdecl
+      affint: affint
+      affopt: affopt
+      muu: muu
+      negdecl: negdecl
+      negint: negint
+      negopt: negopt
+    translation:
+      affdecl:
+        fi: myönteinen väitelause
+      affint:
+        fi: myönteinen kysymyslause
+      affopt:
+        fi: myönteinen imperatiivilause
+      muu:
+        fi: muu
+      negdecl:
+        fi: kielteinen väitelause
+      negint:
+        fi: kielteinen kysymyslause
+      negopt:
+        fi: kielteinen imperatiivilause
+    order: 17
+- clause_fun:
+    label:
+      eng: clause_fun
+      fin: lauseen funktio
+      swe: clause_fun
+    order: 18
+- clause_com:
+    label:
+      eng: note
+      fin: huomio
+      swe: note
+    order: 19

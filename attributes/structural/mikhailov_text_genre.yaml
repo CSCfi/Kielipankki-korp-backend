@@ -1,0 +1,20 @@
+label:
+  eng: text genre
+  fin: tekstilaji
+  swe: genre
+opts:
+  is: '='
+  is_not: '!='
+extended_component: datasetSelect
+dataset:
+  fiction: fiction
+  law: law
+translation:
+  fiction:
+    en: fiction
+    fi: kaunokirjallisuus
+    sv: skönlitteratur
+  law:
+    en: legal text
+    fi: lakiteksti
+    sv: juridisk text

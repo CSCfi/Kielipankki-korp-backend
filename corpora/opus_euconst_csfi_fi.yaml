@@ -1,0 +1,43 @@
+id: opus_euconst_csfi_fi
+title: EUconst
+description: The European constitution
+alias:
+- opus
+- opus_csfi
+- opus_fics
+lang: fin
+linked_to:
+- opus_euconst_csfi_cs
+metadata_urn: urn:nbn:fi:lb-2015102201
+urn: urn_placeholder
+licence:
+  name: CC BY 4.0 (PUB)
+  description: Creative Commons Attribution
+  urn: urn:nbn:fi:lb-2021120223
+cite_id: Opus-Korp
+mode:
+- name: parallel
+  folder: other.opus.csfi
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes: []

@@ -1,0 +1,199 @@
+id: hcs2_old_news
+title: 'HCS 2.0: News (old)'
+description: 'Helsinki Corpus of Swahili 2.0 (HCS 2.0) Annotated Version: News (old)'
+alias:
+- hcs
+- hcs2
+metadata_urn: urn:nbn:fi:lb-2016011301
+urn: urn:nbn:fi:lb-201608301
+licence:
+  name: CLARIN ACA +NC 2.1
+  urn: urn:nbn:fi:lb-2016112310
+  category: ACA
+licence_type: ACA
+limited_access: true
+cite_id: hcs-a-v2
+mode:
+- name: other_languages
+  folder: swahili.hcs2.hcs2_old
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes:
+- lemma:
+    label:
+      eng: base form
+      fin: perusmuoto
+      swe: grundform
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 1
+    stats_cqp: cqpPlainWordAttr
+    stats_stringify: stringifyPlainWordAttr
+- pos:
+    label:
+      eng: part of speech
+      fin: sanaluokka
+      swe: ordklass
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: 'false'
+    dataset:
+    - ABBR
+    - ADJ
+    - A-UNINFL
+    - ADV
+    - AG-PART
+    - CC
+    - CONJ
+    - CONJ/CC
+    - DEM
+    - EXCLAM
+    - GEN-CON
+    - GEN-CON-KWA
+    - INTERROG
+    - MWE
+    - N
+    - NUM
+    - NUM-ROM
+    - POSS-PRON
+    - PREP
+    - PREP/ADV
+    - PRON
+    - PROPNAME
+    - REL-LI
+    - REL-LI-VYO
+    - REL-SI
+    - REL-SI-VYO
+    - TITLE
+    - V
+    - V-BE
+    - V-DEF
+    - _
+    order: 2
+- msd:
+    label:
+      eng: msd
+      fin: morfologinen analyysi
+      swe: msd
+    order: 4
+- gloss:
+    label:
+      eng: gloss
+      fin: glossi
+      swe: gloss
+- syntax:
+    label:
+      eng: syntactic function
+      fin: syntaktinen funktio
+      swe: syntactic_function
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    localize: 'false'
+    dataset:
+    - '@A>'
+    - '@<AD-A'
+    - '@AD-A>'
+    - '@ADVL'
+    - '@AG'
+    - '@CC'
+    - '@CS'
+    - '@<DN'
+    - '@DN>'
+    - '@FAUXV'
+    - '@-FAUXV'
+    - '@FMAINV'
+    - '@-FMAINV'
+    - '@FMAINVintr'
+    - '@FMAINVintr-ass'
+    - '@FMAINVintr-def'
+    - '@FMAINVintr-loc'
+    - '@-FMAINVkwisha<'
+    - '@-FMAINV-n'
+    - '@FMAINVtr-OBJ>'
+    - '@FMAINVtr+OBJ>'
+    - '@GCON'
+    - '@I-OBJ'
+    - '@NADJ'
+    - '@<NADJ'
+    - '@NADJ>'
+    - '@<NDEM'
+    - '@NDEM>'
+    - '@NH'
+    - '@<NH'
+    - '@OBJ'
+    - '@<P'
+    - '@P>'
+    - '@PAT'
+    - '@PCOMPL-S'
+    - '@QN'
+    - '@<QN'
+    - '@SUBJ'
+    - '@SUBJ+rel'
+    - _
+- msdextra:
+    label:
+      eng: extra features
+      fin: lisäpiirteet
+      swe: extra_features
+- lex:
+    label:
+      eng: lemgram
+      fin: lemgrammi
+      swe: lemgram
+    type: set
+    display_type: hidden
+    order: 3
+struct_attributes:
+- text_title:
+    label:
+      eng: title
+      fin: otsikko
+      swe: titel
+    extended_component: structServiceAutocomplete
+    order: 1
+- text_filename:
+    label:
+      eng: file name
+      fin: tiedoston nimi
+      swe: filnamn
+    order: 2
+- text_year:
+    label:
+      eng: year
+      fin: vuosi
+      swe: år
+    order: 3
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 5
+- text_month:
+    label:
+      eng: month
+      fin: kuukausi
+      swe: månad
+    order: 4
+lbr_id: urn:nbn:fi:lb-2014032624

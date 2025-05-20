@@ -1,0 +1,282 @@
+id: ylenews_fi_2016_s
+title: 'Ylen suomenkielinen uutisarkisto 2011–2018 (kaikille): 2016'
+description: 'Ylen suomenkielinen uutisarkisto 2011–2018, Korp: vuosi 2016<br/>Kaikille
+  avoin versio: virkkeet sekoitettuina kunkin tekstin sisällä ja ilman laajennetun
+  kontekstin tukea.'
+alias:
+- ylenews_fi_2011_2018_s_korp
+- ylenews_fi_2011_2021_s_korp
+metadata_urn: urn:nbn:fi:lb-2019121004
+urn: urn:nbn:fi:lb-2019121006
+licence:
+  name: CC BY (PUB)
+  description: Creative Commons Attribution
+  urn: urn:nbn:fi:lb-2021120223
+cite_id: ylenews-fi-2011-2021-s-korp
+homepage:
+  name: Yle Uutiset
+  no_label: true
+  url: https://yle.fi
+mode:
+- name: default
+  folder: news.ylenews_fi.s
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes:
+- lemma: baseform
+- lemmacomp: baseform_compound
+- pos: pos_klk
+- msd: msd
+- dephead: dephead
+- deprel: deprel_tdt
+- ref: ref
+- lex:
+    label:
+      eng: lemgram
+      fin: lemgrammi
+      swe: lemgram
+    type: set
+    display_type: hidden
+    order: 6
+struct_attributes:
+- text_main_department:
+    label:
+      eng: main section
+      fin: pääosasto
+      swe: huvudavdelning
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    extended_component: structServiceAutocomplete
+    order: 1
+- text_departments:
+    label:
+      eng: sections
+      fin: osastot
+      swe: avdelningar
+    type: set
+    opts:
+      contains: incontains_contains
+      ends_with: ends_with_contains
+      is: contains
+      is_not: not contains
+      matches: regexp_contains
+      matches_not: not_regexp_contains
+      starts_with: starts_with_contains
+    extended_component: structServiceAutocomplete
+    order: 2
+- text_id:
+    label:
+      eng: text id
+      fin: tekstin tunniste
+      swe: textidentifierare
+    order: 3
+- text_publisher:
+    label:
+      eng: publisher
+      fin: julkaisija
+      swe: utgivare
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: structServiceSelect
+    order: 4
+- text_url:
+    display_type: hidden
+    order: 5
+- text_datetime_published:
+    label:
+      eng: publication date and time
+      fin: julkaisuajankohta
+      swe: utgivningsdatum
+    order: 6
+- text_datetime_content_modified:
+    label:
+      eng: content modification date and time
+      fin: sisällön muokkausajankohta
+      swe: innehållets redigeringsdatum
+    order: 7
+- text_datetime_json_modified:
+    label:
+      eng: JSON modification date and time
+      fin: JSONin muokkausajankohta
+      swe: JSONs redigeringsdatum
+    order: 8
+- paragraph_id:
+    display_type: hidden
+    order: 9
+- sentence_id:
+    display_type: hidden
+    order: 10
+- sentence_type:
+    label:
+      eng: type of sentence
+      fin: virkkeen tyyppi
+      swe: meningens typ
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      alt: image_alt
+      by: byline
+      caption: caption
+      heading: heading
+      heading-alt: heading_alt
+      heading-caption: heading_caption
+      text: text
+    translation:
+      byline:
+        en: byline
+        fi: kirjoittaja (byline)
+        sv: byline
+      caption:
+        en: caption
+        fi: kuvateksti
+        sv: bildtext
+      heading:
+        en: heading
+        fi: otsikko
+        sv: rubrik
+      heading_alt:
+        en: alternative text for heading image
+        fi: otsikkokuvan seliteteksti
+        sv: alternativ text för rubrikbild
+      heading_caption:
+        en: caption for heading image
+        fi: otsikkokuvan kuvateksti
+        sv: bildtext för rubrikbild
+      headline:
+        en: headline
+        fi: pääotsikko
+        sv: huvudrubrik
+      image:
+        en: image
+        fi: kuva
+        sv: bild
+      image_alt:
+        en: alternative text for image
+        fi: kuvan seliteteksti
+        sv: alternativ bildtext
+      lead:
+        en: lead paragraph
+        fi: ingressi
+        sv: ingress
+      quote:
+        en: quotation
+        fi: lainaus
+        sv: citat
+      short_summary:
+        en: short summary
+        fi: lyhyt tiivistelmä
+        sv: kort sammanfattning
+      summary:
+        en: summary
+        fi: tiivistelmä
+        sv: sammanfattning
+      text:
+        en: text
+        fi: teksti
+        sv: text
+    order: 11
+- sentence_paragraph_type:
+    label:
+      eng: paragraph type
+      fin: kappaleen tyyppi
+      swe: styckets typ
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      by: byline
+      heading: heading
+      headline: headline
+      image: image
+      lead: lead
+      quote: quote
+      shortSummary: short_summary
+      summary: summary
+      text: text
+    translation:
+      byline:
+        en: byline
+        fi: kirjoittaja (byline)
+        sv: byline
+      caption:
+        en: caption
+        fi: kuvateksti
+        sv: bildtext
+      heading:
+        en: heading
+        fi: otsikko
+        sv: rubrik
+      heading_alt:
+        en: alternative text for heading image
+        fi: otsikkokuvan seliteteksti
+        sv: alternativ text för rubrikbild
+      heading_caption:
+        en: caption for heading image
+        fi: otsikkokuvan kuvateksti
+        sv: bildtext för rubrikbild
+      headline:
+        en: headline
+        fi: pääotsikko
+        sv: huvudrubrik
+      image:
+        en: image
+        fi: kuva
+        sv: bild
+      image_alt:
+        en: alternative text for image
+        fi: kuvan seliteteksti
+        sv: alternativ bildtext
+      lead:
+        en: lead paragraph
+        fi: ingressi
+        sv: ingress
+      quote:
+        en: quotation
+        fi: lainaus
+        sv: citat
+      short_summary:
+        en: short summary
+        fi: lyhyt tiivistelmä
+        sv: kort sammanfattning
+      summary:
+        en: summary
+        fi: tiivistelmä
+        sv: sammanfattning
+      text:
+        en: text
+        fi: teksti
+        sv: text
+    order: 12
+custom_attributes:
+- text_url_fixed:
+    display_type: hidden
+    pattern: <a href="https://yle.fi/a/<%= struct_attrs.text_id %>" class="exturl
+      sidebar_link" target="_blank"><span rel="localize[show_original]"></span></a>
+    custom_type: struct
+    hide_compare: true
+    hide_extended: true
+    hide_statistics: true
+    url_opts:
+      hideUrl: true
+      inLinkSection: true
+      newWindow: true

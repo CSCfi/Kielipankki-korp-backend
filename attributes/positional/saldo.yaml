@@ -1,0 +1,13 @@
+label:
+  eng: sense
+  fin: merkitys
+  swe: betydelse
+type: set
+opts:
+  is: contains
+  is_not: not contains
+extended_template: <autoc model='model' placeholder='placeholder' type='sense' text-in-field='textInField'/>
+external_search: https://spraakbanken.gu.se/karp/#?mode=DEFAULT&search=extended||and|sense|equals|<%=
+  val %>
+internal_search: true
+order: 3

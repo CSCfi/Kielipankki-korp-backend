@@ -1,0 +1,67 @@
+id: karjalansuomi
+title: Karjalansuomi
+description: 'Karjalan suomen sanomalehtikorpus: Karjalan Sanomat (2012–2014)<br/>Julkaisija:
+  Periodika-kustantamo<br/>Kotisivu: <a href=''http://karjalansanomat.ru/''>http://karjalansanomat.ru/</a>'
+alias:
+- lehdet_ks
+metadata_urn: urn:nbn:fi:lb-2014092601
+urn: urn:nbn:fi:lb-2016112501
+licence:
+  name: CLARIN ACA 2.1
+  urn: urn:nbn:fi:lb-2016112302
+  category: ACA
+licence_type: ACA
+limited_access: true
+cite_id: Karjalansuomi
+mode:
+- name: default
+  folder: news
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes: []
+struct_attributes:
+- text_title:
+    label:
+      eng: title
+      fin: otsikko
+      swe: titel
+    extended_component: structServiceAutocomplete
+    order: 1
+- text_year:
+    label:
+      eng: date
+      fin: päiväys
+      swe: datum
+    order: 2
+- text_type:
+    label:
+      eng: type
+      fin: tyyppi
+      swe: typ
+    order: 3
+- text_issue:
+    label:
+      eng: issue
+      fin: numero
+      swe: utgåva
+    order: 4

@@ -1,0 +1,76 @@
+id: vnsk_granlund
+title: Granlund
+description: Granlund
+metadata_urn: urn:nbn:fi:lb-20140730147
+urn: urn:nbn:fi:lb-2016081203
+licence:
+  name: EUPL v. 1.2
+  description: Euroopan unionin yleinen lisenssi v. 1.2 (EUPL)
+  urn: urn:nbn:fi:lb-2024082108
+cite_id: VNSK
+homepage:
+  name: Kokoelman etusivu
+  no_label: true
+  url: http://kaino.kotus.fi/korpus/1800/meta/1800_coll_rdf.xml
+mode:
+- name: default
+  folder: historical.vns
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes: []
+struct_attributes:
+- text_title:
+    label:
+      eng: title
+      fin: otsikko
+      swe: titel
+    extended_component: structServiceAutocomplete
+    order: 1
+- text_distributor:
+    label:
+      eng: text_distributor
+      fin: text_distributor
+      swe: text_distributor
+    display_type: hidden
+    order: 2
+- text_source:
+    label:
+      eng: text_source
+      fin: lähdelinkki
+      swe: text_source
+    order: 3
+- paragraph_id:
+    label:
+      eng: paragraph_id
+      fin: kappaleen tunniste
+      swe: paragraph_id
+    order: 4
+- paragraph_type:
+    label:
+      eng: paragraph type
+      fin: kappaleen tyyppi
+      swe: styckets typ
+    order: 5
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 6
+- sentence_n:
+    label:
+      eng: sentence_n
+      fin: virkkeen koodi
+      swe: sentence_n
+    order: 7

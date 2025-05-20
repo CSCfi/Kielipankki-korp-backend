@@ -1,0 +1,248 @@
+id: oracc2021_ribo
+title: 'RIBo: Royal Inscriptions of Babylonia online (Oracc 2021)'
+description: 'RIBo: Royal Inscriptions of Babylonia online<br/>Part of Oracc – Open
+  Richly Annotated Cuneiform Corpus, Korp Version, June 2021'
+alias:
+- oracc_korp_2021
+- oracc_korp_2021_06
+metadata_urn: urn:nbn:fi:lb-2022031705
+urn: urn:nbn:fi:lb-2022031706
+licence:
+  name: CC BY-SA 3.0 (PUB)
+  description: Creative Commons Attribution-ShareAlike
+  url: https://creativecommons.org/licenses/by-sa/3.0/
+cite_id: ''
+iprholder:
+  name: Open Richly Annotated Cuneiform Corpus Project
+  url: http://oracc.museum.upenn.edu/doc/about/licensing/index.html
+mode:
+- name: other_languages
+  folder: cuneiform.oracc2021
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- lemma:
+    label:
+      eng: base form
+      fin: perusmuoto
+      swe: grundform
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 1
+    stats_cqp: cqpPlainWordAttr
+    stats_stringify: stringifyPlainWordAttr
+- autolemma:
+    label:
+      eng: autolemma
+      fin: autolemma
+      swe: autolemma
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+- autopos:
+    label:
+      eng: autopos
+      fin: autopos
+      swe: autopos
+    extended_component: structServiceAutocomplete
+- msd:
+    label:
+      eng: msd
+      fin: morfologinen analyysi
+      swe: msd
+    order: 3
+- translation:
+    label:
+      eng: translation (base form)
+      fin: merkitys (lemma)
+      swe: oracc_lemmatrans
+- sense:
+    label:
+      eng: translation (sense)
+      fin: merkitys (sananmuoto)
+      swe: oracc_sense
+    stats_cqp: cqpPlainWordAttr
+    stats_stringify: stringifyPlainWordAttr
+- transcription:
+    label:
+      eng: transcription
+      fin: transkriptio
+      swe: oracc_transcription
+- pos:
+    label:
+      eng: part of speech
+      fin: sanaluokka
+      swe: ordklass
+    extended_component: structServiceSelect
+    order: 2
+- oraccpos:
+    label:
+      eng: part of speech subcategory
+      fin: tarkempi sanaluokka
+      swe: oracc_pos_subcategory
+    extended_component: structServiceAutocomplete
+- normname:
+    label:
+      eng: standardized
+      fin: standardoitu kirjoitusasu
+      swe: oracc_standardized
+- lang:
+    label:
+      eng: language/dialect
+      fin: kielimuoto
+      swe: oracc_lang
+    extended_component: structServiceSelect
+- url:
+    label:
+      eng: link to original
+      fin: linkki alkuperäiseen
+      swe: länk till originalet
+    type: url
+    hide_extended: true
+    hide_statistics: true
+    url_opts:
+      new_window: true
+struct_attributes:
+- text_cdlinumber:
+    label:
+      eng: CDLI number
+      fin: CDLI-tunniste
+      swe: oracc_cdlinumber
+    order: 1
+- text_provenience:
+    label:
+      eng: provenance
+      fin: alue
+      swe: oracc_provenance
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: structServiceAutocomplete
+    order: 2
+- text_language:
+    label:
+      eng: text languages
+      fin: tekstin kielet
+      swe: oracc_textlang
+    extended_component: structServiceAutocomplete
+    order: 3
+- text_genre:
+    label:
+      eng: genre
+      fin: tekstin tyylilaji
+      swe: oracc_genre
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: structServiceSelect
+    order: 4
+- text_period:
+    label:
+      eng: period
+      fin: aikakausi
+      swe: oracc_period
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: structServiceSelect
+    order: 5
+- text_subgenre:
+    label:
+      eng: subgenre
+      fin: tekstin tyylin alalaji
+      swe: oracc_subgenre
+    extended_component: structServiceAutocomplete
+    order: 6
+- text_museumno:
+    label:
+      eng: museum number
+      fin: museonumero
+      swe: oracc_museumno
+    order: 7
+- text_photo:
+    label:
+      eng: photo
+      fin: valokuva
+      swe: oracc_photo
+    extended_component: structServiceAutocomplete
+    order: 8
+- text_copy:
+    label:
+      eng: copy
+      fin: kopio
+      swe: oracc_copy
+    extended_component: structServiceAutocomplete
+    order: 9
+- text_accessionno:
+    label:
+      eng: accession number
+      fin: acc. numero
+      swe: oracc_accessionno
+    order: 10
+- text_datebce:
+    label:
+      eng: date BCE
+      fin: päiväys BCE
+      swe: oracc_datebce
+    extended_component: structServiceAutocomplete
+    order: 11
+- text_primarypub:
+    label:
+      eng: primary publication
+      fin: julkaisu
+      swe: oracc_primarypubno
+    order: 12
+- text_excavation:
+    label:
+      eng: excavation
+      fin: kaivaus
+      swe: oracc_excavation
+    extended_component: structServiceAutocomplete
+    order: 13
+- text_collection:
+    label:
+      eng: collection
+      fin: kokoelma
+      swe: oracc_collection
+    extended_component: structServiceAutocomplete
+    order: 14
+- paragraph_id:
+    label:
+      eng: paragraph_id
+      fin: kappaleen tunniste
+      swe: paragraph_id
+    display_type: hidden
+    order: 15
+credits_url: http://www.oracc.org/ribo/abouttheproject/
+infopage_url: https://www.kielipankki.fi/corpora/oracc/

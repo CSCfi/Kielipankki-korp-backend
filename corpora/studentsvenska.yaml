@@ -1,0 +1,139 @@
+id: studentsvenska
+title: Studentsvenska 79/80
+description: Studentsvenska 79/80
+metadata_urn: urn:nbn:fi:lb-20140730119
+urn: urn:nbn:fi:lb-2016081701
+licence:
+  name: CLARIN RES +PLAN +NC +PRIV 2.1
+  description: CLARIN RES end-user licence +PLAN +NC +PRIV 2.1
+  urn: urn:nbn:fi:lb-2016040410
+  category: RES
+licence_type: RES
+limited_access: true
+cite_id: Studentsvenska
+mode:
+- name: swedish
+  folder: learner
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes:
+- lemma:
+    label:
+      eng: base form
+      fin: perusmuoto
+      swe: grundform
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 1
+    stats_cqp: cqpPlainWordAttr
+    stats_stringify: stringifyPlainWordAttr
+- code:
+    label:
+      eng: studentsvenska_code
+      fin: syntaktinen funktio
+      swe: syntaktisk funktion
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+- properties:
+    label:
+      eng: studentsvenska_properties
+      fin: lausetyyppi
+      swe: satstyp
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+struct_attributes:
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 11
+- text_textnumber:
+    label:
+      eng: studentsvenska_textnumber
+      fin: tekstin numero
+      swe: textnummer
+    order: 1
+- text_gradeteacher:
+    label:
+      eng: studentsvenska_gradeteacher
+      fin: opettajan antama arvosana
+      swe: betyg i poäng (lärare)
+    order: 2
+- text_gradeexam:
+    label:
+      eng: studentsvenska_gradeexam
+      fin: koearvosana
+      swe: betyg i poäng (examensnämnden)
+    order: 3
+- text_gradeword:
+    label:
+      eng: studentsvenska_gradeword
+      fin: sanakokeen arvosana
+      swe: betyg i ord
+    order: 4
+- text_schoolnumber:
+    label:
+      eng: studentsvenska_schoolnumber
+      fin: koulun numero
+      swe: skolans nummer
+    order: 5
+- text_errorother:
+    label:
+      eng: studentsvenska_errorother
+      fin: virheet
+      swe: antal fel minus ordföljdsfel
+    order: 6
+- text_gender:
+    label:
+      eng: studentsvenska_gender
+      fin: sukupuoli
+      swe: kön
+    order: 7
+- text_gradegrammar:
+    label:
+      eng: studentsvenska_gradegrammar
+      fin: kielioppiarvosana
+      swe: betyg i grammatikstestet
+    order: 8
+- text_errorwordorder:
+    label:
+      eng: studentsvenska_errorwordorder
+      fin: sanajärjestysvirheet
+      swe: antal ordföljdsfel
+    order: 9
+- text_subject:
+    label:
+      eng: studentsvenska_subject
+      fin: aineen vaihe
+      swe: uppsatsämne
+    order: 10

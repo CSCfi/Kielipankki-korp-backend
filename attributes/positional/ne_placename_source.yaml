@@ -1,0 +1,23 @@
+label:
+  eng: place name information source
+  fin: paikannimitiedon lähde
+  swe: platsnamnsinformationskälla
+is_struct_attr: true
+extended_component: datasetSelect
+dataset:
+- ner
+- pos
+- meta
+translation:
+  meta:
+    en: metadata
+    fi: kuvailutiedot
+    sv: metadata
+  ner:
+    en: named-entity recognizer
+    fi: nimientunnistin
+    sv: namnigenkännare
+  pos:
+    en: parser or POS tagger
+    fi: jäsennin
+    sv: parser eller ordklasstaggare

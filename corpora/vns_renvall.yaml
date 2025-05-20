@@ -1,0 +1,204 @@
+id: vns_renvall
+title: Renvall
+description: 'Gustaf Renvall: Suomalainen sana-kirja (1826)'
+metadata_urn: urn:nbn:fi:lb-20140730147
+urn: urn:nbn:fi:lb-2016081203
+licence:
+  name: EUPL v. 1.2
+  description: Euroopan unionin yleinen lisenssi v. 1.2 (EUPL)
+  urn: urn:nbn:fi:lb-2024082108
+cite_id: VNSK
+homepage:
+  name: Kokoelman etusivu
+  no_label: true
+  url: http://kaino.kotus.fi/korpus/1800/meta/1800_coll_rdf.xml
+mode:
+- name: default
+  folder: historical.vns
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes: []
+struct_attributes:
+- text_title:
+    label:
+      eng: title
+      fin: otsikko
+      swe: titel
+    extended_component: structServiceAutocomplete
+    order: 1
+- text_distributor:
+    label:
+      eng: text_distributor
+      fin: text_distributor
+      swe: text_distributor
+    display_type: hidden
+    order: 2
+- text_source:
+    label:
+      eng: text_source
+      fin: lähdelinkki
+      swe: text_source
+    order: 3
+- item_itemtype:
+    label:
+      eng: dict_itemtype
+      fin: tiedon tyyppi
+      swe: dict_itemtype
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      eg: eg
+      etym: etym
+      note: note
+      orth: orth
+      pos: pos
+      xr: xr
+    translation:
+      eg:
+        fi: esimerkki
+      etym:
+        fi: etymologia
+      note:
+        fi: huomautus
+      orth:
+        fi: kirjoitusasu
+      pos:
+        fi: sanaluokka
+      xr:
+        fi: ristiviittaus
+- item_type:
+    label:
+      eng: dict_item_type
+      fin: alatyyppi
+      swe: dict_item_type
+- item_lang:
+    label:
+      eng: dict_etymlang
+      fin: lähdekieli
+      swe: dict_etymlang
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      ru: swe
+      ve: rus
+    translation:
+      deu:
+        en: German
+        fi: saksa
+        sv: tyska
+      dut:
+        en: Dutch
+        fi: hollanti
+        sv: nederländska
+      ell:
+        en: Greek
+        fi: kreikka
+        sv: grekiska
+      eng:
+        en: English
+        fi: englanti
+        sv: engelska
+      est:
+        en: Estonian
+        fi: viro
+        sv: estniska
+      fin:
+        en: Finnish
+        fi: suomi
+        sv: finska
+      fra:
+        en: French
+        fi: ranska
+        sv: franska
+      fre:
+        en: French
+        fi: ranska
+        sv: franska
+      ger:
+        en: German
+        fi: saksa
+        sv: tyska
+      gre:
+        en: Greek
+        fi: kreikka
+        sv: grekiska
+      heb:
+        en: Hebrew
+        fi: heprea
+        sv: hebreiska
+      hun:
+        en: Hungarian
+        fi: unkari
+        sv: ungerska
+      izh:
+        fi: inkeroinen
+      kca:
+        fi: hanti
+      kpv:
+        en: Komi-Zyrian
+        fi: komisyrjääni
+        sv: komi
+      lat:
+        en: Latin
+        fi: latina
+        sv: latin
+      mdf:
+        en: Moksha
+        fi: mokša
+        sv: moksja
+      mns:
+        fi: mansi
+      mrj:
+        fi: länsimari
+      myv:
+        en: Erzya
+        fi: ersä
+        sv: erzia
+      nld:
+        en: Dutch
+        fi: hollanti
+        sv: nederländska
+      nor:
+        en: Norwegian
+        fi: norja
+        sv: norska
+      rus:
+        en: Russian
+        fi: venäjä
+        sv: ryska
+      sel:
+        fi: selkuppi
+      sjd:
+        fi: kiltinänsaame
+      sms:
+        fi: koltansaame
+      spa:
+        en: Spanish
+        fi: espanja
+        sv: spanska
+      swe:
+        en: Swedish
+        fi: ruotsi
+        sv: svenska
+      vep:
+        fi: vepsä
+      xxx:
+        en: unidentified
+        fi: tunnistamaton
+        sv: oidentifierat
+      yrk:
+        fi: tundranenetsi

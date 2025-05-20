@@ -1,0 +1,315 @@
+id: dma
+title: DMA – Digitaalinen muoto-opin arkisto
+description: DMA – Digitaalinen muoto-opin arkisto<br/><a href='https://www.kielipankki.fi/tuki/korp-dma/'
+  target='_blank'>Ohjeita DMA:n käyttämiseen Korpissa</a>, erityisesti verrattuna
+  vanhaan CSC:n Tutkijan käyttöliittymän DMA:han<br/><strong>Huomaa</strong>, että
+  vaikka aineiston tekstiosa on kaikkien käytettävisssä, PDF-muotoisten sanalippujen
+  katseleminen edellyttää Kielipankin oikeudet -sovelluksen kautta haettua <a href='https://lbr.csc.fi/web/guest/catalogue?domain=LBR&resource=urn:nbn:fi:lb-201403261&target=application'
+  target='_blank'>DMA:n käyttölupaa</a>.
+metadata_urn: urn:nbn:fi:lb-201403261
+urn: urn:nbn:fi:lb-2016032102
+licence:
+  name: CC BY 4.0 (teksti) / CLARIN RES +PRIV +ND 2.1 (PDF-sanaliput)
+  urn: urn:nbn:fi:lb-2016042202
+  category: PUB
+licence_type: PUB
+cite_id: dma
+homepage_url: http://www.helsinki.fi/fus/research/ma.html
+mode:
+- name: default
+  folder: spoken
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes:
+- searchword:
+    label:
+      eng: search_word
+      fin: hakusana
+      swe: search_word
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+struct_attributes:
+- text_dialect_region:
+    label:
+      eng: dialect_region
+      fin: murrealue
+      swe: dialect_region
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      '1': 1 Lounaismurteet
+      '2': 2 Lounaiset välimurteet
+      '3': 3 Hämäläismurteet
+      '4': 4 Etelä-Pohjanmaan murteet
+      '5': 5 Keski- ja Pohjois-Pohjanmaan murteet
+      '6': 6 Peräpohjolan murteet
+      '7': 7 Savolaismurteet
+      '8': 8 Kaakkoismurteet
+    order: 1
+- text_dialect_group:
+    label:
+      eng: dialect_group
+      fin: murreryhmä
+      swe: dialect_group
+    opts:
+      is: '='
+      is_not: '!='
+    pattern: "<%= val.replace(/[\0-\x1F ​]+/g, '') %>"
+    extended_component: datasetSelect
+    escape: false
+    dataset:
+      '1.': ​  1 Lounaismurteet
+      1a: ​    1a pohjoisryhmä
+      1b: ​    1b itäryhmä
+      '2.': ​​  2 Lounaiset välimurteet
+      2a: ​​    2a Porin seudun murteet
+      2b: ​​    2b Ala-Satakunnan murteet
+      2c: ​​    2c Turun ylämaan murteet
+      2d: ​​    2d Someron murre
+      2e: ​​    2e Länsi-Uudenmaan murteet
+      '3.': ​​​  3 Hämäläismurteet
+      3[d-f]: ​​​    3d–f kaakkoishämäläiset murteet
+      3a: ​​​    3a Ylä-Satakunnan murteet
+      3b: ​​​    3b perihämäläiset murteet
+      3c: ​​​    3c etelähämäläiset murteet
+      3d: ​​​      3d Hollolan ryhmä
+      3e: ​​​      3e Porvoon ryhmä
+      3f: ​​​      3f Kymenlaakson ryhmä
+      '4': ​​​​  4 Etelä-Pohjanmaan murteet
+      '5.': ​​​​​  5 Keski- ja Pohjois-Pohjanmaan murteet
+      5a: ​​​​​    5a Keski-Pohjanmaan murteet
+      5b: ​​​​​    5b Pohjois-Pohjanmaan murteet
+      '6.': ​​​​​​  6 Peräpohjolan murteet
+      6a: ​​​​​​    6a Tornion murre
+      6b: ​​​​​​    6b Jällivaaran murre
+      6c: ​​​​​​    6c Kemin murre
+      6d: ​​​​​​    6d Kemijärven murre
+      6e: ​​​​​​    6e Ruijan murre
+      '7.': ​​​​​​​  7 Savolaismurteet
+      7a: ​​​​​​​    7a Päijät-Hämeen murteet
+      7b: ​​​​​​​    7b Etelä-Savon murteet
+      7c: ​​​​​​​    7c Säämingin–Kerimäen ryhmä
+      7d: ​​​​​​​    7d itäiset savolaismurteet
+      7e: ​​​​​​​    7e Pohjois-Savon murteet
+      7f: ​​​​​​​    7f Keski-Suomen murteet
+      7g: ​​​​​​​    7g savolaiskiilan murteet
+      7h: ​​​​​​​    7h Kainuun murteet
+      7i: ​​​​​​​    7i Vermlannin murteet
+      '8.': ​​​​​​​​  8 Kaakkoismurteet
+      8[a–b]: ​​​​​​​​    ​8a–b varsinaiset kaakkoismurteet
+      8a: ​​​​​​​​    ​  8a Länsi-Kannaksen murteet
+      8b: ​​​​​​​​    ​  8b Itä-Kannaksen murteet
+      8c: ​​​​​​​​    8c Inkerin suomalaismurteet
+      8d: ​​​​​​​​    8d Lemin murre
+      8e: ​​​​​​​​    8e Sortavalan seudun murteet
+      '[1-6].?': ​1–6 Länsimurteet
+      '[7-8].': ​​​​​​​7–8 Itämurteet
+    order: 2
+- text_parish_name:
+    label:
+      eng: parish
+      fin: paikkakunta
+      swe: parish
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: structServiceSelect
+    localize: false
+    order: 3
+- text_village:
+    label:
+      eng: village
+      fin: kylä
+      swe: village
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: structServiceSelect
+    order: 4
+- text_parish:
+    label:
+      eng: parish
+      fin: paikkakunta
+      swe: parish
+    display_type: hidden
+    order: 5
+- sentence_comment:
+    label:
+      eng: comment
+      fin: kommentti
+      swe: comment
+    order: 6
+- sentence_informant:
+    label:
+      eng: informant
+      fin: informantti
+      swe: informant
+    order: 7
+- sentence_informant_sex:
+    label:
+      eng: informant_sex
+      fin: informantin sukupuoli
+      swe: informant_sex
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      ? ''
+      : unknown
+      m: male
+      n: female
+    translation:
+      female:
+        en: female
+        fi: nainen
+        sv: kvinna
+      male:
+        en: male
+        fi: mies
+        sv: man
+      other:
+        en: other
+        fi: muu
+        sv: annat
+      unknown:
+        en: unknown
+        fi: tuntematon
+        sv: okänd
+    order: 8
+- sentence_informant_birthyear:
+    label:
+      eng: informant_birthyear
+      fin: informantin syntymävuosi
+      swe: informant_birthyear
+    extended_component: structServiceAutocomplete
+    order: 9
+- sentence_signum:
+    label:
+      eng: signum
+      fin: signumi
+      swe: signum
+    type: set
+    opts:
+      is: contains
+      is_not: not contains
+    extended_component: dmaSignum
+    order: 10
+    sidebar_info_url: markup/dma_signumlist.html
+- sentence_signumlist:
+    label:
+      eng: signum_list
+      fin: signumilista
+      swe: signum_list
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 11
+- sentence_updated:
+    display_type: hidden
+    order: 12
+- sentence_location:
+    label:
+      eng: original_location
+      fin: alkuperäistiedon sijainti
+      swe: original_location
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    order: 13
+- sentence_text_words:
+    label:
+      eng: clause_any_wordform
+      fin: lauseen jokin sananmuoto
+      swe: clause_any_wordform
+    type: set
+    opts:
+      contains: incontains_contains
+      ends_with: ends_with_contains
+      is: contains
+      is_not: not contains
+      matches: regexp_contains
+      matches_not: not_regexp_contains
+      starts_with: starts_with_contains
+    hide_compare: true
+    hide_sidebar: true
+    hide_statistics: true
+    order: 14
+- sentence_search_words:
+    label:
+      eng: clause_any_search_word
+      fin: lauseen jokin hakusana
+      swe: clause_any_search_word
+    type: set
+    opts:
+      contains: incontains_contains
+      ends_with: ends_with_contains
+      is: contains
+      is_not: not contains
+      matches: regexp_contains
+      matches_not: not_regexp_contains
+      starts_with: starts_with_contains
+    hide_compare: true
+    hide_sidebar: true
+    hide_statistics: true
+    order: 15
+- sentence_pdf:
+    label:
+      eng: ''
+      fin: ''
+      swe: ''
+    display_type: hidden
+    opts:
+      contains: _=
+      ends_with: '&='
+      is: '='
+      is_not: '!='
+      matches: '*='
+      matches_not: '!*='
+      starts_with: ^=
+    pattern: <%= funcs.dmaStringifyPdfLink(val, 'show_wordnote', 'target="blank",
+      class="exturl sidebar_link"') %>
+    hide_compare: true
+    hide_extended: true
+    hide_statistics: true
+    order: 16
+    url_opts:
+      hideUrl: true
+      inLinkSection: true
+      newWindow: true
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    order: 17
+default_filters:
+- text_parish_name

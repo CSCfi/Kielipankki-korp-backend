@@ -1,0 +1,8 @@
+label:
+  eng: morphosyntactic features (ambiguous)
+  fin: monitulkintainen morfologinen analyysi
+  swe: flertydig msd
+type: set
+opts:
+  is: contains
+  is_not: not contains

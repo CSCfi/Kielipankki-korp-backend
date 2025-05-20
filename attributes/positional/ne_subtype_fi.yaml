@@ -1,0 +1,272 @@
+label:
+  eng: named entity subtype
+  fin: nimen alityyppi
+  swe: namnundertyp
+is_struct_attr: true
+extended_component: datasetSelect
+dataset:
+- ANM
+- AST
+- ATH
+- CLT
+- CRP
+- CUR
+- DAT
+- EDU
+- FIN
+- FNC
+- GPL
+- HRM
+- HUM
+- MYT
+- PLT
+- PPL
+- STR
+- TIT
+- TVR
+- XXX
+translation:
+  AGE:
+    en: age
+    fi: ikä
+    sv: ålder
+  ANM:
+    en: animal/pet/mythical beasts
+    fi: eläin
+    sv: djur/husdjur/mytiskt odjur
+  AST:
+    en: astronomical
+    fi: tähtitieteellinen
+    sv: astronomisk
+  ATH:
+    en: athletic
+    fi: urheiluseura tai joukkue
+    sv: atletisk
+  ATL:
+    en: athletic
+    fi: urheilu-
+    sv: atletisk
+  CLC:
+    en: tribe/dynasty/ethnical or race name
+    fi: heimo, dynastia tai etnisyys
+    sv: stam/dynasti/etniskt namn
+  CLT:
+    en: cultural
+    fi: kulttuuri-
+    sv: kulturell
+  CLU:
+    en: cultural
+    fi: kulttuuri-
+    sv: kulturell
+  CMP:
+    en: computer product/telephony
+    fi: tietokone- tai puhelintuote
+    sv: datorprodukt/telefoni
+  CMU:
+    en: computer unit
+    fi: tietotekniikan yksikkö
+    sv: datorenhet
+  CRP:
+    en: corporation/organization
+    fi: yritys tai yhdistys
+    sv: företag/organisation
+  CUR:
+    en: currency
+    fi: valuutta
+    sv: valuta
+  CVU:
+    en: capacity/volume
+    fi: kapasiteetti tai tilavuus
+    sv: kapacitet/volym
+  DAT:
+    en: date
+    fi: päiväys
+    sv: datum
+  DEN:
+    en: density
+    fi: tiheys
+    sv: densitet
+  DSG:
+    en: dosage
+    fi: annos
+    sv: dosering
+  DST:
+    en: distance
+    fi: matka
+    sv: avstånd
+  EDU:
+    en: educational
+    fi: oppilaitos
+    sv: utbildning
+  FIN:
+    en: financial
+    fi: finanssi-
+    sv: finansiell
+  FNC:
+    en: facility entity
+    fi: fasiliteetti
+    sv: facilitetsentitet
+  FRQ:
+    en: frequency
+    fi: taajuus
+    sv: frekvens
+  FWP:
+    en: food/beverage
+    fi: ruoka tai juoma
+    sv: mat/dryck
+  GPL:
+    en: geographical/geological
+    fi: maantieteellinen
+    sv: geografisk/geologisk
+  HPL:
+    en: historical/political
+    fi: historiallinen tai poliittinen
+    sv: historisk/politisk
+  HRM:
+    en: time
+    fi: kellonaika
+    sv: klockslag
+  HUM:
+    en: human being/fictional human character
+    fi: ihminen
+    sv: människa/fiktiv mänsklig karaktär
+  IDX:
+    en: index
+    fi: indeksi
+    sv: index
+  INX:
+    en: index
+    fi: indeksi
+    sv: index
+  LST:
+    en: list
+    fi: luettelo
+    sv: lista
+  MDC:
+    en: medical
+    fi: lääketieteellinen
+    sv: medicinsk
+  MSU:
+    en: metric surface unit
+    fi: pinta-ala
+    sv: ytmått
+  MTH:
+    en: saint/apostle/god/mythical name/humanoid
+    fi: myyttinen
+    sv: helgon/apostel/gud/mytiskt namm/humanoid
+  MYT:
+    en: saint/apostle/god/mythical name/humanoid
+    fi: myyttinen
+    sv: helgon/apostel/gud/mytiskt namm/humanoid
+  PER:
+    en: period
+    fi: ajanjakso
+    sv: period
+  PLT:
+    en: political
+    fi: poliittinen
+    sv: politisk
+  PPL:
+    en: geo-social-political entity
+    fi: geopoliittinen
+    sv: geo-social-politisk entitet
+  PRC:
+    en: percent
+    fi: prosentti
+    sv: procent
+  PRD:
+    en: product/artefact/flower/plant
+    fi: tuote, artefakti tai kasvi
+    sv: produkt/artefakt/växt
+  PRJ:
+    en: project/agreement/initiative
+    fi: hanke, sopimus tai aloite
+    sv: projekt/överenskommelse/initiativ
+  PRZ:
+    en: prize/scholarship/honour
+    fi: palkinto tai apuraha
+    sv: pris/stipendium/utmärkelse
+  PSS:
+    en: pressure
+    fi: paine
+    sv: tryck
+  RLG:
+    en: religious
+    fi: uskonnollinen
+    sv: religiös
+  RTV:
+    en: radio/tv-programs
+    fi: radio- tai tv-ohjelma
+    sv: radio/tv-program
+  SPD:
+    en: speed
+    fi: nopeus
+    sv: hastighet
+  STR:
+    en: street/road/postal address
+    fi: katu, tie tai postiosoite
+    sv: gata/väg/postadress
+  TIT:
+    en: title
+    fi: titteli
+    sv: titel
+  TMP:
+    en: temperature
+    fi: lämpötila
+    sv: temperatur
+  TRN:
+    en: transportation
+    fi: liikenne
+    sv: transport
+  TVR:
+    en: media
+    fi: media
+    sv: media
+  VHA:
+    en: air/space vehicle
+    fi: ilma- tai avaruusalus
+    sv: luft-/rymdfarkost
+  VHG:
+    en: land vehicle
+    fi: maa-alus
+    sv: fordon
+  VHW:
+    en: water vehicle
+    fi: vesialus
+    sv: fartyg
+  VLM:
+    en: volume
+    fi: tilavuus
+    sv: volym
+  WAE:
+    en: opera/theater play/symphony
+    fi: näytelmä tai musiikkiteos
+    sv: opera/teaterpjäs/symfoni
+  WAO:
+    en: physical work or art
+    fi: taideteos
+    sv: fysiskt verk eller konst
+  WEB:
+    en: web
+    fi: WWW
+    sv: webb
+  WMD:
+    en: written media
+    fi: kirjoitettu
+    sv: skriven media
+  WMU:
+    en: weight or mass unit
+    fi: paino
+    sv: vikt- eller massaenhet
+  WRT:
+    en: written material
+    fi: kirjallinen
+    sv: skrivet material
+  WTH:
+    en: natural
+    fi: luonnon
+    sv: natur
+  XXX:
+    en: other
+    fi: muu
+    sv: annat

@@ -1,0 +1,83 @@
+id: ylilauta
+title: Ylilauta
+description: Ylilauta
+metadata_urn: urn:nbn:fi:lb-2015031802
+urn: urn:nbn:fi:lb-2015031802
+licence:
+  name: CC BY-NC (PUB)
+  description: Creative Commons Attribution-NonCommercial
+  urn: urn:nbn:fi:lb-2021120227
+cite_id: Ylilauta
+homepage_url: https://ylilauta.org
+mode:
+- name: default
+  folder: cmc
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- lemma: baseform
+- lemmacomp: baseform_compound
+- pos: pos_klk
+- msd: msd
+- dephead: dephead
+- deprel: deprel_tdt
+- ref: ref
+- lex:
+    label:
+      eng: lemgram
+      fin: lemgrammi
+      swe: lemgram
+    type: set
+    display_type: hidden
+    order: 6
+- nertag: ner_tags
+struct_attributes:
+- text_title:
+    label:
+      eng: title
+      fin: otsikko
+      swe: titel
+    extended_component: structServiceAutocomplete
+    order: 1
+- text_date:
+    label:
+      eng: date
+      fin: päiväys
+      swe: datum
+    order: 2
+- text_clock:
+    label:
+      eng: time
+      fin: kellonaika
+      swe: tid
+    order: 3
+- text_sec:
+    label:
+      eng: section
+      fin: pääaihealue
+      swe: suomi24fi_sect
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: structServiceSelect
+    order: 4

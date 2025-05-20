@@ -1,0 +1,139 @@
+id: s24
+title: Suomi24 2001–2014 (näyte)
+description: Suomi24-keskusteluja 2001–2014 (näyte).<br/>Tämä korpus sisältää osan
+  <a href='http://keskustelu.suomi24.fi' target='_blank'>Suomi24-keskustelupalvelun</a>
+  keskusteluista vuosilta 2001–2014; kaikki keskustelut (myös tämän korpuksen sisältämät)
+  sisältyvät korpukseen <i>Suomi24</i>.<br/>(Tämä korpus näkyi aiemmin nimellä <i>Suomi24</i>.)
+metadata_urn: urn:nbn:fi:lb-2016050901
+urn: urn:nbn:fi:lb-2015113001
+licence:
+  name: CC BY-NC 4.0 (PUB)
+  urn: urn:nbn:fi:lb-2022021922
+cite_id: Suomi24-2001-2014-korp
+homepage_url: http://keskustelu.suomi24.fi
+mode:
+- name: default
+  folder: cmc
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- lemma: baseform
+- lemmacomp: baseform_compound
+- pos: pos_klk
+- msd: msd
+- dephead: dephead
+- deprel: deprel_tdt
+- ref: ref
+- lex:
+    label:
+      eng: lemgram
+      fin: lemgrammi
+      swe: lemgram
+    type: set
+    display_type: hidden
+    order: 6
+- nertag: ner_tags
+struct_attributes:
+- text_title:
+    label:
+      eng: title
+      fin: otsikko
+      swe: titel
+    extended_component: structServiceAutocomplete
+    order: 1
+- text_date:
+    label:
+      eng: date
+      fin: päiväys
+      swe: datum
+    order: 2
+- text_time:
+    label:
+      eng: time
+      fin: kellonaika
+      swe: tid
+    order: 3
+- text_sect:
+    label:
+      eng: section
+      fin: pääaihealue
+      swe: suomi24fi_sect
+    extended_component: structServiceAutocomplete
+    order: 4
+- text_sub:
+    label:
+      eng: subsection
+      fin: aihealueen tarkennus
+      swe: suomi24fi_sub
+    extended_component: structServiceAutocomplete
+    order: 5
+- text_user:
+    label:
+      eng: username
+      fin: nimimerkki
+      swe: suomi24fi_user
+    order: 6
+- sentence_id:
+    label:
+      eng: sentence identifier
+      fin: virkkeen tunniste
+      swe: sentence_id
+    display_type: hidden
+    order: 9
+- text_urlmsg:
+    label:
+      eng: original message
+      fin: alkuperäinen viesti
+      swe: suomi24fi_urlmsg
+    type: urlPattern
+    display_type: hidden
+    pattern: <a href="<%= val %>" class="exturl sidebar_link" target="_blank"><span
+      rel="localize[suomi24fi_urlmsg]"></span></a>
+    hide_compare: true
+    hide_extended: true
+    hide_statistics: true
+    order: 7
+    sidebar_hide_label: true
+    url_opts:
+      hideUrl: true
+      inLinkSection: true
+      newWindow: true
+- text_urlboard:
+    label:
+      eng: original thread
+      fin: alkuperäinen keskustelu
+      swe: suomi24fi_urlboard
+    type: urlPattern
+    display_type: hidden
+    pattern: <a href="<%= val %>" class="exturl sidebar_link" target="_blank"><span
+      rel="localize[suomi24fi_urlboard]"></span></a>
+    hide_compare: true
+    hide_extended: true
+    hide_statistics: true
+    order: 8
+    sidebar_hide_label: true
+    url_opts:
+      hideUrl: true
+      inLinkSection: true
+      newWindow: true
+group_page_urn: urn:nbn:fi:lb-2022011221

@@ -1,0 +1,70 @@
+id: skk_lehtonen
+title: Lehtonen
+description: Joel Lehtosen teoksia vuosilta 1911–1934.
+metadata_urn: urn:nbn:fi:lb-20140730186
+urn: urn:nbn:fi:lb-2015022401
+licence:
+  name: EUPL v. 1.2
+  description: Euroopan unionin yleinen lisenssi v. 1.2 (EUPL)
+  urn: urn:nbn:fi:lb-2024082002
+cite_id: SKK
+homepage:
+  name: Kokoelman etusivu
+  no_label: true
+  url: http://kaino.kotus.fi/korpus/klassikot/meta/klassikot_coll_rdf.xml
+mode:
+- name: default
+  folder: literary.skk
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes: []
+struct_attributes:
+- sentence_type:
+    label:
+      eng: type of sentence
+      fin: virkkeen tyyppi
+      swe: meningens typ
+    extended_component: datasetSelect
+    dataset:
+      head: head
+      speaker: speaker
+      stage: stage
+      stanza: stanza
+      text: text
+    order: 5
+- text_author:
+    label:
+      eng: author
+      fin: tekijä
+      swe: författare
+    order: 1
+- text_title:
+    label:
+      eng: title
+      fin: otsikko
+      swe: titel
+    extended_component: structServiceAutocomplete
+    order: 2
+- text_distributor:
+    label:
+      eng: text_distributor
+      fin: text_distributor
+      swe: text_distributor
+    display_type: hidden
+    order: 3
+- text_source:
+    label:
+      eng: text_source
+      fin: lähdelinkki
+      swe: text_source
+    order: 4

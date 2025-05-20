@@ -1,0 +1,13 @@
+label:
+  eng: baseform (compound boundaries)
+  fin: perusmuoto (yhdyssanarajat)
+  swe: grundform (sammansättningsgränser)
+opts:
+  contains: _=
+  ends_with: '&='
+  is: '='
+  is_not: '!='
+  matches: '*='
+  matches_not: '!*='
+  starts_with: ^=
+order: 1

@@ -1,0 +1,54 @@
+label:
+  eng: named entity type
+  fin: nimen tyyppi
+  swe: namntyp
+is_struct_attr: true
+extended_component: datasetSelect
+dataset:
+- LOC
+- PRS
+- ORG
+- EVT
+- PRO
+- MSR
+- TME
+translation:
+  EVN:
+    en: event name
+    fi: tapahtuman nimi
+    sv: händelsenamn
+  EVT:
+    en: event name
+    fi: tapahtuman nimi
+    sv: händelsenamn
+  LOC:
+    en: location name
+    fi: paikannimi
+    sv: platsnamn
+  MSR:
+    en: measure name
+    fi: mitta
+    sv: måttnamn
+  OBJ:
+    en: product name
+    fi: tavaran nimi
+    sv: objektnamn
+  ORG:
+    en: organization name
+    fi: organisaation nimi
+    sv: organisationsnamn
+  PRO:
+    fi: tuotteen nimi
+    sv: produktnamn
+  PRS:
+    en: person name
+    fi: henkilönnimi
+    sv: personnamm
+  TME:
+    en: time
+    fi: aika
+    sv: tid
+  WRK:
+    en: work or art name
+    fi: teoksen nimi
+    sv: verks- eller konstnamn

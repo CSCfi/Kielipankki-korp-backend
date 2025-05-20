@@ -1,0 +1,474 @@
+id: kildin_sample
+title: Kildin Saami (sample)
+description: A test sample of the Corpus of Written Kildin Saami (2015)
+metadata_urn: urn:nbn:fi:lb-2015102001
+licence:
+  name: CC BY (PUB)
+  description: Creative Commons Attribution
+  urn: urn:nbn:fi:lb-2021120223
+mode:
+- name: other_languages
+  folder: uralic
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+pos_attributes: []
+struct_attributes:
+- text_style:
+    label:
+      eng: style
+      fin: style
+      swe: style
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - fiction
+    - non-fiction
+    translation:
+      fiction:
+        en: fiction
+      non-fiction:
+        en: non-fiction
+    order: 1
+- text_medium:
+    label:
+      eng: medium
+      fin: medium
+      swe: medium
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - book
+    - periodical
+    - internet
+    translation:
+      book:
+        en: book
+      internet:
+        en: Internet
+      periodical:
+        en: periodical
+    order: 2
+- text_language:
+    label:
+      eng: language
+      fin: kieli
+      swe: språk
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - sjd
+    translation:
+      deu:
+        en: German
+        fi: saksa
+        sv: tyska
+      dut:
+        en: Dutch
+        fi: hollanti
+        sv: nederländska
+      ell:
+        en: Greek
+        fi: kreikka
+        sv: grekiska
+      eng:
+        en: English
+        fi: englanti
+        sv: engelska
+      est:
+        en: Estonian
+        fi: viro
+        sv: estniska
+      fin:
+        en: Finnish
+        fi: suomi
+        sv: finska
+      fra:
+        en: French
+        fi: ranska
+        sv: franska
+      fre:
+        en: French
+        fi: ranska
+        sv: franska
+      ger:
+        en: German
+        fi: saksa
+        sv: tyska
+      gre:
+        en: Greek
+        fi: kreikka
+        sv: grekiska
+      heb:
+        en: Hebrew
+        fi: heprea
+        sv: hebreiska
+      hun:
+        en: Hungarian
+        fi: unkari
+        sv: ungerska
+      izh:
+        fi: inkeroinen
+      kca:
+        fi: hanti
+      kpv:
+        en: Komi-Zyrian
+        fi: komisyrjääni
+        sv: komi
+      lat:
+        en: Latin
+        fi: latina
+        sv: latin
+      mdf:
+        en: Moksha
+        fi: mokša
+        sv: moksja
+      mns:
+        fi: mansi
+      mrj:
+        fi: länsimari
+      myv:
+        en: Erzya
+        fi: ersä
+        sv: erzia
+      nld:
+        en: Dutch
+        fi: hollanti
+        sv: nederländska
+      nor:
+        en: Norwegian
+        fi: norja
+        sv: norska
+      rus:
+        en: Russian
+        fi: venäjä
+        sv: ryska
+      sel:
+        fi: selkuppi
+      sjd:
+        fi: kiltinänsaame
+      sms:
+        fi: koltansaame
+      spa:
+        en: Spanish
+        fi: espanja
+        sv: spanska
+      swe:
+        en: Swedish
+        fi: ruotsi
+        sv: svenska
+      vep:
+        fi: vepsä
+      xxx:
+        en: unidentified
+        fi: tunnistamaton
+        sv: oidentifierat
+      yrk:
+        fi: tundranenetsi
+    order: 3
+- text_author:
+    label:
+      eng: author
+      fin: tekijä
+      swe: författare
+    order: 4
+- text_annotator:
+    label:
+      eng: annotator
+      fin: annotator
+      swe: annotator
+    order: 5
+- text_translator:
+    label:
+      eng: translator
+      fin: kääntäjä
+      swe: översättare
+    order: 6
+- text_source:
+    label:
+      eng: source
+      fin: lähde
+      swe: källa
+    order: 7
+- text_place:
+    label:
+      eng: place
+      fin: place
+      swe: plats
+    order: 8
+- text_modus:
+    label:
+      eng: modus
+      fin: text_modus
+      swe: text_modus
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - written
+    translation:
+      written:
+        en: written
+    order: 9
+- text_year:
+    label:
+      eng: year
+      fin: vuosi
+      swe: år
+    order: 10
+- text_genre:
+    label:
+      eng: genre
+      fin: tekstilaji
+      swe: genre
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - biography
+    - novel
+    - story
+    translation:
+      academic:
+        en: academic
+        fi: tieteellinen teksti
+      biography:
+        en: biography
+      blog:
+        en: blog
+        fi: blogi
+      fiction:
+        en: fiction
+        fi: kaunokirjallisuus
+      general:
+        en: general
+        fi: yleinen
+      newspaper:
+        en: newspaper
+        fi: sanomalehti
+      non-fiction_book:
+        en: non-fiction book
+        fi: tietokirjallisuus
+      novel:
+        en: novel
+      popular_magazine:
+        en: popular magazine
+        fi: aikakauslehti
+      spoken:
+        en: spoken
+        fi: puhe
+      story:
+        en: story
+    order: 11
+- text_session_name:
+    label:
+      eng: session name
+      fin: session_name
+      swe: session_name
+    order: 12
+- text_session_title:
+    label:
+      eng: session title
+      fin: session_title
+      swe: session_title
+    order: 13
+- text_channel:
+    label:
+      eng: channel
+      fin: channel
+      swe: channel
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - original
+    - translation
+    translation:
+      translation:
+        en: translation
+      original:
+        en: original
+    order: 14
+- text_editor:
+    label:
+      eng: editor
+      fin: editor
+      swe: redaktör
+    order: 15
+- sentence_orth_orig:
+    label:
+      eng: original orthography
+      fin: orig_orthography
+      swe: orig_orthography
+    order: 16
+- sentence_transl:
+    label:
+      eng: translation
+      fin: käännös
+      swe: translation
+    order: 17
+- sentence_transl_lang:
+    label:
+      eng: translation language
+      fin: translation_lang
+      swe: translation_lang
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - eng
+    - rus
+    - sms
+    - kpv
+    translation:
+      deu:
+        en: German
+        fi: saksa
+        sv: tyska
+      dut:
+        en: Dutch
+        fi: hollanti
+        sv: nederländska
+      ell:
+        en: Greek
+        fi: kreikka
+        sv: grekiska
+      eng:
+        en: English
+        fi: englanti
+        sv: engelska
+      est:
+        en: Estonian
+        fi: viro
+        sv: estniska
+      fin:
+        en: Finnish
+        fi: suomi
+        sv: finska
+      fra:
+        en: French
+        fi: ranska
+        sv: franska
+      fre:
+        en: French
+        fi: ranska
+        sv: franska
+      ger:
+        en: German
+        fi: saksa
+        sv: tyska
+      gre:
+        en: Greek
+        fi: kreikka
+        sv: grekiska
+      heb:
+        en: Hebrew
+        fi: heprea
+        sv: hebreiska
+      hun:
+        en: Hungarian
+        fi: unkari
+        sv: ungerska
+      izh:
+        fi: inkeroinen
+      kca:
+        fi: hanti
+      kpv:
+        en: Komi-Zyrian
+        fi: komisyrjääni
+        sv: komi
+      lat:
+        en: Latin
+        fi: latina
+        sv: latin
+      mdf:
+        en: Moksha
+        fi: mokša
+        sv: moksja
+      mns:
+        fi: mansi
+      mrj:
+        fi: länsimari
+      myv:
+        en: Erzya
+        fi: ersä
+        sv: erzia
+      nld:
+        en: Dutch
+        fi: hollanti
+        sv: nederländska
+      nor:
+        en: Norwegian
+        fi: norja
+        sv: norska
+      rus:
+        en: Russian
+        fi: venäjä
+        sv: ryska
+      sel:
+        fi: selkuppi
+      sjd:
+        fi: kiltinänsaame
+      sms:
+        fi: koltansaame
+      spa:
+        en: Spanish
+        fi: espanja
+        sv: spanska
+      swe:
+        en: Swedish
+        fi: ruotsi
+        sv: svenska
+      vep:
+        fi: vepsä
+      xxx:
+        en: unidentified
+        fi: tunnistamaton
+        sv: oidentifierat
+      yrk:
+        fi: tundranenetsi
+    order: 18
+- sentence_paragraph_boundary:
+    label:
+      eng: place in paragraph
+      fin: in_paragraph
+      swe: in_paragraph
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+      ? ''
+      : middle
+      begin: begin
+      begin+end: lone
+      end: end
+    translation:
+      begin:
+        en: begin
+      end:
+        en: end
+      lone:
+        en: lone sentence
+      middle:
+        en: middle
+    order: 19

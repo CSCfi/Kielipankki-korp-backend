@@ -1,0 +1,5 @@
+label:
+  eng: dephead (UD1)
+  fin: pääsanan numero (UD1)
+  swe: dephead (UD1)
+display_type: hidden

@@ -1,0 +1,124 @@
+id: semfinlex_asd_fi_2018
+title: Alkuperäisiä säädöksiä
+description: Eduskunnan alkuperäisiä säädöksiä vuosilta 1734, 1868, 1889, 1895, 1896,
+  1898, 1901, 1906, 1907 ja 1917–2018.
+lang: fin
+metadata_urn: urn:nbn:fi:lb-2020052701
+urn: urn:nbn:fi:lb-2020052702
+licence:
+  name: CC BY (PUB)
+  description: Creative Commons Attribution
+  urn: urn:nbn:fi:lb-2021120223
+cite_id: semfinlex
+mode:
+- name: default
+  folder: legal.semfinlex
+context:
+- label:
+    eng: 1 sentence
+    fin: 1 sentence
+    swe: 1 sentence
+  value: 1 sentence
+- label:
+    eng: 1 paragraph
+    fin: 1 paragraph
+    swe: 1 paragraph
+  value: 1 paragraph
+within:
+- label:
+    eng: sentence
+    fin: virke
+    swe: mening
+  value: sentence
+- label:
+    eng: paragraph
+    fin: kappale
+    swe: stycke
+  value: paragraph
+pos_attributes:
+- lemma: baseform
+- lemmacomp: baseform_compound
+- pos: pos_klk
+- msd: msd
+- dephead: dephead
+- deprel: deprel_tdt
+- ref: ref
+- lex:
+    label:
+      eng: lemgram
+      fin: lemgrammi
+      swe: lemgram
+    type: set
+    display_type: hidden
+    order: 6
+struct_attributes:
+- text_url:
+    label:
+      eng: URL
+      fin: URL
+      swe: URL
+    type: urlPattern
+    display_type: hidden
+    pattern: <a href="<%= val %>" class="exturl sidebar_link" target="_blank"><span
+      rel="localize[URL]"></span></a>
+    hide_compare: true
+    hide_extended: true
+    hide_statistics: true
+    order: 1
+    sidebar_hide_label: true
+    url_opts:
+      hideUrl: true
+      inLinkSection: true
+      newWindow: true
+- text_parl_statute_type:
+    label:
+      eng: parl_statute_type
+      fin: säädöstyyppi
+      swe: författningstyp
+    opts:
+      is: '='
+      is_not: '!='
+    extended_component: datasetSelect
+    dataset:
+    - laki
+    - asetus
+    - paatos
+    - ilmoitus
+    - tyojarjestys
+    - kirje
+    - luettelo
+    - kuulutus
+    - kaari
+    - ''
+    translation:
+      ? ''
+      : fi: ei tiedossa
+        sv: ''
+      asetus:
+        fi: asetus
+        sv: förordning
+      ilmoitus:
+        fi: ilmoitus
+        sv: meddelande
+      kaari:
+        fi: kaari
+        sv: balk
+      kirje:
+        fi: kirje
+        sv: brev
+      kuulutus:
+        fi: kuulutus
+        sv: kungörelse
+      laki:
+        fi: laki
+        sv: lag
+      luettelo:
+        fi: luettelo
+        sv: förteckning
+      paatos:
+        fi: päätös
+        sv: beslut
+      tyojarjestys:
+        fi: työjärjestys
+        sv: arbetsordning
+    order: 2

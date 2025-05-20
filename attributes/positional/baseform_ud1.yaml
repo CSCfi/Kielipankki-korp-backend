@@ -1,0 +1,15 @@
+label:
+  eng: base form (UD1)
+  fin: perusmuoto (UD1)
+  swe: grundform (UD1)
+opts:
+  contains: _=
+  ends_with: '&='
+  is: '='
+  is_not: '!='
+  matches: '*='
+  matches_not: '!*='
+  starts_with: ^=
+order: 16
+stats_cqp: cqpPlainWordAttr
+stats_stringify: stringifyPlainWordAttr
