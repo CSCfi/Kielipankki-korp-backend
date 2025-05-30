@@ -2,6 +2,7 @@ label:
   eng: Parallel
   fin: Rinnakkaistekstit
   swe: Parallella
+order: 4
 folders:
   legal:
     title: Juridisia aineistoja / Juridiska korpusar / Legal texts

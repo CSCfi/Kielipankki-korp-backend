@@ -2,6 +2,7 @@ label:
   eng: Other languages
   fin: Muut kielet
   swe: Andra språk
+order: 3
 folders:
   cuneiform:
     title: Cuneiform / Nuolenpääkirjoitus

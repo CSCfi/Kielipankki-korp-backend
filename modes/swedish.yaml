@@ -2,6 +2,7 @@ label:
   eng: Swedish
   fin: Ruotsi
   swe: Svenska
+order: 2
 folders:
   academic:
     title: Akademiska texter

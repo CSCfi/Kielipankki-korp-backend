@@ -2,6 +2,7 @@ label:
   eng: Finnish
   fin: Suomi
   swe: Finska
+order: 1
 folders:
   academic:
     title: Akateemisia tekstejä
