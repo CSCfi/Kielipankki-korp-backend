@@ -3393,12 +3393,12 @@ def runCQP(command, form, executable=config.CQP_EXECUTABLE, registry=config.CWB_
     reply, error = process.communicate(command)
     if error and errors != "ignore":
         # remove newlines from the error string:
-        error = re.sub(r"\s+", r" ", error)
+        error = re.sub(r"\s+", r" ", error.decode(encoding, errors="ignore"))
         if errors == "report":
             # Each error on its own line beginning with "CQP Error"
             # (Jyrki Niemi 2017-12-13)
             error = re.sub(r" +(CQP Error: *)", r"\n\1", error)
-            for line in error.decode(encoding, errors="ignore").splitlines():
+            for line in error.splitlines():
                 yield line
         else:
             # keep only the first CQP error (the rest are consequences):
