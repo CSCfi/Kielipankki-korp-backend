@@ -26,3 +26,20 @@ def make_liststr(arg):
         return arg
     else:
         return QUERY_DELIM.join(arg)
+
+
+def get_info_value(key, lines):
+    """Return value for key in lines (sequence of strings).
+
+    For the first line in lines that starts with key followed by a
+    colon, return the value after the colon, with leading and trailing
+    spaces stripped.
+
+    This function can be used to get the value of key from a corpus
+    .info file or from the corresponding output of the CQP "info"
+    command.
+    """
+    for line in lines:
+        if line.strip().startswith(f"{key}:"):
+            return line.partition(":")[2].strip()
+    return None
