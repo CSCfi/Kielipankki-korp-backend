@@ -14,6 +14,7 @@ from pathlib import Path
 from shutil import copytree
 
 from korp import create_app
+from tests.configutils import get_korp_config
 from tests.corpusutils import CWBEncoder
 from tests.dbutils import KorpDatabase
 
@@ -61,6 +62,17 @@ def corpus_config_dir(tmp_path_factory):
     """Return a corpus configuration directory."""
     # Should this fixture have a non-default scope (session?)?
     return tmp_path_factory.mktemp("corpus-config")
+
+
+@pytest.fixture()
+def korp_config():
+    """Return the Korp configuration as a `flask.config.Config` object.
+
+    Return the Korp configuration from module `instance.config`, with
+    defaults from module `config` for variables not defined in
+    `instance.config`.
+    """
+    return get_korp_config()
 
 
 @pytest.fixture(scope="session")
