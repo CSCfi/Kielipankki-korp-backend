@@ -34,12 +34,18 @@ DBPORT = 3306
 # Database name
 DBNAME = ""
 
+# Database character set (use "utf8mb4" for full Unicode)
+DBCHARSET = "utf8"
+
 # Word Picture table prefix
 DBWPTABLE = "relations"
 
 # Username and password for database access
 DBUSER = ""
 DBPASSWORD = ""
+
+# HTTP Cache-Control header max-age value (in hours)
+HTTP_CACHE_MAXAGE = 1
 
 # Cache path (optional). Script must have read and write access.
 CACHE_DIR = ""

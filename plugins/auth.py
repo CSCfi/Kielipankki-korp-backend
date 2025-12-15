@@ -14,7 +14,7 @@ bp = utils.Plugin("authenticate", __name__)
 
 
 @bp.route("/authenticate", methods=["GET", "POST"])
-@utils.main_handler
+@utils.main_handler(cache=False)
 def authenticate(_=None):
     """Authenticate a user against an authentication server."""
 
@@ -52,7 +52,7 @@ def authenticate(_=None):
     yield {}
 
 
-class SBAuth(utils.Authorizer):
+class Auth(utils.Authorizer):
 
     def __init__(self):
         self._protected = []

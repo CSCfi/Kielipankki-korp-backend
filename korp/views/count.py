@@ -1,11 +1,11 @@
 import itertools
+import re
 from collections import defaultdict
 from concurrent import futures
 from concurrent.futures import ThreadPoolExecutor
 
 from dateutil.relativedelta import relativedelta
-from flask import Blueprint, request
-from flask import current_app as app
+from flask import Blueprint, request, current_app as app
 from pymemcache.exceptions import MemcacheError
 
 from korp import utils
@@ -100,6 +100,8 @@ def count(args, abort_event=None):
     debug = {}
     zero_hits = []
     read_from_cache = 0
+    ns = utils.Namespace()
+    ns.total_size = 0
 
     if args["cache"]:
         # Use cache to skip corpora with zero hits
@@ -120,15 +122,13 @@ def count(args, abort_event=None):
             read_from_cache += 1
             if nr_hits == 0:
                 zero_hits.append(memcached_keys[key])
+                ns.total_size += cached_size[key][1]
 
         if "debug" in args:
             debug["cache_coverage"] = "%d/%d" % (read_from_cache, len(corpora))
 
     total_stats = [{"rows": defaultdict(lambda: {"absolute": 0, "relative": 0.0}),
                     "sums": {"absolute": 0, "relative": 0.0}} for _ in range(len(subcqp) + 1)]
-
-    ns = utils.Namespace()  # To make variables writable from nested functions
-    ns.total_size = 0
 
     if relative_to:
         relative_args = {
@@ -675,7 +675,7 @@ def count_query_worker(corpus, cqp, group_by, within, ignore_case=(), cut=None, 
     cmd += ["info; .EOL.;"]
 
     # TODO: Match targets in a better way
-    has_target = any("@[" in x for x in cqp)
+    has_target = any(re.search(r"(?:^|[ ()\]])@(?:\w+:)?\[", x) for x in cqp)
 
     cmd += ["""tabulate Last %s > "| sort | uniq -c | sort -nr";""" % ", ".join("%s %s%s" % (
         "target" if has_target else ("match" if g[1] else "match .. matchend"), g[0],

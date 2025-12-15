@@ -14,16 +14,16 @@ from korp.pluginlib import load_plugins, register_subclass_plugins
 __version__ = "8.2.5"
 
 
-def create_app():
+def create_app(config_override=None):
     """Application factory, creating and configuring the Flask app."""
 
     app = Flask(__name__)
 
-    # Enable CORS
-    CORS(app, supports_credentials=True)
-
     # Load default config
     app.config.from_object("config")
+
+    # Enable CORS, with support for credentials and an Access-Control-Max-Age (for preflight requests) of 1 hour
+    CORS(app, supports_credentials=True, max_age=app.config["HTTP_CACHE_MAXAGE"] * 3600)
 
     # Overwrite with instance config
     instance_config_path = Path(app.instance_path) / "config.py"
@@ -31,6 +31,9 @@ def create_app():
         app.config.from_pyfile(str(instance_config_path))
     else:
         print(f"Configure Korp by copying config.py to '{app.instance_path}' and modifying that copy")
+
+    if config_override is not None:
+        app.config.update(config_override)
 
     cwb.init(
         executable=app.config["CQP_EXECUTABLE"],
@@ -47,6 +50,7 @@ def create_app():
         MYSQL_PASSWORD=app.config["DBPASSWORD"],
         MYSQL_DB=app.config["DBNAME"],
         MYSQL_PORT=app.config["DBPORT"],
+        MYSQL_CHARSET=app.config["DBCHARSET"],
         MYSQL_USE_UNICODE=True,
         MYSQL_CURSORCLASS="DictCursor",
     )

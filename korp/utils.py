@@ -17,8 +17,8 @@ from typing import List, Tuple, Optional, Union, Dict
 from flask import Response, request, copy_current_request_context, stream_with_context, make_response
 from flask import current_app as app
 from flask.blueprints import Blueprint
+from gevent import spawn
 from gevent.queue import Queue, Empty
-from gevent.threadpool import ThreadPool
 from gevent.event import Event
 
 from korp.db import mysql
@@ -45,7 +45,7 @@ authorizer: Optional["BaseAuthorizer"] = None
 protected_corpora_getter: Optional["ProtectedCorporaGetter"] = None
 
 
-def main_handler(generator):
+def main_handler(_generator=None, *, cache: bool = True):
     """Decorator wrapping all WSGI endpoints, handling errors and formatting.
 
     Global parameters are
@@ -54,189 +54,208 @@ def main_handler(generator):
      - indent: pretty-print the result with a specific indentation
      - debug: if set, return some extra information (for debugging)
     """
-    @functools.wraps(generator)  # Copy original function's information, needed by Flask
-    def decorated(args=None, *pargs, **kwargs):
-        internal = args is not None
-        if not internal:
-            if request.is_json:
-                args = request.get_json()
+    def decorator(generator):
+        @functools.wraps(generator)  # Copy original function's information, needed by Flask
+        def decorated(args=None, *pargs, **kwargs):
+            internal = args is not None
+            if not internal:
+                if request.is_json:
+                    args = request.get_json()
+                else:
+                    args = request.values.to_dict()
+
+            args["internal"] = internal
+
+            if not isinstance(args.get("cache"), bool):
+                args["cache"] = bool(not app.config["CACHE_DISABLED"] and
+                                     not args.get("cache", "").lower() == "false" and
+                                     app.config["CACHE_DIR"] and os.path.exists(app.config["CACHE_DIR"]) and
+                                     app.config["MEMCACHED_SERVER"])
+
+            if internal:
+                # Function is internally used
+                return generator(args, *pargs, **kwargs)
             else:
-                args = request.values.to_dict()
+                # Function is called externally
+                plugin_caller = CallbackPluginCaller()
+                def error_handler():
+                    """Format exception info for output to user."""
+                    exc = sys.exc_info()
+                    if isinstance(exc[1], CustomTracebackException):
+                        exc = exc[1].exception
+                    error = {"ERROR": {"type": exc[0].__name__,
+                                       "value": str(exc[1])
+                                       }}
+                    if "debug" in args:
+                        error["ERROR"]["traceback"] = "".join(traceback.format_exception(*exc)).splitlines()
+                    plugin_caller.raise_event("error", error, exc)
+                    return error
 
-        args["internal"] = internal
+                def incremental_json(ff):
+                    """Incrementally yield result as JSON."""
+                    result_len = 0
+                    if callback:
+                        result_len += len(callback) + 1
+                        yield callback + "("
+                    result_len += 2
+                    yield "{\n"
 
-        if not isinstance(args.get("cache"), bool):
-            args["cache"] = bool(not app.config["CACHE_DISABLED"] and
-                                 not args.get("cache", "").lower() == "false" and
-                                 app.config["CACHE_DIR"] and os.path.exists(app.config["CACHE_DIR"]) and
-                                 app.config["MEMCACHED_SERVER"])
+                    try:
+                        for response in ff:
+                            if not response:
+                                # Yield whitespace to prevent timeout
+                                result_len += 2
+                                yield " \n"
+                            else:
+                                response = plugin_caller.filter_value(
+                                    "filter_result", response)
+                                output = json.dumps(response)[1:-1] + ",\n"
+                                result_len += len(output)
+                                yield output
+                    except GeneratorExit:
+                        raise
+                    except:
+                        error = error_handler()
+                        output = json.dumps(error)[1:-1] + ",\n"
+                        result_len += len(output)
+                        yield output
 
-        if internal:
-            # Function is internally used
-            return generator(args, *pargs, **kwargs)
-        else:
-            # Function is called externally
-            plugin_caller = CallbackPluginCaller()
-            def error_handler():
-                """Format exception info for output to user."""
-                exc = sys.exc_info()
-                if isinstance(exc[1], CustomTracebackException):
-                    exc = exc[1].exception
-                error = {"ERROR": {"type": exc[0].__name__,
-                                   "value": str(exc[1])
-                                   }}
-                if "debug" in args:
-                    error["ERROR"]["traceback"] = "".join(traceback.format_exception(*exc)).splitlines()
-                plugin_caller.raise_event("error", error, exc)
-                return error
-
-            def incremental_json(ff):
-                """Incrementally yield result as JSON."""
-                result_len = 0
-                if callback:
-                    result_len += len(callback) + 1
-                    yield callback + "("
-                result_len += 2
-                yield "{\n"
-
-                try:
-                    for response in ff:
-                        if not response:
-                            # Yield whitespace to prevent timeout
-                            result_len += 2
-                            yield " \n"
-                        else:
-                            response = plugin_caller.filter_value(
-                                "filter_result", response)
-                            output = json.dumps(response)[1:-1] + ",\n"
-                            result_len += len(output)
-                            yield output
-                except GeneratorExit:
-                    raise
-                except:
-                    error = error_handler()
-                    output = json.dumps(error)[1:-1] + ",\n"
+                    endtime = time.time()
+                    elapsed_time = endtime - starttime
+                    output = json.dumps({"time": elapsed_time})[1:] + "\n"
                     result_len += len(output)
                     yield output
+                    if callback:
+                        result_len += 1
+                        yield ")"
+                    plugin_caller.raise_event(
+                        "exit_handler", endtime, elapsed_time, result_len)
+                    plugin_caller.cleanup()
 
-                endtime = time.time()
-                elapsed_time = endtime - starttime
-                output = json.dumps({"time": elapsed_time})[1:] + "\n"
-                result_len += len(output)
-                yield output
-                if callback:
-                    result_len += 1
-                    yield ")"
-                plugin_caller.raise_event(
-                    "exit_handler", endtime, elapsed_time, result_len)
-                plugin_caller.cleanup()
+                def full_json(ff):
+                    """Yield full JSON at the end, but until then keep returning newlines to prevent timeout."""
+                    result = {}
 
-            def full_json(ff):
-                """Yield full JSON at the end, but until then keep returning newlines to prevent timeout."""
-                result = {}
+                    try:
+                        for response in ff:
+                            if not response:
+                                # Yield whitespace to prevent timeout
+                                yield " \n"
+                            else:
+                                result.update(response)
+                    except GeneratorExit:
+                        raise
+                    except:
+                        result = error_handler()
 
-                try:
-                    for response in ff:
-                        if not response:
-                            # Yield whitespace to prevent timeout
-                            yield " \n"
-                        else:
-                            result.update(response)
-                except GeneratorExit:
-                    raise
-                except:
-                    result = error_handler()
+                    endtime = time.time()
+                    elapsed_time = endtime - starttime
+                    result["time"] = elapsed_time
 
-                endtime = time.time()
-                elapsed_time = endtime - starttime
-                result["time"] = elapsed_time
+                    result = plugin_caller.filter_value("filter_result", result)
 
-                result = plugin_caller.filter_value("filter_result", result)
+                    if callback:
+                        result = callback + "(" + json.dumps(result, indent=indent) + ")"
+                    else:
+                        result = json.dumps(result, indent=indent)
+                    plugin_caller.raise_event(
+                        "exit_handler", endtime, elapsed_time, len(result))
+                    yield result
+                    plugin_caller.cleanup()
 
-                if callback:
-                    result = callback + "(" + json.dumps(result, indent=indent) + ")"
+                def make_custom_response(ff):
+                    """Return a Response with custom mimetype and/or headers.
+
+                    The view function ff should yield a dict with the
+                    following keys recognized:
+                    - "response" (alias "body", "content"): the actual
+                      content (response body);
+                    - "mimetype" (default: "text/html"): possible MIME type;
+                    - "content_type": full content type including charset
+                      (overrides "mimetype"); and
+                    - "headers": possible other headers as a list of pairs
+                      (header, value).
+
+                    Note that setting incremental=True does not have any effect.
+                    """
+                    result = {}
+                    try:
+                        for response in ff:
+                            if response:
+                                result.update(response)
+                    except GeneratorExit:
+                        raise
+                    except:
+                        # Return error information as JSON
+                        result["response"] = json.dumps(error_handler(),
+                                                        indent=indent)
+                        result["mimetype"] = "application/json"
+
+                    # Filter only the content. Should we also allow filtering the
+                    # headers and/or mimetype, using separate hook points?
+                    result["content"] = plugin_caller.filter_value(
+                        "filter_result", result["content"])
+
+                    endtime = time.time()
+                    elapsed_time = endtime - starttime
+                    plugin_caller.raise_event(
+                        "exit_handler", endtime, elapsed_time,
+                        len(result["content"]))
+                    plugin_caller.cleanup()
+
+                    body = (result.get("response") or result.get("body")
+                            or result.get("content"))
+                    headers = result.get("headers")
+                    content_type = result.get("content_type")
+                    # content_type overrides mimetype
+                    if content_type:
+                        headers += [("Content-Type", content_type)]
+                        mimetype = None
+                    else:
+                        mimetype = result.get("mimetype")
+                    response = make_response(body, headers)
+                    if mimetype:
+                        response.mimetype = mimetype
+                    return response
+
+                starttime = time.time()
+                plugin_caller.raise_event("enter_handler", args, starttime)
+                args = plugin_caller.filter_value("filter_args", args)
+                incremental = parse_bool(args, "incremental", False)
+                callback = args.get("callback")
+                indent = int(args.get("indent", 0))
+
+                if getattr(generator, "use_custom_headers", None):
+                    # Custom headers and/or MIME type (non-JSON)
+                    response = make_custom_response(generator(args, *pargs, **kwargs))
+                elif incremental:
+                    # Incremental response
+                    response = Response(
+                        stream_with_context(incremental_json(generator(args, *pargs, **kwargs))),
+                        mimetype="application/json",
+                    )
                 else:
-                    result = json.dumps(result, indent=indent)
-                plugin_caller.raise_event(
-                    "exit_handler", endtime, elapsed_time, len(result))
-                yield result
-                plugin_caller.cleanup()
+                    # We still use a streaming response even when non-incremental, to prevent timeouts
+                    response = Response(
+                        stream_with_context(full_json(generator(args, *pargs, **kwargs))), mimetype="application/json"
+                    )
 
-            def make_custom_response(ff):
-                """Return a Response with custom mimetype and/or headers.
-
-                The view function ff should yield a dict with the
-                following keys recognized:
-                - "response" (alias "body", "content"): the actual
-                  content (response body);
-                - "mimetype" (default: "text/html"): possible MIME type;
-                - "content_type": full content type including charset
-                  (overrides "mimetype"); and
-                - "headers": possible other headers as a list of pairs
-                  (header, value).
-
-                Note that setting incremental=True does not have any effect.
-                """
-                result = {}
-                try:
-                    for response in ff:
-                        if response:
-                            result.update(response)
-                except GeneratorExit:
-                    raise
-                except:
-                    # Return error information as JSON
-                    result["response"] = json.dumps(error_handler(),
-                                                    indent=indent)
-                    result["mimetype"] = "application/json"
-
-                # Filter only the content. Should we also allow filtering the
-                # headers and/or mimetype, using separate hook points?
-                result["content"] = plugin_caller.filter_value(
-                    "filter_result", result["content"])
-
-                endtime = time.time()
-                elapsed_time = endtime - starttime
-                plugin_caller.raise_event(
-                    "exit_handler", endtime, elapsed_time,
-                    len(result["content"]))
-                plugin_caller.cleanup()
-
-                body = (result.get("response") or result.get("body")
-                        or result.get("content"))
-                headers = result.get("headers")
-                content_type = result.get("content_type")
-                # content_type overrides mimetype
-                if content_type:
-                    headers += [("Content-Type", content_type)]
-                    mimetype = None
-                else:
-                    mimetype = result.get("mimetype")
-                response = make_response(body, headers)
-                if mimetype:
-                    response.mimetype = mimetype
+                if cache and app.config["HTTP_CACHE_MAXAGE"]:
+                    # Set headers for client-side caching
+                    then = datetime.datetime.now() + datetime.timedelta(hours=app.config["HTTP_CACHE_MAXAGE"])
+                    response.headers.add("Expires", then.strftime("%a, %d %b %Y %H:%M:%S GMT"))
+                    response.headers.add(
+                        "Cache-Control", f"public,max-age={int(3600 * app.config['HTTP_CACHE_MAXAGE'])}"
+                    )
                 return response
+        return decorated
 
-            starttime = time.time()
-            plugin_caller.raise_event("enter_handler", args, starttime)
-            args = plugin_caller.filter_value("filter_args", args)
-            incremental = parse_bool(args, "incremental", False)
-            callback = args.get("callback")
-            indent = int(args.get("indent", 0))
+    # If called as @main_handler without parentheses
+    if _generator is not None:
+        return decorator(_generator)
 
-            if getattr(generator, "use_custom_headers", None):
-                # Custom headers and/or MIME type (non-JSON)
-                return make_custom_response(generator(args, *pargs, **kwargs))
-            elif incremental:
-                # Incremental response
-                return Response(stream_with_context(incremental_json(generator(args, *pargs, **kwargs))),
-                                mimetype="application/json")
-            else:
-                # We still use a streaming response even when non-incremental, to prevent timeouts
-                return Response(stream_with_context(full_json(generator(args, *pargs, **kwargs))),
-                                mimetype="application/json")
-
-    return decorated
+    # If called as @main_handler(...) with parentheses
+    return decorator
 
 
 def prevent_timeout(generator):
@@ -274,8 +293,7 @@ def prevent_timeout(generator):
             except Exception:
                 q.put(sys.exc_info())
 
-        pool = ThreadPool(1)
-        pool.spawn(error_catcher, f, q)
+        worker = spawn(error_catcher, f, q)
 
         while True:
             try:
@@ -298,6 +316,8 @@ def prevent_timeout(generator):
                     if abortable:
                         abort_event.set()
                     raise
+
+        worker.join()
 
     return decorated
 
