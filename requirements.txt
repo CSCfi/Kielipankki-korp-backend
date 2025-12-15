@@ -1,5 +1,5 @@
-Flask==3.1.2
-Flask-Cors==6.0.1
+Flask==2.3.3
+Flask-Cors==4.0.2
 Flask-MySQLdb==1.0.1
 mysqlclient==2.2.7
 gevent==25.5.1
