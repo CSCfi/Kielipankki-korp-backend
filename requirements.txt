@@ -7,4 +7,4 @@ pylibmc==1.6.0
 python-dateutil==2.9.0
 jinja2<3.0
 markupsafe<2.1.0
-itsdangerous<2.1.0
+itsdangerous
