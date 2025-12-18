@@ -9,7 +9,7 @@ from flask import current_app as app
 from pymemcache.exceptions import MemcacheError
 
 from korp import utils
-from korp.db import mysql
+from korp.db import mysql, sql_execute
 from korp.memcached import memcached
 from . import query
 
@@ -43,10 +43,10 @@ def relations(args, abort_event=None):
     result = {}
 
     cursor = mysql.connection.cursor()
-    cursor.execute("SET @@session.long_query_time = 1000;")
+    sql_execute(cursor, "SET @@session.long_query_time = 1000;")
 
     # Get available tables
-    cursor.execute("SHOW TABLES LIKE '" + app.config["DBWPTABLE"] + "_%_strings';")
+    sql_execute(cursor, "SHOW TABLES LIKE '" + app.config["DBWPTABLE"] + "_%_strings';")
     tables = set(list(r.values())[0] for r in cursor)
     # Filter out corpora which don't exist in database
     corpora = [c for c in corpora if app.config["DBWPTABLE"] + "_" + c.upper() + "_strings" in tables]
@@ -167,7 +167,7 @@ def relations(args, abort_event=None):
             for sql in selects:
                 if abort_event and abort_event.is_set():
                     return
-                cursor.execute(sql[1])
+                sql_execute(cursor, sql[1])
                 cursor_result.extend(list(cursor))
                 if sql[0]:
                     yield {"progress_%d" % progress_count: {"corpus": sql[0]}}
@@ -176,7 +176,7 @@ def relations(args, abort_event=None):
             if abort_event and abort_event.is_set():
                 return
             sql = " UNION ALL ".join(f"({x[1]})" for x in selects)
-            cursor.execute(sql)
+            sql_execute(cursor, sql)
             cursor_result = cursor
 
     rels = {}
@@ -296,12 +296,12 @@ def relations_sentences(args):
     querystarttime = time.time()
 
     cursor = mysql.connection.cursor()
-    cursor.execute("SET @@session.long_query_time = 1000;")
+    sql_execute(cursor, "SET @@session.long_query_time = 1000;")
     selects = []
     counts = []
 
     # Get available tables
-    cursor.execute("SHOW TABLES LIKE '" + app.config["DBWPTABLE"] + "_%_strings';")
+    sql_execute(cursor, "SHOW TABLES LIKE '" + app.config["DBWPTABLE"] + "_%_strings';")
     tables = set(list(r.values())[0] for r in cursor)
     # Filter out corpora which doesn't exist in database
     source = sorted(
@@ -344,14 +344,14 @@ def relations_sentences(args):
         )
 
     sql_count = " UNION ALL ".join(counts)
-    cursor.execute(sql_count)
+    sql_execute(cursor, sql_count)
 
     corpus_hits = {}
     for row in cursor:
         corpus_hits[row["corpus"]] = int(row["freq"])
 
     sql = " UNION ALL ".join(selects) + (" LIMIT %d, %d" % (start, end - start + 1))
-    cursor.execute(sql)
+    sql_execute(cursor, sql)
 
     querytime = time.time() - querystarttime
     corpora_dict = {}

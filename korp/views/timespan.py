@@ -7,7 +7,7 @@ from flask import current_app as app
 from pymemcache.exceptions import MemcacheError
 
 from korp import utils
-from korp.db import mysql
+from korp.db import mysql, sql_execute
 from korp.memcached import memcached
 
 bp = Blueprint("timespan", __name__)
@@ -116,7 +116,7 @@ def timespan(args, no_combined_cache=False):
                   str(shorten[granularity]) + ") AS dt, SUM(tokens) AS sum FROM " + timedata_corpus + \
                   " WHERE corpus IN " + corpora_sql + fromto + " GROUP BY corpus, df, dt ORDER BY NULL;"
         cursor = mysql.connection.cursor()
-        cursor.execute(sql)
+        sql_execute(cursor, sql)
     else:
         cursor = tuple()
 

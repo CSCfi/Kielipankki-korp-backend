@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask import current_app as app
 
 from korp import utils
-from korp.db import mysql
+from korp.db import mysql, sql_execute
 
 bp = Blueprint("lemgram_count", __name__)
 
@@ -43,7 +43,7 @@ def lemgram_count(args):
 
     result = {}
     cursor = mysql.connection.cursor()
-    cursor.execute(sql)
+    sql_execute(cursor, sql)
 
     for row in cursor:
         # We need this check here, since a search for "hår" also returns "här" and "har".
