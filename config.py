@@ -77,7 +77,17 @@ CHECK_AVAILABLE_CORPORA_STRICTLY = True
 PLUGINS = []
 
 # Plugin configuration
-PLUGINS_CONFIG = {}
+PLUGINS_CONFIG = {
+    # Example auth_jwt plugin configuration:
+    # "auth_jwt": {
+    #     "pubkey_file": "path/to/pubkey.pem",
+    #     "licensing_mode": "språkbanken",  # or "kielipankki"
+    # }
+    #
+    # licensing_mode options:
+    # - "språkbanken" (default): All Protected: true corpora require explicit grant in JWT scope.corpora
+    # - "kielipankki": Extended mode with License field support (ACA, ACA-Fi, RES)
+}
 
 # Show plugin information in the result of the /info endpoint:
 #  "name" = plugin names only

@@ -1,13 +1,19 @@
 """Authorization using JWT.
 
-Supports multiple access levels based on License type:
-- PUB (public): Protected: false or absent in .info, accessible to all
-- ACA (academic): Protected: true, License: ACA - requires academic affiliation (JWT ACA flag)
-- ACA-Fi (Finnish academic): Protected: true, License: ACA-Fi - requires Finnish academic status (JWT ACA-Fi flag)
-- RES (restricted): Protected: true, License: RES - requires explicit entitlement grant in JWT scope
+Configuration:
+- licensing_mode: "språkbanken" (default) or "kielipankki"
 
-Additionally, mink-* corpora (user-uploaded) use Protected: true with no License field and require
-explicit user grants in JWT scope.
+Språkbanken mode (upstream/default):
+- All corpora with Protected: true require explicit corpus grant in JWT scope.corpora
+- License field is ignored
+
+Kielipankki mode (extended):
+- License: ACA → Requires JWT ACA flag (academic affiliation)
+- License: ACA-Fi → Requires JWT ACA_Fi flag (Finnish academic status)
+- License: RES → Requires explicit grant in JWT scope.corpora
+- No License field → Requires explicit grant in JWT scope.corpora (same as Språkbanken)
+
+Note: .info files use "ACA-Fi" with hyphen, but JWT uses "ACA_Fi" with underscore.
 """
 
 import time
@@ -60,15 +66,13 @@ class AuthJWT(utils.Authorizer):
     def check_authorization(self, corpora: List[str]) -> Tuple[bool, List[str], Optional[str]]:
         """Check if user is authorized to access the given corpora.
 
-        Authorization rules based on License field:
-        - License: ACA → User must have ACA (academic) status in JWT
-        - License: ACA-Fi → User must have ACA-Fi (Finnish academic) status in JWT
-        - License: RES → User must have explicit entitlement grant in JWT scope.corpora
-        - No License field (mink-* corpora) → User must have explicit user grant in JWT scope.corpora
+        Behavior depends on licensing_mode configuration.
 
         Returns:
             Tuple of (success, unauthorized_corpora, error_message)
         """
+        licensing_mode = bp.config("licensing_mode", "språkbanken")
+
         protected_set = set(self.get_protected_corpora())
 
         # Find which requested corpora need authorization
@@ -94,6 +98,14 @@ class AuthJWT(utils.Authorizer):
             for corpus in user_token.get("scope", {}).get("corpora", {}).keys():
                 user_scope_corpora.add(corpus.upper())
 
+        # Språkbanken mode: all protected corpora require explicit grant in scope
+        if licensing_mode == "språkbanken":
+            unauthorized = [c.upper() for c in corpora_to_check if c.upper() not in user_scope_corpora]
+            if unauthorized:
+                return False, unauthorized, None
+            return True, [], None
+
+        # Kielipankki mode: check License field for authorization type
         # Get license types for corpora that need checking
         corpus_info = utils.generator_to_dict(info.corpus_info({"corpus": corpora_to_check}))
 
@@ -109,14 +121,14 @@ class AuthJWT(utils.Authorizer):
                     unauthorized.append(corpus_upper)
             elif license_value == "ACA-FI":
                 # ACA-Fi license requires Finnish academic status
-                if not user_token or not user_token.get("ACA-Fi"):
+                if not user_token or not user_token.get("ACA_Fi"):
                     unauthorized.append(corpus_upper)
             elif license_value == "RES":
                 # RES license requires explicit grant in scope
                 if corpus_upper not in user_scope_corpora:
                     unauthorized.append(corpus_upper)
             else:
-                # No License field or other value (e.g., mink-* corpora) requires explicit grant in scope
+                # No License field or other value requires explicit grant in scope
                 if corpus_upper not in user_scope_corpora:
                     unauthorized.append(corpus_upper)
 
