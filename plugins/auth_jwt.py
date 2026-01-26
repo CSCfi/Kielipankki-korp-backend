@@ -1,11 +1,12 @@
 """Authorization using JWT.
 
-Supports three access levels:
-- PUB (public): No Protected field in .info, accessible to all
-- ACA (academic): Protected: ACA in .info, requires academic affiliation (JWT ACA flag)
-- RES (restricted): Protected: RES in .info, requires explicit entitlement grant in JWT scope
+Supports multiple access levels based on License type:
+- PUB (public): Protected: false or absent in .info, accessible to all
+- ACA (academic): Protected: true, License: ACA - requires academic affiliation (JWT ACA flag)
+- ACA-Fi (Finnish academic): Protected: true, License: ACA-Fi - requires Finnish academic status (JWT ACA-Fi flag)
+- RES (restricted): Protected: true, License: RES - requires explicit entitlement grant in JWT scope
 
-Additionally, mink-* corpora (user-uploaded) use Protected: true/yes and require
+Additionally, mink-* corpora (user-uploaded) use Protected: true with no License field and require
 explicit user grants in JWT scope.
 """
 
@@ -32,7 +33,7 @@ class AuthJWT(utils.Authorizer):
     def get_protected_corpora(self, use_cache: bool = True) -> List[str]:
         """Get list of corpora with restricted access.
 
-        Returns all protected corpora (ACA, RES, and true/yes) as a flat list.
+        Returns all corpora where Protected: true (regardless of License type).
         """
         if use_cache:
             with memcached.get_client() as mc:
@@ -48,7 +49,7 @@ class AuthJWT(utils.Authorizer):
         protected_corpora = []
         for corpus, c_info in corpus_info["corpora"].items():
             protected_value = c_info["info"].get("Protected", "").lower()
-            if protected_value in ("aca", "res", "true", "yes"):
+            if protected_value in ("true", "yes"):
                 protected_corpora.append(corpus.upper())
 
         if use_cache:
@@ -59,10 +60,11 @@ class AuthJWT(utils.Authorizer):
     def check_authorization(self, corpora: List[str]) -> Tuple[bool, List[str], Optional[str]]:
         """Check if user is authorized to access the given corpora.
 
-        Authorization rules:
-        - ACA corpora: User must have ACA (academic) status in JWT
-        - RES corpora: User must have explicit entitlement grant in JWT scope.corpora
-        - true/yes corpora (incl. mink-*): User must have explicit user grant in JWT scope.corpora
+        Authorization rules based on License field:
+        - License: ACA → User must have ACA (academic) status in JWT
+        - License: ACA-Fi → User must have ACA-Fi (Finnish academic) status in JWT
+        - License: RES → User must have explicit entitlement grant in JWT scope.corpora
+        - No License field (mink-* corpora) → User must have explicit user grant in JWT scope.corpora
 
         Returns:
             Tuple of (success, unauthorized_corpora, error_message)
@@ -92,21 +94,29 @@ class AuthJWT(utils.Authorizer):
             for corpus in user_token.get("scope", {}).get("corpora", {}).keys():
                 user_scope_corpora.add(corpus.upper())
 
-        # Get protection types for corpora that need checking
+        # Get license types for corpora that need checking
         corpus_info = utils.generator_to_dict(info.corpus_info({"corpus": corpora_to_check}))
 
         # Check authorization for each corpus
         unauthorized = []
         for corpus_upper in corpora_to_check:
-            protected_value = corpus_info.get("corpora", {}).get(
-                corpus_upper, {}).get("info", {}).get("Protected", "").lower()
+            c_info = corpus_info.get("corpora", {}).get(corpus_upper, {}).get("info", {})
+            license_value = c_info.get("License", "").upper()
 
-            if protected_value == "aca":
-                # ACA corpora require academic status
+            if license_value == "ACA":
+                # ACA license requires academic status
                 if not user_token or not user_token.get("ACA"):
                     unauthorized.append(corpus_upper)
-            elif protected_value in ("res", "true", "yes"):
-                # RES and true/yes corpora require explicit grant in scope
+            elif license_value == "ACA-FI":
+                # ACA-Fi license requires Finnish academic status
+                if not user_token or not user_token.get("ACA-Fi"):
+                    unauthorized.append(corpus_upper)
+            elif license_value == "RES":
+                # RES license requires explicit grant in scope
+                if corpus_upper not in user_scope_corpora:
+                    unauthorized.append(corpus_upper)
+            else:
+                # No License field or other value (e.g., mink-* corpora) requires explicit grant in scope
                 if corpus_upper not in user_scope_corpora:
                     unauthorized.append(corpus_upper)
 
