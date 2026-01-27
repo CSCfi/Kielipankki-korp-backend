@@ -92,44 +92,45 @@ class AuthJWT(utils.Authorizer):
             for corpus in user_token.get("scope", {}).get("corpora", {}).keys():
                 user_scope_corpora.add(corpus.upper())
 
-        # Språkbanken mode: all protected corpora require explicit grant in scope
-        if licensing_mode == "språkbanken":
-            unauthorized = [c.upper() for c in corpora_to_check if c.upper() not in user_scope_corpora]
+        # Kielipankki mode: check License field for authorization type
+        if licensing_mode == "kielipankki":
+            # Get license types for corpora that need checking
+            # Always bypass cache for security: .info file changes don't trigger cache invalidation
+            corpus_info = utils.generator_to_dict(info.corpus_info({"corpus": corpora_to_check, "cache": False}))
+
+            # Check authorization for each corpus
+            unauthorized = []
+            for corpus_upper in corpora_to_check:
+                c_info = corpus_info.get("corpora", {}).get(corpus_upper, {}).get("info", {})
+                license_value = c_info.get("License", "").upper()
+
+                if license_value == "ACA":
+                    # ACA license requires academic status
+                    if not user_token or not user_token.get("ACA"):
+                        unauthorized.append(corpus_upper)
+                elif license_value == "ACA-FI":
+                    # ACA-Fi license requires Finnish academic status
+                    if not user_token or not user_token.get("ACA_Fi"):
+                        unauthorized.append(corpus_upper)
+                elif license_value == "RES":
+                    # RES license requires explicit grant in scope
+                    if corpus_upper not in user_scope_corpora:
+                        unauthorized.append(corpus_upper)
+                else:
+                    # No License field or other value requires explicit grant in scope
+                    if corpus_upper not in user_scope_corpora:
+                        unauthorized.append(corpus_upper)
+
             if unauthorized:
                 return False, unauthorized, None
             return True, [], None
 
-        # Kielipankki mode: check License field for authorization type
-        # Get license types for corpora that need checking
-        # Always bypass cache for security: .info file changes don't trigger cache invalidation
-        corpus_info = utils.generator_to_dict(info.corpus_info({"corpus": corpora_to_check, "cache": False}))
-
-        # Check authorization for each corpus
-        unauthorized = []
-        for corpus_upper in corpora_to_check:
-            c_info = corpus_info.get("corpora", {}).get(corpus_upper, {}).get("info", {})
-            license_value = c_info.get("License", "").upper()
-
-            if license_value == "ACA":
-                # ACA license requires academic status
-                if not user_token or not user_token.get("ACA"):
-                    unauthorized.append(corpus_upper)
-            elif license_value == "ACA-FI":
-                # ACA-Fi license requires Finnish academic status
-                if not user_token or not user_token.get("ACA_Fi"):
-                    unauthorized.append(corpus_upper)
-            elif license_value == "RES":
-                # RES license requires explicit grant in scope
-                if corpus_upper not in user_scope_corpora:
-                    unauthorized.append(corpus_upper)
-            else:
-                # No License field or other value requires explicit grant in scope
-                if corpus_upper not in user_scope_corpora:
-                    unauthorized.append(corpus_upper)
-
-        if unauthorized:
-            return False, unauthorized, None
-        return True, [], None
+        # Default mode (Språkbanken): all protected corpora require explicit grant in scope
+        else:
+            unauthorized = [c.upper() for c in corpora_to_check if c.upper() not in user_scope_corpora]
+            if unauthorized:
+                return False, unauthorized, None
+            return True, [], None
 
     @property
     def jwt_key(self):
