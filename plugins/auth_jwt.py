@@ -34,6 +34,7 @@ bp = utils.Plugin("auth_jwt", __name__)
 class AuthJWT(utils.Authorizer):
 
     def __init__(self):
+        print("=== AUTH_JWT: AuthJWT class instantiated ===", flush=True)
         self._pubkey = None
 
     def get_protected_corpora(self, use_cache: bool = True) -> List[str]:
