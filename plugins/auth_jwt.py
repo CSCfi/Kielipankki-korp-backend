@@ -48,13 +48,19 @@ class AuthJWT(utils.Authorizer):
         # Always bypass cache for security: .info file changes don't trigger cache invalidation
         corpora = cwb.run_cqp("show corpora;")
         next(corpora)  # Skip version number
-        corpus_info = utils.generator_to_dict(info.corpus_info({"corpus": list(corpora), "cache": False}))
+        corpus_list = list(corpora)
+        app.logger.debug(f"get_protected_corpora: checking {len(corpus_list)} corpora")
+        corpus_info = utils.generator_to_dict(info.corpus_info({"corpus": corpus_list, "cache": False}))
+        app.logger.debug(f"get_protected_corpora: corpus_info keys: {list(corpus_info.keys())}")
+        app.logger.debug(f"get_protected_corpora: corpora count: {len(corpus_info.get('corpora', {}))}")
         protected_corpora = []
         for corpus, c_info in corpus_info["corpora"].items():
             protected_value = c_info["info"].get("Protected", "").lower()
+            app.logger.debug(f"get_protected_corpora: {corpus} Protected={protected_value}")
             if protected_value in ("true", "yes"):
                 protected_corpora.append(corpus.upper())
 
+        app.logger.debug(f"get_protected_corpora: returning {protected_corpora}")
         return protected_corpora
 
     def check_authorization(self, corpora: List[str]) -> Tuple[bool, List[str], Optional[str]]:
