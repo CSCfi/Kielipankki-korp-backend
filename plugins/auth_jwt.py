@@ -40,27 +40,21 @@ class AuthJWT(utils.Authorizer):
         """Get list of corpora with restricted access.
 
         Returns all corpora where Protected: true (regardless of License type).
-        """
-        if use_cache:
-            with memcached.get_client() as mc:
-                key = f"protected:{utils.cache_prefix(mc)}"
-                result = mc.get(key)
-            if result is not None:
-                return result
 
-        # Get list of all corpora from CWB
+        Note: Caching is disabled for security. The cache invalidation system only
+        monitors registry files, not .info files, so cached protection status could
+        become stale when .info files are edited.
+        """
+        # Always bypass cache for security: .info file changes don't trigger cache invalidation
         corpora = cwb.run_cqp("show corpora;")
         next(corpora)  # Skip version number
-        corpus_info = utils.generator_to_dict(info.corpus_info({"corpus": list(corpora)}))
+        corpus_info = utils.generator_to_dict(info.corpus_info({"corpus": list(corpora), "cache": False}))
         protected_corpora = []
         for corpus, c_info in corpus_info["corpora"].items():
             protected_value = c_info["info"].get("Protected", "").lower()
             if protected_value in ("true", "yes"):
                 protected_corpora.append(corpus.upper())
 
-        if use_cache:
-            with memcached.get_client() as mc:
-                mc.add(key, protected_corpora)
         return protected_corpora
 
     def check_authorization(self, corpora: List[str]) -> Tuple[bool, List[str], Optional[str]]:
@@ -107,7 +101,8 @@ class AuthJWT(utils.Authorizer):
 
         # Kielipankki mode: check License field for authorization type
         # Get license types for corpora that need checking
-        corpus_info = utils.generator_to_dict(info.corpus_info({"corpus": corpora_to_check}))
+        # Always bypass cache for security: .info file changes don't trigger cache invalidation
+        corpus_info = utils.generator_to_dict(info.corpus_info({"corpus": corpora_to_check, "cache": False}))
 
         # Check authorization for each corpus
         unauthorized = []
