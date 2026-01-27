@@ -45,22 +45,23 @@ class AuthJWT(utils.Authorizer):
         monitors registry files, not .info files, so cached protection status could
         become stale when .info files are edited.
         """
+        print("=== AUTH_JWT: get_protected_corpora called ===", flush=True)
         # Always bypass cache for security: .info file changes don't trigger cache invalidation
         corpora = cwb.run_cqp("show corpora;")
         next(corpora)  # Skip version number
         corpus_list = list(corpora)
-        app.logger.debug(f"get_protected_corpora: checking {len(corpus_list)} corpora")
+        print(f"=== AUTH_JWT: checking {len(corpus_list)} corpora ===", flush=True)
         corpus_info = utils.generator_to_dict(info.corpus_info({"corpus": corpus_list, "cache": False}))
-        app.logger.debug(f"get_protected_corpora: corpus_info keys: {list(corpus_info.keys())}")
-        app.logger.debug(f"get_protected_corpora: corpora count: {len(corpus_info.get('corpora', {}))}")
+        print(f"=== AUTH_JWT: corpus_info keys: {list(corpus_info.keys())} ===", flush=True)
+        print(f"=== AUTH_JWT: corpora count: {len(corpus_info.get('corpora', {}))} ===", flush=True)
         protected_corpora = []
         for corpus, c_info in corpus_info["corpora"].items():
             protected_value = c_info["info"].get("Protected", "").lower()
-            app.logger.debug(f"get_protected_corpora: {corpus} Protected={protected_value}")
             if protected_value in ("true", "yes"):
+                print(f"=== AUTH_JWT: {corpus} is PROTECTED (Protected={protected_value}) ===", flush=True)
                 protected_corpora.append(corpus.upper())
 
-        app.logger.debug(f"get_protected_corpora: returning {protected_corpora}")
+        print(f"=== AUTH_JWT: returning {protected_corpora} ===", flush=True)
         return protected_corpora
 
     def check_authorization(self, corpora: List[str]) -> Tuple[bool, List[str], Optional[str]]:
