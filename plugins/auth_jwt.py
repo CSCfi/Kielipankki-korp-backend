@@ -30,6 +30,8 @@ from korp.views import info
 
 bp = utils.Plugin("auth_jwt", __name__)
 
+print(f"=== AUTH_JWT: Plugin initialized, import_name={bp.import_name} ===", flush=True)
+
 
 class AuthJWT(utils.Authorizer):
 
@@ -92,7 +94,30 @@ class AuthJWT(utils.Authorizer):
             auth_token = auth_header.split(" ")[1]
 
             # Parse JWT
-            user_token = jwt.decode(auth_token, key=self.jwt_key, algorithms=["RS256"])
+            print(f"=== AUTH_JWT: Decoding JWT, token length={len(auth_token)}, key type={type(self.jwt_key)} ===", flush=True)
+
+            # First decode header and payload without verification to see what we're dealing with
+            import json
+            import base64
+            try:
+                header_b64, payload_b64, signature_b64 = auth_token.split('.')
+                header = json.loads(base64.urlsafe_b64decode(header_b64 + '=='))
+                payload = json.loads(base64.urlsafe_b64decode(payload_b64 + '=='))
+                print(f"=== AUTH_JWT: JWT header (unverified): {header} ===", flush=True)
+                print(f"=== AUTH_JWT: JWT payload email (unverified): {payload.get('email')} ===", flush=True)
+            except Exception as e:
+                print(f"=== AUTH_JWT: Failed to decode JWT without verification: {e} ===", flush=True)
+
+            # Now try to verify
+            try:
+                user_token = jwt.decode(auth_token, key=self.jwt_key, algorithms=["RS256"])
+                print(f"=== AUTH_JWT: JWT decoded successfully, ACA={user_token.get('ACA')} ===", flush=True)
+            except Exception as e:
+                print(f"=== AUTH_JWT: JWT decode FAILED: {type(e).__name__}: {e} ===", flush=True)
+                # Show first and last few chars of public key for debugging
+                key_preview = self.jwt_key[:50] + "..." + self.jwt_key[-50:] if len(self.jwt_key) > 100 else self.jwt_key
+                print(f"=== AUTH_JWT: Public key preview: {key_preview} ===", flush=True)
+                raise
             if user_token["exp"] < time.time():
                 return False, [], "The provided JWT has expired"
 
@@ -144,6 +169,20 @@ class AuthJWT(utils.Authorizer):
     def jwt_key(self):
         """Return the public key for validating JWTs."""
         if not self._pubkey:
-            if bp.config("pubkey_file"):
-                self._pubkey = open(Path(app.instance_path) / bp.config("pubkey_file")).read()
+            pubkey_file = bp.config("pubkey_file")
+            if pubkey_file:
+                # Handle both absolute and relative paths
+                if pubkey_file.startswith("/"):
+                    pubkey_path = Path(pubkey_file)
+                else:
+                    pubkey_path = Path(app.instance_path) / pubkey_file
+
+                try:
+                    self._pubkey = pubkey_path.read_text()
+                    print(f"=== AUTH_JWT: Loaded public key from {pubkey_path}, length={len(self._pubkey)} ===", flush=True)
+                except Exception as e:
+                    print(f"=== AUTH_JWT: ERROR loading public key from {pubkey_path}: {e} ===", flush=True)
+                    raise
+            else:
+                print("=== AUTH_JWT: No pubkey_file configured ===", flush=True)
         return self._pubkey
