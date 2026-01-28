@@ -94,6 +94,7 @@ def create_app(config_override=None):
     app.register_blueprint(timespan.bp)
 
     # Load plugins
+    print(f"Loading plugins: {app.config['PLUGINS']}")
     with app.app_context():
         load_plugins(app, app.config["PLUGINS"])
 
