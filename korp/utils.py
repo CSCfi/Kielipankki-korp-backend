@@ -700,9 +700,12 @@ def assert_key(key, attrs, regexp, required=False):
 
 def get_protected_corpora() -> List[str]:
     """Return a list of corpora with restricted access."""
+    print(f"=== UTILS: get_protected_corpora called, protected_corpora_getter={protected_corpora_getter} ===", flush=True)
     if protected_corpora_getter:
+        print(f"=== UTILS: calling protected_corpora_getter.get_protected_corpora() ===", flush=True)
         return protected_corpora_getter.get_protected_corpora()
     else:
+        print("=== UTILS: protected_corpora_getter is None, returning [] ===", flush=True)
         return []
 
 
