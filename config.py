@@ -79,7 +79,7 @@ PLUGINS = []
 # Plugin configuration
 PLUGINS_CONFIG = {
     # Example auth_jwt plugin configuration:
-    # "auth_jwt": {
+    # "plugins.auth_jwt": {
     #     "pubkey_file": "path/to/pubkey.pem",
     #     "licensing_mode": "språkbanken",  # or "kielipankki"
     # }
