@@ -9,11 +9,11 @@ Språkbanken mode (upstream/default):
 
 Kielipankki mode (extended):
 - License: ACA → Requires JWT ACA flag (academic affiliation)
-- License: ACA-Fi → Requires JWT ACA_Fi flag (Finnish academic status)
+- License: ACA-Fi → Requires JWT "ACA-Fi" flag (Finnish academic status)
 - License: RES → Requires explicit grant in JWT scope.corpora
 - No License field → Requires explicit grant in JWT scope.corpora (same as Språkbanken)
 
-Note: .info files use "ACA-Fi" with hyphen, but JWT uses "ACA_Fi" with underscore.
+Note: .info files use "ACA-Fi" with hyphen, and JWT also uses "ACA-Fi" (quoted key).
 """
 
 import time
@@ -108,9 +108,9 @@ class AuthJWT(utils.Authorizer):
                     # ACA license requires academic status
                     if not user_token or not user_token.get("ACA"):
                         unauthorized.append(corpus_upper)
-                elif license_value == "ACA-FI":
+                elif license_value == "ACA-Fi":
                     # ACA-Fi license requires Finnish academic status
-                    if not user_token or not user_token.get("ACA_Fi"):
+                    if not user_token or not user_token.get("ACA-Fi"):
                         unauthorized.append(corpus_upper)
                 elif license_value == "RES":
                     # RES license requires explicit grant in scope
