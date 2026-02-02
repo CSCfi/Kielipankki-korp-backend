@@ -1,19 +1,11 @@
 """Authorization using JWT.
 
-Configuration:
-- licensing_mode: "språkbanken" (default) or "kielipankki"
+For corpora with Protected: true in the .info file:
+- If corpus is in JWT scope.corpora (explicit grant), it's authorized
+- Otherwise, if License field is present in .info, check if JWT has that license key as truthy value
+  (e.g., License: ACA → requires jwt["ACA"], License: ACA-Fi → requires jwt["ACA-Fi"])
+- Otherwise, it's not authorized
 
-Språkbanken mode (upstream/default):
-- All corpora with Protected: true require explicit corpus grant in JWT scope.corpora
-- License field is ignored
-
-Kielipankki mode (extended):
-- License: ACA → Requires JWT ACA flag (academic affiliation)
-- License: ACA-Fi → Requires JWT "ACA-Fi" flag (Finnish academic status)
-- License: RES → Requires explicit grant in JWT scope.corpora
-- No License field → Requires explicit grant in JWT scope.corpora (same as Språkbanken)
-
-Note: .info files use "ACA-Fi" with hyphen, and JWT also uses "ACA-Fi" (quoted key).
 """
 
 import time
@@ -60,13 +52,12 @@ class AuthJWT(utils.Authorizer):
     def check_authorization(self, corpora: List[str]) -> Tuple[bool, List[str], Optional[str]]:
         """Check if user is authorized to access the given corpora.
 
-        Behavior depends on licensing_mode configuration.
+        For corpora with License field: check if JWT has that license key as truthy.
+        For corpora without License field: check if corpus is in JWT scope.corpora.
 
         Returns:
             Tuple of (success, unauthorized_corpora, error_message)
         """
-        licensing_mode = bp.config("licensing_mode", "språkbanken")
-
         protected_set = set(self.get_protected_corpora())
 
         # Find which requested corpora need authorization
@@ -92,50 +83,37 @@ class AuthJWT(utils.Authorizer):
             for corpus in user_token.get("scope", {}).get("corpora", {}).keys():
                 user_scope_corpora.add(corpus.upper())
 
-        # Kielipankki mode: check License field for authorization type
-        if licensing_mode == "kielipankki":
-            # Get license types for corpora that need checking
-            # Always bypass cache for security: .info file changes don't trigger cache invalidation
-            corpus_info = utils.generator_to_dict(info.corpus_info({"corpus": corpora_to_check, "cache": False}))
+        # Get license info for protected corpora
+        # Bypass cache for security: .info file changes don't trigger cache invalidation
+        corpus_info = utils.generator_to_dict(
+            info.corpus_info({"corpus": corpora_to_check, "cache": False})
+        )
 
-            # Check authorization for each corpus
-            unauthorized = []
-            for corpus_upper in corpora_to_check:
-                c_info = corpus_info.get("corpora", {}).get(corpus_upper, {}).get("info", {})
-                license_value = c_info.get("License", "").upper()
+        # Check authorization for each corpus
+        unauthorized = []
+        for corpus_upper in corpora_to_check:
+            if corpus_upper in user_scope_corpora:
+                continue
+            license_value = (
+                corpus_info.get("corpora", {})
+                .get(corpus_upper, {})
+                .get("info", {})
+                .get("License", "")
+            )
+            if license_value and user_token.get(license_value):
+                continue
+            unauthorized.append(corpus_upper)
 
-                if license_value == "ACA":
-                    # ACA license requires academic status
-                    if not user_token or not user_token.get("ACA"):
-                        unauthorized.append(corpus_upper)
-                elif license_value == "ACA-Fi":
-                    # ACA-Fi license requires Finnish academic status
-                    if not user_token or not user_token.get("ACA-Fi"):
-                        unauthorized.append(corpus_upper)
-                elif license_value == "RES":
-                    # RES license requires explicit grant in scope
-                    if corpus_upper not in user_scope_corpora:
-                        unauthorized.append(corpus_upper)
-                else:
-                    # No License field or other value requires explicit grant in scope
-                    if corpus_upper not in user_scope_corpora:
-                        unauthorized.append(corpus_upper)
-
-            if unauthorized:
-                return False, unauthorized, None
-            return True, [], None
-
-        # Default mode (Språkbanken): all protected corpora require explicit grant in scope
-        else:
-            unauthorized = [c.upper() for c in corpora_to_check if c.upper() not in user_scope_corpora]
-            if unauthorized:
-                return False, unauthorized, None
-            return True, [], None
+        if unauthorized:
+            return False, unauthorized, None
+        return True, [], None
 
     @property
     def jwt_key(self):
         """Return the public key for validating JWTs."""
         if not self._pubkey:
             if bp.config("pubkey_file"):
-                self._pubkey = open(Path(app.instance_path) / bp.config("pubkey_file")).read()
+                self._pubkey = open(
+                    Path(app.instance_path) / bp.config("pubkey_file")
+                ).read()
         return self._pubkey
