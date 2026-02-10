@@ -2,8 +2,8 @@
 
 For corpora with Protected: true in the .info file:
 - If corpus is in JWT scope.corpora (explicit grant), it's authorized
-- Otherwise, if License field is present in .info, check if JWT has that license key as truthy value
-  (e.g., License: ACA → requires jwt["ACA"], License: ACA-Fi → requires jwt["ACA-Fi"])
+- Otherwise, if License field is present in .info, check if JWT userClasses contains that license
+  (e.g., License: ACA → requires "ACA" in jwt["userClasses"], License: ACA-Fi → requires "ACA-Fi" in jwt["userClasses"])
 - Otherwise, it's not authorized
 
 """
@@ -37,7 +37,7 @@ class AuthJWT(utils.Authorizer):
         monitors registry files, not .info files, so cached protection status could
         become stale when .info files are edited.
         """
-        # Always bypass cache for security: .info file changes don't trigger cache invalidation
+        # Bypass cache for security: .info file changes don't trigger cache invalidation
         corpora = cwb.run_cqp("show corpora;")
         next(corpora)  # Skip version number
         corpus_info = utils.generator_to_dict(info.corpus_info({"corpus": list(corpora), "cache": False}))
@@ -52,7 +52,7 @@ class AuthJWT(utils.Authorizer):
     def check_authorization(self, corpora: List[str]) -> Tuple[bool, List[str], Optional[str]]:
         """Check if user is authorized to access the given corpora.
 
-        For corpora with License field: check if JWT has that license key as truthy.
+        For corpora with License field: check if JWT userClasses contains that license.
         For corpora without License field: check if corpus is in JWT scope.corpora.
 
         Returns:
@@ -100,7 +100,7 @@ class AuthJWT(utils.Authorizer):
                 .get("info", {})
                 .get("License", "")
             )
-            if license_value and user_token.get(license_value):
+            if license_value and license_value in user_token.get("userClasses", []):
                 continue
             unauthorized.append(corpus_upper)
 
