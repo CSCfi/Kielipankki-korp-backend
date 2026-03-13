@@ -90,10 +90,7 @@ class AuthJWT(utils.Authorizer):
                 user_scope_corpora.add(corpus.upper())
 
         # Get license info for protected corpora
-        # Bypass cache for security: .info file changes don't trigger cache invalidation
-        corpus_info = utils.generator_to_dict(
-            info.corpus_info({"corpus": corpora_to_check, "cache": False})
-        )
+        corpus_info = utils.generator_to_dict(info.corpus_info({"corpus": corpora_to_check}))
 
         # Check authorization for each corpus
         unauthorized = []
@@ -106,7 +103,7 @@ class AuthJWT(utils.Authorizer):
                 .get("info", {})
                 .get("License", "")
             )
-            if license_value and license_value in user_token.get("userClasses", []):
+            if license_value and user_token and license_value in user_token.get("userClasses", []):
                 continue
             unauthorized.append(corpus_upper)
 
