@@ -77,7 +77,12 @@ CHECK_AVAILABLE_CORPORA_STRICTLY = True
 PLUGINS = []
 
 # Plugin configuration
-PLUGINS_CONFIG = {}
+PLUGINS_CONFIG = {
+    # Example auth_jwt plugin configuration:
+    # "plugins.auth_jwt": {
+    #     "pubkey_file": "path/to/pubkey.pem",
+    # }
+}
 
 # Show plugin information in the result of the /info endpoint:
 #  "name" = plugin names only
