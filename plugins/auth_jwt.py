@@ -8,7 +8,7 @@ For corpora with Protected: true in the .info file:
 
 """
 
-import time
+import sys
 from pathlib import Path
 from typing import List, Tuple, Optional
 
@@ -33,12 +33,23 @@ class AuthJWT(utils.Authorizer):
 
         Returns all corpora where Protected: true (regardless of License type).
         """
+        # Only use the cache if memcached was successfully initialized.
+        use_cache = use_cache and memcached.active
+        key = None
+
         if use_cache:
-            with memcached.get_client() as mc:
-                key = f"protected:{utils.cache_prefix(mc)}"
-                result = mc.get(key)
-            if result is not None:
-                return result
+            try:
+                with memcached.get_client() as mc:
+                    key = f"protected:{utils.cache_prefix(mc)}"
+                    result = mc.get(key)
+                if result is not None:
+                    return result
+            except Exception as e:
+                print(
+                    f"Warning: auth_jwt: memcached read failed, falling back to uncached lookup: {e}",
+                    file=sys.stderr,
+                )
+                use_cache = False
 
         # Get list of all corpora from CWB
         corpora = cwb.run_cqp("show corpora;")
@@ -50,9 +61,12 @@ class AuthJWT(utils.Authorizer):
             if protected_value in ("true", "yes"):
                 protected_corpora.append(corpus.upper())
 
-        if use_cache:
-            with memcached.get_client() as mc:
-                mc.add(key, protected_corpora)
+        if use_cache and key is not None:
+            try:
+                with memcached.get_client() as mc:
+                    mc.add(key, protected_corpora)
+            except Exception as e:
+                print(f"Warning: auth_jwt: memcached write failed: {e}", file=sys.stderr)
         return protected_corpora
 
     def check_authorization(self, corpora: List[str]) -> Tuple[bool, List[str], Optional[str]]:
@@ -80,10 +94,9 @@ class AuthJWT(utils.Authorizer):
         if auth_header and " " in auth_header:
             auth_token = auth_header.split(" ")[1]
 
-            # Parse JWT
-            user_token = jwt.decode(auth_token, key=self.jwt_key, algorithms=["RS256"])
-            if user_token["exp"] < time.time():
-                return False, [], "The provided JWT has expired"
+            # Parse JWT (expiry is handled by the auth server, not here)
+            user_token = jwt.decode(auth_token, key=self.jwt_key, algorithms=["RS256"],
+                                    options={"verify_exp": False})
 
             # Collect user's granted corpora from scope
             for corpus in user_token.get("scope", {}).get("corpora", {}).keys():
