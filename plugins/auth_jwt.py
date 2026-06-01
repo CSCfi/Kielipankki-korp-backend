@@ -9,6 +9,7 @@ For corpora with Protected: true in the .info file:
 """
 
 import sys
+import time
 from pathlib import Path
 from typing import List, Tuple, Optional
 
@@ -94,9 +95,10 @@ class AuthJWT(utils.Authorizer):
         if auth_header and " " in auth_header:
             auth_token = auth_header.split(" ")[1]
 
-            # Parse JWT (expiry is handled by the auth server, not here)
-            user_token = jwt.decode(auth_token, key=self.jwt_key, algorithms=["RS256"],
-                                    options={"verify_exp": False})
+            # Parse JWT
+            user_token = jwt.decode(auth_token, key=self.jwt_key, algorithms=["RS256"])
+            if user_token["exp"] < time.time():
+                return False, [], "The provided JWT has expired"
 
             # Collect user's granted corpora from scope
             for corpus in user_token.get("scope", {}).get("corpora", {}).keys():
