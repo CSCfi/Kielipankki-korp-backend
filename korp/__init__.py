@@ -11,7 +11,7 @@ from korp.memcached import memcached
 from korp.pluginlib import load_plugins, register_subclass_plugins
 
 # The version of this script
-__version__ = "8.2.5"
+__version__ = "8.3.0"
 
 
 def create_app(config_override=None):
