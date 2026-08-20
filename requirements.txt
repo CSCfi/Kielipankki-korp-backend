@@ -7,3 +7,4 @@ psutil~=7.1.0
 pymemcache~=4.0.0
 python-dateutil~=2.9.0
 PyYAML~=6.0.3
+PyJWT==2.11.0
