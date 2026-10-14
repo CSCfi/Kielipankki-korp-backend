@@ -53,7 +53,13 @@ def process_log(stream):
         tmp_filename = outfile.name
         for line in stream:
             mo = re.match(
-                (r'\[(?P<script>\S+)'
+                # Newer logs are wrapped in a syslog-style prefix
+                # like "Jan 21 14:50:33 korp3 gunicorn[2747607]: ",
+                # in which case the bracketed pid is only a thread id
+                # and the gunicorn pid lives in the syslog prefix.
+                (r'(?:\S+\s+\d+\s+\d+:\d+:\d+\s+\S+\s+\S+?'
+                 r'\[(?P<gpid>\d+)\]:\s+)?'
+                 r'\[(?P<script>\S+)'
                  # Korp 2.8 has "pid INFO", Korp 8 "INFO pid:request"
                  r' (?:(?P<pid>\d+) INFO|INFO (?P<pid2>[\d:]+))'
                  r' @ (?P<date>[\d-]+)'
@@ -62,6 +68,12 @@ def process_log(stream):
             if mo:
                 fields = mo.groupdict()
                 pid = fields['pid'] or fields['pid2']
+                # Prepend gunicorn pid from the syslog prefix so that
+                # concurrent requests from different workers don't
+                # collide on the same thread id, and so that
+                # ':' in pid still identifies these as Korp 8.
+                if fields['gpid'] and ':' not in pid:
+                    pid = fields['gpid'] + ':' + pid
                 key = fields['key'].lower()
                 if key == 'ip':
                     # A previous timed-out request with the same pid that
