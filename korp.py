@@ -48,6 +48,7 @@ import traceback
 import functools
 import math
 import random
+import secrets
 import korppluginlib
 import config
 try:
@@ -3463,7 +3464,7 @@ def make_cqp(cqp, within=None, cut=None, expand=None):
 def make_query(cqp):
     """Create web-safe commands for a CQP query.
     """
-    querylock = random.randrange(10 ** 8, 10 ** 9)
+    querylock = secrets.randbelow(9 * 10**8) + 10**8
     return ["set QueryLock %s;" % querylock,
             "%s;" % cqp,
             "unlock %s;" % querylock]
