@@ -1031,7 +1031,7 @@ def query_optimize(cqp, cqpparams, find_match=True, expand=True, free_search=Fal
     else:
         cmd[0] += ";"
 
-    return 0, cmd
+    return 0, make_query(cmd[0].rstrip(";")) + cmd[1:]
 
 
 def query_corpus(corpus, cqp, within=None, cut=None, context=None, show=None, show_structs=None, start=0, end=10,
