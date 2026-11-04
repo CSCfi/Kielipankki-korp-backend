@@ -1,6 +1,6 @@
 # Changelog
 
-## [8.3.0] - 2026-02-04
+## [8.3.0] - 2026-11-04
 
 ### Added
 
@@ -12,9 +12,14 @@
 - Dropped support for Python versions older than 3.10.
 - Updated dependencies for compatibility with newer Python versions.
 - Better error message when structural attributes contain tabs.
+- The `plugins.auth` authorization plugin now reads corpus protection from `Protected: true` in CWB `.info` files
+  instead of `PROTECTED_FILE`. Migrate every corpus listed in the old file and invalidate cached corpus metadata before
+  removing the setting. See the README for upgrade instructions.
 
 ### Fixed
 
+- Fixed CQP injection vulnerabilities that could allow attackers to execute arbitrary commands with the permissions of
+  the backend process.
 - Made corrections to the API documentation.
 - Fixed bug when using the `/count` parameter `relative_to_struct` with multiple tokens.
 

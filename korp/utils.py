@@ -5,8 +5,8 @@ import hashlib
 import inspect
 import json
 import os
-import random
 import re
+import secrets
 import sys
 import time
 import traceback
@@ -34,7 +34,7 @@ RIGHT_DELIM = ":::---"
 
 # Regular expressions for parsing parameters
 IS_NUMBER = re.compile(r"^\d+$")
-IS_IDENT = re.compile(r"^[\w\-,|]+$")
+IS_IDENT = re.compile(r"^[\w\-,|_]+$")
 
 QUERY_DELIM = ","
 
@@ -540,7 +540,7 @@ def query_optimize(cqp, cqpparams, find_match=True, expand=True, free_search=Fal
     else:
         cmd[0] += ";"
 
-    return 0, cmd
+    return 0, make_query(cmd[0].rstrip(";")) + cmd[1:]
 
 
 ################################################################################
@@ -667,7 +667,7 @@ def make_cqp(cqp, within=None, cut=None, expand=None):
 def make_query(cqp):
     """Create web-safe commands for a CQP query.
     """
-    querylock = random.randrange(10 ** 8, 10 ** 9)
+    querylock = secrets.randbelow(9 * 10**8) + 10**8
     return ["set QueryLock %s;" % querylock,
             "%s;" % cqp,
             "unlock %s;" % querylock]
