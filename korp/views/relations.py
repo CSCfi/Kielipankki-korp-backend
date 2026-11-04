@@ -2,6 +2,7 @@
 
 import math
 import operator
+import re
 import time
 from collections import Counter, defaultdict
 from collections.abc import Iterator
@@ -1599,6 +1600,8 @@ def relations_sentences(args: dict[str, Any]) -> Iterator[dict]:
         temp_source = temp_source.split(utils.QUERY_DELIM)
     source = defaultdict(set)
     for s in temp_source:
+        if not isinstance(s, str) or not re.fullmatch(r"[\w-]+:[0-9]+", s):
+            raise ValueError("Invalid source value; expected CORPUS:ID.")
         c, i = s.split(":")
         source[c].add(i)
 
