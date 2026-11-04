@@ -48,6 +48,7 @@ import traceback
 import functools
 import math
 import random
+import secrets
 import korppluginlib
 import config
 try:
@@ -621,12 +622,12 @@ def query(args):
     assert_key("corpus", args, IS_IDENT, True)
     assert_key("start", args, IS_NUMBER)
     assert_key("end", args, IS_NUMBER)
-    # assert_key("context", args, r"^\d+ [\w-]+$")
     assert_key("show", args, IS_IDENT)
     assert_key("show_struct", args, IS_IDENT)
     # assert_key("within", args, IS_IDENT)
     assert_key("cut", args, IS_NUMBER)
-    assert_key("sort", args, r"")
+    assert_key("sort", args, r"[A-Za-z_][A-Za-z0-9_-]*\Z")
+    assert_key("random_seed", args, r"[+-]?[0-9]+\Z")
     assert_key("incremental", args, r"(true|false)")
 
     incremental = parse_bool(args, "incremental", False)
@@ -659,6 +660,11 @@ def query(args):
 
     # Parse "context"/"left_context"/"right_context"/"default_context"
     default_context = args.get("default_context") or "10 words"
+    # A context is "N unit", "N" or "unit", optionally followed by a
+    # secondary context "/N unit" (see split_context2())
+    context_base_pattern = r"(?:[0-9]+(?:[ \t]+[A-Za-z_][A-Za-z0-9_-]*)?|[A-Za-z_][A-Za-z0-9_-]*)"
+    context_pattern = rf"{context_base_pattern}(?:/{context_base_pattern})?\Z"
+    assert_key("default_context", {"default_context": default_context}, context_pattern)
     context = defaultdict(lambda: (default_context,))
     contexts = {}
 
@@ -666,8 +672,14 @@ def query(args):
         cv = args.get(c, "")
         if cv:
             if ":" not in cv:
-                raise ValueError("Malformed value for key '%s'." % c)
-            contexts[c] = {x.split(":")[0].upper(): x.split(":")[1] for x in cv.split(QUERY_DELIM)}
+                raise ValueError(f"Malformed value for key '{c}'.")
+            contexts[c] = {}
+            for item in cv.split(QUERY_DELIM):
+                corpus, separator, value = item.partition(":")
+                if not separator or not value:
+                    raise ValueError(f"Malformed value for key '{c}'.")
+                assert_key(c, {c: value}, context_pattern)
+                contexts[c][corpus.upper()] = value
         else:
             contexts[c] = {}
 
@@ -1019,7 +1031,7 @@ def query_optimize(cqp, cqpparams, find_match=True, expand=True, free_search=Fal
     else:
         cmd[0] += ";"
 
-    return 0, cmd
+    return 0, make_query(cmd[0].rstrip(";")) + cmd[1:]
 
 
 def query_corpus(corpus, cqp, within=None, cut=None, context=None, show=None, show_structs=None, start=0, end=10,
@@ -3167,6 +3179,8 @@ def relations_sentences(args):
         temp_source = temp_source.split(QUERY_DELIM)
     source = defaultdict(set)
     for s in temp_source:
+        if not isinstance(s, str) or not re.fullmatch(r"[\w-]+:[0-9]+", s):
+            raise ValueError("Invalid source value; expected CORPUS:ID.")
         c, i = s.split(":")
         source[c].add(i)
 
@@ -3463,7 +3477,7 @@ def make_cqp(cqp, within=None, cut=None, expand=None):
 def make_query(cqp):
     """Create web-safe commands for a CQP query.
     """
-    querylock = random.randrange(10 ** 8, 10 ** 9)
+    querylock = secrets.randbelow(9 * 10**8) + 10**8
     return ["set QueryLock %s;" % querylock,
             "%s;" % cqp,
             "unlock %s;" % querylock]
