@@ -3079,52 +3079,52 @@ def relations(args):
                 sql_execute(cursor, sql)
                 cursor_result = cursor
 
-    rels = {}
-    counter = {}
-    freq_rel = {}
-    freq_head_rel = {}
-    freq_rel_dep = {}
+        rels = {}
+        counter = {}
+        freq_rel = {}
+        freq_head_rel = {}
+        freq_rel_dep = {}
 
-    do_caching = False
-    corpus = None
-    corpus_data = []
+        do_caching = False
+        corpus = None
+        corpus_data = []
 
-    def save_cache(corpus, data):
-        corpus_checksum = get_hash((word, search_type, minfreq))
-        with mc_pool.reserve() as mc:
-            try:
-                mc.add("%s:relations_%s" % (cache_prefix(corpus), corpus_checksum), data)
-            except pylibmc.TooBig:
-                pass
+        def save_cache(corpus, data):
+            corpus_checksum = get_hash((word, search_type, minfreq))
+            with mc_pool.reserve() as mc:
+                try:
+                    mc.add("%s:relations_%s" % (cache_prefix(corpus), corpus_checksum), data)
+                except pylibmc.TooBig:
+                    pass
 
-    for row in itertools.chain(relations_data, (None,), cursor_result):
-        if row is None:
-            do_caching = args["cache"]
-            continue
+        for row in itertools.chain(relations_data, (None,), cursor_result):
+            if row is None:
+                do_caching = args["cache"]
+                continue
 
-        if do_caching:
-            if corpus is None:
-                corpus = row["corpus"]
-            elif not row["corpus"] == corpus:
-                save_cache(corpus, corpus_data)
-                corpus_data = []
-                corpus = row["corpus"]
-            corpus_data.append(row)
+            if do_caching:
+                if corpus is None:
+                    corpus = row["corpus"]
+                elif not row["corpus"] == corpus:
+                    save_cache(corpus, corpus_data)
+                    corpus_data = []
+                    corpus = row["corpus"]
+                corpus_data.append(row)
 
-        head = (row["head"], row["headpos"])
-        dep = (row["dep"], row["deppos"], row["depextra"])
-        rels.setdefault((head, row["rel"], dep), {"freq": 0, "source": set()})
-        rels[(head, row["rel"], dep)]["freq"] += row["freq"]
-        rels[(head, row["rel"], dep)]["source"].add("%s:%d" % (row["corpus"], row["id"]))
-        freq_rel.setdefault(row["rel"], {})[(row["corpus"], row["rel"])] = row["rel_freq"]
-        freq_head_rel.setdefault((head, row["rel"]), {})[(row["corpus"], row["rel"])] = row["head_rel_freq"]
-        freq_rel_dep.setdefault((row["rel"], dep), {})[(row["corpus"], row["rel"])] = row["dep_rel_freq"]
+            head = (row["head"], row["headpos"])
+            dep = (row["dep"], row["deppos"], row["depextra"])
+            rels.setdefault((head, row["rel"], dep), {"freq": 0, "source": set()})
+            rels[(head, row["rel"], dep)]["freq"] += row["freq"]
+            rels[(head, row["rel"], dep)]["source"].add("%s:%d" % (row["corpus"], row["id"]))
+            freq_rel.setdefault(row["rel"], {})[(row["corpus"], row["rel"])] = row["rel_freq"]
+            freq_head_rel.setdefault((head, row["rel"]), {})[(row["corpus"], row["rel"])] = row["head_rel_freq"]
+            freq_rel_dep.setdefault((row["rel"], dep), {})[(row["corpus"], row["rel"])] = row["dep_rel_freq"]
 
-    if corpus is not None:
-        save_cache(corpus, corpus_data)
-        del corpus_data
+        if corpus is not None:
+            save_cache(corpus, corpus_data)
+            del corpus_data
 
-    cursor.close()
+        cursor.close()
 
     # Calculate MI
     for rel in rels:
