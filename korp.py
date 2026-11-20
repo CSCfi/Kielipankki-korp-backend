@@ -2645,12 +2645,12 @@ def lemgram_count(args):
         cursor = mysql.connection.cursor()
         sql_execute(cursor, sql)
 
-    for row in cursor:
-        # We need this check here, since a search for "hår" also returns "här" and "har".
-        if row["lemgram"] in lemgram and int(row["freq"]) > 0:
-            result[row["lemgram"]] = int(row["freq"])
+        for row in cursor:
+            # We need this check here, since a search for "hår" also returns "här" and "har".
+            if row["lemgram"] in lemgram and int(row["freq"]) > 0:
+                result[row["lemgram"]] = int(row["freq"])
 
-    cursor.close()
+	    cursor.close()
 
     yield result
 
