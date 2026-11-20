@@ -2650,7 +2650,7 @@ def lemgram_count(args):
             if row["lemgram"] in lemgram and int(row["freq"]) > 0:
                 result[row["lemgram"]] = int(row["freq"])
 
-	    cursor.close()
+            cursor.close()
 
     yield result
 
